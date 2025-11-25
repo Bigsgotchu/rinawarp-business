@@ -1,0 +1,32 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "groq",
+    "ollama",
+    "GROQ", 
+    "OLLAMA",
+    "fromlist",
+    "fastapi",
+    "asyncio",
+    "pathlib",
+    "httpx",
+    "uvicorn",
+    "pydantic",
+    "BaseModel",
+    "EmailStr",
+    "vscode",
+    "rinawarp",
+    "RinaWarp",
+    "terminalpro",
+    "TerminalPro"
+  ],
+  "flagWords": [],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.vscode/**"
+  ]
+}

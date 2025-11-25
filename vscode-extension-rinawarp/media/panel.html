@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'none'; img-src {{cspSource}} https:; script-src 'unsafe-inline' {{cspSource}}; style-src 'unsafe-inline' {{cspSource}};"
+  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RinaWarp Dev Dashboard</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #050712;
+      color: #f8fafc;
+    }
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 12px;
+      gap: 10px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: linear-gradient(90deg, #e9007f, #00ff99);
+      color: #020617;
+      font-weight: 600;
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      background: #111827;
+      color: #e5e7eb;
+    }
+    button.primary {
+      background: linear-gradient(90deg, #e9007f, #00ff99);
+      color: #020617;
+      font-weight: 600;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .section {
+      border-radius: 10px;
+      padding: 10px;
+      background: #020617;
+      border: 1px solid #1f2933;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+    }
+    textarea {
+      width: 100%;
+      min-height: 70px;
+      resize: vertical;
+      background: #020617;
+      color: #e5e7eb;
+      border-radius: 8px;
+      border: 1px solid #1f2933;
+      padding: 6px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+    .console {
+      background: #020617;
+      border-radius: 8px;
+      padding: 8px;
+      font-family: monospace;
+      font-size: 11px;
+      overflow-y: auto;
+      max-height: 140px;
+      border: 1px solid #1f2933;
+    }
+    .log-line {
+      margin-bottom: 2px;
+    }
+    .log-line.info {
+      color: #93c5fd;
+    }
+    .log-line.success {
+      color: #4ade80;
+    }
+    .log-line.error {
+      color: #fca5a5;
+    }
+    .ai-output {
+      font-size: 12px;
+      white-space: pre-wrap;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <div class="title">RinaWarp Dev Dashboard</div>
+      <div class="badge">VS Code · RinaWarp</div>
+    </div>
+
+    <div class="controls">
+      <button class="primary" id="btn-run-deploy">Run Deploy</button>
+      <button id="btn-clear-log">Clear Log</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">AI Suggestions</div>
+      <textarea id="ai-input" placeholder="Describe your issue or ask RinaWarp for a fix suggestion..."></textarea>
+      <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+        <button class="primary" id="btn-ai-send">Ask RinaWarp</button>
+      </div>
+      <div class="ai-output" id="ai-output"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Console</div>
+      <div class="console" id="console"></div>
+    </div>
+  </div>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+
+    function log(level, message) {
+      const consoleEl = document.getElementById("console");
+      const line = document.createElement("div");
+      line.className = "log-line " + level;
+      const ts = new Date().toLocaleTimeString();
+      line.textContent = "[" + ts + "] " + message;
+      consoleEl.appendChild(line);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    document.getElementById("btn-run-deploy").addEventListener("click", () => {
+      vscode.postMessage({ type: "runDeploy" });
+      log("info", "Deploy requested...");
+    });
+
+    document.getElementById("btn-clear-log").addEventListener("click", () => {
+      document.getElementById("console").innerHTML = "";
+    });
+
+    document.getElementById("btn-ai-send").addEventListener("click", () => {
+      const text = document.getElementById("ai-input").value.trim();
+      if (!text) {
+        log("error", "Please enter a question or issue first.");
+        return;
+      }
+      vscode.postMessage({
+        type: "aiSuggest",
+        payload: {
+          text
+        }
+      });
+      log("info", "Sending AI request...");
+    });
+
+    window.addEventListener("message", (event) => {
+      const msg = event.data;
+      if (msg.type === "log") {
+        log(msg.level || "info", msg.message || "");
+      } else if (msg.type === "aiResponse") {
+        if (msg.error) {
+          log("error", msg.error);
+          document.getElementById("ai-output").textContent = "";
+        } else if (msg.data) {
+          // Expecting { completion: "..." } or similar
+          const text =
+            msg.data.completion ||
+            msg.data.text ||
+            JSON.stringify(msg.data, null, 2);
+          document.getElementById("ai-output").textContent = text;
+          log("success", "AI response received.");
+        }
+      }
+    });
+
+    log("info", "RinaWarp Dev Dashboard loaded.");
+  </script>
+</body>
+</html>

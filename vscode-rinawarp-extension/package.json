@@ -1,0 +1,93 @@
+{
+  "name": "rinawarp-terminal-pro",
+  "displayName": "RinaWarp Terminal Pro",
+  "description": "RinaWarp Terminal Pro – AI terminal companion for VS Code with model switching, deploy buttons, and RinaWarp Dev Dashboard.",
+  "version": "0.1.0",
+  "publisher": "rinawarp",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "icon": "media/rinawarp-icon.png",
+  "categories": [
+    "Other"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onCommand:rinawarp.openDashboard",
+    "onCommand:rinawarp.login",
+    "onCommand:rinawarp.runDeploy",
+    "onView:rinawarpDevDashboard"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "rinawarp.openDashboard",
+        "title": "RinaWarp: Open Dev Dashboard",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.login",
+        "title": "RinaWarp: Login / Connect Account",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.runDeploy",
+        "title": "RinaWarp: Run One-Click Deploy",
+        "category": "RinaWarp"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "rinawarp",
+          "title": "RinaWarp",
+          "icon": "media/rinawarp-icon.png"
+        }
+      ]
+    },
+    "views": {
+      "rinawarp": [
+        {
+          "id": "rinawarpDevDashboard",
+          "name": "RinaWarp Dev Dashboard"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "RinaWarp Terminal Pro",
+      "properties": {
+        "rinawarp.apiBaseUrl": {
+          "type": "string",
+          "default": "https://api.rinawarptech.com",
+          "description": "Base URL for the RinaWarp Terminal Pro backend API."
+        },
+        "rinawarp.authToken": {
+          "type": "string",
+          "default": "",
+          "description": "Personal auth token / API key issued by RinaWarp Terminal Pro (stored locally in VS Code settings)."
+        },
+        "rinawarp.kiloMemoryPath": {
+          "type": "string",
+          "default": "${workspaceFolder}/scripts/kilo-memory.json",
+          "description": "Path to kilo-memory.json for recent commands/errors."
+        },
+        "rinawarp.defaultModel": {
+          "type": "string",
+          "default": "gpt-4o",
+          "description": "Default AI model provider id (e.g., gpt-4o, claude-3.5, groq-llama3, ollama-codellama)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "package": "vsce package",
+    "pretest": "node -c extension.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "vsce": "^2.15.0"
+  }
+}

@@ -1,0 +1,52 @@
+RINAWARP WEBSITE HEALTH REPORT
+Generated: Mon Nov 24 09:34:38 AM MST 2025
+Target: https://rinawarptech.com
+===============================================
+
+Testing: https://rinawarptech.com
+  Status: 200 | Time: 0.160169s
+  ✅ OK
+📥 Downloading main page for analysis...
+📄 Main page size: 1774 bytes
+🔗 Step 2: Extracting and testing links...
+Testing: https://rinawarptech.com/css/styles.css
+🖼️  Step 3: Testing resources (images, CSS, JS)...
+Testing: https://rinawarptech.com/assets/rinawarp-logo.png
+Testing: https://rinawarptech.com/css/styles.css
+📄 Step 4: Testing specific pages...
+Testing: https://rinawarptech.com/download.html
+  Status: 200 | Time: 0.157460s
+  ✅ OK
+Testing: https://rinawarptech.com/pricing.html
+  Status: 200 | Time: 0.141602s
+  Status: 200 | Time: 0.139555s
+  ✅ OK
+  ✅ OK
+  Status: 200 | Time: 0.143747s
+  ✅ OK
+Testing: https://rinawarptech.com/terminal-pro.html
+  Status: 200 | Time: 0.308668s
+  ✅ OK
+  Status: 200 | Time: 0.163157s
+  ✅ OK
+Testing: https://rinawarptech.com/about.html
+  Status: 200 | Time: 0.137820s
+  ✅ OK
+Testing: https://rinawarptech.com/contact.html
+  Status: 200 | Time: 0.145158s
+  ✅ OK
+Testing: https://rinawarptech.com/terms.html
+  Status: 200 | Time: 0.134442s
+  ✅ OK
+Testing: https://rinawarptech.com/privacy.html
+  Status: 200 | Time: 0.135428s
+  ✅ OK
+
+📊 HEALTH CHECK SUMMARY:
+========================
+✅ Successful requests: 11
+❌ HTTP errors: 0
+0
+⚠️  Warnings: 0
+0
+

@@ -1,0 +1,33 @@
+# Large binary files (use GitHub Releases instead)
+*.exe
+*.AppImage
+*.deb
+*.tar.gz
+*.zip
+
+# Build outputs and dist
+build-output/
+dist/
+node_modules/
+*.tsbuildinfo
+
+# Temporary and backup files
+temp-website/
+*backup*
+*.backup
+
+# IDE and system files
+.vscode/settings.json
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Cache directories
+.cache/
+.parcel-cache/

@@ -1,0 +1,27 @@
+60-SECOND DEMO VIDEO SCRIPT
+
+[0–5s Hook]
+"Imagine if your terminal wasn't dumb… and actually helped you ship faster."
+
+[5–15s – Show app opening]
+"This is RinaWarp Terminal Pro – an AI-powered terminal I built for developers and creators who live in their command line."
+Show: your app window, Mermaid theme, Logotype.
+
+[15–30s – Voice + AI models]
+"You can talk to it with your voice, switch between GPT, Claude, Groq, and Ollama… and let it write, explain, or fix commands before you run them."
+Show:
+– Voice trigger
+– Model dropdown
+– AI output suggesting a command
+
+[30–45s – File tree + one-click deploys]
+"It's got a built-in file tree and one-click deploy flows, so you can go from 'idea' to 'live' without leaving this window."
+Show:
+– File tree
+– Clicking a deploy button / showing logs
+
+[45–55s – Founder Wave]
+"I built this as a solo founder, for people who want their tools to feel powerful, fast, and actually fun to use."
+
+[55–60s – CTA]
+"If you want to join the Founder Wave and grab a lifetime license, hit rinawarptech.com – limited seats, lifetime updates."

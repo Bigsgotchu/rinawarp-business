@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RinaWarp AI Music Video Creator – Coming Soon</title>
+
+  <style>
+    :root {
+      --uni-pink: #ff67ff;
+      --uni-purple: #ae7bff;
+      --uni-cyan: #67e8f9;
+      --uni-yellow: #ffdb3b;
+      --uni-deep: #0a0218;
+    }
+
+    body {
+      background: radial-gradient(circle at center, var(--uni-purple), var(--uni-deep));
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(135deg, var(--uni-pink), var(--uni-cyan), var(--uni-yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto 2rem;
+    }
+
+    .waitlist-box {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+    }
+
+    input {
+      padding: 0.9rem;
+      width: 100%;
+      border-radius: 12px;
+      border: none;
+      margin-bottom: 0.8rem;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--uni-pink), var(--uni-cyan));
+      color: #0a0218;
+      box-shadow: 0 12px 30px rgba(103,232,249,0.4);
+      font-size: 1.1rem;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+    }
+
+    footer {
+      margin-top: 4rem;
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>AI Music Video Creator</h1>
+  <p class="tagline">Turn your songs into stunning animated music videos with AI-powered visuals. Built for creators, artists, and the Rina Vex universe.</p>
+
+  <!-- Waitlist -->
+  <div class="waitlist-box">
+    <h3 style="margin-bottom:1rem;">🎉 Coming Soon — Join the Waitlist</h3>
+
+    <form id="music-video-email-form" class="email-form">
+      <input type="email" 
+             id="music-video-email" 
+             name="email" 
+             placeholder="Your email address" 
+             required 
+             class="email-input"
+             onkeydown="gtag('event','music_video_signup_attempt',{event_category:'engagement'})">
+      <button type="submit" class="email-button">Get Early Access</button>
+    </form>
+
+    <p style="margin-top:1rem; font-size:0.85rem; opacity:0.8;">
+      Get early access, creator perks, and launch updates.
+    </p>
+  </div>
+
+  <script>
+    // Include the same email signup logic for music video creator
+    function initMusicVideoEmail() {
+      const form = document.getElementById('music-video-email-form');
+      if (!form) return;
+
+      const emailInput = document.getElementById('music-video-email');
+      const submitButton = form.querySelector('button[type="submit"]');
+
+      function showMessage(message, type) {
+        const messageEl = form.querySelector('.form-message') || document.createElement('div');
+        messageEl.className = 'form-message form-' + type;
+        messageEl.textContent = message;
+        messageEl.style.cssText = `
+          padding: 1rem;
+          border-radius: 8px;
+          margin-top: 1rem;
+          text-align: center;
+          font-size: 0.9rem;
+        `;
+        
+        if (type === 'success') {
+          messageEl.style.background = 'rgba(0,255,147,0.1)';
+          messageEl.style.border = '1px solid rgba(0,255,147,0.3)';
+          messageEl.style.color = '#00ff93';
+        } else {
+          messageEl.style.background = 'rgba(255,0,128,0.1)';
+          messageEl.style.border = '1px solid rgba(255,0,128,0.3)';
+          messageEl.style.color = '#ff0080';
+        }
+        
+        if (!form.contains(messageEl)) {
+          form.appendChild(messageEl);
+        }
+        
+        setTimeout(() => {
+          if (messageEl.parentNode) {
+            messageEl.remove();
+          }
+        }, 5000);
+      }
+
+      function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      function submitEmail(email) {
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Joining...';
+        submitButton.disabled = true;
+
+        const payload = {
+          email: email,
+          source: 'music-video-waitlist',
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          referrer: document.referrer || 'direct'
+        };
+
+        fetch('https://api.rinawarptech.com/api/email-signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(data => {
+          showMessage('🎵 You\'re on the list! We\'ll notify you when the AI Music Video Creator drops.', 'success');
+          emailInput.value = '';
+          if (typeof gtag === 'function') {
+            gtag('event', 'email_signup', {
+              event_category: 'music_video',
+              event_label: 'waitlist'
+            });
+          }
+        })
+        .catch(err => {
+          console.error('Email signup error:', err);
+          showMessage('Something went wrong. Please try again.', 'error');
+        })
+        .finally(() => {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        });
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        
+        if (!email) {
+          showMessage('Please enter your email address.', 'error');
+          return;
+        }
+        
+        if (!validateEmail(email)) {
+          showMessage('Please enter a valid email address.', 'error');
+          return;
+        }
+        
+        submitEmail(email);
+      });
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', initMusicVideoEmail);
+  </script>
+
+  <footer>© 2024–2025 Rinawarp Technologies, LLC.</footer>
+
+</body>
+</html>

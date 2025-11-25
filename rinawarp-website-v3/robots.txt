@@ -1,0 +1,79 @@
+# RinaWarp Website Robots.txt v3.0
+# Optimized for SEO and crawl budget management
+
+User-agent: *
+Allow: /
+
+# Primary Sitemap
+Sitemap: https://rinawarptech.com/sitemap.xml
+
+# Allow all essential assets
+Allow: /css/
+Allow: /js/
+Allow: /assets/
+Allow: /assets/downloads/
+Allow: /assets/icons/
+Allow: /assets/images/
+
+# Allow product pages
+Allow: /terminal-pro.html
+Allow: /pricing.html
+Allow: /download.html
+Allow: /music-video-creator.html
+Allow: /terminal-pro-activation.html
+Allow: /terminal-pro-success.html
+
+# Allow company pages
+Allow: /about.html
+Allow: /contact.html
+Allow: /support.html
+Allow: /faq.html
+Allow: /blog.html
+
+# Allow legal pages
+Allow: /terms.html
+Allow: /privacy.html
+Allow: /dmca.html
+Allow: /refund-policy.html
+
+# Allow marketing pages
+Allow: /affiliates.html
+Allow: /founder-wave.html
+Allow: /testimonials-widget.html
+
+# Allow forms (for indexing)
+Allow: /feedback-form.html
+Allow: /admin-feedback.html
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /internal/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /temp/
+Disallow: /cache/
+Disallow: /logs/
+
+# Disallow duplicate content
+Disallow: /index-backup*
+Disallow: /index-v3.html
+Disallow: /landing-v3.html
+Disallow: /*.backup$
+Disallow: /*.tmp$
+
+# Disallow API endpoints
+Disallow: /api/
+Disallow: /_netlify/
+Disallow: /preview/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Additional sitemaps for different content types
+# Add these when they exist:
+# Sitemap: https://rinawarptech.com/sitemap-blog.xml
+# Sitemap: https://rinawarptech.com/sitemap-products.xml
+
+# Host directive for canonical hostname
+Host: https://rinawarptech.com

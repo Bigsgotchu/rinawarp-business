@@ -1,0 +1,154 @@
+# Corrected Oracle VM Deployment - API Only
+
+## ✅ Correct Architecture
+
+```
+rinwarwarptech.com (Main Website) → Netlify ✅
+api.rinawarptech.com (API Backend) → Oracle VM (158.101.1.38) ✅
+downloads.rinawarptech.com (Downloads) → Oracle VM (158.101.1.38) ✅
+```
+
+## 🔧 Oracle VM Configuration
+
+Your Oracle VM should be configured to serve:
+
+### 1. API Endpoints Only
+- `https://api.rinawarptech.com/api/*` → Backend API routes
+- `https://api.rinawarptech.com/health` → Health check
+- `https://api.rinawarptech.com/api/stripe/webhook` → Stripe webhooks
+
+### 2. Static Downloads (Optional)
+- `https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-*.AppImage`
+- `https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-*.dmg`
+- `https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-*.exe`
+
+## 🚫 What NOT to Serve
+
+**The Oracle VM should NOT serve:**
+- `https://rinawarptech.com` → This should be Netlify
+- `https://www.rinawarptech.com` → This should be Netlify
+- Main website HTML files
+- Website assets (CSS, JS, images)
+
+## 📁 Correct Oracle VM Directory Structure
+
+```
+/var/www/rinawarp-api/
+├── server.js (API server)
+├── routes/ (API routes)
+├── services/ (business logic)
+├── data/ (SQLite database)
+├── downloads/ (static files)
+│   ├── RinaWarp-Terminal-Pro-1.0.0-linux-x86_64.AppImage
+│   ├── RinaWarp-Terminal-Pro-1.0.0.dmg
+│   └── RinaWarp-Terminal-Pro-1.0.0.exe
+└── logs/ (application logs)
+```
+
+## 🌐 Correct NGINX Configuration
+
+Your NGINX should only proxy API requests:
+
+```nginx
+server {
+    listen 80;
+    server_name api.rinawarptech.com;
+
+    # API routes
+    location /api/ {
+        proxy_pass http://localhost:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Health check
+    location /health {
+        proxy_pass http://localhost:4000/health;
+        access_log off;
+    }
+
+    # Downloads (if serving from VM)
+    location /downloads/ {
+        alias /var/www/rinawarp-api/downloads/;
+        autoindex on;
+    }
+
+    # Block all other requests
+    location / {
+        return 404 "API endpoints only";
+    }
+}
+```
+
+## 🎯 Oracle VM Deployment Steps
+
+### 1. Deploy Backend Only
+```bash
+# On Oracle VM
+cd /var/www/rinawarp-api
+npm install --only=production
+npx prisma generate
+npx prisma db push
+
+# Start API server
+pm2 start ecosystem.config.js
+pm2 save
+```
+
+### 2. Configure Downloads (Optional)
+```bash
+# Upload installer files to downloads directory
+mkdir -p /var/www/rinawarp-api/downloads
+
+# Upload your installer files
+scp RinaWarp-Terminal-Pro-1.0.0-linux-x86_64.AppImage ubuntu@158.101.1.38:/var/www/rinawarp-api/downloads/
+scp RinaWarp-Terminal-Pro-1.0.0.dmg ubuntu@158.101.1.38:/var/www/rinawarp-api/downloads/
+scp RinaWarp-Terminal-Pro-1.0.0.exe ubuntu@158.101.1.38:/var/www/rinawarp-api/downloads/
+```
+
+### 3. Update Downloads HTML
+Ensure your `rinawarp-website/download.html` points to:
+```html
+<!-- Download links should point to Oracle VM -->
+<a href="https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-1.0.0-linux-x86_64.AppImage">Linux AppImage</a>
+<a href="https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-1.0.0.dmg">macOS DMG</a>
+<a href="https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-1.0.0.exe">Windows EXE</a>
+```
+
+## ✅ Verification
+
+After correct deployment:
+
+```bash
+# Should work - API endpoints
+curl https://api.rinawarptech.com/health
+curl https://api.rinawarptech.com/api/products
+
+# Should work - Downloads
+curl -I https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-1.0.0-linux-x86_64.AppImage
+
+# Should show Netlify - NOT your VM
+curl -I https://rinawarptech.com
+curl -I https://www.rinawarptech.com
+```
+
+## 🚀 Summary
+
+**Your Oracle VM should ONLY handle:**
+- API backend functionality
+- File downloads
+- Stripe webhook processing
+
+**Your Netlify site should handle:**
+- Main website (rinawarptech.com)
+- Product pages
+- Marketing content
+- User interface
+
+This architecture gives you the best of both worlds: Netlify's speed for your website and your Oracle VM's control for the backend API.

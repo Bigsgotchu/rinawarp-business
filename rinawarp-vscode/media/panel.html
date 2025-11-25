@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+
+<div class="rw-header">
+  <h2>RinaWarp Control Center</h2>
+  <p class="email">Signed in as: <b>{{email}}</b></p>
+</div>
+
+<div class="rw-section">
+  <h3>AI Chat</h3>
+
+  <select id="provider">
+    <option value="gpt">GPT-4o</option>
+    <option value="claude">Claude 3.7</option>
+    <option value="groq">Groq Llama 3</option>
+    <option value="ollama">Ollama</option>
+  </select>
+
+  <textarea id="input" placeholder="Ask RinaWarp..."></textarea>
+  <div style="margin-top: 10px;">
+    <button id="send">Send</button>
+    <button id="voice" style="margin-left: 10px;">🎤 Voice Command</button>
+  </div>
+  <div id="voiceStatus"></div>
+
+  <div id="response"></div>
+</div>
+
+<div class="rw-section">
+  <h3>File Tree</h3>
+  <button id="loadTree">Load Workspace</button>
+  <pre id="tree"></pre>
+</div>
+
+<div class="rw-section">
+  <h3>Deployment</h3>
+  <button id="deploy">Run Deploy</button>
+</div>
+
+<div class="rw-section">
+  <h3>RinaWarp Terminal</h3>
+  <input id="shellInput" placeholder="Type a command…" />
+  <button id="runShell">Run</button>
+  <pre id="shellOut"></pre>
+</div>
+
+<div class="rw-section">
+  <h3>Plugins</h3>
+  <button id="refreshPlugins">Refresh</button>
+  <pre id="pluginList"></pre>
+
+  <h4>Install Plugin</h4>
+  <input id="pluginUrl" placeholder="URL to plugin.json" />
+  <button id="installPlugin">Install</button>
+</div>
+
+<script src="panel.js"></script>
+</body>
+</html>

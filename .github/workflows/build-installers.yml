@@ -1,0 +1,204 @@
+name: 🔨 Build Cross-Platform Installers
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'apps/terminal-pro/desktop/**'
+      - '.github/workflows/build-installers.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'apps/terminal-pro/desktop/**'
+
+jobs:
+  build-linux:
+    name: 🐧 Build Linux Installers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: 🔧 Install Dependencies
+        working-directory: apps/terminal-pro/desktop
+        run: npm ci
+        
+      - name: 🧱 Build Linux Installers
+        working-directory: apps/terminal-pro/desktop
+        run: |
+          npm run build:linux
+          
+      - name: 📁 Upload Linux Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-installers
+          path: |
+            apps/terminal-pro/desktop/dist/*.AppImage
+            apps/terminal-pro/desktop/dist/*.deb
+            apps/terminal-pro/desktop/dist/*.rpm
+
+  build-windows:
+    name: 🪟 Build Windows Installer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: 🔧 Install Dependencies
+        working-directory: apps/terminal-pro/desktop
+        run: npm ci
+        
+      - name: 🧱 Build Windows Installer
+        working-directory: apps/terminal-pro/desktop
+        run: |
+          npm run build:win
+        env:
+          # Windows Code Signing (set in repository secrets)
+          CSC_LINK: ${{ secrets.WINDOWS_CERTIFICATE_PFX }}
+          CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          
+      - name: 📁 Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installers
+          path: |
+            apps/terminal-pro/desktop/dist/*.exe
+            apps/terminal-pro/desktop/dist/*.msi
+
+  build-mac:
+    name: 🍎 Build macOS Installer
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: 🔧 Install Dependencies
+        working-directory: apps/terminal-pro/desktop
+        run: npm ci
+        
+      - name: 🍎 macOS Notarization Setup
+        run: |
+          # Install Xcode command line tools
+          xcode-select --install
+          # Set up notarization credentials
+          echo "${{ secrets.MACOS_NOTARIZATION_PASSWORD }}" | base64 --decode > certificate.p12
+        env:
+          MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          
+      - name: 🧱 Build macOS Installer
+        working-directory: apps/terminal-pro/desktop
+        run: |
+          npm run build:mac
+        env:
+          # Apple ID for notarization
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          # Developer certificate
+          CSC_NAME: "Developer ID Application: RinaWarp (TEAM_ID)"
+          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
+          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          
+      - name: 🍎 Notarize macOS App
+        working-directory: apps/terminal-pro/desktop
+        run: |
+          # Wait for build completion
+          sleep 30
+          # Find the DMG file
+          DMG_FILE=$(ls dist/*.dmg | head -1)
+          if [ ! -z "$DMG_FILE" ]; then
+            # Submit for notarization
+            xcrun notarytool submit "$DMG_FILE" \
+              --apple-id "${{ secrets.APPLE_ID }}" \
+              --password "${{ secrets.APPLE_ID_PASSWORD }}" \
+              --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+              --wait
+            # Staple the notarization
+            xcrun stapler staple "$DMG_FILE"
+          fi
+          
+      - name: 📁 Upload macOS Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-installers
+          path: |
+            apps/terminal-pro/desktop/dist/*.dmg
+            apps/terminal-pro/desktop/dist/*.app
+
+  release:
+    name: 🚀 Create Release
+    needs: [build-linux, build-windows, build-mac]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - name: 📥 Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: installers/
+          
+      - name: 📁 Organize Installer Files
+        run: |
+          mkdir -p release
+          # Copy Linux installers
+          cp linux-installers/* release/ 2>/dev/null || true
+          # Copy Windows installers
+          cp windows-installers/* release/ 2>/dev/null || true
+          # Copy macOS installers
+          cp macos-installers/* release/ 2>/dev/null || true
+          ls -la release/
+          
+      - name: 📝 Generate Release Notes
+        run: |
+          cat > release-notes.md << 'EOF'
+          # 🎉 RinaWarp Terminal Pro - Cross-Platform Release
+          
+          ## 📦 Available Installers
+          
+          ### 🐧 Linux
+          - **AppImage**: Portable, no installation required
+          - **DEB Package**: For Debian/Ubuntu systems
+          
+          ### 🪟 Windows  
+          - **NSIS Installer**: Windows 10/11 compatible
+          
+          ### 🍎 macOS
+          - **DMG Image**: macOS 10.14+ compatible
+          - **Notarized**: Passes Apple Gatekeeper
+          
+          ## 🚀 Installation
+          
+          Choose your platform and installer above to download and install RinaWarp Terminal Pro!
+          
+          Built automatically on: ${{ github.run_number }}
+          Commit: ${{ github.sha }}
+          EOF
+          
+      - name: 🎯 Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/*
+          body_path: release-notes.md
+          tag_name: v1.0.0
+          name: "RinaWarp Terminal Pro v1.0.0"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: 🔗 Update Download Links
+        run: |
+          echo "✅ Release created successfully!"
+          echo "📊 Installers available for all platforms"
+          echo "🔗 Download from GitHub Releases"
+          echo "🌐 Update website download links to point to new release"

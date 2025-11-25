@@ -1,0 +1,326 @@
+/home/karina/Documents/RinaWarp
+├── apps
+│   └── terminal-pro
+│       ├── backend
+│       │   ├── API-CLIENT-EXAMPLE.js
+│       │   ├── .cspell.json
+│       │   ├── docker-compose.yml
+│       │   ├── Dockerfile
+│       │   ├── Dockerfile.dev
+│       │   ├── .dockerignore
+│       │   ├── electron-builder.yml
+│       │   ├── .env
+│       │   ├── .env.example
+│       │   ├── .env.frontend.example
+│       │   ├── .env.production
+│       │   ├── .env.production.template
+│       │   ├── nginx-rinawarp-api.conf
+│       │   ├── package.json
+│       │   ├── package-lock.json
+│       │   ├── prisma
+│       │   │   ├── dev.db
+│       │   │   └── schema.prisma
+│       │   ├── routes
+│       │   │   ├── index.js
+│       │   │   ├── licenseCount.js
+│       │   │   ├── license.js
+│       │   │   ├── licenseRoutes.js
+│       │   │   ├── products.js
+│       │   │   ├── stripe.js
+│       │   │   ├── stripeRoutes.js
+│       │   │   └── terminalProCheckout.js
+│       │   ├── server.js
+│       │   └── services
+│       │       ├── licenseService.js
+│       │       ├── licenses.js
+│       │       └── stripeService.js
+│       ├── backend-deployment.tar.gz
+│       ├── COMPLETE-LICENSE-SYSTEM.md
+│       ├── DEPLOYMENT-FIXES-NEEDED.md
+│       ├── DEPLOYMENT-READY.md
+│       ├── deploy-to-oracle-vm.sh
+│       ├── desktop
+│       │   ├── desktop-app-badge-styles.css
+│       │   ├── desktop-app-license-integration.js
+│       │   ├── electron
+│       │   │   ├── ipc
+│       │   │   │   └── license.js
+│       │   │   ├── main.js
+│       │   │   └── preload.js
+│       │   ├── electron-builder.json
+│       │   ├── electron-builder.yml
+│       │   ├── index.html
+│       │   ├── licenseManager.js
+│       │   ├── main.js
+│       │   ├── package.json
+│       │   ├── package-lock.json
+│       │   ├── preload.js
+│       │   ├── renderer.js
+│       │   └── terminal-pro
+│       │       ├── electron
+│       │       │   ├── main.js
+│       │       │   └── preload.js
+│       │       ├── .env
+│       │       └── package-lock.json
+│       ├── .devcontainer
+│       │   ├── devcontainer.json
+│       │   └── Dockerfile
+│       ├── docs
+│       │   ├── CHECKOUT-SYSTEM-DOCUMENTATION.md
+│       │   ├── CHECKOUT-SYSTEM-IMPLEMENTATION.md
+│       │   ├── CLOUDFLARE-DEPLOYMENT-FIX.md
+│       │   ├── CLOUDFLARE-DEPLOYMENT-SOLUTION.md
+│       │   ├── COMPLETE-SETUP-GUIDE.md
+│       │   ├── DEPLOYMENT-STATUS-SUCCESS.md
+│       │   ├── DEPLOYMENT-SUCCESS-FINAL.md
+│       │   ├── DEPLOYMENT-SUCCESS-STATUS.md
+│       │   ├── DNS-CHANGES-NEEDED.md
+│       │   ├── DNS-UPDATE-INSTRUCTIONS.md
+│       │   ├── DOCKER-SETUP.md
+│       │   ├── FINAL-COMPLETE-IMPLEMENTATION.md
+│       │   ├── FINAL-SETUP-COMPLETE.md
+│       │   ├── FIXES-IMPLEMENTED.md
+│       │   ├── full-project-tree.txt
+│       │   ├── LAUNCH-DEPLOYMENT-GUIDE.md
+│       │   ├── LAUNCH-IMPLEMENTATION-COMPLETE.md
+│       │   ├── LIVE-DEPLOYMENT-READY.md
+│       │   ├── PRODUCTION-BACKEND-GITHUB-SYNC.md
+│       │   ├── PROJECT-RESTRUCTURING-COMPLETE.md
+│       │   ├── project-tree.txt
+│       │   ├── README.md
+│       │   ├── restructure-tree-final.txt
+│       │   ├── RINAWARP-EMAIL-AUTOMATION-SYSTEM.md
+│       │   ├── RinaWarp-IP-Proof
+│       │   │   ├── Brand-Protection-Implementation-Checklist.md
+│       │   │   ├── evidence
+│       │   │   │   └── Evidence_Package_20251121_182916
+│       │   │   │       └── git-history
+│       │   │   │           └── commit_history_20251121_182916.txt
+│       │   │   ├── legal-docs
+│       │   │   │   └── RinaWarp-Trademark-Usage-Guide.md
+│       │   │   ├── README.md
+│       │   │   ├── scripts
+│       │   │   │   └── collect-ip-evidence.sh
+│       │   │   └── templates
+│       │   │       ├── DMCA-Takedown-Templates.md
+│       │   │       ├── Legal-Footer-Templates.md
+│       │   │       └── USPTO-Filing-Packet-Templates.md
+│       │   ├── STRIPE-INTEGRATION-FINAL.md
+│       │   ├── STRIPE-PRODUCTS-COMPLETE.md
+│       │   ├── STRIPE-SECURITY-CLEANUP-COMPLETE.md
+│       │   ├── STRIPE-SETUP-8TIER.md
+│       │   ├── STRIPE-SETUP-COMPLETE.md
+│       │   ├── STRIPE-SETUP-GUIDE.md
+│       │   ├── system-verification-report-20251122-171051.txt
+│       │   ├── TERMINAL-PRO-COMPLETE-SYSTEM.md
+│       │   ├── TERMINAL-PRO-SALES-FUNNEL.md
+│       │   ├── VSCode-Update-Instructions.md
+│       │   └── WORKSPACE-SETUP-REFERENCE.md
+│       ├── frontend
+│       │   ├── index.html
+│       │   ├── .netlify
+│       │   │   ├── netlify.toml
+│       │   │   └── state.json
+│       │   ├── netlify.toml
+│       │   ├── package.json
+│       │   ├── package-lock.json
+│       │   ├── postcss.config.js
+│       │   ├── Pricing.jsx
+│       │   ├── src
+│       │   │   ├── App.jsx
+│       │   │   ├── components
+│       │   │   │   ├── checkout
+│       │   │   │   │   └── CheckoutForm.jsx
+│       │   │   │   ├── EmailAutomation.css
+│       │   │   │   ├── EmailAutomation.jsx
+│       │   │   │   ├── LaunchBanner.css
+│       │   │   │   ├── LaunchBanner.jsx
+│       │   │   │   ├── LaunchDashboard.css
+│       │   │   │   ├── LaunchDashboard.jsx
+│       │   │   │   ├── RinaVexArtistSection.jsx
+│       │   │   │   └── terminalpro
+│       │   │   │       ├── AppleStyleSalesPage.jsx
+│       │   │   │       ├── BenefitsSection.jsx
+│       │   │   │       ├── CyberpunkSalesPage.jsx
+│       │   │   │       ├── DeveloperSalesPage.jsx
+│       │   │   │       ├── FAQSection.jsx
+│       │   │   │       ├── FooterCTA.jsx
+│       │   │   │       ├── HeroSection.jsx
+│       │   │   │       ├── index.js
+│       │   │   │       ├── InsideSection.jsx
+│       │   │   │       ├── LicenseBadge.jsx
+│       │   │   │       ├── LicenseModal.jsx
+│       │   │   │       ├── PricingLifetime.jsx
+│       │   │   │       ├── PricingMonthly.jsx
+│       │   │   │       ├── TerminalProPricing.jsx
+│       │   │   │       ├── TerminalProPricing-Updated.jsx
+│       │   │   │       └── WhoSection.jsx
+│       │   │   ├── config
+│       │   │   │   └── terminalProPricing.js
+│       │   │   ├── index.css
+│       │   │   ├── main.jsx
+│       │   │   ├── pages
+│       │   │   │   ├── Activate.css
+│       │   │   │   ├── Activate.jsx
+│       │   │   │   ├── ActivateLicense.jsx
+│       │   │   │   ├── checkout
+│       │   │   │   │   └── CheckoutPage.jsx
+│       │   │   │   ├── Downloads.css
+│       │   │   │   ├── Downloads.jsx
+│       │   │   │   ├── Home.jsx
+│       │   │   │   ├── LaunchDayControlCenter.css
+│       │   │   │   ├── LaunchDayControlCenter.jsx
+│       │   │   │   ├── Pricing.jsx
+│       │   │   │   ├── TerminalProDownload.css
+│       │   │   │   ├── TerminalProDownload.jsx
+│       │   │   │   ├── TerminalProHero.css
+│       │   │   │   ├── TerminalProHero.jsx
+│       │   │   │   ├── TerminalPro.jsx
+│       │   │   │   ├── TerminalProLandingPage.jsx
+│       │   │   │   ├── TerminalProLifetimePage.jsx
+│       │   │   │   ├── TerminalProPage.jsx
+│       │   │   │   └── TerminalProThanksPage.jsx
+│       │   │   ├── services
+│       │   │   │   └── emailTemplates.js
+│       │   │   └── stores
+│       │   │       └── license.js
+│       │   ├── tailwind.config.js
+│       │   ├── vite.config.js
+│       │   ├── Website
+│       │   │   ├── index.html
+│       │   │   ├── legal
+│       │   │   │   ├── privacy.html
+│       │   │   │   └── terms.html
+│       │   │   ├── main.jsx
+│       │   │   ├── package.json
+│       │   │   ├── package-lock.json
+│       │   │   ├── pricing
+│       │   │   │   └── index.html
+│       │   │   ├── README.md
+│       │   │   ├── rina
+│       │   │   │   └── index.html
+│       │   │   ├── src
+│       │   │   │   └── App.jsx
+│       │   │   ├── terminal
+│       │   │   │   └── index.html
+│       │   │   ├── video
+│       │   │   │   └── index.html
+│       │   │   ├── vite.config.js
+│       │   │   └── website-terminal-pro-buy.html
+│       │   └── website-terminal-pro-buy.html
+│       ├── .github
+│       │   └── workflows
+│       │       ├── deploy-website.yml
+│       │       └── rinawarp-ci.yml
+│       ├── .gitignore
+│       ├── gmail_auth
+│       │   ├── client_secret.json
+│       │   └── token.json
+│       ├── gmail-automation
+│       │   ├── client_secret_204905093036-fce9epdgtpnfroajcn476opku817dv42.apps.googleusercontent.com.json
+│       │   ├── .env.example
+│       │   ├── .gitignore
+│       │   ├── gmail_send_as.py
+│       │   ├── __pycache__
+│       │   │   └── gmail_send_as.cpython-313.pyc
+│       │   ├── quick-setup.sh
+│       │   ├── README.md
+│       │   ├── requirements.txt
+│       │   ├── setup_gmail_send_as.py
+│       │   ├── setup_gmail_send_as.sh
+│       │   └── test_email_sending.py
+│       ├── LICENSE
+│       ├── marketing
+│       │   ├── email-sequences
+│       │   │   ├── abandoned-checkout.md
+│       │   │   ├── founders-launch.md
+│       │   │   ├── launch-announcement-email.md
+│       │   │   ├── scarcity-last-call-email.md
+│       │   │   ├── social-proof-feature-email.md
+│       │   │   └── welcome-sequence.md
+│       │   ├── launch-day
+│       │   │   ├── 00-LAUNCH-PACKAGE-OVERVIEW.md
+│       │   │   ├── 01-LAUNCH-DAY-CHECKLIST.md
+│       │   │   ├── 02-PRESS-RELEASE-PACK.md
+│       │   │   ├── 03-SOCIAL-MEDIA-POST-PACK.md
+│       │   │   ├── 04-VIDEO-TRAILER-SCRIPTS.md
+│       │   │   ├── 05-WEBSITE-BANNER-COPY.md
+│       │   │   ├── 06-EMAIL-BLAST-TEMPLATES.md
+│       │   │   ├── 07-LAUNCH-DAY-MASTER-TIMELINE.md
+│       │   │   ├── 08-SCARCITY-MESSAGING-STRATEGY.md
+│       │   │   └── final-pre-launch-checklist.md
+│       │   └── social-media
+│       │       └── launch-posts.md
+│       ├── misplaced
+│       │   ├── app-2025-10-31.log
+│       │   ├── app-2025-11-01.log
+│       │   ├── app-2025-11-02.log
+│       │   ├── app-2025-11-03.log
+│       │   ├── Cargo.lock
+│       │   ├── Cargo.toml
+│       │   ├── cliff.toml
+│       │   ├── config.toml
+│       │   ├── .env
+│       │   ├── .gitignore
+│       │   ├── index.html
+│       │   ├── .npmrc
+│       │   ├── package.json
+│       │   ├── package-lock.json
+│       │   ├── pnpm-lock.yaml
+│       │   ├── postcss.config.js
+│       │   ├── .prettierrc.toml
+│       │   ├── pyproject.toml
+│       │   ├── README.md
+│       │   ├── Rina
+│       │   ├── rustfmt.toml
+│       │   ├── settings.toml
+│       │   ├── STRIPE-PRODUCTION-CHECKLIST.md
+│       │   ├── tailwind.config.js
+│       │   ├── tsconfig.json
+│       │   ├── tsconfig.node.json
+│       │   └── vite.config.ts
+│       ├── ORACLE-VM-DEPLOYMENT.md
+│       ├── oracle-vm-deploy.sh
+│       ├── package.json
+│       ├── scripts
+│       │   ├── analyze-stripe-products.sh
+│       │   ├── cloudflare-dns-fix.sh
+│       │   ├── create-final-prices.sh
+│       │   ├── create-launch-pricing.sh
+│       │   ├── create-remaining-products.sh
+│       │   ├── create-rinawarp-desktop.sh
+│       │   ├── deploy-backend-prod.sh
+│       │   ├── deploy-netlify.sh
+│       │   ├── deploy-terminal-pro.sh
+│       │   ├── enhanced-safe-purge.sh
+│       │   ├── full-prod-deploy.sh
+│       │   ├── kilo-safe-execution-layer.sh
+│       │   ├── kilo-safe.sh
+│       │   ├── launch-monitoring.sh
+│       │   ├── launch-sequence.sh
+│       │   ├── netlify-deploy.sh
+│       │   ├── r2-sync-installers.sh
+│       │   ├── r2-sync.sh
+│       │   ├── README.md
+│       │   ├── release.sh
+│       │   ├── safe-purge.sh
+│       │   ├── stripe-cleanup-recreate.sh
+│       │   ├── stripe-cli.sh
+│       │   ├── test-integration.sh
+│       │   ├── update-vscode.sh
+│       │   ├── upload-installers.sh
+│       │   ├── verify-launch-systems.sh
+│       │   └── verify-stripe-config.sh
+│       └── .vscode
+│           └── settings.json
+├── RinaWarp.code-workspace
+├── .rinawarp_root
+├── RINAWARP-TREE-FINAL.txt
+├── scripts
+│   ├── tools
+│   │   └── rinawarp-check-strays.sh
+│   └── verify-and-fix-paths.sh
+└── tools
+    └── find-rinawarp-root.sh
+
+54 directories, 270 files

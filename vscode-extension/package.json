@@ -1,0 +1,135 @@
+{
+  "name": "rinawarp-terminal-pro",
+  "displayName": "RinaWarp Terminal Pro",
+  "description": "AI-powered development assistant by RinaWarp with integrated Terminal Pro and Dev Dashboard.",
+  "version": "1.0.0",
+  "publisher": "RinaWarp",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other",
+    "Extension Packs"
+  ],
+  "activationEvents": [
+    "onCommand:rinawarp.openTerminal",
+    "onCommand:rinawarp.openDashboard",
+    "onCommand:rinawarp.runDeploy",
+    "onCommand:rinawarp.aiFix",
+    "onCommand:rinawarp.syncPlugins",
+    "onCommand:rinawarp.launchTerminalPro"
+  ],
+  "main": "extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rinawarp.openTerminal",
+        "title": "RinaWarp: Open Terminal Pro",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.openDashboard",
+        "title": "RinaWarp: Open Dev Dashboard",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.runDeploy",
+        "title": "RinaWarp: Run Deploy",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.aiFix",
+        "title": "RinaWarp: AI Fix Suggestions",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.syncPlugins",
+        "title": "RinaWarp: Sync Plugins",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.launchTerminalPro",
+        "title": "RinaWarp: Launch Terminal Pro",
+        "category": "RinaWarp"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "rinawarp.openDashboard",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r"
+      },
+      {
+        "command": "rinawarp.runDeploy",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d"
+      },
+      {
+        "command": "rinawarp.aiFix",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "rinawarpView",
+          "name": "RinaWarp"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "rinawarp",
+          "title": "RinaWarp",
+          "icon": "$(terminal-view-icon)"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "RinaWarp Terminal Pro",
+      "properties": {
+        "rinawarp.terminalProPath": {
+          "type": "string",
+          "default": "./build-output/RinaWarp Terminal Pro-1.0.0.AppImage",
+          "description": "Path to RinaWarp Terminal Pro executable"
+        },
+        "rinawarp.dashboardUrl": {
+          "type": "string",
+          "default": "http://localhost:8080/dev-dashboard.html",
+          "description": "URL of the Dev Dashboard"
+        },
+        "rinawarp.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:3001",
+          "description": "RinaWarp backend API URL"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "webpack --mode production",
+    "watch": "webpack --mode development --watch"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.70.0",
+    "@types/node": "14.x",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "axios": "^1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rinawarp/rinawarp-terminal-pro-vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/rinawarp/rinawarp-terminal-pro-vscode/issues"
+  },
+  "homepage": "https://rinawarptech.com",
+  "license": "MIT"
+}

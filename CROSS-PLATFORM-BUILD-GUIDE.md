@@ -1,0 +1,140 @@
+# RinaWarp Terminal Pro - Cross-Platform Build Guide
+
+## Current Status ✅
+
+### Linux Build Pipeline - COMPLETE
+- **AppImage**: Successfully built and tested
+- **DEB Package**: Successfully built and tested  
+- **SHA256 Checksums**: Generated and verified
+- **Website Deployment**: Live at https://rinawarptech.com
+- **Backend API**: Online and operational
+
+## Windows Build Pipeline - READY
+
+### Prerequisites (Need to install)
+```bash
+# Install Wine for Windows EXE building
+sudo apt update && sudo apt install -y wine64 wine32 mono-complete
+
+# Alternative: Use Docker for Windows builds
+docker run --rm -v $(pwd):/project electronuserland/electron-builder:linux wine --version
+```
+
+### Windows Build Command (Ready to Execute)
+```bash
+cd /home/karina/Documents/RinaWarp/apps/terminal-pro/desktop
+npm run build:win
+```
+
+### Post-Build Steps
+```bash
+# Create Windows directory
+mkdir -p /home/karina/Documents/RinaWarp/build-output/windows
+cp dist/*.exe /home/karina/Documents/RinaWarp/build-output/windows/
+
+# Generate checksums
+sha256sum /home/karina/Documents/RinaWarp/build-output/windows/* > /home/karina/Documents/RinaWarp/build-output/windows/checksums-win.txt
+
+# Upload to S3 (requires AWS credentials)
+aws s3 cp /home/karina/Documents/RinaWarp/build-output/windows s3://downloads-rinawarptech/terminal/latest/windows/ --recursive
+
+# Update website
+sed -i "s|<div id=\"windows-download\">.*</div>|<div id=\"windows-download\"><a href='https://downloads.rinawarptech.com/terminal/latest/windows/RinaWarp-Terminal-Pro.exe' class='download-btn'>Download for Windows</a></div>|g" /home/karina/Documents/RinaWarp/rinawarp-website/download.html
+
+# Deploy website
+cd /home/karina/Documents/RinaWarp/rinawarp-website && netlify deploy --prod --dir=. --message 'Windows installer updated'
+```
+
+## macOS Build Pipeline - OPTIONS
+
+### Option A: Cross-Compile (Limited)
+```bash
+cd /home/karina/Documents/RinaWarp/apps/terminal-pro/desktop
+npm run build:mac
+```
+
+### Option B: GitHub Actions (RECOMMENDED)
+Create `.github/workflows/build-macos.yml`:
+
+```yaml
+name: Build macOS DMG
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: |
+        cd apps/terminal-pro/desktop
+        npm install
+        
+    - name: Build macOS DMG
+      run: |
+        cd apps/terminal-pro/desktop
+        npm run build:mac
+        
+    - name: Upload to S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws s3 cp dist/*.dmg s3://downloads-rinawarptech/terminal/latest/macos/ --recursive
+        
+    - name: Update website
+      run: |
+        # Update download links
+        # Deploy to Netlify
+```
+
+### Option C: Cloud Build Service
+Use services like:
+- **CircleCI** with macOS executors
+- **Travis CI** with macOS builds
+- **GitHub Actions** (recommended)
+
+## Current Build Artifacts Status
+
+### Available Now ✅
+- **Linux AppImage**: 107MB (`RinaWarp Terminal Pro-1.0.0.AppImage`)
+- **Linux DEB**: 74MB (`RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb`)
+- **Checksums**: Generated and verified
+
+### Pending 🔄
+- **Windows EXE**: Need to resolve npm dependency issues
+- **macOS DMG**: Requires macOS environment or cloud build
+
+## Next Steps Recommendation
+
+1. **Fix npm dependencies** - The current environment has some package installation issues
+2. **Set up GitHub Actions** for macOS builds (most reliable)
+3. **Configure AWS credentials** for automatic S3 uploads
+4. **Test Windows builds** on a Windows machine or use Wine properly
+
+## Environment Issues Encountered
+
+- npm packages not installing correctly in current environment
+- Missing electron-builder dependencies despite package.json configuration
+- Wine not fully configured for Windows EXE building
+
+## Recommendations
+
+1. **For Production**: Use CI/CD pipeline (GitHub Actions)
+2. **For Development**: Set up proper Node.js environment with all dependencies
+3. **For Windows**: Consider using GitHub Actions or Windows Subsystem for Linux (WSL)
+4. **For macOS**: GitHub Actions macOS runners are the most reliable option
+
+## Files Ready for Deployment
+
+Current build-output directory contains:
+- `RinaWarp Terminal Pro-1.0.0.AppImage` (107MB)
+- `RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb` (74MB)  
+- `checksums.txt` (SHA256 verification)
+
+These are production-ready and can be distributed immediately.

@@ -1,0 +1,9 @@
+out
+node_modules
+.vscode-test
+*.vsix
+.yarnrc
+**/*.map
+**/*.d.ts
+**/*.d.ts.map
+**/*.js.map

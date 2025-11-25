@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "name": "RinaWarp Root",
+      "path": "."
+    },
+    {
+      "name": "Terminal Pro",
+      "path": "apps/terminal-pro"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/build": true
+    },
+    "terminal.integrated.cwd": "${workspaceFolder:RinaWarp Root}"
+  }
+}
