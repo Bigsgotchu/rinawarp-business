@@ -19,18 +19,28 @@ If you transfer DNS management to Netlify:
 3. Netlify will provide DNS nameservers
 4. Update your domain registrar to use Netlify nameservers
 
-### **Option 2: Manual DNS Records**
+### **Option 2: Cloudflare DNS (Your Setup)**
 
-Add these DNS records at your domain registrar:
+Since you're using Cloudflare, add these CNAME records:
 
 ```
-Type: A Record
-Name: @
-Value: 75.2.60.5
+Type: CNAME
+Name: @ (root domain)
+Content: rinawarptech-website.netlify.app
+Proxy: ON (Orange Cloud)
 
 Type: CNAME
 Name: www
-Value: rinawarptech-website.netlify.app
+Content: rinawarptech-website.netlify.app  
+Proxy: ON (Orange Cloud)
+```
+
+**Keep this record for your API:**
+```
+Type: A
+Name: api
+Content: 158.101.1.38
+Proxy: OFF (Grey Cloud)
 ```
 
 ---
