@@ -1,37 +1,109 @@
-# Large binary files (use GitHub Releases instead)
-*.exe
-*.AppImage
-*.deb
-*.tar.gz
-*.zip
-
-# Build outputs and dist
-build-output/
-dist/
+# Dependencies
 node_modules/
-*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
 
-# Temporary and backup files
-temp-website/
-*backup*
-*.backup
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# IDE and system files
-.vscode/settings.json
-.DS_Store
-Thumbs.db
-
-# Log files
-*.log
-
-# Environment files
+# Environment variables
 .env
 .env.local
-.env.production
-.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Cache directories
-.cache/
-.parcel-cache/
-# Local Netlify folder
-.netlify
+# Credentials and sensitive data
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+google-oauth-credentials.json
+*credentials*
+
+# Build and dist outputs
+dist/
+build/
+out/
+*.tgz
+*.tar.gz
+
+# VS Code
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+*.code-workspace
+
+# MacOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+
+# Logs
+logs
+*.log
+lerna-debug.log*
+.npm
+.eslintcache
+
+# Deployment scripts and documentation
+*.sh
+deploy*.sh
+install*.sh
+*DEPLOYMENT*.md
+*INSTALLATION*.md
+*CONFIGURATION*.md
+*INSTRUCTIONS*.md
+
+# Temporary and testing files
+*.tmp
+*.temp
+test-presentation/
+showcase-presentation/
+production_monitoring.md
+
+# Additional websites (keep main project clean)
+rinawarp-website/
+rinawarp-website-final/
+rinawarptech-website/
+rinawarp-clean-website/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
