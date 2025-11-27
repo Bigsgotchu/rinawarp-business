@@ -93,6 +93,10 @@ rinawarp-website-final/
 rinawarptech-website/
 rinawarp-clean-website/
 
+# Individual VSCode extensions
+release-files/*.vsix
+*.vsix
+
 # IDE files
 .idea/
 *.swp
