@@ -5,17 +5,20 @@
 ### ✅ Pre-Deployment Testing (Local)
 
 #### 1. **File Structure Verification**
+
 - [ ] All HTML files present (index.html, terminal-pro.html, music-video-creator.html, pricing.html, download.html, about.html, contact.html, privacy.html, terms.html, dmca.html)
 - [ ] CSS directory exists with styles.css
 - [ ] Assets directory exists with all images (rinawarp-logo.png, app-icon.png, favicon.png)
 
 #### 2. **Navigation Testing**
+
 - [ ] Test all internal links work correctly
 - [ ] Logo links to home page on every page
 - [ ] Navigation menu works on all pages
 - [ ] Footer legal links (Privacy, Terms, DMCA) work
 
 #### 3. **Visual Testing**
+
 - [ ] Open index.html - check hero section loads with proper gradient
 - [ ] Open terminal-pro.html - verify Mermaid theme (deep blue gradients)
 - [ ] Open music-video-creator.html - verify Unicorn theme (purple/pink gradients)
@@ -23,11 +26,13 @@
 - [ ] CSS styles applied correctly across all pages
 
 #### 4. **Content Verification**
+
 - [ ] All text content displays correctly
 - [ ] Legal pages have proper content (Privacy Policy, Terms, DMCA)
 - [ ] Footer displays "© 2024–2025 Rinawarp Technologies, LLC" on all pages
 
 #### 5. **Responsive Testing**
+
 - [ ] Test on mobile viewport (375px width)
 - [ ] Test on tablet viewport (768px width)
 - [ ] Test on desktop (1200px+ width)
@@ -38,6 +43,7 @@
 ### Option 1: Free Static Hosting (Recommended for Start)
 
 #### **Netlify (Best for beginners)**
+
 - **Cost**: Free
 - **Setup Time**: 5 minutes
 - **Features**: Custom domains, HTTPS, form handling
@@ -48,6 +54,7 @@
   4. Optional: Connect custom domain in site settings
 
 #### **Vercel**
+
 - **Cost**: Free
 - **Setup Time**: 5 minutes
 - **Features**: Excellent performance, easy custom domains
@@ -57,6 +64,7 @@
   3. Automatic HTTPS and global CDN
 
 #### **GitHub Pages**
+
 - **Cost**: Free
 - **Setup Time**: 15 minutes
 - **Features**: Free with GitHub account
@@ -68,29 +76,35 @@
 ### Option 2: Premium Hosting
 
 #### **AWS S3 + CloudFront**
+
 - **Cost**: ~$1-5/month
 - **Features**: Professional, scalable, global CDN
 - **Best for**: High traffic sites
 
 #### **DigitalOcean App Platform**
+
 - **Cost**: ~$5/month
 - **Features**: Easy deployment, auto-scaling
 
 #### **Cloudflare Pages**
+
 - **Cost**: Free for static sites
 - **Features**: Excellent performance, edge computing
 
 ## 🌐 DOMAIN SETUP
 
 ### 1. Domain Registration Options
+
 - **Namecheap**: Good prices, good support
 - **GoDaddy**: Popular, easy interface
 - **Cloudflare**: Excellent DNS, competitive pricing
 
 ### 2. DNS Configuration
+
 Once you have a domain, point it to your hosting:
 
 **For Netlify:**
+
 ```
 Type: A Record
 Name: @
@@ -102,6 +116,7 @@ Value: your-site.netlify.app
 ```
 
 **For Vercel:**
+
 ```
 Type: A Record
 Name: @
@@ -115,6 +130,7 @@ Value: cname.vercel-dns.com
 ## 📦 DEPLOYMENT PROCESS
 
 ### Quick Deploy (Netlify)
+
 ```bash
 # Navigate to your website folder
 cd /path/to/rinawarp-website
@@ -128,6 +144,7 @@ netlify deploy --prod --dir .
 ```
 
 ### Manual Upload (cPanel hosting)
+
 1. Download website folder as ZIP
 2. Login to cPanel
 3. Go to File Manager
@@ -138,6 +155,7 @@ netlify deploy --prod --dir .
 ## 🔧 POST-DEPLOYMENT CHECKLIST
 
 ### Immediate Testing (First 10 minutes)
+
 - [ ] Website loads at your domain
 - [ ] All pages accessible (test each URL)
 - [ ] Images display correctly
@@ -145,17 +163,20 @@ netlify deploy --prod --dir .
 - [ ] Mobile responsive design works
 
 ### Performance Testing
+
 - [ ] Test website speed: https://pagespeed.web.dev/
 - [ ] Test on multiple devices/browsers
 - [ ] Check for broken links
 
 ### Legal Compliance
+
 - [ ] Privacy Policy page accessible and correct
 - [ ] Terms of Use page accessible and correct
 - [ ] DMCA page accessible and correct
 - [ ] Footer legal links work
 
 ### Security
+
 - [ ] HTTPS enabled (SSL certificate)
 - [ ] Check for mixed content warnings
 - [ ] Test privacy/security headers
@@ -190,10 +211,12 @@ echo "Deployment complete!"
 ## 📊 MONITORING & MAINTENANCE
 
 ### Uptime Monitoring
+
 - Use services like UptimeRobot (free) to monitor website
 - Set up alerts if site goes down
 
 ### Regular Updates
+
 - Test website monthly
 - Update legal pages as needed
 - Backup website files regularly
@@ -208,6 +231,7 @@ echo "Deployment complete!"
 4. **Upgrade to premium** when traffic grows
 
 **Timeline:**
+
 - **Day 1**: Deploy to Netlify with temporary URL
 - **Day 2-3**: Test extensively, fix any issues
 - **Day 4**: Purchase domain and configure
@@ -216,23 +240,29 @@ echo "Deployment complete!"
 ## ⚠️ COMMON ISSUES & SOLUTIONS
 
 ### Problem: Images not loading
+
 **Solution**: Check file paths are relative (assets/rinawarp-logo.png)
 
 ### Problem: CSS not applying
+
 **Solution**: Verify css/styles.css exists and paths are correct
 
 ### Problem: Mobile layout broken
+
 **Solution**: Check viewport meta tag in HTML head sections
 
 ### Problem: Mixed content warnings
+
 **Solution**: Ensure all resources use HTTPS URLs
 
 ### Problem: Legal pages not accessible
+
 **Solution**: Verify privacy.html, terms.html, dmca.html files exist
 
 ## 🎉 SUCCESS METRICS
 
 Once deployed, monitor:
+
 - Page load speed (< 3 seconds)
 - Mobile usability score
 - All pages accessible

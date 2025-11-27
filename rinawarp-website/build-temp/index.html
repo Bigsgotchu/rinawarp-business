@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>RinaWarp Terminal Pro – Your AI-Powered Command Center</title>
+    <meta
+      name="description"
+      content="Turn your terminal into an AI command center. RinaWarp Terminal Pro routes to GPT, Claude, Groq, and Ollama in one place. Built for real creators and developers."
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/rinawarp-ui-kit-v3.css" />
+
+    <!-- GA4 -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-SZK23HMCVP");
+    </script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="rw-header">
+      <div class="rw-header-inner">
+        <a href="/" class="rw-logo-link">
+          <img
+            src="assets/rinawarp-logo.png"
+            alt="RinaWarp Logo"
+            class="rw-logo"
+            width="40"
+            height="40"
+          />
+          <span class="rw-logo-text">RinaWarp</span>
+        </a>
+
+        <nav class="rw-nav">
+          <a href="/" class="rw-nav-link active">Home</a>
+          <a href="/terminal-pro.html" class="rw-nav-link">Terminal Pro</a>
+          <a href="/pricing.html" class="rw-nav-link">Pricing</a>
+          <a href="/download.html" class="rw-nav-link">Download</a>
+          <a href="/support.html" class="rw-nav-link">Support</a>
+        </nav>
+
+        <div class="rw-nav-actions">
+          <a href="/pricing.html" class="rw-btn rw-btn-primary"
+            >Get Terminal Pro</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <div class="grid grid-2">
+            <div>
+              <h1>Turn your terminal into an AI control room.</h1>
+              <p class="lead">
+                One keyboard-driven workspace that talks to
+                <strong>GPT, Claude, Groq, and Ollama</strong> at once. Built
+                for devs and power-users who want speed, not fluff.
+              </p>
+
+              <div class="flex gap-md mb-lg">
+                <a
+                  href="/pricing.html"
+                  class="btn btn-primary"
+                  onclick="gtag('event','select_content',{content_type:'cta',item_id:'hero_get_terminal_pro'})"
+                >
+                  Get Lifetime License
+                </a>
+                <a href="/download.html" class="btn btn-secondary">
+                  Start Free Tier
+                </a>
+              </div>
+
+              <p style="color: var(--rw-text-muted); font-size: 0.9rem">
+                ⚡ Founder Wave: <span data-rw-seat-count>500</span> / 500 seats
+                remaining · 30-day money-back guarantee
+              </p>
+            </div>
+
+            <div class="card card-glow">
+              <h3>What Terminal Pro does for you:</h3>
+              <ul style="list-style: none; padding: 0; margin: 0">
+                <li
+                  style="
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: var(--rw-space-sm);
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--rw-accent);
+                      margin-right: var(--rw-space-sm);
+                    "
+                    >🔥</span
+                  >
+                  Run AI prompts directly against your code, logs, or files
+                </li>
+                <li
+                  style="
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: var(--rw-space-sm);
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--rw-accent);
+                      margin-right: var(--rw-space-sm);
+                    "
+                    >🎙️</span
+                  >
+                  Talk to your terminal with voice commands
+                </li>
+                <li
+                  style="
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: var(--rw-space-sm);
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--rw-accent);
+                      margin-right: var(--rw-space-sm);
+                    "
+                    >🧠</span
+                  >
+                  Route to GPT / Claude / Groq / Ollama per task
+                </li>
+                <li
+                  style="
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: var(--rw-space-sm);
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--rw-accent);
+                      margin-right: var(--rw-space-sm);
+                    "
+                    >⚙️</span
+                  >
+                  Automate boring sequences into one command
+                </li>
+                <li style="display: flex; align-items: center">
+                  <span
+                    style="
+                      color: var(--rw-accent);
+                      margin-right: var(--rw-space-sm);
+                    "
+                    >📁</span
+                  >
+                  File tree and workspace view, not just a black box
+                </li>
+              </ul>
+              <p class="text-muted mt-md">
+                Works on Linux, Windows, and macOS.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Social proof -->
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-2">
+            <div>
+              <h2>Stop copy-pasting between browser and terminal.</h2>
+              <p>
+                RinaWarp Terminal Pro sits where you actually work. No tabs. No
+                context switching. Just AI plugged straight into your commands,
+                files, and workflows.
+              </p>
+            </div>
+            <div class="card card-soft">
+              <div id="rw-testimonials-widget"></div>
+              <p class="text-muted">
+                Real users. Real workflows. No fake "marketing speak."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3-column feature row -->
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-3">
+            <div class="card card-soft">
+              <h3>Multi-Model Routing</h3>
+              <p>
+                Send one command to GPT-4o, Claude, Groq, or local Ollama. Pick
+                what's best per task.
+              </p>
+            </div>
+            <div class="card card-soft">
+              <h3>Plugin System</h3>
+              <p>
+                Install plugins for deployments, git flows, docker, music
+                workflows, and more.
+              </p>
+            </div>
+            <div class="card card-soft">
+              <h3>Founder Lifetime Access</h3>
+              <p>
+                Pay once, use forever. Early-bird pricing for the first Founder
+                Wave only.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final CTA -->
+      <section class="section" style="background: var(--rw-surface-soft)">
+        <div class="container">
+          <div class="text-center">
+            <h2>
+              Ready to make your terminal do more than just wait for commands?
+            </h2>
+            <p class="lead">
+              Grab a Founder Wave license before the seats and price go up.
+            </p>
+            <div class="flex justify-center gap-md">
+              <a href="/pricing.html" class="btn btn-primary btn-lg"
+                >Get Terminal Pro Now</a
+              >
+            </div>
+            <p class="text-muted mt-md">
+              30-day money-back guarantee · Keep your workflows if it's not for
+              you
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© 2024–2025 Rinawarp Technologies, LLC. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="js/rinawarp-ui-kit-v3.js" defer></script>
+  </body>
+</html>

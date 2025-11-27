@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>RinaWarp AI Music Video Creator</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- SEO basics -->
+  <meta name="description" content="Turn your tracks into cinematic, AI-generated music videos with RinaWarp's unicorn-themed creator. Built for artists, producers, and creatives." />
+  <link rel="canonical" href="https://rinawarptech.com/music-video-creator.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="RinaWarp AI Music Video Creator" />
+  <meta property="og:description" content="Transform your music into stunning AI-generated videos. Unicorn-themed creator for artists and producers." />
+  <meta property="og:url" content="https://rinawarptech.com/music-video-creator.html" />
+  <meta property="og:image" content="https://rinawarptech.com/assets/rinawarp-og.jpg" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/rinawarp-logo.png" />
+
+  <!-- Fonts + UI Kit CSS -->
+  <link rel="stylesheet" href="css/rinawarp-ui-kit-v3.css" />
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-SZK23HMCVP');
+  </script>
+
+  <style>
+    /* Unicorn theme colors - bright pinks/purples, still professional */
+    :root {
+      --unicorn-primary: #ff6b9d;
+      --unicorn-secondary: #a855f7;
+      --unicorn-accent: #ec4899;
+      --unicorn-light: #fdf2f8;
+      --unicorn-glow: rgba(236, 72, 153, 0.3);
+    }
+
+    .unicorn-gradient {
+      background: linear-gradient(135deg, var(--unicorn-primary), var(--unicorn-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .unicorn-glow {
+      box-shadow: 0 0 20px var(--unicorn-glow);
+    }
+
+    .unicorn-btn {
+      background: linear-gradient(135deg, var(--unicorn-primary), var(--unicorn-accent));
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .unicorn-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px var(--unicorn-glow);
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(168, 85, 247, 0.1));
+      border: 1px solid rgba(236, 72, 153, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(236, 72, 153, 0.2);
+      border-color: var(--unicorn-primary);
+    }
+
+    .early-access-section {
+      background: linear-gradient(135deg, var(--unicorn-light), rgba(236, 72, 153, 0.05));
+      border: 2px solid var(--unicorn-primary);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .early-access-section::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--unicorn-primary), var(--unicorn-secondary), var(--unicorn-accent), var(--unicorn-primary));
+      border-radius: 20px;
+      z-index: -1;
+      animation: unicorn-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes unicorn-pulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body class="rw-body">
+
+  <!-- Top Nav -->
+  <header class="rw-header">
+    <div class="rw-header-inner">
+      <a href="/" class="rw-logo-link">
+        <img src="assets/rinawarp-logo.png" alt="RinaWarp" class="rw-logo" width="40" height="40" />
+        <span class="rw-logo-text">RinaWarp</span>
+      </a>
+      <nav class="rw-nav">
+        <a href="/" class="rw-nav-link">Home</a>
+        <a href="/terminal-pro.html" class="rw-nav-link">Terminal Pro</a>
+        <a href="/music-video-creator.html" class="rw-nav-link active">Video Creator</a>
+        <a href="/pricing.html" class="rw-nav-link">Pricing</a>
+        <a href="/download.html" class="rw-nav-link">Download</a>
+        <a href="/support.html" class="rw-nav-link">Support</a>
+      </nav>
+      <div class="rw-nav-actions">
+        <a href="/pricing.html" class="rw-btn rw-btn-primary">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" style="background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);">
+      <div class="container">
+        <div class="grid grid-2">
+          <div>
+            <div class="unicorn-gradient" style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">
+              🎬 AI Music Video Creator
+            </div>
+            <h1 class="unicorn-gradient" style="font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;">
+              RinaWarp AI Music Video Creator
+            </h1>
+            <p class="lead" style="color: #e5e7eb; margin-bottom: 2rem;">
+              Turn your tracks into cinematic, AI-generated music videos with RinaWarp's unicorn-themed creator. 
+              Built for artists, producers, and creatives who want scroll-stopping visuals without a full video crew.
+            </p>
+            <div class="flex gap-md">
+              <button class="unicorn-btn" onclick="scrollToEarlyAccess()">
+                Join Early Access
+              </button>
+              <a href="/pricing.html" class="rw-btn rw-btn-secondary">
+                View Pricing
+              </a>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="feature-card unicorn-glow" style="padding: 3rem; background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(168, 85, 247, 0.1));">
+              <div style="font-size: 4rem; margin-bottom: 1rem;">🦄</div>
+              <h3 style="color: var(--unicorn-primary); margin-bottom: 1rem;">Unicorn-Powered AI</h3>
+              <p style="color: #e5e7eb;">
+                Transform your music into visual magic with our proprietary unicorn-themed AI engine.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center" style="margin-bottom: 4rem;">
+          <h2 class="unicorn-gradient" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+            How It Works
+          </h2>
+          <p class="lead" style="color: var(--rw-text-secondary); max-width: 600px; margin: 0 auto;">
+            Three simple steps to turn your music into viral-ready video content
+          </p>
+        </div>
+
+        <div class="grid grid-3" style="gap: 2rem;">
+          <div class="feature-card text-center">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎵</div>
+            <h3 style="color: var(--unicorn-primary); margin-bottom: 1rem;">Upload Your Song</h3>
+            <p style="color: var(--rw-text-secondary); line-height: 1.6;">
+              Drop in your audio and basic info – BPM, mood, and vibe tags. 
+              Our AI analyzes your track to understand the perfect visual style.
+            </p>
+          </div>
+          <div class="feature-card text-center">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
+            <h3 style="color: var(--unicorn-primary); margin-bottom: 1rem;">Pick Your Visual Style</h3>
+            <p style="color: var(--rw-text-secondary); line-height: 1.6;">
+              Neon club, grunge alley, cosmic dreamscape, or Rina Vex-style stage energy – 
+              you're in control of your visual destiny.
+            </p>
+          </div>
+          <div class="feature-card text-center">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+            <h3 style="color: var(--unicorn-primary); margin-bottom: 1rem;">Render & Share</h3>
+            <p style="color: var(--rw-text-secondary); line-height: 1.6;">
+              Export ready-to-post clips for TikTok, Reels, YouTube & more in 
+              a few clicks. Go viral, go everywhere.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" style="background: var(--rw-surface-soft);">
+      <div class="container">
+        <div class="grid grid-2" style="gap: 4rem; align-items: center;">
+          <div>
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; color: white;">
+              Built for the Music Scene
+            </h2>
+            <div style="space-y: 1.5rem;">
+              <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                <div style="background: var(--unicorn-primary); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.9rem;">✓</div>
+                <div>
+                  <h4 style="color: var(--unicorn-primary); margin-bottom: 0.25rem;">Unicorn Theme Integration</h4>
+                  <p style="color: var(--rw-text-secondary); font-size: 0.9rem;">Exclusive Rina Vex visual styles and unicorn-themed effects</p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                <div style="background: var(--unicorn-primary); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.9rem;">✓</div>
+                <div>
+                  <h4 style="color: var(--unicorn-primary); margin-bottom: 0.25rem;">AI-Powered Visuals</h4>
+                  <p style="color: var(--rw-text-secondary); font-size: 0.9rem;">Smart scene detection, beat matching, and mood-based effects</p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                <div style="background: var(--unicorn-primary); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.9rem;">✓</div>
+                <div>
+                  <h4 style="color: var(--unicorn-primary); margin-bottom: 0.25rem;">Multi-Platform Export</h4>
+                  <p style="color: var(--rw-text-secondary); font-size: 0.9rem;">Optimized for TikTok, Instagram, YouTube, and more</p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center;">
+                <div style="background: var(--unicorn-primary); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.9rem;">✓</div>
+                <div>
+                  <h4 style="color: var(--unicorn-primary); margin-bottom: 0.25rem;">Collaboration Tools</h4>
+                  <p style="color: var(--rw-text-secondary); font-size: 0.9rem;">Share projects, get feedback, and iterate with your team</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="feature-card unicorn-glow">
+              <div style="text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">🎬</div>
+                <h3 style="color: var(--unicorn-primary); margin-bottom: 1rem;">See It In Action</h3>
+                <p style="color: var(--rw-text-secondary); margin-bottom: 1.5rem;">
+                  Watch how artists are using RinaWarp to create viral music videos that captivate millions of views.
+                </p>
+                <div style="background: var(--rw-surface); border-radius: 12px; padding: 2rem; text-align: center;">
+                  <div style="color: var(--rw-text-muted); font-size: 0.9rem;">
+                    Demo video coming soon
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Early Access -->
+    <section class="section" id="early-access">
+      <div class="container">
+        <div class="early-access-section" style="max-width: 800px; margin: 0 auto; padding: 3rem; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+          <h2 class="unicorn-gradient" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+            Want Early Access?
+          </h2>
+          <p style="color: var(--rw-text-secondary); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.6;">
+            We're inviting a small group of artists and creators to test the first version. 
+            <strong style="color: var(--unicorn-primary);">Founders and early Terminal Pro buyers get first priority.</strong>
+          </p>
+          <div style="margin-bottom: 2rem;">
+            <p style="color: var(--rw-text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+              This app is currently in active development. Early access will be offered first to:
+            </p>
+            <div class="grid grid-3" style="gap: 1rem; margin-bottom: 1rem;">
+              <div style="background: rgba(255, 107, 157, 0.1); padding: 1rem; border-radius: 8px;">
+                <div style="font-weight: 600; color: var(--unicorn-primary);">🎯 RinaWarp Founders</div>
+              </div>
+              <div style="background: rgba(255, 107, 157, 0.1); padding: 1rem; border-radius: 8px;">
+                <div style="font-weight: 600; color: var(--unicorn-primary);">💜 Early Adopters</div>
+              </div>
+              <div style="background: rgba(255, 107, 157, 0.1); padding: 1rem; border-radius: 8px;">
+                <div style="font-weight: 600; color: var(--unicorn-primary);">🦄 Creative Partners</div>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center gap-md">
+            <button class="unicorn-btn" onclick="joinEarlyAccess()">
+              Join the Early Access List
+            </button>
+            <a href="/support" class="rw-btn rw-btn-secondary">
+              Learn More
+            </a>
+          </div>
+          <p style="color: var(--rw-text-muted); font-size: 0.85rem; margin-top: 1rem; margin-bottom: 0;">
+            Be among the first to experience the future of AI-powered music video creation.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid var(--rw-border); background: var(--rw-surface);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 2rem 0;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/rinawarp-logo.png" alt="RinaWarp Logo" width="24" height="24" style="border-radius: 4px;" />
+            <span style="color: var(--rw-text-primary); font-weight: 600;">RinaWarp</span>
+            <span style="color: var(--unicorn-primary);">🦄</span>
+          </div>
+          <p style="color: var(--rw-text-muted); margin: 0; font-size: 0.9rem;">
+            © 2024–2025 RinaWarp Technologies, LLC. All rights reserved.
+          </p>
+        </div>
+        <div style="display: flex; gap: 2rem;">
+          <a href="/privacy.html" style="color: var(--rw-text-secondary); text-decoration: none; font-size: 0.9rem;">Privacy</a>
+          <a href="/terms.html" style="color: var(--rw-text-secondary); text-decoration: none; font-size: 0.9rem;">Terms</a>
+          <a href="/support.html" style="color: var(--rw-text-secondary); text-decoration: none; font-size: 0.9rem;">Support</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/rinawarp-ui-kit-v3.js" defer></script>
+  <script>
+    function scrollToEarlyAccess() {
+      document.getElementById('early-access').scrollIntoView({ 
+        behavior: 'smooth' 
+      });
+    }
+
+    function joinEarlyAccess() {
+      // For now, redirect to support page
+      window.location.href = '/support.html';
+    }
+
+    // Add some interactive unicorn magic
+    document.addEventListener('DOMContentLoaded', function() {
+      const unicornElements = document.querySelectorAll('.unicorn-gradient');
+      unicornElements.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+          this.style.transform = 'scale(1.05)';
+          this.style.transition = 'transform 0.3s ease';
+        });
+        element.addEventListener('mouseleave', function() {
+          this.style.transform = 'scale(1)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

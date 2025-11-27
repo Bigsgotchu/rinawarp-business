@@ -1,0 +1,37 @@
+# RinaWarp Website Redirects - PRODUCTION
+# Clean pretty URLs and API routing
+
+# Pretty URL redirects
+/terminal-pro            /terminal-pro.html          200
+/pricing                 /pricing.html                200
+/download                /download.html               200
+/video-creator           /music-video-creator.html    200
+/support                 /support.html                200
+/faq                     /faq.html                    200
+/blog                    /blog.html                   200
+/affiliates              /affiliates.html             200
+/refund-policy           /refund-policy.html          200
+/founder-wave            /founder-wave.html           200
+/contact                 /contact.html                200
+/about                   /about.html                  200
+/terms                   /terms.html                  200
+/privacy                 /privacy.html                200
+/dmca                    /dmca.html                   200
+/success                 /terminal-pro-success.html   200
+/activation              /terminal-pro-activation.html 200
+
+# API routing to Oracle backend
+/api/*                   https://api.rinawarptech.com/:splat  200
+
+# Product redirects
+/pro                     /terminal-pro.html           301
+/terminal-pro-lifetime   /terminal-pro.html#lifetime  301
+/lifetime                /terminal-pro.html#lifetime  301
+/monthly                 /terminal-pro.html#monthly   301
+
+# Support redirects
+/help                    /support.html                200
+/docs                    /faq.html                    200
+
+# Fallback for unknown routes
+/*                       /index.html                  404

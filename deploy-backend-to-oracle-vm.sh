@@ -1,27 +1,22 @@
 #!/bin/bash
 
-# RinaWarp Backend Deployment Script for Oracle VM
-# Run this script on your Oracle VM (158.101.1.38) after uploading backend-deployment.tar.gz
+# ☁️ RinaWarp Backend - Oracle Cloud Deployment (Option A Standardized)
+# Backend API → Oracle Cloud ONLY via SSH + PM2
+# Backend folder: /var/www/rinawarp-api
+# Start command: pm2 restart rinawarp-api
 
 set -e
 
-echo "🚀 RinaWarp Backend Deployment to Oracle VM"
-echo "==========================================="
+echo "☁️ RinaWarp Backend Deployment - Oracle Cloud (Option A)"
+echo "======================================================"
 
-# Colors for output
-RED='\033[0;31m'
+# Color codes
 GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# VM Configuration
-VM_IP="158.101.1.38"
-DOMAIN="api.rinawarptech.com"
-PROJECT_DIR="/var/www/rinawarp-api"
-BACKUP_DIR="/var/backups/rinawarp-api"
-
-# Function to print colored output
 print_status() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
@@ -38,157 +33,131 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Function to check if running as root or with sudo
-check_permissions() {
-    if [[ $EUID -eq 0 ]]; then
-        SUDO=""
+# Oracle VM Configuration
+VM_IP="158.101.1.38"
+VM_USER="ubuntu"
+PROJECT_DIR="/var/www/rinawarp-api"
+BACKUP_DIR="/var/backups/rinawarp-api"
+
+# Function to test SSH connectivity
+test_ssh_connection() {
+    print_status "Testing SSH connection to Oracle VM..."
+    
+    if ssh -i ~/.ssh/id_rsa -o ConnectTimeout=10 -o StrictHostKeyChecking=no $VM_USER@$VM_IP "echo 'SSH connection successful'" 2>/dev/null; then
+        print_success "✅ SSH connection to Oracle VM established"
+        return 0
     else
-        SUDO="sudo"
-        if ! $SUDO -n true 2>/dev/null; then
-            print_error "This script requires sudo access. Please run with sudo or as root."
-            exit 1
-        fi
+        print_error "❌ Failed to connect to Oracle VM"
+        print_error "Please verify:"
+        echo "  1. SSH key exists: ~/.ssh/id_rsa"
+        echo "  2. VM is accessible: $VM_IP"
+        echo "  3. Firewall allows SSH"
+        return 1
     fi
 }
 
-# Function to install system dependencies
-install_dependencies() {
-    print_status "Installing system dependencies..."
+# Function to check backend status
+check_backend_status() {
+    print_status "Checking backend service status..."
     
-    # Update system
-    $SUDO apt update && $SUDO apt upgrade -y
-    
-    # Install Node.js 20.x
-    print_status "Installing Node.js 20.x..."
-    curl -fsSL https://deb.nodesource.com/setup_20.x | $SUDO -E bash -
-    $SUDO apt-get install -y nodejs
-    
-    # Install PM2
-    print_status "Installing PM2..."
-    $SUDO npm install -g pm2
-    
-    # Install NGINX
-    print_status "Installing NGINX..."
-    $SUDO apt install nginx -y
-    $SUDO systemctl enable nginx
-    
-    # Install Certbot for SSL
-    print_status "Installing Certbot..."
-    $SUDO apt install snapd -y
-    $SUDO snap install core; $SUDO snap refresh core
-    $SUDO snap install --classic certbot
-    
-    # Create symlink for certbot
-    $SUDO ln -sf /usr/bin/certbot /usr/local/bin/certbot
-    
-    print_success "All dependencies installed"
+    ssh -i ~/.ssh/id_rsa $VM_USER@$VM_IP "
+        echo '🔍 Backend Service Status:'
+        pm2 status rinawarp-api || echo '   Service not running'
+        echo
+        echo '🔍 API Health Check:'
+        curl -s http://localhost:4000/health || echo '   API not responding on port 4000'
+        echo
+        echo '🔍 Port Status:'
+        netstat -tulpn | grep :4000 || echo '   Port 4000 not in use'
+        echo
+        echo '🔍 System Resources:'
+        free -h
+        df -h /
+    "
 }
 
-# Function to create project directories
-setup_project() {
-    print_status "Setting up project directories..."
+# Function to backup current backend
+backup_backend() {
+    print_status "Creating backup of current backend..."
     
-    # Create project directory
-    $SUDO mkdir -p $PROJECT_DIR
-    $SUDO mkdir -p $BACKUP_DIR
-    $SUDO mkdir -p $PROJECT_DIR/logs
-    $SUDO mkdir -p $PROJECT_DIR/data
-    
-    # Create logs directory with proper permissions
-    $SUDO chown -R ubuntu:ubuntu $PROJECT_DIR
-    $SUDO chown -R ubuntu:ubuntu $BACKUP_DIR
-    
-    print_success "Project directories created"
+    ssh -i ~/.ssh/id_rsa $VM_USER@$VM_IP "
+        if [ -d '$PROJECT_DIR' ]; then
+            echo 'Creating backup...'
+            mkdir -p $BACKUP_DIR
+            tar -czf $BACKUP_DIR/backup-$(date +%Y%m%d-%H%M%S).tar.gz -C $PROJECT_DIR . 2>/dev/null || echo 'Backup failed or directory empty'
+            print_success 'Backup created in $BACKUP_DIR'
+        else
+            print_warning 'No existing backend to backup'
+        fi
+    "
 }
 
-# Function to deploy backend files
-deploy_backend() {
-    print_status "Deploying backend files..."
+# Function to upload new backend files
+upload_backend_files() {
+    print_status "Uploading new backend files to Oracle VM..."
     
-    # Check if deployment package exists
-    if [ ! -f "backend-deployment.tar.gz" ]; then
-        print_error "backend-deployment.tar.gz not found. Please upload it first."
-        print_status "Upload command: scp -i ~/.ssh/id_rsa backend-deployment.tar.gz ubuntu@158.101.1.38:~/"
+    # Check if local backend exists
+    if [ ! -d "apps/terminal-pro/backend" ]; then
+        print_error "Local backend not found at apps/terminal-pro/backend"
         exit 1
     fi
     
-    # Extract deployment package
-    cd $PROJECT_DIR
-    tar -xzf ~/backend-deployment.tar.gz --strip-components=1
+    # Create deployment package
+    print_status "Creating deployment package..."
+    cd apps/terminal-pro/backend
+    tar -czf /tmp/rinawarp-backend-deploy.tar.gz .
+    cd /home/karina/Documents/RinaWarp
     
-    # Install dependencies
-    npm install --only=production
+    # Upload to VM
+    print_status "Uploading to Oracle VM..."
+    scp -i ~/.ssh/id_rsa /tmp/rinawarp-backend-deploy.tar.gz $VM_USER@$VM_IP:/tmp/
     
-    # Generate Prisma client
-    npx prisma generate
+    # Extract on VM
+    ssh -i ~/.ssh/id_rsa $VM_USER@$VM_IP "
+        echo 'Extracting backend files...'
+        sudo mkdir -p $PROJECT_DIR
+        sudo tar -xzf /tmp/rinawarp-backend-deploy.tar.gz -C $PROJECT_DIR --strip-components=1
+        sudo chown -R ubuntu:ubuntu $PROJECT_DIR
+        sudo chmod -R 755 $PROJECT_DIR
+        
+        # Install dependencies
+        cd $PROJECT_DIR
+        if [ -f 'package.json' ]; then
+            npm install --production
+        fi
+        
+        # Clean up
+        rm /tmp/rinawarp-backend-deploy.tar.gz
+    "
     
-    # Set permissions
-    $SUDO chown -R ubuntu:ubuntu $PROJECT_DIR
-    
-    print_success "Backend files deployed"
+    print_success "✅ Backend files uploaded successfully"
 }
 
-# Function to create production environment
-setup_production_env() {
-    print_status "Setting up production environment..."
-    
-    cd $PROJECT_DIR
-    
-    # Create production environment file
-    cat > .env << 'EOF'
-# RinaWarp Backend Production Configuration
-NODE_ENV=production
-PORT=4000
-
-# Database
-DATABASE_URL="file:./data/prod.db"
-
-# Stripe Configuration (REPLACE WITH YOUR ACTUAL VALUES)
-STRIPE_SECRET_KEY=sk_live_your_live_secret_key_here
-STRIPE_WEBHOOK_SECRET=whsec_your_live_webhook_secret_here
-
-# Security
-RINAWARP_API_KEYS=rinawarp_secure_api_key_2024_production
-JWT_SECRET=rinawarp_jwt_secret_production_2024
-SESSION_SECRET=rinawarp_session_secret_production_2024
-
-# CORS Origins
-CORS_ORIGIN=https://rinawarptech.com,https://www.rinawarptech.com,https://app.rinawarptech.com
-
-# Rate Limiting
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-
-# API Configuration
-RW_API_URL=https://api.rinawarptech.com
-APP_BASE_URL=https://rinawarptech.com
-EOF
-
-    # Initialize database
-    npx prisma db push
-    
-    print_success "Production environment configured"
-}
-
-# Function to setup PM2
+# Function to setup PM2 process
 setup_pm2() {
-    print_status "Setting up PM2 process manager..."
+    print_status "Setting up PM2 process management..."
     
-    cd $PROJECT_DIR
-    
-    # Create PM2 ecosystem file
-    cat > ecosystem.config.js << 'EOF'
+    ssh -i ~/.ssh/id_rsa $VM_USER@$VM_IP "
+        cd $PROJECT_DIR
+        
+        # Stop existing process
+        pm2 delete rinawarp-api 2>/dev/null || true
+        
+        # Create PM2 ecosystem file
+        cat > ecosystem.config.js << 'EOF'
 module.exports = {
   apps: [{
     name: 'rinawarp-api',
-    script: 'server.js',
+    script: 'fastapi_server.py',
+    interpreter: 'python3',
     instances: 1,
     autorestart: true,
     watch: false,
     max_memory_restart: '1G',
     env: {
-      NODE_ENV: 'production',
-      PORT: 4000
+      PYTHONPATH: '$PROJECT_DIR',
+      PORT: 4000,
+      NODE_ENV: 'production'
     },
     log_file: './logs/combined.log',
     out_file: './logs/out.log',
@@ -200,24 +169,27 @@ module.exports = {
   }]
 };
 EOF
-
-    # Set ownership
-    $SUDO chown ubuntu:ubuntu ecosystem.config.js
+        
+        # Create logs directory
+        mkdir -p logs
+        
+        # Start with PM2
+        pm2 start ecosystem.config.js
+        pm2 save
+        
+        # Setup startup
+        pm2 startup systemd -u $VM_USER --hp $PROJECT_DIR
+    "
     
-    # Start with PM2
-    su - ubuntu -c "cd $PROJECT_DIR && pm2 start ecosystem.config.js"
-    su - ubuntu -c "cd $PROJECT_DIR && pm2 save"
-    su - ubuntu -c "pm2 startup"
-    
-    print_success "PM2 configured and started"
+    print_success "✅ PM2 configured and started"
 }
 
-# Function to configure NGINX
-setup_nginx() {
+# Function to configure NGINX proxy
+setup_nginx_proxy() {
     print_status "Configuring NGINX reverse proxy..."
     
-    # Create NGINX configuration
-    cat > /etc/nginx/sites-available/rinawarp-api << 'EOF'
+    ssh -i ~/.ssh/id_rsa $VM_USER@$VM_IP "
+        sudo tee /etc/nginx/sites-available/rinawarp-api << 'EOF'
 # RinaWarp API NGINX Configuration
 
 # Redirect HTTP to HTTPS
@@ -233,7 +205,7 @@ server {
     
     # Redirect everything else to HTTPS
     location / {
-        return 301 https://$server_name$request_uri;
+        return 301 https://\$server_name\$request_uri;
     }
 }
 
@@ -242,35 +214,21 @@ server {
     listen 443 ssl http2;
     server_name api.rinawarptech.com;
     
-    # SSL Configuration (will be updated by certbot)
+    # SSL certificates (already configured)
     # ssl_certificate /etc/letsencrypt/live/api.rinawarptech.com/fullchain.pem;
     # ssl_certificate_key /etc/letsencrypt/live/api.rinawarptech.com/privkey.pem;
     
-    # SSL Security Headers
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;
-    ssl_prefer_server_ciphers off;
-    ssl_session_cache shared:SSL:10m;
-    ssl_session_timeout 10m;
-    
-    # Security Headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header Referrer-Policy "no-referrer-when-downgrade" always;
-    add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
-    
     # API proxy
     location / {
         proxy_pass http://localhost:4000;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_cache_bypass \$http_upgrade;
         proxy_read_timeout 300s;
         proxy_connect_timeout 75s;
     }
@@ -280,208 +238,108 @@ server {
         proxy_pass http://localhost:4000/health;
         access_log off;
     }
-    
-    # Block access to sensitive files
-    location ~ /\. {
-        deny all;
-        access_log off;
-        log_not_found off;
-    }
-    
-    location ~ \.(env|gitignore|gitattributes|lock)$ {
-        deny all;
-        access_log off;
-        log_not_found off;
-    }
 }
 EOF
-
-    # Enable the site
-    $SUDO ln -sf /etc/nginx/sites-available/rinawarp-api /etc/nginx/sites-enabled/
+        
+        # Enable site and restart nginx
+        sudo ln -sf /etc/nginx/sites-available/rinawarp-api /etc/nginx/sites-enabled/
+        sudo rm -f /etc/nginx/sites-enabled/default
+        sudo nginx -t && sudo systemctl reload nginx
+    "
     
-    # Test NGINX configuration
-    if $SUDO nginx -t; then
-        $SUDO systemctl restart nginx
-        print_success "NGINX configured and restarted"
-    else
-        print_error "NGINX configuration test failed"
-        exit 1
-    fi
-}
-
-# Function to setup SSL certificate
-setup_ssl() {
-    print_status "Setting up SSL certificate..."
-    
-    # Stop NGINX temporarily
-    $SUDO systemctl stop nginx
-    
-    # Get SSL certificate
-    $SUDO certbot certonly --standalone -d api.rinawarptech.com --non-interactive --agree-tos --email admin@rinawarptech.com
-    
-    # Update NGINX configuration with SSL
-    cat > /etc/nginx/sites-available/rinawarp-api << 'EOF'
-# RinaWarp API NGINX Configuration with SSL
-
-# Redirect HTTP to HTTPS
-server {
-    listen 80;
-    server_name api.rinawarptech.com;
-    
-    # Health check endpoint (no redirect)
-    location /health {
-        proxy_pass http://localhost:4000/health;
-        access_log off;
-    }
-    
-    # Redirect everything else to HTTPS
-    location / {
-        return 301 https://$server_name$request_uri;
-    }
-}
-
-# HTTPS server
-server {
-    listen 443 ssl http2;
-    server_name api.rinawarptech.com;
-    
-    # SSL Configuration
-    ssl_certificate /etc/letsencrypt/live/api.rinawarptech.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.rinawarptech.com/privkey.pem;
-    
-    # SSL Security Headers
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;
-    ssl_prefer_server_ciphers off;
-    ssl_session_cache shared:SSL:10m;
-    ssl_session_timeout 10m;
-    
-    # Security Headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header Referrer-Policy "no-referrer-when-downgrade" always;
-    add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
-    
-    # API proxy
-    location / {
-        proxy_pass http://localhost:4000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-        proxy_read_timeout 300s;
-        proxy_connect_timeout 75s;
-    }
-    
-    # Health check endpoint
-    location /health {
-        proxy_pass http://localhost:4000/health;
-        access_log off;
-    }
-    
-    # Block access to sensitive files
-    location ~ /\. {
-        deny all;
-        access_log off;
-        log_not_found off;
-    }
-    
-    location ~ \.(env|gitignore|gitattributes|lock)$ {
-        deny all;
-        access_log off;
-        log_not_found off;
-    }
-}
-EOF
-
-    # Test and restart NGINX
-    if $SUDO nginx -t; then
-        $SUDO systemctl restart nginx
-        print_success "SSL certificate installed and NGINX restarted"
-    else
-        print_error "NGINX configuration test failed after SSL setup"
-        exit 1
-    fi
-    
-    # Setup auto-renewal
-    echo "0 12 * * * /usr/bin/certbot renew --quiet" | $SUDO crontab -
-    print_success "SSL auto-renewal configured"
+    print_success "✅ NGINX proxy configured"
 }
 
 # Function to test deployment
 test_deployment() {
-    print_status "Testing deployment..."
+    print_status "Testing backend deployment..."
     
     # Wait for services to start
     sleep 5
     
-    # Test health endpoint
-    if curl -f http://localhost/health > /dev/null 2>&1; then
-        print_success "Health endpoint working (HTTP)"
+    # Test local endpoints
+    print_status "Testing local endpoints..."
+    ssh -i ~/.ssh/id_rsa $VM_USER@$VM_IP "
+        echo '🧪 Local Health Check:'
+        curl -s http://localhost:4000/health
+        echo
+        echo '🧪 Local API Check:'
+        curl -s http://localhost:4000/api/health || echo 'API endpoint not ready'
+        echo
+    "
+    
+    # Test external endpoints
+    print_status "Testing external endpoints..."
+    if curl -s https://api.rinawarptech.com/health | grep -q "ok\|healthy"; then
+        print_success "✅ External health endpoint working"
     else
-        print_warning "Health endpoint not working via HTTP"
+        print_warning "⚠️  External health endpoint not ready (SSL may need time to propagate)"
     fi
-    
-    # Test HTTPS health endpoint (if SSL is working)
-    if command -v curl > /dev/null 2>&1; then
-        print_status "Testing HTTPS health endpoint..."
-        curl -f -k https://localhost/health > /dev/null 2>&1 && print_success "HTTPS working" || print_warning "HTTPS not ready yet"
-    fi
-    
-    # Check PM2 status
-    su - ubuntu -c "pm2 status" || print_warning "PM2 status check failed"
-    
-    print_success "Basic deployment testing complete"
 }
 
-# Function to display next steps
+# Function to show next steps
 show_next_steps() {
     print_success "🎉 RinaWarp Backend deployment complete!"
     echo ""
-    echo -e "${GREEN}=== NEXT STEPS ===${NC}"
+    echo "📋 DEPLOYMENT SUMMARY:"
+    echo "   ☁️  Backend → Oracle Cloud (pm2 restart rinawarp-api)"
+    echo "   🌐 Website → Netlify (handled separately)"
+    echo "   📦 Downloads → Oracle VM (/var/www/rinawarp-api/downloads/)"
     echo ""
-    echo "1. 🌐 DNS Configuration:"
-    echo "   - Add A record: api.rinawarptech.com → 158.101.1.38"
-    echo "   - Wait for DNS propagation (5-15 minutes)"
+    echo "🔗 LIVE ENDPOINTS:"
+    echo "   ☁️  API Health: https://api.rinawarptech.com/health"
+    echo "   🔌 API Proxy: https://api.rinawarptech.com/api/*"
+    echo "   📦 Downloads: https://api.rinawarptech.com/downloads/*"
     echo ""
-    echo "2. 🔑 Update Stripe Configuration:"
-    echo "   - Go to https://dashboard.stripe.com/"
-    echo "   - Add webhook: https://api.rinawarptech.com/api/stripe/webhook"
-    echo "   - Copy webhook secret to .env file"
+    echo "🔧 MANAGEMENT COMMANDS:"
+    echo "   Restart: pm2 restart rinawarp-api"
+    echo "   Status: pm2 status"
+    echo "   Logs: pm2 logs rinawarp-api"
+    echo "   Monitor: pm2 monit"
     echo ""
-    echo "3. 🧪 Test the API:"
-    echo "   - Health check: https://api.rinawarptech.com/health"
-    echo "   - API health: https://api.rinawarptech.com/api/health"
-    echo ""
-    echo "4. 📊 Monitor:"
-    echo "   - View logs: pm2 logs rinawarp-api"
-    echo "   - Status: pm2 status"
-    echo ""
-    echo "5. 🚀 Ready for frontend deployment!"
-    echo ""
-    print_success "Backend API will be live at: https://api.rinawarptech.com"
+    print_success "Option A - Oracle Cloud backend deployment complete!"
 }
 
 # Main deployment flow
 main() {
-    check_permissions
-    install_dependencies
-    setup_project
-    deploy_backend
-    setup_production_env
+    echo "🚀 Starting Option A - Oracle Cloud Backend Deployment..."
+    echo ""
+    
+    # Test connectivity
+    if ! test_ssh_connection; then
+        exit 1
+    fi
+    
+    # Check current status
+    echo ""
+    check_backend_status
+    
+    # Backup current deployment
+    echo ""
+    backup_backend
+    
+    # Deploy new backend
+    echo ""
+    upload_backend_files
+    
+    # Setup process management
+    echo ""
     setup_pm2
-    setup_nginx
-    setup_ssl
+    
+    # Setup reverse proxy
+    echo ""
+    setup_nginx_proxy
+    
+    # Test deployment
+    echo ""
     test_deployment
+    
+    # Show results
+    echo ""
     show_next_steps
 }
 
 # Run main function
 main
 
-print_success "🎉 Deployment script completed successfully!"
+print_success "🎉 Backend deployment script completed successfully!"

@@ -27,7 +27,11 @@ Thumbs.db
 # Environment files
 .env
 .env.local
+.env.production
+.env.*.local
 
 # Cache directories
 .cache/
 .parcel-cache/
+# Local Netlify folder
+.netlify
