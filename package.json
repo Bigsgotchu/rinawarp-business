@@ -1,0 +1,46 @@
+{
+  "name": "kilo-presentation-generator",
+  "version": "1.0.0",
+  "description": "Auto-generate Google-Slides-ready presentation decks with RinaWarp Mermaid theming",
+  "main": "kilo-presentation-cli.js",
+  "scripts": {
+    "start": "node kilo-presentation-cli.js",
+    "test": "node test-presentation.js",
+    "demo": "node kilo-presentation-cli.js presentation create --title 'Terminal Pro Demo' --audience 'non-technical users' --sections 'Title Slide,What Is Terminal Pro?,Who Is It For?,Quick Demo,Call to Action' --export 'google-slides' --include-images --output ./demo-presentation",
+    "auth-google": "node google-slides-integration.js --auth",
+    "create-slides": "node kilo-enhanced-cli.js --create-slides",
+    "demo-google": "node kilo-enhanced-cli.js --demo-google"
+  },
+  "keywords": [
+    "presentation",
+    "slides",
+    "google-slides",
+    "pptx",
+    "canva",
+    "mermaid",
+    "rinawarp",
+    "cli",
+    "generator"
+  ],
+  "author": "RinaWarp Technologies",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "googleapis": "^128.0.0",
+    "open": "^10.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0"
+  },
+  "bin": {
+    "kilo": "./kilo-presentation-cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rinawarp/kilo-presentation"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
