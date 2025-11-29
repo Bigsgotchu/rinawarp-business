@@ -36,171 +36,201 @@
   </head>
   <body>
     <!-- Header -->
-    <header class="rw-header">
-      <div class="rw-header-inner">
-        <a href="/" class="rw-logo-link">
-          <img
-            src="assets/rinawarp-logo.png"
-            alt="RinaWarp Logo"
-            class="rw-logo"
-            width="40"
-            height="40"
-          />
-          <span class="rw-logo-text">RinaWarp</span>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a href="/" class="brand">
+          <span class="brand-mark">∞∞</span>
+          <span class="brand-text">RinaWarp Technologies™</span>
         </a>
-
-        <nav class="rw-nav">
-          <a href="/" class="rw-nav-link active">Home</a>
-          <a href="/terminal-pro.html" class="rw-nav-link">Terminal Pro</a>
-          <a href="/music-video-creator.html" class="rw-nav-link">Video Creator</a>
-          <a href="/pricing.html" class="rw-nav-link">Pricing</a>
-          <a href="/download.html" class="rw-nav-link">Download</a>
-          <a href="/support.html" class="rw-nav-link">Support</a>
+        <nav class="nav-links">
+          <a href="/terminal-pro">Terminal Pro</a>
+          <a href="/music-video-creator">Music Video Creator</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/download">Download</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+          <a href="https://docs.rinawarptech.com" target="_blank" rel="noopener">Docs</a>
         </nav>
-
-        <div class="rw-nav-actions">
-          <a href="/pricing.html" class="rw-btn rw-btn-primary"
-            >Get Terminal Pro</a
-          >
-        </div>
       </div>
     </header>
 
     <main>
-      <!-- Hero -->
-      <section class="hero">
+<!-- HERO -->
+<section class="hero home-hero">
+  <div class="container">
+
+    <h1>Meet Terminal Pro™</h1>
+    <p class="subtitle">
+      Your digital superpower.  
+      Fix your computer, automate your workflow, and build anything — in simple English.
+    </p>
+
+    <div class="cta-buttons">
+      <a href="download.html" class="btn-primary">Download Free Tier</a>
+      <a href="terminal-pro.html" class="btn-secondary">Explore Terminal Pro</a>
+    </div>
+
+    <div class="hero-image">
+      <img src="assets/terminal-pro-hero-mockup.png" alt="Terminal Pro Interface" />
+    </div>
+
+  </div>
+</section>
+
+      <!-- Problem/Solution Section -->
+      <section class="section">
         <div class="container">
-          <div class="grid grid-2">
+          <div class="text-center mb-16">
+            <h2>Why Your Terminal Needs AI Superpowers</h2>
+            <p class="lead">
+              Stop wrestling with complex commands and endless documentation. 
+              Let AI handle the complexity while you focus on what matters.
+            </p>
+          </div>
+          
+          <div class="grid grid-2 gap-12 items-center">
             <div>
-              <h1>Turn your terminal into an AI control room.</h1>
-              <p class="lead">
-                One keyboard-driven workspace that talks to
-                <strong>GPT, Claude, Groq, and Ollama</strong> at once. Built
-                for devs and power-users who want speed, not fluff.
-              </p>
-
-              <div class="flex gap-md mb-lg">
-                <a
-                  href="/pricing.html"
-                  class="btn btn-primary"
-                  onclick="gtag('event','select_content',{content_type:'cta',item_id:'hero_get_terminal_pro'})"
-                >
-                  Get Lifetime License
-                </a>
-                <a href="/download.html" class="btn btn-secondary">
-                  Start Free Tier
-                </a>
-              </div>
-
-              <p style="color: var(--rw-text-muted); font-size: 0.9rem">
-                ⚡ <strong>Founder Wave:</strong> <span data-rw-seat-count>500</span> seats total ·
-                <span style="color: var(--rw-accent); font-weight: 600;">$699 first 200</span>, then <span style="color: var(--rw-text-secondary); font-weight: 600;">$999 next 300</span> ·
-                30-day money-back guarantee
-              </p>
-            </div>
-
-            <div class="card card-glow">
-              <h3>What Terminal Pro does for you:</h3>
-              <ul style="list-style: none; padding: 0; margin: 0">
-                <li
-                  style="
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: var(--rw-space-sm);
-                  "
-                >
-                  <span
-                    style="
-                      color: var(--rw-accent);
-                      margin-right: var(--rw-space-sm);
-                    "
-                    >🔥</span
-                  >
-                  Run AI prompts directly against your code, logs, or files
+              <h3 class="text-accent mb-6">The Problem</h3>
+              <ul class="space-y-4 text-secondary">
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">❌</span>
+                  <span>Spending hours googling syntax and errors</span>
                 </li>
-                <li
-                  style="
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: var(--rw-space-sm);
-                  "
-                >
-                  <span
-                    style="
-                      color: var(--rw-accent);
-                      margin-right: var(--rw-space-sm);
-                    "
-                    >🎙️</span
-                  >
-                  Talk to your terminal with voice commands
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">❌</span>
+                  <span>Copy-pasting between terminal and browser</span>
                 </li>
-                <li
-                  style="
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: var(--rw-space-sm);
-                  "
-                >
-                  <span
-                    style="
-                      color: var(--rw-accent);
-                      margin-right: var(--rw-space-sm);
-                    "
-                    >🧠</span
-                  >
-                  Route to GPT / Claude / Groq / Ollama per task
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">❌</span>
+                  <span>Repeating the same commands over and over</span>
                 </li>
-                <li
-                  style="
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: var(--rw-space-sm);
-                  "
-                >
-                  <span
-                    style="
-                      color: var(--rw-accent);
-                      margin-right: var(--rw-space-sm);
-                    "
-                    >⚙️</span
-                  >
-                  Automate boring sequences into one command
-                </li>
-                <li style="display: flex; align-items: center">
-                  <span
-                    style="
-                      color: var(--rw-accent);
-                      margin-right: var(--rw-space-sm);
-                    "
-                    >📁</span
-                  >
-                  File tree and workspace view, not just a black box
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">❌</span>
+                  <span>Managing multiple AI tools separately</span>
                 </li>
               </ul>
-              <p class="text-muted mt-md">
-                Works on Linux, Windows, and macOS.
+            </div>
+            <div>
+              <h3 class="text-accent mb-6">The Solution</h3>
+              <ul class="space-y-4 text-secondary">
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">✅</span>
+                  <span>AI understands your code and explains errors in plain English</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">✅</span>
+                  <span>Everything happens where you work - right in the terminal</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">✅</span>
+                  <span>Automate repetitive tasks with voice or text commands</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-accent mr-3 mt-1">✅</span>
+                  <span>One interface for GPT, Claude, Groq, and local models</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section class="section" style="background: var(--rw-surface-soft);">
+        <div class="container">
+          <div class="text-center mb-16">
+            <h2>How It Works</h2>
+            <p class="lead">
+              Three simple steps to transform your terminal into an AI-powered command center
+            </p>
+          </div>
+          
+          <div class="grid grid-3 gap-8">
+            <div class="card card-soft text-center">
+              <div class="text-6xl mb-4">1️⃣</div>
+              <h3>Install & Connect</h3>
+              <p class="text-secondary">
+                Download Terminal Pro and connect your AI provider APIs. 
+                Your data stays private - we never store your conversations.
+              </p>
+            </div>
+            <div class="card card-soft text-center">
+              <div class="text-6xl mb-4">2️⃣</div>
+              <h3>Type or Speak</h3>
+              <p class="text-secondary">
+                Use natural language to describe what you want to do. 
+                "Deploy this to production" or "explain this error" - just like talking to a colleague.
+              </p>
+            </div>
+            <div class="card card-soft text-center">
+              <div class="text-6xl mb-4">3️⃣</div>
+              <h3>Get Results</h3>
+              <p class="text-secondary">
+                AI executes commands, explains results, and automates complex workflows. 
+                Monitor everything with clear, visual feedback.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Social proof -->
+      <!-- Feature Grid Section -->
       <section class="section">
         <div class="container">
-          <div class="grid grid-2">
-            <div>
-              <h2>Stop copy-pasting between browser and terminal.</h2>
-              <p>
-                RinaWarp Terminal Pro sits where you actually work. No tabs. No
-                context switching. Just AI plugged straight into your commands,
-                files, and workflows.
+          <div class="text-center mb-16">
+            <h2>Everything You Need in One Place</h2>
+            <p class="lead">
+              Powerful features designed for developers, creators, and power users
+            </p>
+          </div>
+          
+          <div class="grid grid-3 gap-8">
+            <div class="card card-soft">
+              <div class="text-4xl mb-4">🧠</div>
+              <h3>Multi-Model AI Routing</h3>
+              <p class="text-secondary">
+                Send requests to GPT-4, Claude, Groq, or local Ollama. 
+                Terminal Pro picks the best model for each task automatically.
               </p>
             </div>
             <div class="card card-soft">
-              <div id="rw-testimonials-widget"></div>
-              <p class="text-muted">
-                Real users. Real workflows. No fake "marketing speak."
+              <div class="text-4xl mb-4">🎤</div>
+              <h3>Voice Commands</h3>
+              <p class="text-secondary">
+                Control your terminal with voice commands. 
+                "Run tests", "deploy to staging", "show me errors" - hands-free productivity.
+              </p>
+            </div>
+            <div class="card card-soft">
+              <div class="text-4xl mb-4">⚡</div>
+              <h3>Smart Automation</h3>
+              <p class="text-secondary">
+                Transform complex sequences into simple commands. 
+                Build custom workflows that save hours of repetitive work.
+              </p>
+            </div>
+            <div class="card card-soft">
+              <div class="text-4xl mb-4">📁</div>
+              <h3>File Intelligence</h3>
+              <p class="text-secondary">
+                AI understands your project structure. 
+                Get context-aware suggestions based on your actual code and files.
+              </p>
+            </div>
+            <div class="card card-soft">
+              <div class="text-4xl mb-4">🔌</div>
+              <h3>Plugin System</h3>
+              <p class="text-secondary">
+                Extend functionality with plugins for Docker, Git, deployment, 
+                and popular development tools. Custom plugins supported.
+              </p>
+            </div>
+            <div class="card card-soft">
+              <div class="text-4xl mb-4">🔒</div>
+              <h3>Privacy First</h3>
+              <p class="text-secondary">
+                Your API keys and data never leave your machine. 
+                Local processing options available. Enterprise-grade security.
               </p>
             </div>
           </div>
@@ -297,52 +327,17 @@
       </section>
     </main>
 
-    <footer>
-      <div class="container">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
-          <div>
-            <h4 style="margin-bottom: 1rem; color: var(--rw-text-primary);">Product</h4>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li style="margin-bottom: 0.5rem;"><a href="/terminal-pro.html" style="color: var(--rw-text-secondary); text-decoration: none;">Terminal Pro</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/pricing.html" style="color: var(--rw-text-secondary); text-decoration: none;">Pricing</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/download.html" style="color: var(--rw-text-secondary); text-decoration: none;">Download</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/support.html" style="color: var(--rw-text-secondary); text-decoration: none;">Support</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 style="margin-bottom: 1rem; color: var(--rw-text-primary);">Legal</h4>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li style="margin-bottom: 0.5rem;"><a href="/terms.html" style="color: var(--rw-text-secondary); text-decoration: none;">Terms of Service</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/privacy.html" style="color: var(--rw-text-secondary); text-decoration: none;">Privacy Policy</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/refund-policy.html" style="color: var(--rw-text-secondary); text-decoration: none;">Refund Policy</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/dmca.html" style="color: var(--rw-text-secondary); text-decoration: none;">DMCA</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 style="margin-bottom: 1rem; color: var(--rw-text-primary);">Company</h4>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li style="margin-bottom: 0.5rem;"><a href="/about.html" style="color: var(--rw-text-secondary); text-decoration: none;">About Us</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/contact.html" style="color: var(--rw-text-secondary); text-decoration: none;">Contact</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/blog.html" style="color: var(--rw-text-secondary); text-decoration: none;">Blog</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/feedback-form.html" style="color: var(--rw-text-secondary); text-decoration: none;">Feedback</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 style="margin-bottom: 1rem; color: var(--rw-text-primary);">Support</h4>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li style="margin-bottom: 0.5rem;"><a href="/faq.html" style="color: var(--rw-text-secondary); text-decoration: none;">FAQ</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/support.html" style="color: var(--rw-text-secondary); text-decoration: none;">Help Center</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/feedback-form.html" style="color: var(--rw-text-secondary); text-decoration: none;">Submit Feedback</a></li>
-              <li style="margin-bottom: 0.5rem;"><a href="/contact.html" style="color: var(--rw-text-secondary); text-decoration: none;">Get in Touch</a></li>
-            </ul>
-          </div>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <div class="brand-small">RinaWarp Technologies, LLC</div>
+          <div class="footer-note">RinaWarp™, RinaWarp Terminal Pro™, RinaWarp Music Video Creator™, and Rina Vex™ are trademarks of RinaWarp Technologies, LLC.</div>
+          <div class="footer-copy">© 2025 RinaWarp Technologies, LLC. All rights reserved.</div>
         </div>
-        <div style="border-top: 1px solid var(--rw-border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <img src="assets/rinawarp-logo.png" alt="RinaWarp Logo" width="24" height="24" style="border-radius: 4px;" />
-            <span style="color: var(--rw-text-primary); font-weight: 600;">RinaWarp</span>
-          </div>
-          <p style="color: var(--rw-text-secondary); margin: 0;">© 2024–2025 Rinawarp Technologies, LLC. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/dmca">DMCA</a>
         </div>
       </div>
     </footer>
