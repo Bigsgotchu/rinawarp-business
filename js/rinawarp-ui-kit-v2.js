@@ -1,7 +1,7 @@
 // CORS FIX: All external API calls disabled to prevent CORS errors
 // Mock data provided for development and testing
 function getMockLicenseCount() {
-  return { total: 500, used: 127, remaining: 373, last_updated: "2025-11-29T01:03:29-07:00" };
+  return { total: 500, used: 127, remaining: 373, last_updated: '2025-11-29T01:03:29-07:00' };
 }
 
 /*!
@@ -12,14 +12,14 @@ function getMockLicenseCount() {
  */
 
 (function (window, document) {
-  "use strict";
+  'use strict';
 
   // ----------------------------------------------------
   // Config
   // ----------------------------------------------------
-  var RINA_API_BASE = window.RINA_API_BASE || "";
-  var SEAT_ENDPOINT = "/api/license-count";
-  var SEAT_REFRESH_SECONDS = 60; // refresh at most once per minute
+  const RINA_API_BASE = window.RINA_API_BASE || '';
+  const SEAT_ENDPOINT = '/api/license-count';
+  const SEAT_REFRESH_SECONDS = 60; // refresh at most once per minute
 
   // ----------------------------------------------------
   // Small Helpers
@@ -30,32 +30,32 @@ function getMockLicenseCount() {
 
   function $all(selector, root) {
     return Array.prototype.slice.call(
-      (root || document).querySelectorAll(selector),
+      (root || document).querySelectorAll(selector)
     );
   }
 
   function safeFetchJSON(url, options) {
     options = options || {};
-    return fetch(url, options).then(function (res) {
+    return fetch(url, options).then((res) => {
       if (!res.ok) {
-        throw new Error("HTTP " + res.status);
+        throw new Error('HTTP ' + res.status);
       }
       return res.json();
     });
   }
 
   function throttle(fn, delayMs) {
-    var last = 0;
-    var timeout = null;
+    let last = 0;
+    let timeout = null;
     return function () {
-      var now = Date.now();
-      var args = arguments;
-      var remaining = delayMs - (now - last);
+      const now = Date.now();
+      const args = arguments;
+      const remaining = delayMs - (now - last);
       if (remaining <= 0) {
         last = now;
         fn.apply(null, args);
       } else if (!timeout) {
-        timeout = setTimeout(function () {
+        timeout = setTimeout(() => {
           last = Date.now();
           timeout = null;
           fn.apply(null, args);
@@ -69,30 +69,30 @@ function getMockLicenseCount() {
   // (won't throw if elements missing)
   // ----------------------------------------------------
   function initNav() {
-    var nav = $("header nav");
+    const nav = $('header nav');
     if (!nav) return;
 
-    var lastScroll = 0;
-    window.addEventListener("scroll", function () {
-      var y = window.scrollY || window.pageYOffset || 0;
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY || window.pageYOffset || 0;
 
       if (y > 40 && y > lastScroll) {
-        nav.classList.add("nav-scrolled");
+        nav.classList.add('nav-scrolled');
       } else if (y < 10) {
-        nav.classList.remove("nav-scrolled");
+        nav.classList.remove('nav-scrolled');
       }
 
       lastScroll = y;
     });
 
     // Smooth scroll for internal anchors
-    $all('a[href^="#"]').forEach(function (link) {
-      link.addEventListener("click", function (e) {
-        var targetId = link.getAttribute("href").slice(1);
-        var targetEl = document.getElementById(targetId);
+    $all('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href').slice(1);
+        const targetEl = document.getElementById(targetId);
         if (targetEl) {
           e.preventDefault();
-          targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     });
@@ -102,12 +102,12 @@ function getMockLicenseCount() {
   // Mermaid Button Glow (for primary CTAs)
   // ----------------------------------------------------
   function initButtons() {
-    $all("[data-rw-cta]").forEach(function (btn) {
-      btn.addEventListener("mouseenter", function () {
-        btn.classList.add("rw-cta-hover");
+    $all('[data-rw-cta]').forEach((btn) => {
+      btn.addEventListener('mouseenter', () => {
+        btn.classList.add('rw-cta-hover');
       });
-      btn.addEventListener("mouseleave", function () {
-        btn.classList.remove("rw-cta-hover");
+      btn.addEventListener('mouseleave', () => {
+        btn.classList.remove('rw-cta-hover');
       });
     });
   }
@@ -129,22 +129,22 @@ function getMockLicenseCount() {
   // Optionally you can override:
   //   data-rw-seat-total="500"
   // ----------------------------------------------------
-  var lastSeatFetch = 0;
-  var seatThrottledFetch = null;
+  const lastSeatFetch = 0;
+  const seatThrottledFetch = null;
 
   function updateSeatUI(remaining, total) {
-    var countEls = $all("[data-rw-seat-count]");
-    var barEls = $all("[data-rw-seat-bar]");
+    const countEls = $all('[data-rw-seat-count]');
+    const barEls = $all('[data-rw-seat-bar]');
 
     if (countEls.length === 0 && barEls.length === 0) return;
 
-    var safeTotal = total > 0 ? total : remaining;
-    var pct =
+    const safeTotal = total > 0 ? total : remaining;
+    const pct =
       safeTotal > 0
         ? Math.max(0, Math.min(100, (remaining / safeTotal) * 100))
         : 0;
 
-    countEls.forEach(function (el) {
+    countEls.forEach((el) => {
       try {
         el.textContent = remaining.toString();
       } catch (e) {
@@ -152,9 +152,9 @@ function getMockLicenseCount() {
       }
     });
 
-    barEls.forEach(function (el) {
+    barEls.forEach((el) => {
       try {
-        el.style.width = pct + "%";
+        el.style.width = pct + '%';
       } catch (e) {
         // ignore
       }
@@ -162,11 +162,11 @@ function getMockLicenseCount() {
   }
 
   function initSeatCounter() {
-    var container = $("[data-rw-seat-container]");
+    const container = $('[data-rw-seat-container]');
     if (!container) return; // no seat UI on this page
 
-    var totalStr = container.getAttribute("data-rw-seat-total") || "500";
-    var total = parseInt(totalStr, 10);
+    const totalStr = container.getAttribute('data-rw-seat-total') || '500';
+    let total = parseInt(totalStr, 10);
     if (isNaN(total) || total <= 0) total = 500;
 
     // DISABLED: API endpoint not available - causing CORS errors
@@ -192,7 +192,7 @@ function getMockLicenseCount() {
     */
 
     // Use static values for now
-    var staticRemaining = total;
+    const staticRemaining = total;
     updateSeatUI(staticRemaining, total);
 
     // DISABLED: API calls commented out above
@@ -212,13 +212,13 @@ function getMockLicenseCount() {
   // ----------------------------------------------------
   function initGA4Helpers() {
     // Attach click tracking for pricing CTA buttons
-    $all("[data-rw-ga-tier]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var tier = btn.getAttribute("data-rw-ga-tier") || "unknown";
-        if (typeof window.gtag === "function") {
-          window.gtag("event", "begin_checkout", {
-            event_category: "Terminal Pro",
-            event_label: tier,
+    $all('[data-rw-ga-tier]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tier = btn.getAttribute('data-rw-ga-tier') || 'unknown';
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'begin_checkout', {
+            event_category: 'Terminal Pro',
+            event_label: tier
           });
         }
       });
@@ -229,7 +229,7 @@ function getMockLicenseCount() {
   // File Tree Component
   // ----------------------------------------------------
   function initFileTree() {
-    var container = $("[data-rw-file-tree]");
+    const container = $('[data-rw-file-tree]');
     if (!container) return;
 
     // DISABLED: API endpoint not available - causing CORS errors
@@ -317,23 +317,23 @@ function getMockLicenseCount() {
   // Email Signup Form
   // ----------------------------------------------------
   function initEmailSignup() {
-    var form = document.getElementById("email-signup-form");
+    const form = document.getElementById('email-signup-form');
     if (!form) return;
 
-    var emailInput = document.getElementById("email-signup");
-    var submitButton = form.querySelector('button[type="submit"]');
+    const emailInput = document.getElementById('email-signup');
+    const submitButton = form.querySelector('button[type="submit"]');
 
     function showMessage(message, type) {
-      var messageEl =
-        form.querySelector(".rw-form-message") || document.createElement("div");
-      messageEl.className = "rw-form-message rw-form-" + type;
+      const messageEl =
+        form.querySelector('.rw-form-message') || document.createElement('div');
+      messageEl.className = 'rw-form-message rw-form-' + type;
       messageEl.textContent = message;
 
       if (!form.contains(messageEl)) {
         form.appendChild(messageEl);
       }
 
-      setTimeout(function () {
+      setTimeout(() => {
         if (messageEl.parentNode) {
           messageEl.remove();
         }
@@ -341,13 +341,13 @@ function getMockLicenseCount() {
     }
 
     function validateEmail(email) {
-      var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email);
     }
 
     function submitEmail(email) {
-      var originalText = submitButton.textContent;
-      submitButton.textContent = "Joining...";
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Joining...';
       submitButton.disabled = true;
 
       // DISABLED: API endpoint not available - causing CORS errors
@@ -395,28 +395,28 @@ function getMockLicenseCount() {
       */
 
       // Simulate success for now
-      setTimeout(function () {
+      setTimeout(() => {
         showMessage(
-          "🎉 You're in! (Demo mode - backend integration coming soon)",
-          "success",
+          '🎉 You\'re in! (Demo mode - backend integration coming soon)',
+          'success'
         );
-        emailInput.value = "";
+        emailInput.value = '';
         submitButton.textContent = originalText;
         submitButton.disabled = false;
       }, 1000);
     }
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      var email = emailInput.value.trim();
+      const email = emailInput.value.trim();
 
       if (!email) {
-        showMessage("Please enter your email address.", "error");
+        showMessage('Please enter your email address.', 'error');
         return;
       }
 
       if (!validateEmail(email)) {
-        showMessage("Please enter a valid email address.", "error");
+        showMessage('Please enter a valid email address.', 'error');
         return;
       }
 
@@ -428,21 +428,21 @@ function getMockLicenseCount() {
   // Dev/Owner Mode Detection
   // ----------------------------------------------------
   function initDevOwnerMode() {
-    var license = window.RinaWarpLicense;
-    var isOwner =
+    const license = window.RinaWarpLicense;
+    const isOwner =
       license &&
-      license.email === "karina@rinawarptech.com" &&
-      license.tier === "founder";
+      license.email === 'karina@rinawarptech.com' &&
+      license.tier === 'founder';
 
     if (isOwner) {
-      document.body.classList.add("rw-owner-mode");
+      document.body.classList.add('rw-owner-mode');
     }
   }
 
   // ----------------------------------------------------
   // Public API
   // ----------------------------------------------------
-  var RinaWarpUI = {
+  const RinaWarpUI = {
     init: function () {
       initNav();
       initButtons();
@@ -461,12 +461,12 @@ function getMockLicenseCount() {
     // File tree public method
     refreshFileTree: function () {
       initFileTree();
-    },
+    }
   };
 
   window.RinaWarpUI = RinaWarpUI;
 
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener('DOMContentLoaded', () => {
     RinaWarpUI.init();
   });
 })(window, document);

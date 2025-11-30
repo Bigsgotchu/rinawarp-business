@@ -1,412 +1,320 @@
+
 # RinaWarp Enterprise NGINX + SSL Setup Guide
 
 # Overview
-
 The `setup_nginx_ssl.sh` script provides a complete, production-ready NGINX web server configuration for RinaWarp Enterprise Pack v1. This script automates the deployment of NGINX with SSL/TLS, multiple server blocks, security configurations, and integration with existing security tools.
-
 # Features
 
 # ✅ Complete NGINX Configuration
+ - **HTTP to HTTPS Redirect**: Automatic redirection from port 80 to 443
 
-- **HTTP to HTTPS Redirect**: Automatic redirection from port 80 to 443
+ - **Multiple Server Blocks**: Main site, API, and downloads domains
 
-- **Multiple Server Blocks**: Main site, API, and downloads domains
+ - **Modern SSL/TLS**: Strong ciphers, HTTP/2 support, certificate management
 
-- **Modern SSL/TLS**: Strong ciphers, HTTP/2 support, certificate management
+ - **Security Headers**: HSTS, X-Frame-Options, CSP, and more
 
-- **Security Headers**: HSTS, X-Frame-Options, CSP, and more
+ - **Rate Limiting**: Protection against DDoS and abuse
 
-- **Rate Limiting**: Protection against DDoS and abuse
+ - **Security Integration**: CrowdSec and Fail2ban compatibility
 
-- **Security Integration**: CrowdSec and Fail2ban compatibility
-
-- **Process Management**: PM2 integration for backend services
-
+ - **Process Management**: PM2 integration for backend services
 # ✅ Domain Configuration
+ - **Main Site**: `rinawarptech.com` & `www.rinawarptech.com`
 
-- **Main Site**: `rinawarptech.com` & `www.rinawarptech.com`
+ - **API Server**: `api.rinawarptech.com`
 
-- **API Server**: `api.rinawarptech.com`
-
-- **Downloads**: `downloads.rinawarptech.com`
-
+ - **Downloads**: `downloads.rinawarptech.com`
 # ✅ File Structure
 
-```python
+```
+python
 /etc/nginx/sites-available/     # Server block configurations
 /etc/nginx/sites-enabled/       # Symbolic links to enabled sites
 /etc/ssl/rinawarp/              # SSL certificates directory
 /var/log/nginx/rinawarp/        # Dedicated log directory
 /etc/nginx/backups/             # Configuration backups
-
-```python
-
+```
+python
 # Prerequisites
+ - Ubuntu/Debian-based Linux system
 
-- Ubuntu/Debian-based Linux system
+ - Root or sudo access
 
-- Root or sudo access
+ - Domain names properly configured with DNS
 
-- Domain names properly configured with DNS
-
-- SSL certificates (or will be generated via Certbot)
-
+ - SSL certificates (or will be generated via Certbot)
 # Usage
 
 # 1. Basic Installation
 
-```bash
+```
+bash
 sudo ./scripts/setup_nginx_ssl.sh
-
-```python
-
+```
+python
 # 2. Post-Installation SSL Setup
-
 After running the main script, obtain SSL certificates:
-
-```bash
-
+```
+bash
 # Main domain
-
 sudo certbot --nginx -d rinawarptech.com -d www.rinawarptech.com
-
 # API domain
-
 sudo certbot --nginx -d api.rinawarptech.com
-
 # Downloads domain
-
 sudo certbot --nginx -d downloads.rinawarptech.com
-
-```python
-
+```
+python
 # 3. Start Backend Services
 
-```bash
+```
+bash
 cd /home/karina/Documents/RinaWarp
 pm2 start ecosystem.config.js
 pm2 save
 pm2 startup
-
-```python
-
+```
+python
 # Configuration Details
 
 # Server Blocks Created
 
 # 1. HTTP Redirect (Port 80)
+ - Automatically redirects all HTTP traffic to HTTPS
 
-- Automatically redirects all HTTP traffic to HTTPS
+ - Includes rate limiting and security headers
 
-- Includes rate limiting and security headers
-
-- Handles Let's Encrypt ACME challenges
-
+ - Handles Let's Encrypt ACME challenges
 # 2. Main Website (Port 443)
+ - **Domain**: rinawarptech.com, www.rinawarptech.com
 
-- **Domain**: rinawarptech.com, www.rinawarptech.com
+ - **Root**: `/home/karina/Documents/RinaWarp/rinawarp-website-final/`
 
-- **Root**: `/home/karina/Documents/RinaWarp/rinawarp-website-final/`
-
-- **Features**: Static file caching, security headers, monitoring endpoints
-
+ - **Features**: Static file caching, security headers, monitoring endpoints
 # 3. API Server (Port 443)
+ - **Domain**: api.rinawarptech.com
 
-- **Domain**: api.rinawarptech.com
+ - **Backend**: Proxies to localhost:3001
 
-- **Backend**: Proxies to localhost:3001
-
-- **Features**: WebSocket support, API-specific rate limiting, authentication endpoints
-
+ - **Features**: WebSocket support, API-specific rate limiting, authentication endpoints
 # 4. Downloads Server (Port 443)
+ - **Domain**: downloads.rinawarptech.com
 
-- **Domain**: downloads.rinawarptech.com
+ - **Root**: `/var/www/downloads/`
 
-- **Root**: `/var/www/downloads/`
-
-- **Features**: File serving, download tracking, secure file access
-
+ - **Features**: File serving, download tracking, secure file access
 # Security Features
 
 # SSL/TLS Configuration
+ - **Protocols**: TLS 1.2 and 1.3 only
 
-- **Protocols**: TLS 1.2 and 1.3 only
+ - **Ciphers**: Strong modern cipher suites
 
-- **Ciphers**: Strong modern cipher suites
+ - **DH Parameters**: 2048-bit DH parameters
 
-- **DH Parameters**: 2048-bit DH parameters
+ - **OCSP Stapling**: Enabled for certificate validation
 
-- **OCSP Stapling**: Enabled for certificate validation
-
-- **HSTS**: 1-year max-age with includeSubDomains
-
+ - **HSTS**: 1-year max-age with includeSubDomains
 # Security Headers
+ - `X-Frame-Options: SAMEORIGIN`
 
-- `X-Frame-Options: SAMEORIGIN`
+ - `X-XSS-Protection: 1; mode=block`
 
-- `X-XSS-Protection: 1; mode=block`
+ - `X-Content-Type-Options: nosniff`
 
-- `X-Content-Type-Options: nosniff`
+ - `Content-Security-Policy`
 
-- `Content-Security-Policy`
-
-- `Strict-Transport-Security`
-
+ - `Strict-Transport-Security`
 # Rate Limiting
+ - **General**: 100 requests/minute per IP
 
-- **General**: 100 requests/minute per IP
+ - **API**: 30 requests/minute per IP
 
-- **API**: 30 requests/minute per IP
+ - **Downloads**: 10 requests/minute per IP
 
-- **Downloads**: 10 requests/minute per IP
+ - **Login/Auth**: 5 requests/minute per IP
 
-- **Login/Auth**: 5 requests/minute per IP
-
-- **Connection Limit**: 20-50 connections per IP
-
+ - **Connection Limit**: 20-50 connections per IP
 # Integration Features
 
 # CrowdSec Integration
+ - Automatically configures NGINX bouncer
 
-- Automatically configures NGINX bouncer
+ - Installs relevant scenarios and collections
 
-- Installs relevant scenarios and collections
-
-- Monitors suspicious activity
-
+ - Monitors suspicious activity
 # Fail2ban Integration
+ - NGINX authentication protection
 
-- NGINX authentication protection
+ - Rate limiting violation detection
 
-- Rate limiting violation detection
-
-- Automatic IP banning
-
+ - Automatic IP banning
 # PM2 Integration
+ - Backend API process management
 
-- Backend API process management
+ - Cluster mode configuration
 
-- Cluster mode configuration
-
-- Automatic restart on failure
-
+ - Automatic restart on failure
 # Monitoring and Maintenance
 
 # Health Check Endpoints
 
-```bash
-
+```
+bash
 # Main site health
-
 curl [[[[[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))))]([[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))))]([[[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))))]([[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))))))]([[[[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))))]([[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))))]([[[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))))]([[[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))))]([[[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))]([[[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))))]([[[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))]([[[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech))]([[https://rinawarptech](https://rinawarptech](https://rinawarptech](https://rinawarptech)))))))))).com/health
-
 # API health
-
 curl [[[[[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))))]([[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))))]([[[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))))]([[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))))))]([[[[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))))]([[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))))]([[[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))))]([[[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))))]([[[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))]([[[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api))))]([[[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))]([[[https://api](https://api](https://api](https://api))]([[https://api](https://api](https://api](https://api)))))))))).rinawarptech.com/health
-
 # Downloads health
-
 curl [[[[[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))))]([[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))))]([[[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))))]([[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))))))]([[[[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))))]([[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))))]([[[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))))]([[[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))))]([[[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))]([[[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads))))]([[[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))]([[[https://downloads](https://downloads](https://downloads](https://downloads))]([[https://downloads](https://downloads](https://downloads](https://downloads)))))))))).rinawarptech.com/health
-
-```python
-
+```
+python
 # Monitoring Script
 
-```bash
-
+```
+bash
 # Run monitoring
-
 /home/karina/Documents/RinaWarp/scripts/nginx-monitor.sh
-
 # Check logs
-
 tail -f /var/log/nginx/rinawarp/main-access.log
-
-```python
-
+```
+python
 # SSL Certificate Management
 
-```bash
-
+```
+bash
 # Manual renewal
-
 sudo /usr/local/bin/rinawarp-ssl-renew.sh
-
 # Check certificate status
-
 sudo certbot certificates
-
-```python
-
+```
+python
 # Useful Commands
 
 # NGINX Management
 
-```bash
-
+```
+bash
 # Check status
-
 systemctl status nginx
-
 # Reload configuration
-
 systemctl reload nginx
-
 # Test configuration
-
 nginx -t
-
 # View error logs
-
 tail -f /var/log/nginx/error.log
-
-```python
-
+```
+python
 # Service Management
 
-```bash
-
+```
+bash
 # PM2 process management
-
 pm2 status
 pm2 restart rinawarp-api
 pm2 logs rinawarp-api
-
 # Fail2ban management
-
 fail2ban-client status nginx-rinawarp-auth
 fail2ban-client status nginx-rinawarp-rate-limit
-
 # CrowdSec management
-
 cscli metrics
 cscli decisions list
-
-```python
-
+```
+python
 # Troubleshooting
 
 # Common Issues
 
 # 1. SSL Certificate Errors
 
-```bash
-
+```
+bash
 # Check certificate status
-
 sudo certbot certificates
-
 # Renew certificates manually
-
 sudo certbot renew --force-renewal
-
-```python
-
+```
+python
 # 2. NGINX Configuration Errors
 
-```bash
-
+```
+bash
 # Test configuration
-
 sudo nginx -t
-
 # Check syntax
-
 sudo nginx -T | grep -i error
-
-```python
-
+```
+python
 # 3. Permission Issues
 
-```bash
-
+```
+bash
 # Fix file permissions
-
 sudo chown -R www-data:www-data /var/www/
 sudo chmod -R 755 /var/www/
-
-```python
-
+```
+python
 # 4. Backend API Connection Issues
 
-```bash
-
+```
+bash
 # Check API service
-
 curl [[[[[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))))]([[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))))]([[[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))))]([[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))))))]([[[[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))))]([[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))))]([[[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))))]([[[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))]([[[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))))]([[[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))]([[[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health)))]([[[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))]([[http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health](http://localhost:3001/health))))))))))
-
 # Check PM2 status
-
 pm2 status
 pm2 logs rinawarp-api
-
-```python
-
+```
+python
 # Log Locations
+ - **NGINX Logs**: `/var/log/nginx/rinawarp/`
 
-- **NGINX Logs**: `/var/log/nginx/rinawarp/`
+ - **PM2 Logs**: `/home/karina/Documents/RinaWarp/logs/`
 
-- **PM2 Logs**: `/home/karina/Documents/RinaWarp/logs/`
+ - **SSL Renew Logs**: `/var/log/rinawarp-ssl-renew.log`
 
-- **SSL Renew Logs**: `/var/log/rinawarp-ssl-renew.log`
-
-- **Monitoring Logs**: `/var/log/nginx-monitor.log`
-
+ - **Monitoring Logs**: `/var/log/nginx-monitor.log`
 # Backup and Recovery
 
 # Configuration Backup
 
-```bash
-
+```
+bash
 # Manual backup
-
 sudo cp -r /etc/nginx /etc/nginx.backup.$(date +%Y%m%d)
-
 # Automatic backups are created in /etc/nginx/backups/
 
-```python
-
+```
+python
 # Rollback Process
 
-```bash
-
+```
+bash
 # Stop NGINX
-
 sudo systemctl stop nginx
-
 # Restore configuration
-
 sudo cp /etc/nginx/backups/sites-available-* /etc/nginx/sites-available/
-
 # Restart NGINX
-
 sudo systemctl start nginx
-
-```python
-
+```
+python
 # Security Considerations
-
 1. **Regular Updates**: Keep NGINX and system packages updated
 2. **Certificate Monitoring**: Monitor SSL certificate expiration
 3. **Log Analysis**: Regular review of security logs
 
 1. **Rate Limiting**: Adjust limits based on traffic patterns
 2. **Firewall**: UFW is automatically configured, review rules periodically
-
 # Support
-
 For issues or questions:
 
-- Check log files for error details
+ - Check log files for error details
 
-- Use monitoring scripts for system health
+ - Use monitoring scripts for system health
 
-- Review CrowdSec and Fail2ban logs for security events
+ - Review CrowdSec and Fail2ban logs for security events
 
-- Consult NGINX documentation for advanced configuration
+ - Consult NGINX documentation for advanced configuration
 
 ---
-
 # RinaWarp Enterprise Pack v1 - NGINX Configuration Complete!*
-
 This setup provides a robust, secure, and scalable NGINX configuration ready for production deployment.

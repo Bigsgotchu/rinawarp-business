@@ -1,93 +1,95 @@
+
 # 🔧 Nginx Troubleshooting Guide
 
 # Run These Commands Manually & Paste Output
 
 # Step 1: Check Nginx Status
 
-```bash
+```
+bash
 sudo systemctl status nginx
-
-```python
-
+```
+python
 # Expected Output
 
-```css
+```
+css
 ● nginx.service - The NGINX HTTP and reverse proxy server
     Loaded: loaded (/lib/systemd/system/nginx.service; enabled)
     Active: active (running)
-
-```python
-
+```
+python
 # If it shows "inactive" or "failed"
 
-```bash
+```
+bash
 sudo systemctl start nginx
 sudo systemctl enable nginx
-
-```python
-
+```
+python
 # Step 2: Check Site Configuration
 
-```bash
+```
+bash
 ls -al /etc/nginx/sites-enabled/
-
-```python
-
+```
+python
 # Expected Output
 
-```css
+```
+css
 drwxr-xr-x 2 root root 4096 Nov 26 22:28 .
 drwxr-xr-x 2 root root 4096 Nov 26 22:28 ..
 lrwxrwxrwx 1 root root 34 Nov 26 22:28 rinawarp-api.conf -> ../sites-available/rinawarp-api.conf
-
-```python
-
+```
+python
 # If you don't see rinawarp-api.conf
 
-```bash
+```
+bash
 sudo ln -s /etc/nginx/sites-available/rinawarp-api.conf /etc/nginx/sites-enabled/
-
-```python
-
+```
+python
 # Step 3: Test Nginx Configuration
 
-```bash
+```
+bash
 sudo nginx -t
-
-```python
-
+```
+python
 # Expected Output
 
-```css
+```
+css
 nginx: configuration file /etc/nginx/nginx.conf test is successful
-
-```python
-
+```
+python
 # Step 4: Check Nginx is Listening
 
-```bash
+```
+bash
 sudo netstat -tlnp | grep nginx
-
-```python
-
+```
+python
 # Expected Output
 
-```css
+```
+css
 tcp 0 0 0.0.0.0:80 0.0.0.0:* LISTEN 12345/nginx
 tcp 0 0 0.0.0.0:443 0.0.0.0:* LISTEN 12345/nginx
-
-```python
-
+```
+python
 # Step 5: Check Firewall
 
-```bash
+```
+bash
 sudo ufw status
-
-```python
-
+```
+python
 # Expected Output
 
-```python
+```
+python
 Status: active
 
 To                         Action      From
@@ -98,93 +100,87 @@ To                         Action      From
 80/tcp                     ALLOW       Anywhere
 443/tcp                    ALLOW       Anywhere
 Nginx Full                 ALLOW       Anywhere
-
-```python
-
+```
+python
 # If firewall is blocking
 
-```bash
+```
+bash
 sudo ufw allow 'Nginx Full'
 sudo ufw allow 80
 sudo ufw allow 443
 sudo ufw reload
-
-```python
-
+```
+python
 # Step 6: Test Local Connection
 
-```bash
+```
+bash
 curl -I [[[[[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))))]([[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))))]([[[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))))]([[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))))))]([[[[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))))]([[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))))]([[[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))))]([[[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))]([[[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))))]([[[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))]([[[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost)))]([[[http://localhost](http://localhost](http://localhost](http://localhost))]([[http://localhost](http://localhost](http://localhost](http://localhost))))))))))
-
-```python
-
+```
+python
 # Expected Output
 
-```txt
+```
+txt
 HTTP/1.1 200 OK or 301 Moved Permanently
-
-```python
-
+```
+python
 # Step 7: Check DNS
 
-```bash
+```
+bash
 nslookup api.rinawarptech.com
-
-```python
-
+```
+python
 # Current Status Check
+ - ❌ Should show: `137.131.48.124`
 
-- ❌ Should show: `137.131.48.124`
-
-- 🔄 Currently shows: `158.101.1.38` (needs DNS fix)
-
+ - 🔄 Currently shows: `158.101.1.38` (needs DNS fix)
 # 🚨 Common Issues & Solutions
 
 # Issue 1: "nginx: command not found"
 
 # Solution
 
-```bash
+```
+bash
 sudo apt update
 sudo apt install -y nginx
-
-```python
-
+```
+python
 # Issue 2: "permission denied" errors
 
 # Solution
 
-```bash
+```
+bash
 sudo chown -R $USER:$USER /etc/nginx/sites-available/
 sudo chmod 644 /etc/nginx/sites-available/rinawarp-api.conf
-
-```python
-
+```
+python
 # Issue 3: "bind() to 0.0.0.0:80 failed"
 
 # Solution
 
-```bash
+```
+bash
 sudo lsof -i :80
 sudo systemctl stop apache2  # if apache is running
-
-```python
-
+```
+python
 # Issue 4: DNS still shows wrong IP
 
 # Solution
-
 1. Check Cloudflare DNS settings
 2. Wait 5-15 minutes for propagation
 3. Clear local DNS cache: `sudo systemctl restart systemd-resolved`
-
 # 🔄 Automated Diagnostics
-
 Run the diagnostic script:
-
-```bash
+```
+bash
 bash nginx-diagnostic.sh
-
-```txt
+```
+txt
 
 Then paste the complete output for troubleshooting assistance.

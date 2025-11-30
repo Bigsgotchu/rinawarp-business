@@ -1,13 +1,13 @@
+
 # 🔒 RINAWARP CERTIFICATE HEALING - INSTALLATION GUIDE
 
 ## ✅ **Certificate Healing Script Ready**
 
 ### **📁 Files Created**
-- **`rina-cert-heal.sh`** - Complete certificate healing script ✅
-- **Updated CLI with `cert-fix` command** ✅
 
+ - **`rina-cert-heal.sh`** - Complete certificate healing script ✅
+ - **Updated CLI with `cert-fix` command** ✅
 ### **🔧 Script Capabilities**
-
 The `rina-cert-heal.sh` script performs **10 comprehensive steps**:
 
 1. **🔍 Diagnose** - Current certificate status analysis
@@ -22,33 +22,35 @@ The `rina-cert-heal.sh` script performs **10 comprehensive steps**:
 10. **🎉 Verify** - Final connectivity and status checks
 
 ---
-
 ## 🚀 **LOCAL INSTALLATION (Complete)**
 
 ### **✅ Already Installed on Local Machine**
-- **Certificate Script:** `./rina-cert-heal.sh` ✅ Ready
-- **Updated CLI:** `~/.local/bin/rina` ✅ Updated
-- **Command Available:** `rina cert-fix` ✅ Working
+
+ - **Certificate Script:** `./rina-cert-heal.sh` ✅ Ready
+ - **Updated CLI:** `~/.local/bin/rina` ✅ Updated
+ - **Command Available:** `rina cert-fix` ✅ Working
 
 ---
-
 ## 🌐 **REMOTE SERVER INSTALLATION**
 
 ### **Step 1: Upload Certificate Healing Script**
-
 On your **local machine**, run:
+```
+bash
 
-```bash
 # Copy the script to your remote server
+
 scp rina-cert-heal.sh ubuntu@Rinawarp-Api:~/
+
 ```
 
 ### **Step 2: Update Remote CLI**
-
 On your **remote server** (`ubuntu@Rinawarp-Api`), update the CLI with the enhanced version:
+```
+bash
 
-```bash
 # Step 1: Create updated CLI script
+
 cat > ~/rina <<'EOF'
 #!/bin/bash
 set -euo pipefail
@@ -82,43 +84,43 @@ for details.
 =====================================================
 HELP
 }
-
 # ----------------------------
 # rina fix
 # ----------------------------
+
 do_fix() {
   echo ">>> Running rina-fix global repair..."
   ~/rina-fix || true
 }
-
 # ----------------------------
 # rina status 
 # ----------------------------
+
 do_status() {
   echo ">>> RinaWarp Status Dashboard"
   ~/RinaWarp/rina-services-status.sh
 }
-
 # ----------------------------
 # rina logs 
 # ----------------------------
+
 do_logs() {
   echo ">>> Viewing logs..."
   sudo journalctl -u rinawarp-api -n 100 --no-pager 2>/dev/null || true
   sudo journalctl -u nginx -n 100 --no-pager
 }
-
 # ----------------------------
 # rina backup
 # ----------------------------
+
 do_backup() {
   echo ">>> Creating full RinaWarp backup..."
   ~/RinaWarp/rina-master-backup.sh
 }
-
 # ----------------------------
 # rina nginx <cmd>
 # ----------------------------
+
 do_nginx() {
   case "$SUBCOMMAND" in
     reload)
@@ -137,10 +139,10 @@ do_nginx() {
       ;;
   esac
 }
-
 # ----------------------------
 # rina api <restart|stop>
 # ----------------------------
+
 do_api() {
   case "$SUBCOMMAND" in
     restart)
@@ -155,17 +157,17 @@ do_api() {
       ;;
   esac
 }
-
 # ----------------------------
 # rina services
 # ----------------------------
+
 do_services() {
   ~/RinaWarp/rina-services-clean.sh
 }
-
 # ----------------------------
 # rina health
 # ----------------------------
+
 do_health() {
   echo ">>> API Health:"
   curl -I https://api.rinawarptech.com/health || true
@@ -173,10 +175,10 @@ do_health() {
   echo ">>> Web Health:"
   curl -I https://rinawarptech.com || true
 }
-
 # ----------------------------
 # rina md-fix <file>
 # ----------------------------
+
 do_md_fix() {
   local FILE="$SUBCOMMAND"
   if [ -z "$FILE" ]; then
@@ -240,10 +242,10 @@ do_md_fix() {
   echo "    🎉 Markdown fixed successfully!"
   echo "====================================================="
 }
-
 # ----------------------------
 # rina cert-fix
 # ----------------------------
+
 do_cert_fix() {
   echo "====================================================="
   echo "        🔒 RINAWARP CERTIFICATE HEALING TOOL"
@@ -270,10 +272,10 @@ do_cert_fix() {
     exit 1
   fi
 }
-
 # ----------------------------
 # Main routing
 # ----------------------------
+
 case "$COMMAND" in
   fix) do_fix ;;
   status) do_status ;;
@@ -288,67 +290,79 @@ case "$COMMAND" in
   help|*) show_help ;;
 esac
 EOF
+
 ```
 
-```bash
+```
+bash
+
 # Step 2: Update installed version
+
 cp ~/rina ~/.local/bin/rina
 chmod +x ~/.local/bin/rina
 chmod +x ~/rina-cert-heal.sh
+
 ```
 
 ### **Step 3: Test Installation**
 
-```bash
-# Test CLI help (should show cert-fix)
-rina help
-
-# Test certificate healing (dry run)
-sudo rina cert-fix
 ```
+bash
 
+# Test CLI help (should show cert-fix)
+
+rina help
+# Test certificate healing (dry run)
+
+sudo rina cert-fix
+
+```
 ---
-
 ## 🎯 **USAGE INSTRUCTIONS**
 
 ### **Method 1: Via CLI (Recommended)**
-```bash
+```
+bash
+
 # Run complete certificate healing process
+
 sudo rina cert-fix
+
 ```
 
 ### **Method 2: Direct Script Execution**
-```bash
-# Run the healing script directly
-sudo ./rina-cert-heal.sh
 ```
+bash
 
+# Run the healing script directly
+
+sudo ./rina-cert-heal.sh
+
+```
 ---
-
 ## ⚠️ **IMPORTANT NOTES**
 
 ### **🔒 Production Environment**
-- **Domain:** rinawarptech.com (configured for production)
-- **Port 3001:** API service only (as specified)
-- **Email:** admin@rinawarptech.com (for Let's Encrypt notifications)
 
+ - **Domain:** rinawarptech.com (configured for production)
+ - **Port 3001:** API service only (as specified)
+ - **Email:** admin@rinawarptech.com (for Let's Encrypt notifications)
 ### **🛡️ Safety Features**
-- **Full Backup:** All configurations backed up with timestamp
-- **Validation:** Tests configuration before applying changes
-- **Rollback:** Backup location provided for manual recovery if needed
 
+ - **Full Backup:** All configurations backed up with timestamp
+ - **Validation:** Tests configuration before applying changes
+ - **Rollback:** Backup location provided for manual recovery if needed
 ### **✅ Expected Results**
+
 After running `sudo rina cert-fix`, you should see:
-- ✅ New SSL certificates for rinawarptech.com
-- ✅ Proper NGINX configuration with SSL
-- ✅ Working HTTPS redirect from HTTP
-- ✅ API accessible at https://rinawarptech.com/api/
-- ✅ Certificate auto-renewal configured
+ - ✅ New SSL certificates for rinawarptech.com
+ - ✅ Proper NGINX configuration with SSL
+ - ✅ Working HTTPS redirect from HTTP
+ - ✅ API accessible at https://rinawarptech.com/api/
+ - ✅ Certificate auto-renewal configured
 
 ---
-
 ## 🌟 **CLI Command Summary**
-
 Your RinaWarp CLI now includes **10 comprehensive commands**:
 
 1. **`rina help`** - Display all available commands

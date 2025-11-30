@@ -1,12 +1,10 @@
+
 # 🚀 RINA CLI INSTALLATION FOR REMOTE SERVER
 
 ## 📋 **Install Rina CLI on Remote Server**
-
 Run these commands on your remote server (`ubuntu@Rinawarp-Api`):
-
 ### **Step 1: Create the CLI script**
 ```
-
 bash
 cat > ~/rina <<'EOF'
 #!/bin/bash
@@ -39,43 +37,43 @@ for details.
 =====================================================
 HELP
 }
-
 # ----------------------------
 # rina fix
 # ----------------------------
+
 do_fix() {
   echo ">>> Running rina-fix global repair..."
   ~/rina-fix || true
 }
-
 # ----------------------------
 # rina status 
 # ----------------------------
+
 do_status() {
   echo ">>> RinaWarp Status Dashboard"
   ~/RinaWarp/rina-services-status.sh
 }
-
 # ----------------------------
 # rina logs 
 # ----------------------------
+
 do_logs() {
   echo ">>> Viewing logs..."
   sudo journalctl -u rinawarp-api -n 100 --no-pager 2>/dev/null || true
   sudo journalctl -u nginx -n 100 --no-pager
 }
-
 # ----------------------------
 # rina backup
 # ----------------------------
+
 do_backup() {
   echo ">>> Creating full RinaWarp backup..."
   ~/RinaWarp/rina-master-backup.sh
 }
-
 # ----------------------------
 # rina nginx <cmd>
 # ----------------------------
+
 do_nginx() {
   case "$SUBCOMMAND" in
     reload)
@@ -94,10 +92,10 @@ do_nginx() {
       ;;
   esac
 }
-
 # ----------------------------
 # rina api <restart|stop>
 # ----------------------------
+
 do_api() {
   case "$SUBCOMMAND" in
     restart)
@@ -112,17 +110,17 @@ do_api() {
       ;;
   esac
 }
-
 # ----------------------------
 # rina services
 # ----------------------------
+
 do_services() {
   ~/RinaWarp/rina-services-clean.sh
 }
-
 # ----------------------------
 # rina health
 # ----------------------------
+
 do_health() {
   echo ">>> API Health:"
   curl -I https://api.rinawarptech.com/health || true
@@ -130,10 +128,10 @@ do_health() {
   echo ">>> Web Health:"
   curl -I https://rinawarptech.com || true
 }
-
 # ----------------------------
 # Main routing
 # ----------------------------
+
 case "$COMMAND" in
   fix) do_fix ;;
   status) do_status ;;
@@ -146,24 +144,25 @@ case "$COMMAND" in
   help|*) show_help ;;
 esac
 EOF
+
 ```
 
 ### **Step 2: Make executable and install globally**
 ```
-
 bash
-# Make executable
-chmod +x ~/rina
 
+# Make executable
+
+chmod +x ~/rina
 # Option A: Install to user local bin (recommended)
+
 mkdir -p ~/.local/bin
 cp ~/rina ~/.local/bin/rina
 chmod +x ~/.local/bin/rina
-
 # Add to PATH
+
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
-
 # Option B: OR install to /usr/local/bin (if you have sudo)
 # sudo cp ~/rina /usr/local/bin/rina
 # sudo chmod +x /usr/local/bin/rina
@@ -171,31 +170,34 @@ source ~/.bashrc
 
 ### **Step 3: Test the installation**
 ```
-
 bash
+
 # Show help
+
 rina help
-
 # Test fix command
-rina fix
 
+rina fix
 # Test other commands
+
 rina status
 rina nginx test
 rina logs
+
 ```
 
 ## ✅ **Verification**
-
 After installation, you should be able to run:
-```
 
+```
 bash
 rina help
+
+```
+This should display:
+
 ```
 
-This should display:
-```
 =====================================================
                 💎 RINAWARP CLI
 =====================================================
@@ -216,10 +218,10 @@ Type:
   rina help
 for details.
 =====================================================
+
 ```
 
 ## 🎯 **Expected Result**
-
 After installation, your remote server will have:
  - ✅ `rina` CLI command available globally
  - ✅ `rina-fix` integration working properly  

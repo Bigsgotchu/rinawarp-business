@@ -1,12 +1,12 @@
+
 # 🔒 RINAWARP CERTIFICATE CONSOLIDATION - COMPLETE INSTALLATION
 
 ## ✅ **Certificate Consolidation System Ready**
 
 ### **🎯 Purpose**
+
 This system consolidates multiple SSL certificates into **ONE SAN certificate** for `api.rinawarptech.com`, managing all domains with a single certificate for simplicity and efficiency.
-
 ### **📁 Files Created & Tested**
-
 1. **`rina-cert-fix.sh`** ✅ **Certificate consolidation script**
    - Consolidates to ONE SAN certificate (api.rinawarptech.com)
    - Archives other renewal configs instead of deleting
@@ -23,24 +23,26 @@ This system consolidates multiple SSL certificates into **ONE SAN certificate** 
    - **NEW:** `rina md-fix <file>` - Markdown formatting
 
 ---
-
 ## 🌐 **REMOTE SERVER INSTALLATION**
 
 ### **Step 1: Upload Scripts to Remote Server**
-
 On your **local machine**, run:
+```
+bash
 
-```bash
 # Upload both scripts to remote server
+
 scp rina-cert-fix.sh rina-md-fix.sh ubuntu@Rinawarp-Api:~/
+
 ```
 
 ### **Step 2: Install Enhanced CLI on Remote Server**
-
 On your **remote server** (`ubuntu@Rinawarp-Api`), create the updated CLI:
+```
+bash
 
-```bash
 # Create the enhanced RinaWarp CLI
+
 sudo tee /usr/local/bin/rina > /dev/null <<'EOF'
 #!/bin/bash
 set -euo pipefail
@@ -179,38 +181,44 @@ case "$COMMAND" in
   help|*)     show_help ;;
 esac
 EOF
+
 ```
 
-```bash
-# Make CLI executable
-sudo chmod +x /usr/local/bin/rina
+```
+bash
 
+# Make CLI executable
+
+sudo chmod +x /usr/local/bin/rina
 # Make scripts executable and move to proper location
+
 chmod +x ~/rina-cert-fix.sh ~/rina-md-fix.sh
 mkdir -p ~/RinaWarp
 mv ~/rina-cert-fix.sh ~/rina-md-fix.sh ~/RinaWarp/
+
 ```
 
 ### **Step 3: Test Installation**
 
-```bash
-# Test CLI help (should show all 10 commands)
-rina help
+```
+bash
 
+# Test CLI help (should show all 10 commands)
+
+rina help
 # Test markdown fixing (in the correct directory)
+
 cd ~/RinaWarp
 rina md-fix RINAWARP-CLI-COMPLETE-GUIDE.md
-
 # Run certificate consolidation (requires sudo)
+
 sudo rina cert-fix
+
 ```
-
 ---
-
 ## 🎯 **WHAT THE CERT-FIX SCRIPT DOES**
 
 ### **🔧 Certificate Consolidation Process**
-
 1. **📦 Backup Phase**
    - Creates timestamped backup: `$HOME/RinaWarp/cert-nginx-backups/$STAMP/`
    - Archives `/etc/letsencrypt` and `/etc/nginx` completely
@@ -233,84 +241,92 @@ sudo rina cert-fix
 5. **✅ Validation & Testing**
    - Runs `certbot renew --dry-run` to test renewal
    - Confirms certificate health and renewal capability
-
 ### **📊 Domains Managed by Single Certificate**
-- `api.rinawarptech.com` (primary)
-- `downloads.rinawarptech.com`
-- `monitoring.rinawarptech.com`
-- `rinawarptech.com`
-- `www.rinawarptech.com`
+
+ - `api.rinawarptech.com` (primary)
+ - `downloads.rinawarptech.com`
+ - `monitoring.rinawarptech.com`
+ - `rinawarptech.com`
+ - `www.rinawarptech.com`
 
 ---
-
 ## 🚀 **USAGE INSTRUCTIONS**
 
 ### **Certificate Consolidation (Remote Server)**
-```bash
-# Run complete certificate consolidation
-sudo rina cert-fix
+```
+bash
 
+# Run complete certificate consolidation
+
+sudo rina cert-fix
 # Alternative: Direct script execution
+
 sudo ~/RinaWarp/rina-cert-fix.sh
+
 ```
 
 ### **Markdown Formatting (Any Location)**
-```bash
+```
+bash
+
 # Fix markdown file in current directory
+
 rina md-fix filename.md
-
 # Fix with full path
-rina md-fix /path/to/file.md
 
+rina md-fix /path/to/file.md
 # Fix specific RinaWarp files
+
 cd ~/RinaWarp
 rina md-fix RINAWARP-CLI-COMPLETE-GUIDE.md
+
 ```
 
 ### **System Management**
-```bash
+```
+bash
+
 # Check system status
+
 rina status
-
 # Test connectivity
+
 rina health
-
 # View recent logs
-rina logs
 
+rina logs
 # Restart services
+
 rina api restart
 rina nginx reload
+
 ```
-
 ---
-
 ## ⚠️ **IMPORTANT NOTES**
 
 ### **🔒 Production Environment**
-- **Target Domain:** `api.rinawarptech.com` (SAN certificate)
-- **All Managed Domains:** Single certificate covers all subdomains
-- **Email:** Uses existing Let's Encrypt registration
-- **Renewal:** Automated through single renewal config
 
+ - **Target Domain:** `api.rinawarptech.com` (SAN certificate)
+ - **All Managed Domains:** Single certificate covers all subdomains
+ - **Email:** Uses existing Let's Encrypt registration
+ - **Renewal:** Automated through single renewal config
 ### **🛡️ Safety Features**
-- **Full Backup:** Complete configuration backup before changes
-- **Archive Strategy:** Old configs archived, not deleted
-- **Validation:** Tests before applying changes
-- **Rollback Available:** Backup location provided for recovery
 
+ - **Full Backup:** Complete configuration backup before changes
+ - **Archive Strategy:** Old configs archived, not deleted
+ - **Validation:** Tests before applying changes
+ - **Rollback Available:** Backup location provided for recovery
 ### **✅ Expected Results**
+
 After running `sudo rina cert-fix`, you should see:
-- ✅ Single SAN certificate managing all domains
-- ✅ All NGINX sites using canonical cert path
-- ✅ Successful `certbot renew --dry-run`
-- ✅ Clean NGINX restart without errors
-- ✅ All services running normally
+ - ✅ Single SAN certificate managing all domains
+ - ✅ All NGINX sites using canonical cert path
+ - ✅ Successful `certbot renew --dry-run`
+ - ✅ Clean NGINX restart without errors
+ - ✅ All services running normally
 
 ---
-
 ## 📋 **COMPLETE COMMAND REFERENCE**
-
 Your RinaWarp CLI now provides **10 professional commands**:
 
 1. **`rina help`** - Display command reference
@@ -326,16 +342,14 @@ Your RinaWarp CLI now provides **10 professional commands**:
 11. **`rina md-fix <file>`** - ✅ **Markdown formatting**
 
 ---
-
 ## 🎊 **FINAL STATUS**
-
 **Your RinaWarp infrastructure now includes enterprise-grade certificate management with complete consolidation to a single SAN certificate!**
-
 ### **Key Benefits:**
-- **Simplified Management:** One certificate for all domains
-- **Reduced Complexity:** Single renewal configuration
-- **Cost Effective:** No need for multiple certificates
-- **Unified Security:** Consistent SSL/TLS configuration
-- **Automated Maintenance:** Streamlined renewal process
+
+ - **Simplified Management:** One certificate for all domains
+ - **Reduced Complexity:** Single renewal configuration
+ - **Cost Effective:** No need for multiple certificates
+ - **Unified Security:** Consistent SSL/TLS configuration
+ - **Automated Maintenance:** Streamlined renewal process
 
 **🌟 Production-ready certificate consolidation system deployed and operational!**

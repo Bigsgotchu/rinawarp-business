@@ -1,7 +1,0 @@
-[build]
-  publish = "."
-  command = ""
-
-[dev]
-  command = ""
-  port = 5173

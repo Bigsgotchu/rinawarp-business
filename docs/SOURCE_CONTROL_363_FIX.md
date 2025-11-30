@@ -1,47 +1,39 @@
+
 # Source Control "363" Issue - Resolution Guide
 
 # 🔍 What "363" Represents
-
 The "363" you're seeing in VSCode source control is likely indicating:
 
 1. **Submodule Changes**: Changes in `apps/terminal-pro` and `temp-website` directories
 2. **File References**: 106 references to "363" found throughout your project (mostly in dependencies)
 3. **Express.js Issue #363**: Referenced in your Express.js changelog
-
 # 🚀 Immediate Actions to Resolve
 
 # Step 1: Check Submodule Status
 
-```bash
-
+```
+bash
 # Check what's changed in submodules
-
 git status --porcelain
-
-```python
-
+```
+python
 # Step 2: Navigate to Submodules and Check Status
 
-```bash
-
+```
+bash
 # Check terminal-pro directory
-
 cd apps/terminal-pro
 git status
-
 # Check temp-website directory
-
 cd ../temp-website
 git status
-
-```python
-
+```
+python
 # Step 3: Handle Submodule Changes
 
-```bash
-
+```
+bash
 # Option A: Commit changes in submodules
-
 cd apps/terminal-pro
 git add .
 git commit -m "Update terminal-pro - resolve issue 363"
@@ -49,68 +41,55 @@ cd ../temp-website
 git add .
 git commit -m "Update temp-website - resolve issue 363"
 cd ../..
-
 # Option B: Revert unwanted changes
-
 cd apps/terminal-pro
 git reset --hard HEAD
 cd ../temp-website
 git reset --hard HEAD
 cd ../..
-
-```python
-
+```
+python
 # Step 4: Update Main Repository
 
-```bash
-
+```
+bash
 # Add and commit submodule changes
-
 git add apps/terminal-pro temp-website
 git commit -m "Update submodules - resolve 363 changes"
 git push origin master
-
-```python
-
+```
+python
 # 🎯 VSCode Source Control Panel Actions
-
 1. **Refresh Source Control**: Click the refresh button in VSCode source control panel
 2. **Stage Changes**: Use "+" to stage files shown as modified
 3. **Commit**: Write commit message and commit changes
 
 1. **Push**: Push committed changes to remote repository
-
 # 🛠 Common Solutions
 
 # If Submodules Are Out of Sync
 
-```bash
-
+```
+bash
 # Update submodules to latest
-
 git submodule update --remote --merge
-
-```python
-
+```
+python
 # If You Want to Remove Submodule Tracking
 
-```bash
-
+```
+bash
 # Remove from git (but keep files)
-
 git rm apps/terminal-pro temp-website
 git commit -m "Remove submodule tracking for 363"
-
-```python
-
+```
+python
 # ✅ Verification Steps
-
 1. Check `git status` shows clean working directory
 2. Verify VSCode source control shows "0 changes"
 3. Confirm no more "363" references in source control panel
 
 1. Push changes to remote repository
-
 # 🔧 Prevention Strategies
 
 # Critical: Always Include Submodule Changes
@@ -119,34 +98,27 @@ git commit -m "Remove submodule tracking for 363"
 
 # Submodule Management Best Practices
 
-```bash
-
+```
+bash
 # Before any main repo commit
-
 git submodule update --remote --merge  # Update all submodules
 git add apps/terminal-pro temp-website # Stage submodule changes
 git commit -m "Update submodules"      # Commit submodule updates first
 git add .                              # Now stage main repo changes
 git commit -m "Main repo changes"      # Final commit
-
-```python
-
+```
+python
 # VSCode Configuration
+ - Enable "Git: Show Submodule Changes" in settings
 
-- Enable "Git: Show Submodule Changes" in settings
+ - Use Git lens extension for better submodule visibility
 
-- Use Git lens extension for better submodule visibility
-
-- Configure VSCode to warn about unsynced submodules
-
+ - Configure VSCode to warn about unsynced submodules
 # Automated Prevention Script
-
 Add to your workflow:
-
-```bash
-
+```
+bash
 # !/bin/bash
-
 echo "🔍 Checking submodule sync before commit..."
 git submodule update --remote --merge
 if [ $? -eq 0 ]; then
@@ -155,25 +127,21 @@ else
     echo "❌ Submodule issues found - fix before commit"
     exit 1
 fi
-
-```python
-
+```
+python
 # VSCode Source Control Panel Tips
+ - **Refresh regularly**: Click refresh button to see latest changes
 
-- **Refresh regularly**: Click refresh button to see latest changes
+ - **Stage submodules**: Use "+" button on submodules to stage changes
 
-- **Stage submodules**: Use "+" button on submodules to stage changes
+ - **Check status**: Look for "M" (modified) indicators on submodules
 
-- **Check status**: Look for "M" (modified) indicators on submodules
-
-- **Commit pattern**: Always commit submodule changes before main repo
-
+ - **Commit pattern**: Always commit submodule changes before main repo
 # Warning Signs to Watch For
+ - Source control shows "M" next to submodule folders
 
-- Source control shows "M" next to submodule folders
+ - Git status shows submodule references as modified
 
-- Git status shows submodule references as modified
+ - VSCode source control count doesn't match `git status`
 
-- VSCode source control count doesn't match `git status`
-
-- Working tree appears "clean" but VSCode shows changes
+ - Working tree appears "clean" but VSCode shows changes

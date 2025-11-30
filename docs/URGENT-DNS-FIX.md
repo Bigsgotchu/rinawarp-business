@@ -1,7 +1,7 @@
+
 # !/bin/bash
 
 # URGENT: Fix DNS for SSL to work
-
 echo "🚨 DNS MUST BE FIXED BEFORE SSL WILL WORK"
 echo "========================================="
 echo ""

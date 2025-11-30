@@ -1,8 +1,40 @@
-# 🎯 Kilo Presentation Generator
+# 🎯 RinaWarp Technologies - Complete Platform
 
-# Auto-generate Google-Slides-ready presentation decks with RinaWarp Mermaid theming*
+## 🚀 Multi-Product AI Platform
 
-Transform your ideas into stunning presentations instantly! Kilo creates professional slide decks with neon mermaid aesthetics, complete with speaker notes, voiceover scripts, and social media content.
+RinaWarp Technologies is a comprehensive suite of high-performance AI applications featuring:
+
+- **Kilo Presentation Generator** - Auto-generate Google-Slides-ready presentation decks
+- **Terminal Pro (Mermaid Edition)** - AI-powered terminal enhancement 
+- **AI Music Video Creator (Unicorn Edition)** - Create stunning music videos with AI
+- **VSCode Extension** - Code assistance and automation tools
+
+*Powered by RinaWarp Technologies™*
+
+## 📁 Project Structure
+
+This repository contains the complete RinaWarp platform with organized asset management:
+
+```
+RinaWarp/
+├── 🎨 assets/                    # Brand and visual assets
+│   ├── brand-packs/             # Logo packs and brand materials
+│   │   ├── rinawarp_full_brand_pack.zip
+│   │   ├── rinawarp_mega_brand_pack.zip
+│   │   └── rinawarp_logo_pack.zip
+│   ├── web-icons/               # Complete icon sets (32px-512px)
+│   └── [existing assets]        # Current logos, favicons, etc.
+├── ⚖️ legal/                     # Legal and compliance documents
+│   ├── RinaWarp_Trademark_Statement.pdf
+│   ├── RinaWarp_Backend_Security_Certificate.pdf
+│   └── [other legal docs]
+├── 🛠️ scripts/installers/        # Installation and setup scripts
+├── 📦 apps/                     # Individual application components
+├── 🌐 website/                  # Main website and landing pages
+├── 🧩 vscode-extension/         # VSCode extension source
+├── 📚 docs/                     # Comprehensive documentation
+└── 🗂️ archive/                  # Organized backup and historical files
+```
 
 # ✨ Features
 
@@ -60,21 +92,52 @@ Transform your ideas into stunning presentations instantly! Kilo creates profess
 
 - Brand-consistent visual elements
 
-# 🚀 Quick Start
+# 🎯 Quick Start
 
-# Installation
+## For Individual Products
 
+### Kilo Presentation Generator
 ```bash
-
-# Clone or download the Kilo Presentation Generator
-
-cd kilo-presentation-generator
-
-# Install dependencies (optional)
-
+# Installation
 npm install
 
-```python
+# Generate a presentation
+node kilo-presentation-cli.js presentation create \
+    --title "Your Presentation Title" \
+    --audience "target audience" \
+    --export "google-slides" \
+    --output ./my-presentation
+```
+
+### VSCode Extension
+```bash
+cd vscode-extension
+npm install
+vsce package
+# Install the .vsix file in VSCode
+```
+
+## 🗂️ Asset Management
+
+### Brand Assets
+- **Location**: `assets/brand-packs/`
+- **Usage**: Logo variations, color schemes, brand guidelines
+- **Updates**: Keep packs current with latest brand evolution
+
+### Web Icons  
+- **Location**: `assets/web-icons/`
+- **Usage**: Website favicons, PWA icons, app store assets
+- **Sizes**: Complete set from 32px to 512px
+
+### Legal Documents
+- **Location**: `legal/`
+- **Usage**: Compliance, trademarks, security certificates
+- **Access**: Available for regulatory and business requirements
+
+### Installation Scripts
+- **Location**: `scripts/installers/`
+- **Usage**: Automated deployment and setup
+- **Types**: Kali Linux, general Linux, development environmentspython
 
 # Basic Usage
 
@@ -414,6 +477,43 @@ After using Kilo, you should have:
 - **Multi-platform assets** for comprehensive marketing
 
 - **Speaker support** for confident delivery
+
+---
+
+# 🛠️ Maintenance & Organization
+
+## 📅 Regular Maintenance Tasks
+
+### Monthly Reviews
+- **Archive Cleanup**: Review `archive/` directory for outdated backups
+- **Asset Updates**: Check brand packs for design updates  
+- **Dependencies**: Update npm packages and security patches
+- **Documentation**: Ensure README and docs reflect current structure
+
+### Version Control
+```bash
+# Commit organized changes
+git add .
+git commit -m "docs: Update README with new asset organization
+
+- Add comprehensive project structure documentation
+- Reference new asset locations (brand-packs/, web-icons/, legal/)
+- Include maintenance guidelines and quick start sections  
+- Document archive system for backup management"
+git push origin main
+```
+
+## 🗂️ Archive System
+
+### Purpose
+- **Safety**: Preserve historical versions and backups
+- **Recovery**: Enable rollback if needed
+- **Organization**: Keep main directory clean
+
+### Cleanup Schedule
+- **30 days**: Remove temporary development backups
+- **90 days**: Archive old build artifacts
+- **1 year**: Review and consolidate historical archives
 
 ---
 

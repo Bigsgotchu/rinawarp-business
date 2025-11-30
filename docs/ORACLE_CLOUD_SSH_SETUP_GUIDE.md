@@ -72,11 +72,11 @@ SQIDAQAB
 ---
 
 After a few minutes, test the SSH connection:
-
-```bash
+```
+bash
 ssh -i ~/.ssh/oracle_vm_key ubuntu@158.101.1.38
-
-```css
+```
+css
 
 🆘 IF YOU CAN'T FIND THE SSH SECTION:
 

@@ -1,7 +1,7 @@
+
 # 🚨 RINAWARP REMOTE SERVER - COMPLETE FIX GUIDE
 
 ## 🔍 **Issues Identified**
-
 From your terminal output, I can see:
 
 1. **❌ CLI Not Installed:** `sudo: rina: command not found`
@@ -10,15 +10,15 @@ From your terminal output, I can see:
 4. **✅ Health Check Working:** API responds (HTTP/2 405), but web shows 404
 
 ---
-
 ## 🔧 **COMPLETE REMEDIATION STEPS**
 
 ### **Step 1: Install the RinaWarp CLI**
-
 On your remote server (`ubuntu@Rinawarp-Api`):
+```
+bash
 
-```bash
 # Create the RinaWarp CLI script
+
 sudo tee /usr/local/bin/rina > /dev/null <<'EOF'
 #!/bin/bash
 set -euo pipefail
@@ -157,20 +157,20 @@ case "$COMMAND" in
   help|*)     show_help ;;
 esac
 EOF
-
 # Make CLI executable
+
 sudo chmod +x /usr/local/bin/rina
-
 # Create RinaWarp directory and scripts
-mkdir -p ~/RinaWarp
 
+mkdir -p ~/RinaWarp
 # Copy the scripts (if you uploaded them via scp)
 # If not, create them:
 ```
 
 ### **Step 2: Create the Certificate Fix Script**
 
-```bash
+```
+bash
 cat > ~/RinaWarp/rina-cert-fix.sh <<'EOF'
 #!/bin/bash
 set -euo pipefail
@@ -192,18 +192,18 @@ sudo tar -czpf "$BACKUP_ROOT/etc-nginx.tar.gz" /etc/nginx
 
 echo ""
 echo "[OK] Backup complete."
-
 # ------------------------------------------------------
 # 1. Consolidate renewal configs to ONE SAN cert
 # ------------------------------------------------------
+
 RENEWAL_DIR="/etc/letsencrypt/renewal"
 ARCHIVE_DIR="/etc/letsencrypt/renewal-archive-$STAMP"
 
 echo ""
 echo "[STEP] Archiving extra renewal configs to: $ARCHIVE_DIR"
 sudo mkdir -p "$ARCHIVE_DIR"
-
 # We KEEP: api.rinawarptech.com.conf (SAN: api + downloads + monitoring + main + www)
+
 KEEP_CONF="api.rinawarptech.com.conf"
 
 for f in api.rinawarptech.com-0001.conf \
@@ -220,10 +220,10 @@ done
 echo ""
 echo "[INFO] Keeping renewal config:"
 echo "       $RENEWAL_DIR/$KEEP_CONF"
-
 # ------------------------------------------------------
 # 2. Choose canonical live cert dir
 # ------------------------------------------------------
+
 CANON_DIR="/etc/letsencrypt/live/api.rinawarptech.com"
 
 echo ""
@@ -234,10 +234,10 @@ if [ ! -f "$CANON_DIR/fullchain.pem" ] || [ ! -f "$CANON_DIR/privkey.pem" ]; the
   exit 1
 fi
 echo "[OK] Canonical cert exists."
-
 # ------------------------------------------------------
 # 3. Point ALL nginx sites to this one cert
 # ------------------------------------------------------
+
 echo ""
 echo "[STEP] Updating nginx vhosts to use canonical cert..."
 
@@ -258,10 +258,10 @@ for site in "${SITES[@]}"; do
     echo "  - Skipping $CONF (not found)"
   fi
 done
-
 # ------------------------------------------------------
 # 4. Test & restart nginx cleanly
 # ------------------------------------------------------
+
 echo ""
 echo "[STEP] Testing nginx configuration..."
 sudo nginx -t
@@ -275,10 +275,10 @@ sudo systemctl start nginx
 echo ""
 echo "[STEP] nginx status (short):"
 sudo systemctl status nginx --no-pager -l | head -n 20
-
 # ------------------------------------------------------
 # 5. Test certbot renew dry-run with the new layout
 # ------------------------------------------------------
+
 echo ""
 echo "[STEP] Running certbot renew --dry-run (this may take a bit)..."
 if sudo certbot renew --dry-run; then
@@ -300,64 +300,70 @@ echo "====================================================="
 EOF
 
 chmod +x ~/RinaWarp/rina-cert-fix.sh
+
 ```
 
 ### **Step 3: Fix NGINX First**
-
 Before running certificate consolidation, fix NGINX:
+```
+bash
 
-```bash
 # Fix NGINX configuration
-sudo nginx -t
 
+sudo nginx -t
 # Reset NGINX completely
+
 sudo systemctl stop nginx
 sudo systemctl reset-failed nginx
 sudo systemctl start nginx
-
 # Check status
+
 sudo systemctl status nginx
+
 ```
 
 ### **Step 4: Run Certificate Consolidation**
 
-```bash
+```
+bash
+
 # Now run the certificate consolidation
+
 sudo rina cert-fix
+
 ```
 
 ### **Step 5: Test Everything**
 
-```bash
-# Test CLI installation
-rina help
-
-# Check system status
-rina status
-
-# Test health endpoints
-rina health
-
-# Test certificate renewal manually
-sudo certbot renew --dry-run
 ```
+bash
 
+# Test CLI installation
+
+rina help
+# Check system status
+
+rina status
+# Test health endpoints
+
+rina health
+# Test certificate renewal manually
+
+sudo certbot renew --dry-run
+
+```
 ---
-
 ## 🎯 **EXPECTED RESULTS**
-
 After completing these steps, you should see:
 
-- ✅ **CLI Working:** `rina help` shows all commands
-- ✅ **NGINX Running:** Service status shows "active (running)"
-- ✅ **Cert Consolidation:** Single SAN certificate in use
-- ✅ **Healthy Endpoints:** Both API and web responding properly
-- ✅ **Certificate Renewal:** Dry-run succeeds without errors
+ - ✅ **CLI Working:** `rina help` shows all commands
+ - ✅ **NGINX Running:** Service status shows "active (running)"
+ - ✅ **Cert Consolidation:** Single SAN certificate in use
+ - ✅ **Healthy Endpoints:** Both API and web responding properly
+ - ✅ **Certificate Renewal:** Dry-run succeeds without errors
 
 ---
-
 ## 🚨 **IF ISSUES PERSIST**
-
 If you still encounter problems:
 
 1. **Check NGINX logs:** `sudo journalctl -u nginx -f`

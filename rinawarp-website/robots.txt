@@ -1,0 +1,68 @@
+# RinaWarp Technologies - Robots.txt
+# https://rinawarptech.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Allow all search engines to crawl the main pages
+Allow: /index.html
+Allow: /terminal-pro.html
+Allow: /music-video-creator.html
+Allow: /pricing.html
+Allow: /download.html
+Allow: /support.html
+Allow: /about.html
+Allow: /contact.html
+Allow: /blog.html
+
+# Allow CSS and JS files
+Allow: /css/
+Allow: /js/
+Allow: /assets/
+
+# Disallow archive and duplicate content
+Disallow: /archive/
+Disallow: /backup/
+Disallow: /*-backup*
+Disallow: /*duplicate*
+
+# Disallow sensitive files
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /*.log
+Disallow: /temp/
+Disallow: /cache/
+
+# Sitemap location
+Sitemap: https://rinawarptech.com/sitemap.xml
+
+# Crawl delay for polite crawling
+Crawl-delay: 1
+
+# Specific directives for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Host directive
+Host: https://rinawarptech.com
