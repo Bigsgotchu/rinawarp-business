@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RinaWarp Terminal Pro — Mermaid Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RinaWarp Terminal Pro — AI-powered workflow terminal with a hybrid neon mermaid theme. Start free, no card required. Upgrade anytime.">
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    body { margin:0; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; background:#05060a; color:#f9fafb; }
+    .rw-hero {
+      padding:5rem 1.75rem 3rem;
+      background: radial-gradient(circle at top left, rgba(0,255,234,0.22), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(255,32,152,0.18), transparent 60%),
+                  #05060a;
+    }
+    .rw-container { max-width:1120px; margin:0 auto; }
+    .rw-hero-grid { display:grid; gap:2.5rem; align-items:center; }
+    @media (min-width:900px) { .rw-hero-grid { grid-template-columns: 1.2fr 1fr; } }
+    .rw-eyebrow { text-transform:uppercase; letter-spacing:.18em; font-size:.78rem; color:#7dd3fc; margin-bottom:.75rem; }
+    .rw-title { font-size:2.6rem; line-height:1.1; margin:0 0 1.2rem; }
+    @media (min-width:900px) { .rw-title { font-size:3.1rem; } }
+    .rw-subtitle { font-size:1.02rem; max-width:34rem; color:#cbd5f5; margin-bottom:1.5rem; }
+
+    .rw-pill-row { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.5rem; }
+    .rw-pill {
+      font-size:.8rem; padding:.35rem .8rem;
+      border-radius:999px; border:1px solid rgba(148,163,255,.45);
+      background:rgba(15,23,42,.8); backdrop-filter:blur(12px);
+    }
+
+    .rw-cta-row { display:flex; flex-wrap:wrap; gap:.75rem; margin-bottom:.75rem; }
+    .rw-btn-main {
+      border-radius:999px;
+      padding:.85rem 1.5rem;
+      font-weight:600;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      background:linear-gradient(120deg,#ff1fad,#12d6ff);
+      color:white;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      box-shadow:0 0 22px rgba(56,189,248,.55);
+    }
+    .rw-btn-ghost {
+      border-radius:999px;
+      padding:.85rem 1.2rem;
+      font-weight:500;
+      border:1px solid rgba(148,163,255,.5);
+      background:rgba(15,23,42,.7);
+      color:#e5e7eb;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      backdrop-filter:blur(10px);
+    }
+    .rw-cta-footnote { font-size:.8rem; color:#a5b4fc; }
+
+    .rw-hero-card {
+      border-radius:24px;
+      padding:1.75rem 1.5rem;
+      background:radial-gradient(circle at top,#0ea5e9 0,transparent 50%),
+                 radial-gradient(circle at bottom,#ec4899 0,transparent 55%),
+                 #020617;
+      border:1px solid rgba(148,163,255,.5);
+      box-shadow:0 24px 60px rgba(15,23,42,.9);
+    }
+    .rw-hero-card-title { font-size:1.05rem; margin-bottom:.75rem; }
+    .rw-hero-metrics { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem; margin-bottom:1.25rem; font-size:.86rem; }
+    .rw-metric-label { opacity:.75; }
+    .rw-metric-value { font-weight:600; }
+
+    .rw-section {
+      padding:3rem 1.75rem 4rem;
+      background:#020617;
+    }
+    .rw-section-title { font-size:1.6rem; margin-bottom:.4rem; }
+    .rw-section-sub { font-size:.95rem; color:#9ca3af; margin-bottom:2rem; }
+
+    .rw-feature-grid {
+      display:grid; gap:1.5rem;
+    }
+    @media (min-width:900px) { .rw-feature-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    .rw-feature-card {
+      border-radius:18px;
+      padding:1.3rem 1.2rem;
+      background:#020617;
+      border:1px solid rgba(31,41,55,.9);
+    }
+    .rw-feature-label { font-size:.8rem; letter-spacing:.16em; text-transform:uppercase; color:#7dd3fc; margin-bottom:.3rem; }
+    .rw-feature-title { font-size:1.02rem; margin-bottom:.4rem; }
+    .rw-feature-body { font-size:.9rem; color:#9ca3af; }
+
+    .rw-pricing-callout {
+      margin-top:2.5rem;
+      border-radius:22px;
+      padding:1.4rem 1.5rem;
+      background:linear-gradient(120deg,rgba(56,189,248,.12),rgba(244,63,94,.16));
+      border:1px solid rgba(125,211,252,.65);
+      font-size:.9rem;
+    }
+    .rw-pricing-callout strong { color:#e0f2fe; }
+    .rw-pricing-inline { display:flex; flex-wrap:wrap; gap:.5rem; margin:.6rem 0 0; }
+    .rw-tag {
+      font-size:.8rem;
+      padding:.25rem .65rem;
+      border-radius:999px;
+      background:rgba(15,23,42,.8);
+      border:1px solid rgba(148,163,255,.5);
+    }
+
+    footer {
+      padding:2rem 1.5rem 3rem;
+      background:#020617;
+      font-size:.85rem;
+      color:#6b7280;
+    }
+    footer a { color:#7dd3fc; text-decoration:none; margin:0 .35rem; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="rw-hero">
+    <div class="rw-container rw-hero-grid">
+      <div>
+        <div class="rw-eyebrow">Terminal Pro • Mermaid Edition</div>
+        <h1 class="rw-title">Your AI-powered workflow terminal.</h1>
+        <p class="rw-subtitle">
+          RinaWarp Terminal Pro wraps your tools, APIs, and AI into one neon-clean command center.  
+          Built for builders, artists, and power users who hate clutter and love control.
+        </p>
+
+        <div class="rw-pill-row">
+          <div class="rw-pill">Start Free — No Card Required</div>
+          <div class="rw-pill">Hybrid: local tools + cloud AI</div>
+          <div class="rw-pill">Mermaid color system</div>
+        </div>
+
+        <div class="rw-cta-row">
+          <a class="rw-btn-main" href="/download">
+            Start Free Tier
+            <span>→</span>
+          </a>
+          <a class="rw-btn-ghost" href="/pricing">
+            View pricing & lifetime spots
+          </a>
+        </div>
+        <div class="rw-cta-footnote">
+          Free tier stays free. Upgrades available from <strong>$9.99/mo</strong> or <strong>$699 lifetime</strong> while seats last.
+        </div>
+      </div>
+
+      <aside class="rw-hero-card">
+        <div class="rw-hero-card-title">Live snapshot</div>
+        <div class="rw-hero-metrics">
+          <div>
+            <div class="rw-metric-label">Current wave</div>
+            <div class="rw-metric-value">Founder Lifetime</div>
+          </div>
+          <div>
+            <div class="rw-metric-label">Lifetime seats per wave</div>
+            <div class="rw-metric-value">200 • 300 • ∞</div>
+          </div>
+          <div>
+            <div class="rw-metric-label">Monthly tiers</div>
+            <div class="rw-metric-value">$9.99–$99/mo</div>
+          </div>
+          <div>
+            <div class="rw-metric-label">Free tier</div>
+            <div class="rw-metric-value">Unlimited</div>
+          </div>
+        </div>
+        <a class="rw-btn-ghost" href="/download">
+          Get Terminal Pro
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="rw-section">
+    <div class="rw-container">
+      <h2 class="rw-section-title">Why Terminal Pro exists</h2>
+      <p class="rw-section-sub">
+        You shouldn't need twelve tabs, three dashboards, and a prayer to ship your work.  
+        Terminal Pro pulls it into one place — with a layout that still feels like you.
+      </p>
+
+      <div class="rw-feature-grid">
+        <article class="rw-feature-card">
+          <div class="rw-feature-label">Workflow brain</div>
+          <h3 class="rw-feature-title">AI that remembers how you work</h3>
+          <p class="rw-feature-body">
+            Build your own commands, macros, and AI prompts. Save them, remix them, and run them from 
+            one clean mermaid-themed interface.
+          </p>
+        </article>
+
+        <article class="rw-feature-card">
+          <div class="rw-feature-label">Built to ship</div>
+          <h3 class="rw-feature-title">From idea to release, in one lane</h3>
+          <p class="rw-feature-body">
+            Hook in your git, docs, and APIs. Trigger scripts, hit endpoints, and move from "what if"
+            to "it's live" without fighting your tools.
+          </p>
+        </article>
+
+        <article class="rw-feature-card">
+          <div class="rw-feature-label">Own your lane</div>
+          <h3 class="rw-feature-title">Match the mermaid aesthetic</h3>
+          <p class="rw-feature-body">
+            Hot pink, coral, teal, baby blue, black. A terminal that looks like your brand — not a
+            random grey box pretending to be a personality.
+          </p>
+        </article>
+      </div>
+
+      <div class="rw-pricing-callout">
+        <strong>How pricing works:</strong>
+        <div class="rw-pricing-inline">
+          <span class="rw-tag">Free — $0 • unlimited users</span>
+          <span class="rw-tag">Basic — $9.99/mo</span>
+          <span class="rw-tag">Starter — $29/mo</span>
+          <span class="rw-tag">Creator — $69/mo</span>
+          <span class="rw-tag">Pro — $99/mo</span>
+          <span class="rw-tag">Founder Lifetime — $699 (200 seats)</span>
+          <span class="rw-tag">Pioneer Lifetime — $800 (300 seats)</span>
+          <span class="rw-tag">Lifetime Future — $999</span>
+        </div>
+        <p style="margin-top:.8rem;">
+          Start on the Free tier and upgrade only if RinaWarp is actually earning its place in your stack.
+        </p>
+        <a class="rw-btn-main" href="/pricing" style="margin-top:.6rem; display:inline-flex;">
+          See full pricing
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="rw-container" style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:space-between;align-items:center;">
+      <span>© 2025 RinaWarp Technologies, LLC — All rights reserved.</span>
+      <span>
+        <a href="/privacy">Privacy</a> •
+        <a href="/terms">Terms</a> •
+        <a href="/refund-policy">Refunds</a> •
+        <a href="/dmca">DMCA</a>
+      </span>
+    </div>
+  </footer>
+
+</body>
+</html>

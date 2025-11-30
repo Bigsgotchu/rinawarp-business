@@ -1,6 +1,6 @@
 # 🚀 RinaWarp Terminal Pro VS Code Extension - Installation Guide
 
-## 📦 Complete Installation Package
+# 📦 Complete Installation Package
 
 You now have the **complete RinaWarp Terminal Pro VS Code Extension** with all three requested features:
 
@@ -8,7 +8,7 @@ You now have the **complete RinaWarp Terminal Pro VS Code Extension** with all t
 ✅ **AI Suggestions Panel** (GPT-powered)
 ✅ **Full VS Code Extension** (Command palette, sidebar UI, Terminal Pro integration)
 
-## 🏗️ Extension Structure Created
+# 🏗️ Extension Structure Created
 
 ```python
 vscode-extension/
@@ -23,9 +23,9 @@ vscode-extension/
 
 ```python
 
-## 🔧 Quick Installation Steps
+# 🔧 Quick Installation Steps
 
-### 1. Install Dependencies
+# 1. Install Dependencies
 
 ```bash
 cd vscode-extension
@@ -33,21 +33,21 @@ npm install
 
 ```python
 
-### 2. Build Extension
+# 2. Build Extension
 
 ```bash
 npm run compile
 
 ```python
 
-### 3. Install Extension in VS Code
+# 3. Install Extension in VS Code
 
 ```bash
 code --install-extension dist/rinawarp-terminal-pro-1.0.0.vsix
 
 ```python
 
-### 4. Setup Backend Integration (Optional)
+# 4. Setup Backend Integration (Optional)
 
 Add these FastAPI endpoints to your backend:
 
@@ -70,7 +70,7 @@ async def ai_suggestions():
             memory = json.load(f)
         recent_errors = memory.get('recentErrors', [])[:5]
 
-        # Simple AI-like analysis
+# # Simple AI-like analysis
 
         suggestions = f"""
         <div class="ai-suggestion">
@@ -87,9 +87,9 @@ async def ai_suggestions():
 
 ```python
 
-## 🎮 Extension Features Working
+# 🎮 Extension Features Working
 
-### **Command Palette Commands:**
+# **Command Palette Commands:**
 
 - `Ctrl+Shift+R` → Open Dev Dashboard
 
@@ -97,7 +97,7 @@ async def ai_suggestions():
 
 - `Ctrl+Shift+A` → AI Fix Suggestions
 
-### **Sidebar RinaWarp Panel:**
+# **Sidebar RinaWarp Panel:**
 
 - Dedicated panel in Explorer view
 
@@ -105,7 +105,7 @@ async def ai_suggestions():
 
 - Real-time status indicators
 
-### **Dev Dashboard Enhanced:**
+# **Dev Dashboard Enhanced:**
 
 - 🚀 One-Click Deploy button with status feedback
 
@@ -115,7 +115,7 @@ async def ai_suggestions():
 
 - 🔧 Integrated Kilo Fix Pack scanning
 
-### **Terminal Pro Integration:**
+# **Terminal Pro Integration:**
 
 - Launch desktop app directly from VS Code
 
@@ -123,7 +123,7 @@ async def ai_suggestions():
 
 - AI assistant integration
 
-## ✅ Testing Your Installation
+# ✅ Testing Your Installation
 
 1. **Open Command Palette** (`Ctrl+Shift+P`)
 2. **Type "RinaWarp"** to see all available commands
@@ -132,9 +132,9 @@ async def ai_suggestions():
 1. **Test Deploy**: `RinaWarp: Run Deploy`
 2. **Test AI Fix**: `RinaWarp: AI Fix Suggestions`
 
-## 🔥 What You Can Do Now
+# 🔥 What You Can Do Now
 
-### **From VS Code:**
+# **From VS Code:**
 
 - Launch Terminal Pro with one click
 
@@ -146,7 +146,7 @@ async def ai_suggestions():
 
 - Sync your plugins automatically
 
-### **From Dev Dashboard:**
+# **From Dev Dashboard:**
 
 - Run Kilo Fix Pack scans
 
@@ -156,7 +156,7 @@ async def ai_suggestions():
 
 - Access AI suggestions for optimization
 
-## 🎯 Next Steps
+# 🎯 Next Steps
 
 1. **Install the extension** using the steps above
 2. **Configure settings** in VS Code preferences

@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RinaWarp™ Terminal Pro – AI-Powered Terminal & Rina Vex Artist Brand | rinawarptech.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="RinaWarp Terminal Pro – AI-powered terminal with voice control, multi-model routing, and lifetime licensing. Built by Rina Vex artist."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'fuchsia-custom': '#e9007f',
+              'cyan-custom': '#00ff99',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .gradient-bg {
+        background: linear-gradient(to bottom right, #e9007f, #ff6ac1, #00ff99);
+      }
+      .glow {
+        box-shadow: 0 0 60px rgba(233, 0, 127, 0.25);
+      }
+      /* Double Infinity Logo - Two intertwined infinity symbols */
+      .double-infinity-logo {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background: linear-gradient(45deg, #e9007f, #ff6ac1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 16px;
+        font-weight: bold;
+        letter-spacing: -3px;
+        transform: rotate(15deg);
+      }
+      .double-infinity-logo::after {
+        content: '∞';
+        position: absolute;
+        left: 4px;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(-45deg, #ff6ac1, #00ff99);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 16px;
+        font-weight: bold;
+        transform: rotate(-25deg) translateX(3px);
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-950 text-slate-50">
+    <!-- Navigation -->
+    <header class="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/80 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+        <a href="#top" class="flex items-center gap-3">
+          <!-- Double Infinity Logo -->
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="double-infinity-logo">∞∞</div>
+            </div>
+            <div class="flex flex-col leading-tight">
+              <span class="text-sm font-semibold tracking-[0.18em] uppercase text-slate-300">RinaWarp</span>
+              <span class="text-xs font-medium text-slate-400">Terminal Pro & Rina Vex</span>
+            </div>
+          </div>
+        </a>
+
+        <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+          <a href="/terminal/" class="hover:text-white">Terminal Pro</a>
+          <a href="/video/" class="hover:text-white">AI Music Video</a>
+          <a href="/rina/" class="hover:text-white">Rina Vex</a>
+          <a href="/pricing/" class="hover:text-white">Pricing</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="#pricing" class="hidden text-xs font-semibold uppercase tracking-[0.16em] text-slate-300 hover:text-white md:inline">View Plans</a>
+          <a href="#download" class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-950 gradient-bg shadow-lg shadow-fuchsia-500/30 hover:brightness-110 transition">Download</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="top" class="border-b border-slate-800 bg-slate-950/95">
+      <div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-16 pt-12 md:flex-row md:px-6 md:pb-20 md:pt-16">
+        <div class="flex-1 space-y-6">
+          <div class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-xs text-slate-300">
+            <div class="w-7 h-7 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="text-sm font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+            </div>
+            <span class="uppercase tracking-[0.16em]">RinaWarp Terminal Pro</span>
+          </div>
+
+          <h1 class="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            The AI-powered terminal that works like a <span class="bg-clip-text text-transparent gradient-bg">full-time dev</span> on your machine.
+          </h1>
+
+          <p class="max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
+            RinaWarp Terminal Pro is your voice-controlled, AI-routed, workflow-obsessed terminal. Lifetime license, no subscriptions, built for builders who actually ship.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="#download" class="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-slate-950 gradient-bg shadow-lg shadow-fuchsia-500/30 hover:brightness-110 transition">
+              Download Terminal Pro <span class="text-[10px] opacity-80">Linux • AppImage</span>
+            </a>
+            <a href="#pricing" class="inline-flex items-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-200 hover:border-slate-500 hover:text-white">
+              View lifetime & monthly plans
+            </a>
+          </div>
+
+          <div class="mt-4 grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:gap-6">
+            <div class="space-y-0.5">
+              <div class="text-xs uppercase tracking-[0.18em] text-slate-400">AI Engines</div>
+              <div class="text-sm font-semibold text-slate-100">Multi-model</div>
+            </div>
+            <div class="space-y-0.5">
+              <div class="text-xs uppercase tracking-[0.18em] text-slate-400">Lifetime tiers</div>
+              <div class="text-sm font-semibold text-slate-100">3 limited</div>
+            </div>
+            <div class="space-y-0.5">
+              <div class="text-xs uppercase tracking-[0.18em] text-slate-400">Launch discount</div>
+              <div class="text-sm font-semibold text-slate-100">Founder & Pioneer</div>
+            </div>
+            <div class="space-y-0.5">
+              <div class="text-xs uppercase tracking-[0.18em] text-slate-400">Artist brand</div>
+              <div class="text-sm font-semibold text-slate-100">Rina Vex™</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-1">
+          <div class="relative mx-auto max-w-md rounded-3xl border border-slate-800 bg-slate-900/60 p-4 shadow-2xl shadow-fuchsia-500/20">
+            <div class="absolute inset-0 -z-10 blur-3xl opacity-30 gradient-bg"></div>
+            <div class="mb-3 flex items-center justify-between text-xs text-slate-300">
+              <span class="inline-flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+                  <div class="text-xs font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+                </div>
+                <span>RinaWarp Terminal Pro</span>
+              </span>
+              <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-emerald-300">Live session</span>
+            </div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/90 p-3 font-mono text-xs text-emerald-300">
+              <p class="text-slate-400">karina@warp ~ <span class="text-fuchsia-400"># RinaWarp</span></p>
+              <p class="mt-2 text-emerald-300">$ <span class="text-fuchsia-300">warp deploy --target=production --ai-assist</span></p>
+              <p class="mt-1 text-emerald-200"><span class="mr-1 text-slate-500">[AI]</span>Analyzing repo, CI & infra…</p>
+              <p class="mt-1 text-emerald-200"><span class="mr-1 text-slate-500">[AI]</span>Configuring Oracle, PM2, Caddy, Cloudflare…</p>
+              <p class="mt-1 text-emerald-200"><span class="mr-1 text-slate-500">[AI]</span>Hardening backend with API keys & rate limits…</p>
+              <p class="mt-1 text-emerald-200"><span class="mr-1 text-slate-500">[OK]</span>api.rinawarptech.com is now live & healthy.</p>
+              <p class="mt-1 text-fuchsia-300"><span class="mr-1 text-slate-500">[∞∞]</span>Welcome to Terminal Pro. Let's ship.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="border-b border-slate-800 bg-slate-950/98 py-14">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="text-xs font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+            </div>
+            <span>Why Terminal Pro</span>
+          </div>
+          <h2 class="mt-4 text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl">A terminal that feels like an elite teammate, not just a shell.</h2>
+        </div>
+
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          <div class="flex flex-col gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+            <div class="flex items-center gap-2 text-sm font-semibold text-slate-100">
+              <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-950 text-[11px] text-fuchsia-300 border border-slate-700">∞</span>
+              Multi-model AI routing
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Route tasks through multiple LLM providers (OpenAI, Groq, Ollama, and more) with fallbacks, so your terminal doesn't stall when one model does.</p>
+          </div>
+          <div class="flex flex-col gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+            <div class="flex items-center gap-2 text-sm font-semibold text-slate-100">
+              <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-950 text-[11px] text-fuchsia-300 border border-slate-700">∞</span>
+              Production-grade backend
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Secured with API keys, rate limiting, Cloudflare, Caddy, Oracle, PM2, Stripe – already hardened so you can just build and sell.</p>
+          </div>
+          <div class="flex flex-col gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+            <div class="flex items-center gap-2 text-sm font-semibold text-slate-100">
+              <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-950 text-[11px] text-fuchsia-300 border border-slate-700">∞</span>
+              Launch-ready business stack
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Stripe checkout, license system, download pipeline, Netlify + R2 scripts – your app + business are wired together from day one.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="border-b border-slate-800 bg-slate-950/98 py-16">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="text-xs font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+            </div>
+            <span>Pricing &amp; Lifetime</span>
+          </div>
+          <h2 class="mt-4 text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl">Monthly if you want. Lifetime if you're serious.</h2>
+        </div>
+        <p class="mt-3 text-center text-sm text-slate-300">Same engine under the hood. You choose how you want to invest – monthly flexibility or lifetime ownership.</p>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-2">
+          <!-- Monthly / SaaS column -->
+          <div class="space-y-4 rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-semibold text-slate-100">Monthly &amp; Subscription Plans</h3>
+              <span class="rounded-full bg-slate-800 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-300">Unlimited seats per plan</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div class="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-300">
+                  <span class="font-semibold">Free</span>
+                  <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em]">Funnel</span>
+                </div>
+                <div class="mt-1 text-base font-semibold text-white">$0</div>
+                <p class="mt-1 text-xs text-slate-400">Try the experience</p>
+              </div>
+              <div class="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-300">
+                  <span class="font-semibold">Basic</span>
+                  <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em]">Starter</span>
+                </div>
+                <div class="mt-1 text-base font-semibold text-white">$9.99/mo</div>
+                <p class="mt-1 text-xs text-slate-400">Light workflows & hobby projects</p>
+              </div>
+              <div class="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-300">
+                  <span class="font-semibold">Creator</span>
+                  <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em]">Pro creators</span>
+                </div>
+                <div class="mt-1 text-base font-semibold text-white">$69/mo</div>
+                <p class="mt-1 text-xs text-slate-400">Automation + content workflows</p>
+              </div>
+              <div class="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-300">
+                  <span class="font-semibold">Pro</span>
+                  <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em]">Power users</span>
+                </div>
+                <div class="mt-1 text-base font-semibold text-white">$99/mo</div>
+                <p class="mt-1 text-xs text-slate-400">Teams, heavy usage, dev shops</p>
+              </div>
+            </div>
+            <p class="mt-2 text-xs text-slate-400">Monthly plans are perfect if you want to test, iterate, or use Terminal Pro for client projects without committing to lifetime yet.</p>
+          </div>
+
+          <!-- Lifetime column -->
+          <div class="space-y-4 rounded-3xl border border-fuchsia-500/60 bg-slate-950/90 p-5 glow">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-semibold text-white">Lifetime Access (Limited Waves)</h3>
+              <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+                <div class="text-sm font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300">One payment, lifetime updates. Founder &amp; Pioneer waves are strictly limited – when they're gone, they're gone.</p>
+            <div class="grid gap-3">
+              <div class="flex flex-col rounded-2xl border border-fuchsia-400 bg-fuchsia-500/10 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-200">
+                  <span class="font-semibold">Founder Lifetime</span>
+                  <span class="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-slate-300">200 licenses</span>
+                </div>
+                <div class="mt-1 text-lg font-semibold text-white">$699</div>
+                <p class="mt-1 text-xs text-slate-300">Launch wave • Highest flex</p>
+              </div>
+              <div class="flex flex-col rounded-2xl border border-slate-700 bg-slate-950/80 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-200">
+                  <span class="font-semibold">Pioneer Lifetime</span>
+                  <span class="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-slate-300">300 licenses</span>
+                </div>
+                <div class="mt-1 text-lg font-semibold text-white">$800</div>
+                <p class="mt-1 text-xs text-slate-300">Second wave • Serious builders</p>
+              </div>
+              <div class="flex flex-col rounded-2xl border border-slate-700 bg-slate-950/80 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-200">
+                  <span class="font-semibold">Lifetime Future</span>
+                  <span class="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-slate-300">Unlimited</span>
+                </div>
+                <div class="mt-1 text-lg font-semibold text-white">$999</div>
+                <p class="mt-1 text-xs text-slate-300">Evergreen lifetime access</p>
+              </div>
+            </div>
+            <a href="#download" class="mt-2 inline-flex w-full items-center justify-center rounded-full px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-slate-950 gradient-bg hover:brightness-110 transition">Lock in lifetime access</a>
+            <p class="mt-2 text-[11px] text-slate-400">Founder & Pioneer tiers are designed for early believers – devs, creators, and power users who want to own their tools, not rent them.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rina Vex Section -->
+    <section id="artist" class="border-b border-slate-800 bg-slate-950 py-16">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="text-xs font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+            </div>
+            <span>Rina Vex • Artist Brand</span>
+          </div>
+          <h2 class="mt-4 text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl">The same mind building Terminal Pro is dropping tracks on 50+ platforms.</h2>
+        </div>
+        <p class="mt-3 text-center text-sm text-slate-300 max-w-3xl mx-auto">RinaWarp started as a way to ship better tools for my own music career. I&apos;m Rina Vex – artist, dev, and the chaos in the middle. This brand lets both sides launch together: the app that powers the work, and the music that tells the story.</p>
+
+        <div class="mt-10 grid gap-8 md:grid-cols-[1.1fr,0.9fr]">
+          <div class="space-y-4 rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+            <h3 class="text-sm font-semibold text-slate-100">Rina Vex • Dark Pop / R&amp;B • Trap-leaning</h3>
+            <p class="text-sm text-slate-300">Songs about foster homes, reunions, heartbreak, and coming back stronger – the same energy that built Terminal Pro. If you&apos;re running code in the terminal, you can run my tracks in your headphones.</p>
+            <ul class="mt-3 grid gap-2 text-sm text-slate-200">
+              <li>• Released on Apple Music, Spotify, YouTube &amp; more</li>
+              <li>• Dark, cinematic, bass-heavy mixes – "car-hit loud"</li>
+              <li>• Real stories behind the brand: family, grind, survival</li>
+            </ul>
+
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <a href="https://open.spotify.com" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-slate-200 border border-slate-700 hover:border-fuchsia-400 hover:text-white">
+                <span class="h-2 w-2 rounded-full bg-emerald-400"></span> Listen on Spotify
+              </a>
+              <a href="https://music.apple.com" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-slate-200 border border-slate-700 hover:border-fuchsia-400 hover:text-white"> Apple Music</a>
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-slate-200 border border-slate-700 hover:border-fuchsia-400 hover:text-white">▶ YouTube</a>
+            </div>
+          </div>
+
+          <div class="relative rounded-3xl border border-slate-800 bg-slate-900/80 p-4 overflow-hidden">
+            <div class="pointer-events-none absolute inset-0 opacity-40 blur-3xl gradient-bg"></div>
+            <div class="relative rounded-2xl border border-slate-700 bg-slate-950/90 p-4">
+              <div class="flex items-center justify-between text-xs text-slate-300">
+                <span class="inline-flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+                    <div class="text-xs font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+                  </div>
+                  <span>Now Playing • Rina Vex</span>
+                </span>
+                <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-fuchsia-300">Artist + Dev</span>
+              </div>
+              <div class="mt-4 space-y-1">
+                <p class="text-sm font-semibold text-slate-100">"For a Minute, Forever"</p>
+                <p class="text-xs text-slate-400">Greyhound bus, reunion, and every second that changes a life.</p>
+              </div>
+
+              <div class="mt-4 h-2 w-full rounded-full bg-slate-800">
+                <div class="h-2 w-2/3 rounded-full bg-fuchsia-400"></div>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between text-[11px] text-slate-400">
+                <span>01:23</span>
+                <span>03:57</span>
+              </div>
+
+              <p class="mt-4 text-xs text-slate-300">RinaWarp is the tech. Rina Vex is the story. Together they turn your setup into a whole ecosystem – tools that ship your code and music that carries your mood.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="border-b border-slate-800 bg-slate-950 py-14">
+      <div class="mx-auto max-w-4xl px-4 md:px-6">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="text-xs font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+            </div>
+            <span>FAQ</span>
+          </div>
+          <h2 class="mt-4 text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl">Quick answers before you hit download.</h2>
+        </div>
+        <div class="mt-8 space-y-6">
+          <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+            <div class="flex items-start gap-2">
+              <span class="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-600 text-[10px] text-fuchsia-300">∞</span>
+              <div>
+                <p class="text-sm font-semibold text-slate-100">Is this actually ready for real-world use?</p>
+                <p class="mt-1 text-sm text-slate-300">Yes. The backend is live on Oracle with PM2, Caddy, Cloudflare, SSL, Stripe, license management, health checks and security hardening already in place. You're not buying a prototype – you're plugging into a working system.</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+            <div class="flex items-start gap-2">
+              <span class="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-600 text-[10px] text-fuchsia-300">∞</span>
+              <div>
+                <p class="text-sm font-semibold text-slate-100">What do I get with a lifetime license?</p>
+                <p class="mt-1 text-sm text-slate-300">Lifetime updates to Terminal Pro, full access to the secured backend, license-based activation for the desktop app, and the right to use it in your own workflows and client projects. Founder & Pioneer tiers are strictly limited for scarcity and early-believer flex.</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+            <div class="flex items-start gap-2">
+              <span class="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-600 text-[10px] text-fuchsia-300">∞</span>
+              <div>
+                <p class="text-sm font-semibold text-slate-100">Is this only for devs?</p>
+                <p class="mt-1 text-sm text-slate-300">No. It's dev-grade, but built for creators, power users, and anyone who lives in their computer. If you're managing projects, content, releases, or multiple tools, Terminal Pro helps you automate and stay in control.</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+            <div class="flex items-start gap-2">
+              <span class="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-600 text-[10px] text-fuchsia-300">∞</span>
+              <div>
+                <p class="text-sm font-semibold text-slate-100">Where does Rina Vex fit into all of this?</p>
+                <p class="mt-1 text-sm text-slate-300">Rina Vex is my artist persona – the music side of the same brain that built RinaWarp. The brand launches together so the tools, visuals, and sound all feel like one ecosystem instead of random parts.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="border-b border-slate-800 bg-slate-950 py-14">
+      <div class="mx-auto max-w-4xl px-4 text-center md:px-6">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="text-xs font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+            </div>
+            <span>Download & Install</span>
+          </div>
+          <h2 class="mt-4 text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl">Get Terminal Pro on your machine in a few clicks.</h2>
+        </div>
+        <p class="mt-3 text-sm text-slate-300">
+          Start with the Linux AppImage. Windows & macOS builds can follow via your existing CI once you're ready – but revenue can start today.
+        </p>
+
+        <div class="mt-8 flex flex-col items-center gap-4">
+          <a href="https://downloads.rinawarptech.com/RinaWarp-Terminal-Pro-1.0.0-linux-x86_64.AppImage" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-950 gradient-bg shadow-lg shadow-fuchsia-500/40 hover:brightness-110 transition">
+            Download AppImage • Linux x86_64
+          </a>
+          <p class="max-w-md text-xs text-slate-400">
+            Make it executable:
+            <code class="ml-1 rounded bg-slate-900 px-1.5 py-0.5 font-mono text-[11px] text-slate-200">chmod +x RinaWarp-Terminal-Pro-1.0.0-linux-x86_64.AppImage</code>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-8 border-t border-slate-900">
+      <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-xs text-slate-400 md:flex-row md:px-6">
+        <div class="flex items-center gap-3">
+          <!-- Double Infinity Logo with text -->
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="double-infinity-logo">∞∞</div>
+            </div>
+            <div class="flex flex-col leading-tight">
+              <span class="text-sm font-semibold tracking-[0.18em] uppercase text-slate-300">RinaWarp</span>
+              <span class="text-xs font-medium text-slate-400">Terminal Pro & Rina Vex</span>
+            </div>
+          </div>
+          <span class="text-[11px] text-slate-500">© 2025 RinaWarp & Rina Vex. All rights reserved.</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="#top" class="hover:text-slate-200">Back to top</a>
+          <span class="h-1 w-1 rounded-full bg-slate-600" />
+          <span class="text-[11px]">Double Infinity™ brand. One mind, two worlds.</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

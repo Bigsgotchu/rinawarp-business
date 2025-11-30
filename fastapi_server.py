@@ -15,19 +15,16 @@ from typing import Optional
 # Initialize FastAPI
 app = FastAPI(title="RinaWarp API")
 
-# ===== CORS: allow your website + local dev + VS Code webview =====
+# ===== CORS: Multi-App + Dev Environment =====
 allowed_origins = [
     "https://rinawarptech.com",
     "https://www.rinawarptech.com",
-    "https://6925fad0871c4a7fbff52ef0--rinawarp-deploy-20251125-114332.netlify.app",
+    "https://api.rinawarptech.com",
+    "https://downloads.rinawarptech.com",
+    "https://monitoring.rinawarptech.com",
     "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "http://localhost:5173",
-    "http://localhost:4000",
-    "http://localhost:4173",
-    "http://127.0.0.1:4173",
-    "vscode-webview://*",  # VS Code webview
-    "https://*.netlify.app",
-    "https://*.netlify.com"
 ]
 
 app.add_middleware(

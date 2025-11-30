@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2025 RinaWarp Technologies, LLC. All rights reserved.
+ *
+ * Google Slides Integration is proprietary to RinaWarp Technologies, LLC.
+ * Unauthorized access, copying, or distribution is strictly prohibited.
+ */
+
 /**
  * Google Slides API Integration for Kilo Presentation Generator
  * Provides direct Google Slides creation capability

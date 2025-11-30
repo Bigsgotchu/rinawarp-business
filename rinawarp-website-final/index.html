@@ -1,347 +1,239 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
-    <title>RinaWarp Terminal Pro – Your AI-Powered Command Center</title>
-    <meta
-      name="description"
-      content="Turn your terminal into an AI command center. RinaWarp Terminal Pro routes to GPT, Claude, Groq, and Ollama in one place. Built for real creators and developers."
-    />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RinaWarp Technologies — Terminal Pro & AI Music Video Creator</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-192x192.png" />
-    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png" />
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="manifest.json" />
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/rinawarp-ui-kit-v3.css" />
+    <link rel="stylesheet" href="/css/rinawarp-optimized.css" />
 
-    <!-- GA4 -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-SZK23HMCVP");
-    </script>
-  </head>
-  <body>
-    <!-- Header -->
-    <header class="site-header">
-      <div class="container nav-container">
-        <a href="/" class="brand">
-          <span class="brand-mark">∞∞</span>
-          <span class="brand-text">RinaWarp Technologies™</span>
-        </a>
-        <nav class="nav-links">
-          <a href="/terminal-pro">Terminal Pro</a>
-          <a href="/music-video-creator">Music Video Creator</a>
-          <a href="/pricing">Pricing</a>
-          <a href="/download">Download</a>
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-          <a href="https://docs.rinawarptech.com" target="_blank" rel="noopener">Docs</a>
-        </nav>
-      </div>
-    </header>
+    <!-- Global Brand Palettes -->
+    <style>
+        :root {
+            /* Mermaid (Terminal Pro) */
+            --m-pink: #FF1B8D;
+            --m-coral: #FF6B35;
+            --m-teal: #00D1C1;
+            --m-blue: #00A2FF;
+            --m-black: #03030A;
 
-    <main>
-<!-- HERO -->
-<section class="hero home-hero">
-  <div class="container">
+            --m-gradient: linear-gradient(90deg, #FF1B8D, #00A2FF);
 
-    <h1>Meet Terminal Pro™</h1>
-    <p class="subtitle">
-      Your digital superpower.  
-      Fix your computer, automate your workflow, and build anything — in simple English.
-    </p>
+            /* Unicorn (AI Music Video Creator) */
+            --u-pink: #FF1BD1;
+            --u-purple: #9B4DFF;
+            --u-blue: #4FDBFF;
+            --u-lime: #BFFF00;
 
-    <div class="cta-buttons">
-      <a href="download.html" class="btn-primary">Download Free Tier</a>
-      <a href="terminal-pro.html" class="btn-secondary">Explore Terminal Pro</a>
-    </div>
+            --u-gradient: linear-gradient(90deg, #FF1BD1, #4FDBFF);
 
-    <div class="hero-image">
-      <img src="assets/terminal-pro-hero-mockup.png" alt="Terminal Pro Interface" />
-    </div>
+            --text-light: #E6E6E8;
+        }
 
-  </div>
-</section>
+        body {
+            background: var(--m-black);
+            color: var(--text-light);
+            font-family: "Inter", sans-serif;
+            margin: 0;
+        }
 
-      <!-- Problem/Solution Section -->
-      <section class="section">
-        <div class="container">
-          <div class="text-center mb-16">
-            <h2>Why Your Terminal Needs AI Superpowers</h2>
-            <p class="lead">
-              Stop wrestling with complex commands and endless documentation. 
-              Let AI handle the complexity while you focus on what matters.
-            </p>
-          </div>
-          
-          <div class="grid grid-2 gap-12 items-center">
-            <div>
-              <h3 class="text-accent mb-6">The Problem</h3>
-              <ul class="space-y-4 text-secondary">
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">❌</span>
-                  <span>Spending hours googling syntax and errors</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">❌</span>
-                  <span>Copy-pasting between terminal and browser</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">❌</span>
-                  <span>Repeating the same commands over and over</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">❌</span>
-                  <span>Managing multiple AI tools separately</span>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 class="text-accent mb-6">The Solution</h3>
-              <ul class="space-y-4 text-secondary">
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">✅</span>
-                  <span>AI understands your code and explains errors in plain English</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">✅</span>
-                  <span>Everything happens where you work - right in the terminal</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">✅</span>
-                  <span>Automate repetitive tasks with voice or text commands</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-accent mr-3 mt-1">✅</span>
-                  <span>One interface for GPT, Claude, Groq, and local models</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
+        /* NAVBAR */
+        .navbar {
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(3,3,10,0.75);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid #222;
+        }
+        .navbar a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 24px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
 
-      <!-- How It Works Section -->
-      <section class="section" style="background: var(--rw-surface-soft);">
-        <div class="container">
-          <div class="text-center mb-16">
-            <h2>How It Works</h2>
-            <p class="lead">
-              Three simple steps to transform your terminal into an AI-powered command center
-            </p>
-          </div>
-          
-          <div class="grid grid-3 gap-8">
-            <div class="card card-soft text-center">
-              <div class="text-6xl mb-4">1️⃣</div>
-              <h3>Install & Connect</h3>
-              <p class="text-secondary">
-                Download Terminal Pro and connect your AI provider APIs. 
-                Your data stays private - we never store your conversations.
-              </p>
-            </div>
-            <div class="card card-soft text-center">
-              <div class="text-6xl mb-4">2️⃣</div>
-              <h3>Type or Speak</h3>
-              <p class="text-secondary">
-                Use natural language to describe what you want to do. 
-                "Deploy this to production" or "explain this error" - just like talking to a colleague.
-              </p>
-            </div>
-            <div class="card card-soft text-center">
-              <div class="text-6xl mb-4">3️⃣</div>
-              <h3>Get Results</h3>
-              <p class="text-secondary">
-                AI executes commands, explains results, and automates complex workflows. 
-                Monitor everything with clear, visual feedback.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        /* HERO */
+        .hero-container {
+            padding: 140px 40px 80px;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 3.8rem;
+            font-weight: 800;
+            background: var(--m-gradient);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        .hero-sub {
+            font-size: 1.35rem;
+            opacity: 0.85;
+            max-width: 700px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
 
-      <!-- Feature Grid Section -->
-      <section class="section">
-        <div class="container">
-          <div class="text-center mb-16">
-            <h2>Everything You Need in One Place</h2>
-            <p class="lead">
-              Powerful features designed for developers, creators, and power users
-            </p>
-          </div>
-          
-          <div class="grid grid-3 gap-8">
-            <div class="card card-soft">
-              <div class="text-4xl mb-4">🧠</div>
-              <h3>Multi-Model AI Routing</h3>
-              <p class="text-secondary">
-                Send requests to GPT-4, Claude, Groq, or local Ollama. 
-                Terminal Pro picks the best model for each task automatically.
-              </p>
-            </div>
-            <div class="card card-soft">
-              <div class="text-4xl mb-4">🎤</div>
-              <h3>Voice Commands</h3>
-              <p class="text-secondary">
-                Control your terminal with voice commands. 
-                "Run tests", "deploy to staging", "show me errors" - hands-free productivity.
-              </p>
-            </div>
-            <div class="card card-soft">
-              <div class="text-4xl mb-4">⚡</div>
-              <h3>Smart Automation</h3>
-              <p class="text-secondary">
-                Transform complex sequences into simple commands. 
-                Build custom workflows that save hours of repetitive work.
-              </p>
-            </div>
-            <div class="card card-soft">
-              <div class="text-4xl mb-4">📁</div>
-              <h3>File Intelligence</h3>
-              <p class="text-secondary">
-                AI understands your project structure. 
-                Get context-aware suggestions based on your actual code and files.
-              </p>
-            </div>
-            <div class="card card-soft">
-              <div class="text-4xl mb-4">🔌</div>
-              <h3>Plugin System</h3>
-              <p class="text-secondary">
-                Extend functionality with plugins for Docker, Git, deployment, 
-                and popular development tools. Custom plugins supported.
-              </p>
-            </div>
-            <div class="card card-soft">
-              <div class="text-4xl mb-4">🔒</div>
-              <h3>Privacy First</h3>
-              <p class="text-secondary">
-                Your API keys and data never leave your machine. 
-                Local processing options available. Enterprise-grade security.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        .cta-btn {
+            padding: 16px 48px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            background: var(--m-gradient);
+            transition: 0.25s;
+            display: inline-block;
+        }
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 27, 141, 0.55);
+        }
 
-      <!-- 3-column feature row -->
-      <section class="section">
-        <div class="container">
-          <div class="grid grid-3">
-            <div class="card card-soft">
-              <h3>Multi-Model Routing</h3>
-              <p>
-                Send one command to GPT-4o, Claude, Groq, or local Ollama. Pick
-                what's best per task.
-              </p>
-            </div>
-            <div class="card card-soft">
-              <h3>Plugin System</h3>
-              <p>
-                Install plugins for deployments, git flows, docker, music
-                workflows, and more.
-              </p>
-            </div>
-            <div class="card card-soft">
-              <h3>Founder Lifetime Access</h3>
-              <p>
-                Pay once, use forever. Early-bird pricing for the first Founder
-                Wave only.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        /* PRODUCT GRID */
+        .section {
+            max-width: 1300px;
+            padding: 80px 40px;
+            margin: 0 auto;
+        }
 
-      <!-- Rina Vex Video Section -->
-      <section class="section">
-        <div class="container">
-          <div class="text-center">
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #ff6b9d, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 600; margin-bottom: 1rem;">
-              <span>🦄</span>
-              <span>Rina Vex × RinaWarp</span>
-            </div>
-            <h2 style="color: white; margin-bottom: 1rem;">The Artist & The Tech</h2>
-            <p class="lead" style="max-width: 600px; margin: 0 auto 2rem; color: var(--rw-text-secondary);">
-              Meet Rina Vex – the artist behind the unicorn aesthetic that powers RinaWarp's visual identity. 
-              Her music and creative vision shape everything we build.
-            </p>
-            
-            <div class="card card-glow" style="max-width: 800px; margin: 0 auto; padding: 2rem;">
-              <div class="aspect-w-16 aspect-h-9" style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; background: var(--rw-surface);">
-                <iframe
-                  src="https://www.youtube.com/embed/RINA_VEX_VIDEO_ID"
-                  title="Rina Vex – Official Music Video"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px;">
-                </iframe>
-              </div>
-              <p class="text-muted" style="margin: 0;">
-                Rina Vex × RinaWarp – where music meets AI-powered creativity. 
-                <span style="color: var(--rw-accent);">Replace RINA_VEX_VIDEO_ID with your actual YouTube video ID.</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        .section-title {
+            font-size: 2.4rem;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            background: var(--m-gradient);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
 
-      <!-- Final CTA -->
-      <section class="section" style="background: var(--rw-surface-soft)">
-        <div class="container">
-          <div class="text-center">
-            <h2>
-              Ready to make your terminal do more than just wait for commands?
-            </h2>
-            <p class="lead">
-              Grab a <strong>Founder Wave lifetime license</strong> before the 500 seats are gone. 
-              <span style="color: var(--rw-accent);">$699 for the first 200 buyers</span>, 
-              then <span style="color: var(--rw-text-secondary);">$999 for the next 300</span>, 
-              then <strong>permanently closed</strong>.
-            </p>
-            <div class="flex justify-center gap-md">
-              <a href="/pricing.html" class="btn btn-primary btn-lg"
-                >Get Terminal Pro Now</a
-              >
-            </div>
-            <p class="text-muted mt-md">
-              30-day money-back guarantee · Keep your workflows if it's not for
-              you
-            </p>
-          </div>
-        </div>
-      </section>
-    </main>
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
+        }
 
-    <footer class="site-footer">
-      <div class="container footer-grid">
+        .product-card {
+            background: #0A0A12;
+            border: 1px solid #1A1A22;
+            padding: 40px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 25px rgba(0,162,255,0.35);
+        }
+
+        .product-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .product-desc {
+            opacity: 0.85;
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+        }
+
+        .m-secondary {
+            background: var(--m-gradient);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .u-secondary {
+            background: var(--u-gradient);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .product-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 14px 36px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #fff;
+            text-decoration: none;
+        }
+        .btn-mermaid {
+            background: var(--m-gradient);
+        }
+        .btn-unicorn {
+            background: var(--u-gradient);
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid #222;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
+            font-size: 0.9rem;
+            opacity: 0.65;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <img src="/assets/rinawarp-logo.png" alt="RinaWarp" height="45" />
         <div>
-          <div class="brand-small">RinaWarp Technologies, LLC</div>
-          <div class="footer-note">RinaWarp™, RinaWarp Terminal Pro™, RinaWarp Music Video Creator™, and Rina Vex™ are trademarks of RinaWarp Technologies, LLC.</div>
-          <div class="footer-copy">© 2025 RinaWarp Technologies, LLC. All rights reserved.</div>
+            <a href="/">Home</a>
+            <a href="/terminal-pro.html">Terminal Pro</a>
+            <a href="/music-video-creator.html">Music Video Creator</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/support.html">Support</a>
         </div>
-        <div class="footer-links">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
-          <a href="/dmca">DMCA</a>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero-container">
+        <h1 class="hero-title">RinaWarp Technologies</h1>
+        <p class="hero-sub">
+            Premium AI tools that help creators, artists, and entrepreneurs build, automate, and transform their digital workflows.
+        </p>
+
+        <a href="/pricing.html" class="cta-btn">View Pricing</a>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="section">
+        <h2 class="section-title">Choose Your Platform</h2>
+
+        <div class="products-grid">
+
+            <!-- Terminal Pro -->
+            <div class="product-card">
+                <h3 class="product-title m-secondary">Terminal Pro — Mermaid Edition</h3>
+                <p class="product-desc">
+                    Your AI-powered command companion. Automates tasks, writes code, manages servers, and acts as a full developer assistant.
+                </p>
+                <a href="/terminal-pro.html" class="product-btn btn-mermaid">Explore Terminal Pro</a>
+            </div>
+
+            <!-- Music Video Creator -->
+            <div class="product-card">
+                <h3 class="product-title u-secondary">AI Music Video Creator — Unicorn Edition</h3>
+                <p class="product-desc">
+                    Turn any song into a cinematic AI music video using bold neon visuals, synced motion, and pro-level rendering.
+                </p>
+                <a href="/music-video-creator.html" class="product-btn btn-unicorn">Explore Music Video Creator</a>
+            </div>
+
         </div>
-      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2024–2025 RinaWarp Technologies, LLC. All Rights Reserved.  
+        Terminal Pro™ and AI Music Video Creator™ are trademarks of RinaWarp Technologies, LLC.
     </footer>
 
-    <script src="js/rinawarp-ui-kit-v3.js" defer></script>
-  </body>
+</body>
 </html>

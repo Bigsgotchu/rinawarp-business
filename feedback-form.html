@@ -1,0 +1,118 @@
+<form id="rw-feedback-form">
+  <h3>Leave Feedback</h3>
+
+  <input type="text" id="fb-name" placeholder="Your name" required />
+
+  <input type="email" id="fb-email" placeholder="Your email (optional)" />
+
+  <select id="fb-rating">
+    <option value="5">★★★★★ Amazing</option>
+    <option value="4">★★★★☆ Great</option>
+    <option value="3">★★★☆☆ Good</option>
+    <option value="2">★★☆☆☆ Bad</option>
+    <option value="1">★☆☆☆☆ Terrible</option>
+  </select>
+
+  <textarea id="fb-message" placeholder="Your feedback..." required></textarea>
+
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  document
+    .getElementById("rw-feedback-form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        name: document.getElementById("fb-name").value,
+        email: document.getElementById("fb-email").value,
+        rating: parseInt(document.getElementById("fb-rating").value),
+        message: document.getElementById("fb-message").value,
+      };
+
+      try {
+        const res = await fetch("https://api.rinawarptech.com/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          alert("Thank you for your feedback!");
+          e.target.reset();
+        } else {
+          alert("Failed to submit feedback. Please try again.");
+        }
+      } catch (error) {
+        console.error("Feedback submission error:", error);
+        alert("Error submitting feedback. Please try again later.");
+      }
+    });
+</script>
+
+<style>
+  #rw-feedback-form {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #0d1220;
+    border-radius: 20px;
+    color: white;
+  }
+
+  #rw-feedback-form h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffcc00;
+  }
+
+  #rw-feedback-form input,
+  #rw-feedback-form select,
+  #rw-feedback-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 14px;
+  }
+
+  #rw-feedback-form textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  #rw-feedback-form button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  #rw-feedback-form button:hover {
+    transform: translateY(-2px);
+  }
+
+  #rw-feedback-form input::placeholder,
+  #rw-feedback-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+</style>
+
+<footer>
+  <p>© 2025 RinaWarp Technologies, LLC — All Rights Reserved</p>
+  <a href="/privacy.html">Privacy Policy</a> •
+  <a href="/terms.html">Terms of Service</a> •
+  <a href="/refund-policy.html">Refund Policy</a> •
+  <a href="/dmca.html">DMCA</a>
+</footer>
+

@@ -1,0 +1,237 @@
+#!/bin/bash
+set -euo pipefail
+
+COMMAND="${1:-help}"
+SUBCOMMAND="${2:-}"
+
+show_help() {
+cat <<'HELP'
+=====================================================
+                💎 RINAWARP CLI
+=====================================================
+Usage:
+  rina <command> [option]
+
+Core commands:
+  fix                  - Full VSCode + Node + Git repair
+  status               - Full system status dashboard
+  logs                 - View logs for API, NGINX, system
+  backup               - Create full RinaWarp server backup
+  nginx                - Reload, test, or fix NGINX
+  api <restart|stop>   - Manage API service
+  services             - List and fix all services
+  health               - Check all RinaWarp health endpoints
+  md-fix <file>        - Auto-fix Markdown formatting issues
+  cert-fix             - Heal SSL certificates (Production only)
+
+Type:
+  rina help
+for details.
+=====================================================
+HELP
+}
+
+# ----------------------------
+# rina fix
+# ----------------------------
+do_fix() {
+  echo ">>> Running rina-fix global repair..."
+  ~/.local/bin/rina-fix || true
+}
+
+# ----------------------------
+# rina status 
+# ----------------------------
+do_status() {
+  echo ">>> RinaWarp Status Dashboard"
+  ~/RinaWarp/rina-services-status.sh
+}
+
+# ----------------------------
+# rina logs 
+# ----------------------------
+do_logs() {
+  echo ">>> Viewing logs..."
+  sudo journalctl -u rinawarp-api -n 100 --no-pager 2>/dev/null || true
+  sudo journalctl -u nginx -n 100 --no-pager
+}
+
+# ----------------------------
+# rina backup
+# ----------------------------
+do_backup() {
+  echo ">>> Creating full RinaWarp backup..."
+  ~/RinaWarp/rina-master-backup.sh
+}
+
+# ----------------------------
+# rina nginx <cmd>
+# ----------------------------
+do_nginx() {
+  case "$SUBCOMMAND" in
+    reload)
+      sudo nginx -t && sudo systemctl reload nginx
+      echo ">>> NGINX Reloaded."
+      ;;
+    test)
+      sudo nginx -t
+      ;;
+    fix)
+      echo ">>> Running bulletproof nginx repair..."
+      ~/RinaWarp/nginx-bulletproof-fix.sh
+      ;;
+    *)
+      echo "Usage: rina nginx <reload|test|fix>"
+      ;;
+  esac
+}
+
+# ----------------------------
+# rina api <restart|stop>
+# ----------------------------
+do_api() {
+  case "$SUBCOMMAND" in
+    restart)
+      sudo systemctl restart rinawarp-api 2>/dev/null || pm2 restart all
+      echo ">>> API restarted."
+      ;;
+    stop)
+      sudo systemctl stop rinawarp-api 2>/dev/null || true
+      ;;
+    *)
+      echo "Usage: rina api <restart|stop>"
+      ;;
+  esac
+}
+
+# ----------------------------
+# rina services
+# ----------------------------
+do_services() {
+  ~/RinaWarp/rina-services-clean.sh
+}
+
+# ----------------------------
+# rina health
+# ----------------------------
+do_health() {
+  echo ">>> API Health:"
+  curl -I https://api.rinawarptech.com/health || true
+  echo ""
+  echo ">>> Web Health:"
+  curl -I https://rinawarptech.com || true
+}
+
+# ----------------------------
+# rina md-fix <file>
+# ----------------------------
+do_md_fix() {
+  local FILE="$SUBCOMMAND"
+  if [ -z "$FILE" ]; then
+    echo "Usage: rina md-fix <file.md>"
+    exit 1
+  fi
+  if [ ! -f "$FILE" ]; then
+    echo "Error: File not found: $FILE"
+    exit 1
+  fi
+
+  echo "====================================================="
+  echo "          🛠️  RINAWARP MARKDOWN AUTO-FIX"
+  echo "====================================================="
+  echo "Fixing: $FILE"
+  echo ""
+
+  TMP="${FILE}.tmp"
+
+  # -------------------------------------------------------------------
+  # 1. Add blank lines around headings (MD022)
+  # -------------------------------------------------------------------
+  sed -E '
+    s/^(#+ .*)$/\n\1\n/;
+  ' "$FILE" > "$TMP"
+
+  # -------------------------------------------------------------------
+  # 2. Add blank lines around fenced code blocks (MD031)
+  # -------------------------------------------------------------------
+  sed -E '
+    s/^```/\n```\n/g
+  ' "$TMP" > "${TMP}.2"
+
+  # -------------------------------------------------------------------
+  # 3. Add blank lines around lists (MD032)
+  # -------------------------------------------------------------------
+  sed -E '
+    s/^(\* |- [^-])/ \1/;
+  ' "${TMP}.2" > "${TMP}.3"
+
+  # -------------------------------------------------------------------
+  # 4. Remove duplicate blank lines
+  # -------------------------------------------------------------------
+  sed -E '
+    /^\s*$/ {
+      N
+      /^\s*\n\s*$/d
+    }
+  ' "${TMP}.3" > "${TMP}.4"
+
+  # -------------------------------------------------------------------
+  # 5. Ensure file ends with exactly one newline (MD047)
+  # -------------------------------------------------------------------
+  sed -E '$a\' "${TMP}.4" > "${TMP}.clean"
+
+  mv "${TMP}.clean" "$FILE"
+  rm -f "${TMP}" "${TMP}.2" "${TMP}.3" "${TMP}.4"
+
+  echo ""
+  echo "====================================================="
+  echo "    🎉 Markdown fixed successfully!"
+  echo "====================================================="
+}
+
+# ----------------------------
+# rina cert-fix
+# ----------------------------
+do_cert_fix() {
+  echo "====================================================="
+  echo "        🔒 RINAWARP CERTIFICATE HEALING TOOL"
+  echo "====================================================="
+  echo "Production Setup: rinawarptech.com"
+  echo "Port 3001: API Service Only"
+  echo ""
+  
+  # Check if running as root
+  if [ "$EUID" -ne 0 ]; then
+    echo "[ERROR] This command must be run as root (use sudo rina cert-fix)"
+    exit 1
+  fi
+  
+  # Run the certificate healing script
+  local SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  local HEAL_SCRIPT="$SCRIPT_DIR/rina-cert-heal.sh"
+  
+  if [ -f "$HEAL_SCRIPT" ]; then
+    bash "$HEAL_SCRIPT"
+  else
+    echo "[ERROR] Certificate healing script not found: $HEAL_SCRIPT"
+    echo "Please ensure rina-cert-heal.sh is in the same directory as the CLI"
+    exit 1
+  fi
+}
+
+# ----------------------------
+# Main routing
+# ----------------------------
+case "$COMMAND" in
+  fix) do_fix ;;
+  status) do_status ;;
+  logs) do_logs ;;
+  backup) do_backup ;;
+  nginx) do_nginx ;;
+  api) do_api ;;
+  services) do_services ;;
+  health) do_health ;;
+  md-fix) do_md_fix ;;
+  cert-fix) do_cert_fix ;;
+  help|*) show_help ;;
+esac

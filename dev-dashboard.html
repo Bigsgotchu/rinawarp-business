@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RinaWarp Dev Dashboard</title>
+    <style>
+      body {
+        background: #0a0f14;
+        color: white;
+        font-family: Poppins, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background: linear-gradient(90deg, #ff0080, #00f7c3);
+        padding: 20px;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .container {
+        padding: 20px;
+      }
+      .card {
+        background: #11161f;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #1e2836;
+      }
+      .card h2 {
+        color: #00eaff;
+      }
+      .list-item {
+        padding: 4px 0;
+        margin: 2px 0;
+        border-bottom: 1px solid #242c38;
+      }
+      .btn {
+        padding: 12px 18px;
+        background: #ff0080;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 5px;
+      }
+      .btn:hover {
+        opacity: 0.8;
+      }
+      .deploy-btn {
+        background: #00f7c3;
+        color: #0a0f14;
+        font-weight: bold;
+      }
+      .ai-suggestion {
+        background: #1a1f2e;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 10px 0;
+        border-left: 4px solid #ff0080;
+      }
+      .ai-suggestion h4 {
+        color: #00eaff;
+        margin: 0 0 10px 0;
+      }
+      .ai-suggestion p {
+        margin: 5px 0;
+        color: #cccccc;
+      }
+      .auto-fix-btn {
+        background: #ff6b35;
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+      .status-success {
+        color: #00f7c3;
+        font-weight: bold;
+      }
+      .status-error {
+        color: #ff0080;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+<div class="container">
+    <header>RinaWarp Developer Dashboard</header>
+
+    <div class="container">
+      <div class="card">
+        <h2>One-Click Deploy</h2>
+        <p>Deploy your RinaWarp application with a single click</p>
+        <button class="btn deploy-btn" onclick="runDeploy()">
+          🚀 Deploy Now
+        </button>
+        <p id="deployStatus"></p>
+      </div>
+
+      <div class="card">
+        <h2>Kilo Brain Status</h2>
+        <p id="scanTime">Last scan: …</p>
+        <button class="button-mermaid" onclick="runScan()">Run Auto-Scan</button>
+      </div>
+
+      <div class="card">
+        <h2>AI Suggestions</h2>
+        <div id="aiSuggestions">Loading AI insights…</div>
+      </div>
+
+      <div class="card">
+        <h2>Recent Commands</h2>
+        <div id="cmds"></div>
+      </div>
+
+      <div class="card">
+        <h2>Recent Errors</h2>
+        <div id="errors"></div>
+      </div>
+
+      <div class="card">
+        <h2>Project Paths</h2>
+        <div id="paths"></div>
+      </div>
+
+      <div class="card">
+        <h2>Build Commands</h2>
+        <div id="builds"></div>
+      </div>
+
+      <div class="card">
+        <h2>Deploy Commands</h2>
+        <div id="deploys"></div>
+      </div>
+    </div>
+
+    <script>
+      async function loadBrain() {
+        const data = await fetch("/.kilo/kilo-memory.json").then((r) =>
+          r.json(),
+        );
+
+        document.getElementById("scanTime").innerText =
+          "Last scan: " + (data.lastScan || "never");
+
+        document.getElementById("cmds").innerHTML = data.recentCommands
+          .map((c) => `<div class="list-item">${c.at} — ${c.command}</div>`)
+          .join("");
+
+        document.getElementById("errors").innerHTML = data.recentErrors
+          .map((e) => `<div class="list-item">${e.at} — ${e.error}</div>`)
+          .join("");
+
+        document.getElementById("paths").innerHTML = Object.entries(data.paths)
+          .map(([k, v]) => `<div class="list-item">${k}: ${v}</div>`)
+          .join("");
+
+        document.getElementById("builds").innerHTML = Object.entries(
+          data.buildCommands,
+        )
+          .map(([k, v]) => `<div class="list-item">${k}: ${v}</div>`)
+          .join("");
+
+        document.getElementById("deploys").innerHTML = Object.entries(
+          data.deployCommands,
+        )
+          .map(([k, v]) => `<div class="list-item">${k}: ${v}</div>`)
+          .join("");
+      }
+
+      async function runDeploy() {
+        document.getElementById("deployStatus").innerHTML =
+          '<span class="status">🚀 Running deployment…</span>';
+
+        try {
+          const res = await fetch("/run-deploy", { method: "POST" }).then((r) =>
+            r.json(),
+          );
+
+          if (res.success) {
+            document.getElementById("deployStatus").innerHTML =
+              '<span class="status-success">✔ Deployment completed!</span>';
+          } else {
+            document.getElementById("deployStatus").innerHTML =
+              `<span class="status-error">❌ Deployment failed: ${res.error}</span>`;
+          }
+        } catch (error) {
+          document.getElementById("deployStatus").innerHTML =
+            `<span class="status-error">❌ Deployment failed: ${error.message}</span>`;
+        }
+      }
+
+      async function runScan() {
+        alert("Scan triggered! Check console for results.");
+        const result = await fetch("/run-kilo-scan").then((r) => r.json());
+        console.log("Scan result:", result);
+      }
+
+      async function loadAISuggestions() {
+        try {
+          const res = await fetch("/api/ai/suggestions").then((r) => r.json());
+          document.getElementById("aiSuggestions").innerHTML = res.html;
+        } catch (error) {
+          document.getElementById("aiSuggestions").innerHTML = `
+          <div class="ai-suggestion">
+            <h4>🤖 AI Analysis: Mock Suggestions</h4>
+            <p><strong>System Status:</strong> All systems operational</p>
+            <p><strong>Recommendations:</strong> Run the Kilo Fix Pack to scan for potential issues</p>
+            <button class="btn auto-fix-btn" onclick="runScan()">Run Fix Pack</button>
+          </div>
+          <div class="ai-suggestion">
+            <h4>🛠️ Performance Tips</h4>
+            <p>• Optimize asset loading for faster page loads</p>
+            <p>• Consider implementing lazy loading for images</p>
+            <p>• Enable gzip compression for text assets</p>
+          </div>
+        `;
+        }
+      }
+
+      loadBrain();
+      loadAISuggestions();
+    </script>
+  </div>
+</body>
+</html>
+
+<footer>
+  <p>© 2025 RinaWarp Technologies, LLC — All Rights Reserved</p>
+  <a href="/privacy.html">Privacy Policy</a> •
+  <a href="/terms.html">Terms of Service</a> •
+  <a href="/refund-policy.html">Refund Policy</a> •
+  <a href="/dmca.html">DMCA</a>
+</footer>
+

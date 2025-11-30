@@ -3,13 +3,11 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# Build outputs
+dist/
+build/
+*.log
 
 # Environment variables
 .env
@@ -18,86 +16,8 @@ pids
 .env.test.local
 .env.production.local
 
-# Credentials and sensitive data
-*.json
-!package.json
-!package-lock.json
-!tsconfig.json
-google-oauth-credentials.json
-*credentials*
-
-# Build and dist outputs
-dist/
-build/
-out/
-*.tgz
-*.tar.gz
-
-# VS Code
-.vscode/settings.json
-.vscode/tasks.json
-.vscode/launch.json
-.vscode/extensions.json
-*.code-workspace
-
-# MacOS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-*.lnk
-
-# Linux
-*~
-
-# Logs
-logs
-*.log
-lerna-debug.log*
-.npm
-.eslintcache
-
-# Deployment scripts and documentation
-*.sh
-deploy*.sh
-install*.sh
-*DEPLOYMENT*.md
-*INSTALLATION*.md
-*CONFIGURATION*.md
-*INSTRUCTIONS*.md
-
-# Temporary and testing files
-*.tmp
-*.temp
-test-presentation/
-showcase-presentation/
-production_monitoring.md
-
-# Additional websites (keep main project clean)
-rinawarp-website/
-rinawarp-website-final/
-rinawarptech-website/
-rinawarp-clean-website/
-
-# Individual VSCode extensions
-release-files/*.vsix
-*.vsix
-
-# IDE files
+# IDE and editor files
+.vscode/
 .idea/
 *.swp
 *.swo
@@ -111,3 +31,91 @@ release-files/*.vsix
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Package files
+*.deb
+*.rpm
+*.pkg
+
+# Temporary files
+temp/
+tmp/
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# RinaWarp specific ignores
+archive/
+website/.netlify.lock
+.integrity.hash
+
+# Backend and app specific
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# JavaScript/TypeScript
+*.tsbuildinfo
+.next/
+out/
+
+# Rust
+Cargo.lock
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of 'go cover'
+*.out
+
+# Dependency directories
+vendor/
+
+# Profiling file
+*.prof

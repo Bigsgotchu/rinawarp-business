@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Music Video Creator – Rina Vex | RinaWarp™</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI-powered music video creator by Rina Vex. Generate cinematic visuals for your tracks with multi-model AI routing."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'fuchsia-custom': '#e9007f',
+              'cyan-custom': '#00ff99',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .gradient-bg {
+        background: linear-gradient(to bottom right, #e9007f, #ff6ac1, #00ff99);
+      }
+      .glow {
+        box-shadow: 0 0 60px rgba(233, 0, 127, 0.25);
+      }
+      .double-infinity-logo {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background: linear-gradient(45deg, #e9007f, #ff6ac1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 16px;
+        font-weight: bold;
+        letter-spacing: -3px;
+        transform: rotate(15deg);
+      }
+      .double-infinity-logo::after {
+        content: '∞';
+        position: absolute;
+        left: 4px;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(-45deg, #ff6ac1, #00ff99);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 16px;
+        font-weight: bold;
+        transform: rotate(-25deg) translateX(3px);
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-950 text-slate-50">
+    <!-- Navigation -->
+    <header class="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/80 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+        <a href="/" class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="double-infinity-logo">∞∞</div>
+            </div>
+            <div class="flex flex-col leading-tight">
+              <span class="text-sm font-semibold tracking-[0.18em] uppercase text-slate-300">RinaWarp</span>
+              <span class="text-xs font-medium text-slate-400">AI Music Video</span>
+            </div>
+          </div>
+        </a>
+
+        <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+          <a href="/terminal/" class="hover:text-white">Terminal Pro</a>
+          <a href="/video/" class="text-white font-semibold">AI Music Video</a>
+          <a href="/rina/" class="hover:text-white">Rina Vex</a>
+          <a href="/pricing/" class="hover:text-white">Pricing</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="/pricing/" class="hidden text-xs font-semibold uppercase tracking-[0.16em] text-slate-300 hover:text-white md:inline">Get Access</a>
+          <a href="#waitlist" class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-950 gradient-bg shadow-lg shadow-fuchsia-500/30 hover:brightness-110 transition">Join Waitlist</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="border-b border-slate-800 bg-slate-950/95">
+      <div class="mx-auto max-w-6xl px-4 pb-20 pt-16 md:px-6">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 rounded-full border border-fuchsia-500/60 bg-fuchsia-500/10 px-3 py-1 text-xs text-slate-200">
+            <span class="h-2 w-2 rounded-full bg-fuchsia-400 animate-pulse"></span>
+            <span class="uppercase tracking-[0.16em]">Coming Soon • Rina Vex AI Video Creator</span>
+          </div>
+
+          <h1 class="mt-6 text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Turn your tracks into <span class="bg-clip-text text-transparent gradient-bg">cinematic visuals</span>
+          </h1>
+
+          <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
+            AI-powered music video creator built by Rina Vex. Generate dark, cinematic, bass-heavy visuals that match your sound – no video editing skills required.
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <a href="#waitlist" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-slate-950 gradient-bg shadow-lg shadow-fuchsia-500/30 hover:brightness-110 transition">
+              Join Early Access Waitlist
+            </a>
+            <a href="/rina/" class="inline-flex items-center gap-2 rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-slate-200 hover:border-slate-500 hover:text-white">
+              About Rina Vex
+            </a>
+          </div>
+        </div>
+
+        <!-- Video Preview Mockup -->
+        <div class="mt-16 mx-auto max-w-4xl">
+          <div class="relative rounded-3xl border border-slate-800 bg-slate-900/60 p-6 shadow-2xl shadow-fuchsia-500/20">
+            <div class="absolute inset-0 -z-10 blur-3xl opacity-30 gradient-bg"></div>
+            <div class="aspect-video rounded-2xl border border-slate-800 bg-slate-950/90 overflow-hidden relative">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center space-y-4">
+                  <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-slate-900 border-2 border-slate-700 shadow-lg shadow-fuchsia-500/30">
+                    <div class="text-3xl font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+                  </div>
+                  <p class="text-sm text-slate-300">AI-Generated Music Video Preview</p>
+                  <p class="text-xs text-slate-400 max-w-md">Dark pop aesthetic • Cinematic transitions • Bass-synced visuals</p>
+                </div>
+              </div>
+              <!-- Simulated video frame -->
+              <div class="absolute inset-0 opacity-20 gradient-bg"></div>
+            </div>
+            <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+              <span>Generated in 3 minutes • 4K resolution</span>
+              <span class="rounded-full bg-slate-800 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-fuchsia-300">AI-Powered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="border-b border-slate-800 bg-slate-950/98 py-20">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <div class="text-center">
+          <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Built for artists who ship</h2>
+          <p class="mt-4 text-slate-300">From bedroom producers to touring artists – create videos as fast as you make music.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <!-- Feature 1 -->
+          <div class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-lg text-fuchsia-300 border border-slate-700">🎬</span>
+              <h3 class="text-lg font-semibold text-slate-100">AI Scene Generation</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Describe your vision in text. AI generates cinematic scenes that match your track's mood and energy.</p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-lg text-fuchsia-300 border border-slate-700">🎵</span>
+              <h3 class="text-lg font-semibold text-slate-100">Audio-Reactive Visuals</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Visuals sync to your bass, drums, and vocals. Every drop, every beat – the video reacts in real-time.</p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-lg text-fuchsia-300 border border-slate-700">🎨</span>
+              <h3 class="text-lg font-semibold text-slate-100">Dark Pop Aesthetic</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Pre-tuned for dark, cinematic, bass-heavy vibes. The same aesthetic Rina Vex uses for her own releases.</p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-lg text-fuchsia-300 border border-slate-700">⚡</span>
+              <h3 class="text-lg font-semibold text-slate-100">Fast Rendering</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Generate full music videos in minutes, not days. Export in 4K for YouTube, Instagram, TikTok, and more.</p>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-lg text-fuchsia-300 border border-slate-700">🔄</span>
+              <h3 class="text-lg font-semibold text-slate-100">Multi-Model AI</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Powered by the same multi-model routing as Terminal Pro. Stable Diffusion, Runway, and more – all in one tool.</p>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-lg text-fuchsia-300 border border-slate-700">💎</span>
+              <h3 class="text-lg font-semibold text-slate-100">Commercial Rights</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-300">Use generated videos for your releases, monetize on YouTube, sell to clients – full commercial license included.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="border-b border-slate-800 bg-slate-950 py-20">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <div class="text-center">
+          <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">From track to video in 3 steps</h2>
+          <p class="mt-4 text-slate-300">No video editing experience required.</p>
+        </div>
+
+        <div class="mt-12 grid gap-8 md:grid-cols-3">
+          <div class="space-y-4 text-center">
+            <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-slate-900 border-2 border-fuchsia-400 shadow-lg shadow-fuchsia-500/30">
+              <span class="text-2xl font-bold text-fuchsia-300">1</span>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-100">Upload Your Track</h3>
+            <p class="text-sm text-slate-300">Drop your audio file. AI analyzes tempo, mood, energy, and structure automatically.</p>
+          </div>
+
+          <div class="space-y-4 text-center">
+            <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-slate-900 border-2 border-fuchsia-400 shadow-lg shadow-fuchsia-500/30">
+              <span class="text-2xl font-bold text-fuchsia-300">2</span>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-100">Describe Your Vision</h3>
+            <p class="text-sm text-slate-300">Type what you want to see. "Dark city at night" or "neon-lit desert highway" – AI handles the rest.</p>
+          </div>
+
+          <div class="space-y-4 text-center">
+            <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-slate-900 border-2 border-fuchsia-400 shadow-lg shadow-fuchsia-500/30">
+              <span class="text-2xl font-bold text-fuchsia-300">3</span>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-100">Export & Share</h3>
+            <p class="text-sm text-slate-300">Render in 4K, download, and upload to YouTube, Spotify Canvas, Instagram – wherever your fans are.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rina Vex Connection -->
+    <section class="border-b border-slate-800 bg-slate-950/98 py-20">
+      <div class="mx-auto max-w-4xl px-4 md:px-6">
+        <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="text-xl font-black bg-clip-text text-transparent gradient-bg">∞∞</div>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-slate-100">Built by Rina Vex</h3>
+              <p class="text-sm text-slate-400">Artist • Developer • Creator</p>
+            </div>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            I'm Rina Vex – the artist behind RinaWarp. I built this tool because I was tired of spending weeks on video editing when I could be making more music. This AI video creator uses the same dark, cinematic aesthetic I use for my own releases on Spotify, Apple Music, and YouTube. If you're an artist who wants to ship faster without sacrificing quality, this is for you.
+          </p>
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="/rina/" class="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2 text-xs font-semibold text-slate-200 border border-slate-700 hover:border-fuchsia-400 hover:text-white">
+              Learn more about Rina Vex →
+            </a>
+            <a href="https://open.spotify.com" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2 text-xs font-semibold text-slate-200 border border-slate-700 hover:border-fuchsia-400 hover:text-white">
+              <span class="h-2 w-2 rounded-full bg-emerald-400"></span> Listen on Spotify
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Waitlist Section -->
+    <section id="waitlist" class="border-b border-slate-800 bg-slate-950 py-20">
+      <div class="mx-auto max-w-2xl px-4 text-center md:px-6">
+        <div class="inline-flex items-center gap-2 rounded-full border border-fuchsia-500/60 bg-fuchsia-500/10 px-3 py-1 text-xs text-slate-200 mb-6">
+          <span class="h-2 w-2 rounded-full bg-fuchsia-400 animate-pulse"></span>
+          <span class="uppercase tracking-[0.16em]">Early Access</span>
+        </div>
+        <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Join the waitlist</h2>
+        <p class="mt-4 text-slate-300">
+          Be the first to know when AI Music Video Creator launches. Early access users get lifetime pricing at launch discount.
+        </p>
+
+        <div class="mt-8 flex flex-col items-center gap-4">
+          <div class="w-full max-w-md">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              class="w-full rounded-full border border-slate-700 bg-slate-900/80 px-6 py-3 text-sm text-slate-100 placeholder-slate-500 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/20"
+            />
+          </div>
+          <button class="inline-flex items-center gap-2 rounded-full px-8 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-slate-950 gradient-bg shadow-lg shadow-fuchsia-500/40 hover:brightness-110 transition">
+            Join Waitlist
+          </button>
+          <p class="text-xs text-slate-400">No spam. Just launch updates and early access invites.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-8 border-t border-slate-900">
+      <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-xs text-slate-400 md:flex-row md:px-6">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-900 border border-slate-700 shadow-lg shadow-fuchsia-500/30">
+              <div class="double-infinity-logo">∞∞</div>
+            </div>
+            <div class="flex flex-col leading-tight">
+              <span class="text-sm font-semibold tracking-[0.18em] uppercase text-slate-300">RinaWarp</span>
+              <span class="text-xs font-medium text-slate-400">AI Music Video Creator</span>
+            </div>
+          </div>
+          <span class="text-[11px] text-slate-500">© 2025 RinaWarp & Rina Vex. All rights reserved.</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="/" class="hover:text-slate-200">Home</a>
+          <span class="h-1 w-1 rounded-full bg-slate-600" />
+          <a href="/legal/privacy.html" class="hover:text-slate-200">Privacy</a>
+          <span class="h-1 w-1 rounded-full bg-slate-600" />
+          <a href="/legal/terms.html" class="hover:text-slate-200">Terms</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

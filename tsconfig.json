@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "commonjs",
+    "module": "Node16",
     "lib": ["ES2020", "DOM"],
     "allowJs": true,
     "checkJs": true,
@@ -22,11 +22,8 @@
     "incremental": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    "moduleResolution": "node16",
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "**/*.ts",

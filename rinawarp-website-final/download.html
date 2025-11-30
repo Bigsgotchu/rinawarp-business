@@ -1,370 +1,152 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>RinaWarp Terminal Pro – AI-Powered Dev Terminal</title>
-
-    <!-- Viewport -->
+    <meta charset="utf-8" />
+    <title>Download – RinaWarp™ Terminal Pro™</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Primary Meta -->
     <meta
       name="description"
-      content="RinaWarp Terminal Pro is an AI-powered dev terminal with multi-model routing, automation, and one-click deployment for serious creators and developers."
+      content="Download RinaWarp™ Terminal Pro™ for Linux, Windows, and VS Code. Mac version coming soon."
     />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/rinawarp-logo.png" />
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="manifest.json" />
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/rinawarp-ui-kit-v3.css" />
-
-    <!-- GA4 -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-SZK23HMCVP");
-    </script>
+    <link rel="stylesheet" href="/css/rinawarp-optimized.css" />
   </head>
-  <body>
-    <!-- Header -->
-    <header class="rw-header">
-      <div class="rw-header-inner">
-        <a href="/" class="rw-logo-link">
-          <img
-            src="assets/rinawarp-logo.png"
-            alt="RinaWarp Logo"
-            class="rw-logo"
-            width="40"
-            height="40"
-          />
-          <span class="rw-logo-text">RinaWarp</span>
-        </a>
-
-        <nav class="rw-nav">
-          <a href="/" class="rw-nav-link">Home</a>
-          <a href="/terminal-pro.html" class="rw-nav-link">Terminal Pro</a>
-          <a href="/pricing.html" class="rw-nav-link">Pricing</a>
-          <a href="/download.html" class="rw-nav-link active">Download</a>
-          <a href="/support.html" class="rw-nav-link">Support</a>
-        </nav>
-
-        <div class="rw-nav-actions">
-          <a href="/pricing.html" class="rw-btn rw-btn-primary"
-            >Get Terminal Pro</a
-          >
-        </div>
+  <body class="rw-body">
+  <header class="rw-header">
+    <nav class="rw-nav">
+      <div class="rw-logo">
+        <a href="/index.html">RinaWarp<span class="tm">™</span></a>
       </div>
-    </header>
+      <ul class="rw-nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/terminal-pro.html">Terminal Pro</a></li>
+        <li><a href="/music-video-creator.html">AI Music Video Creator</a></li>
+        <li><a href="/pricing.html">Pricing</a></li>
+        <li><a href="/download.html" class="active">Download</a></li>
+        <li><a href="/support.html">Support</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <main>
-      <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="text-center">
-            <h1>Download RinaWarp Terminal Pro</h1>
-            <p class="lead">
-              Get the AI-powered terminal that transforms your workflow.
-              Available for Linux, Windows, macOS (coming soon), and VS Code Extension.
-            </p>
-          </div>
-        </div>
-      </section>
+  <main class="rw-main">
+    <section class="rw-page-header">
+      <h1>Download RinaWarp Terminal Pro<span class="tm">™</span></h1>
+      <p class="rw-section-lead">
+        Grab the build that fits your environment. These installers target real developer workflows,
+        not just a demo.
+      </p>
+    </section>
 
-      <!-- Download Cards -->
-      <section class="section">
-        <div class="container">
-          <div style="max-width: 800px; margin: 0 auto">
-            <!-- Linux AppImage -->
-            <div class="card mb-lg">
-              <h3
-                style="
-                  color: var(--rw-accent);
-                  margin-bottom: var(--rw-space-md);
-                "
-              >
-                🐧 Linux AppImage (Recommended)
-              </h3>
-              <p>
-                <strong>Universal Linux Package</strong> - Works on any Linux
-                distribution without installation.
-              </p>
+    <section class="rw-section">
+      <div class="rw-section-inner">
 
-              <div class="card card-soft mb-md">
-                <strong>File:</strong>
-                RinaWarp.Terminal.Pro-1.0.0.AppImage<br />
-                <strong>Size:</strong> 107 MB<br />
-                <strong>Requirements:</strong> Linux x64 (any distribution)
-              </div>
+        <article class="rw-download-block">
+          <h2>Linux AppImage (Recommended)</h2>
+          <p class="rw-download-tag">Universal – works on most modern Linux distros</p>
+          <p>
+            File: <strong>RinaWarp.Terminal.Pro-1.0.0.AppImage</strong><br>
+            Approx. Size: <strong>~107 MB</strong><br>
+            Requirements: <strong>Linux x64</strong>
+          </p>
+          <pre><code>chmod +x "RinaWarp.Terminal.Pro-1.0.0.AppImage"
+./RinaWarp.Terminal.Pro-1.0.0.AppImage</code></pre>
+          <p>
+            <a href="https://api.rinawarptech.com/downloads/RinaWarp.Terminal.Pro-1.0.0.AppImage"
+               class="rw-btn rw-btn-primary">
+              Download AppImage
+            </a>
+          </p>
+          <p class="rw-note">
+            Downloads are served from your RinaWarp API server hosted on Oracle Cloud.
+          </p>
+        </article>
 
-              <p><strong>Installation:</strong></p>
-              <pre
-                style="
-                  background: var(--rw-surface);
-                  padding: var(--rw-space-sm);
-                  border-radius: var(--rw-radius-sm);
-                  overflow-x: auto;
-                  margin: var(--rw-space-sm) 0;
-                "
-              >
-chmod +x "RinaWarp.Terminal.Pro-1.0.0.AppImage"
-./RinaWarp.Terminal.Pro-1.0.0.AppImage</pre
-              >
+        <article class="rw-download-block">
+          <h2>Linux DEB Package</h2>
+          <p class="rw-download-tag">For Ubuntu, Debian, and other .deb-based systems</p>
+          <p>
+            File: <strong>RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb</strong><br>
+            Approx. Size: <strong>~74 MB</strong>
+          </p>
+          <pre><code>sudo dpkg -i RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb</code></pre>
+          <p>
+            <a href="https://api.rinawarptech.com/downloads/RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb"
+               class="rw-btn rw-btn-primary">
+              Download DEB Package
+            </a>
+          </p>
+        </article>
 
-              <a
-                href="https://api.rinawarptech.com/downloads/RinaWarp.Terminal.Pro-1.0.0.AppImage"
-                class="btn btn-primary"
-                download="RinaWarp.Terminal.Pro-1.0.0.AppImage"
-                onclick="gtag('event', 'download', {event_category: 'app', event_label: 'Linux AppImage'})"
-              >
-                Download AppImage (107 MB)
-              </a>
-              <p
-                style="
-                  font-size: 0.85rem;
-                  color: var(--rw-text-muted);
-                  margin-top: var(--rw-space-xs);
-                "
-              >
-                🔥 <strong>New:</strong> Hosted on Oracle VM for maximum
-                reliability
-              </p>
-            </div>
+        <article class="rw-download-block">
+          <h2>Windows Installer</h2>
+          <p class="rw-download-tag">Windows 10/11 (64-bit)</p>
+          <p>
+            File: <strong>RinaWarp-Terminal-Pro-1.0.0-windows-x64.exe</strong><br>
+            Approx. Size: <strong>~181 MB</strong>
+          </p>
+          <pre><code>1. Download the installer
+2. Run it
+3. Follow the setup wizard</code></pre>
+          <p>
+            <a href="https://api.rinawarptech.com/downloads/RinaWarp-Terminal-Pro-1.0.0-windows-x64.exe"
+               class="rw-btn rw-btn-primary">
+              Download for Windows
+            </a>
+          </p>
+        </article>
 
-            <!-- Linux DEB -->
-            <div class="card mb-lg">
-              <h3
-                style="
-                  color: var(--rw-accent);
-                  margin-bottom: var(--rw-space-md);
-                "
-              >
-                📦 Linux DEB Package
-              </h3>
-              <p>
-                <strong>Native Package</strong> - For Ubuntu, Debian, and other
-                .deb-based distributions.
-              </p>
+        <article class="rw-download-block">
+          <h2>macOS Version</h2>
+          <p class="rw-pill rw-pill-soon">Coming Soon</p>
+          <p>
+            macOS installer for 10.15+ (Intel & Apple Silicon) is on the roadmap.
+          </p>
+          <pre><code>Planned flow:
+1. Download DMG
+2. Drag to Applications
+3. Launch from Applications</code></pre>
+          <p class="rw-note">
+            This section will be updated once macOS builds are tested and signed.
+          </p>
+        </article>
 
-              <div class="card card-soft mb-md">
-                <strong>File:</strong>
-                RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb<br />
-                <strong>Size:</strong> 74 MB<br />
-                <strong>Requirements:</strong> Debian-based Linux systems
-              </div>
+        <article class="rw-download-block">
+          <h2>VS Code Extension</h2>
+          <p class="rw-download-tag">Optional add-on – planned</p>
+          <p>
+            File: <strong>rinawarp-vscode-1.0.0.vsix</strong><br>
+            Approx. Size: <strong>~1.7 MB</strong>
+          </p>
+          <pre><code>VS Code → Extensions → ...
+Install from VSIX → choose rinawarp-vscode-1.0.0.vsix</code></pre>
+          <p class="rw-note">
+            This will be linked here once the VSIX is packaged and published.
+          </p>
+        </article>
 
-              <p><strong>Installation:</strong></p>
-              <pre
-                style="
-                  background: var(--rw-surface);
-                  padding: var(--rw-space-sm);
-                  border-radius: var(--rw-radius-sm);
-                  overflow-x: auto;
-                  margin: var(--rw-space-sm) 0;
-                "
-              >
-sudo dpkg -i RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb</pre
-              >
-
-              <a
-                href="https://api.rinawarptech.com/downloads/RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb"
-                class="btn btn-primary"
-                download="RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb"
-                onclick="gtag('event', 'download', {event_category: 'app', event_label: 'Linux DEB'})"
-              >
-                Download DEB Package (74 MB)
-              </a>
-            </div>
-
-            <!-- Windows -->
-            <div class="card mb-lg">
-              <h3
-                style="
-                  color: var(--rw-accent);
-                  margin-bottom: var(--rw-space-md);
-                "
-              >
-                🪟 Windows Installer
-              </h3>
-              <p>
-                <strong>Windows Setup</strong> - Complete installer for Windows
-                10/11.
-              </p>
-
-              <div class="card card-soft mb-md">
-                <strong>File:</strong>
-                RinaWarp-Terminal-Pro-1.0.0-windows-x64.exe<br />
-                <strong>Size:</strong> 181 MB<br />
-                <strong>Requirements:</strong> Windows 10/11 (64-bit)
-              </div>
-
-              <p><strong>Installation:</strong></p>
-              <pre
-                style="
-                  background: var(--rw-surface);
-                  padding: var(--rw-space-sm);
-                  border-radius: var(--rw-radius-sm);
-                  overflow-x: auto;
-                  margin: var(--rw-space-sm) 0;
-                "
-              >
-Download and run the installer
-Follow the setup wizard</pre
-              >
-
-              <a
-                href="https://api.rinawarptech.com/downloads/RinaWarp-Terminal-Pro-1.0.0-windows-x64.exe"
-                class="btn btn-primary"
-                download="RinaWarp-Terminal-Pro-1.0.0-windows-x64.exe"
-                onclick="gtag('event', 'download', {event_category: 'app', event_label: 'Windows Installer'})"
-              >
-                Download for Windows (181 MB)
-              </a>
-            </div>
-
-            <!-- macOS -->
-            <div class="card mb-lg">
-              <h3
-                style="
-                  color: var(--rw-accent);
-                  margin-bottom: var(--rw-space-md);
-                "
-              >
-                🍎 macOS Version
-              </h3>
-              <p>
-                <strong>macOS Installer</strong> - Native app for macOS 10.15+
-              </p>
-
-              <div class="card card-soft mb-md">
-                <strong>Status:</strong> Coming Soon<br />
-                <strong>Expected Release:</strong> Q2 2025<br />
-                <strong>Requirements:</strong> macOS 10.15+ (Intel/Apple Silicon)
-              </div>
-
-              <p><strong>Installation (Preview):</strong></p>
-              <pre
-                style="
-                  background: var(--rw-surface);
-                  padding: var(--rw-space-sm);
-                  border-radius: var(--rw-radius-sm);
-                  overflow-x: auto;
-                  margin: var(--rw-space-sm) 0;
-                "
-              >
-Download DMG file
-Drag to Applications folder
-Launch from Applications</pre
-              >
-
-              <a
-                href="mailto:support@rinawarptech.com?subject=macOS Beta Request"
-                class="btn btn-outline"
-                onclick="gtag('event', 'interest', {event_category: 'app', event_label: 'macOS Beta Request'})"
-              >
-                Request macOS Beta Access
-              </a>
-            </div>
-
-            <!-- VS Code Extension -->
-            <div class="card">
-              <h3
-                style="
-                  color: var(--rw-accent);
-                  margin-bottom: var(--rw-space-md);
-                "
-              >
-                🔌 VS Code Extension
-              </h3>
-              <p>
-                <strong>RinaWarp VS Code Extension</strong> - Enhance your
-                coding workflow with AI-powered tools.
-              </p>
-
-              <div class="card card-soft mb-md">
-                <strong>File:</strong> rinawarp-vscode-1.0.0.vsix<br />
-                <strong>Size:</strong> 1.7 MB<br />
-                <strong>Requirements:</strong> Visual Studio Code
-              </div>
-
-              <p><strong>Installation:</strong></p>
-              <pre
-                style="
-                  background: var(--rw-surface);
-                  padding: var(--rw-space-sm);
-                  border-radius: var(--rw-radius-sm);
-                  overflow-x: auto;
-                  margin: var(--rw-space-sm) 0;
-                "
-              >
-Download and install in VS Code:
-Extensions → ... → Install from VSIX</pre
-              >
-
-              <a
-                href="https://api.rinawarptech.com/downloads/rinawarp-vscode-1.0.0.vsix"
-                class="btn btn-primary"
-                download="rinawarp-vscode-1.0.0.vsix"
-                onclick="gtag('event', 'download', {event_category: 'extension', event_label: 'VS Code Extension'})"
-              >
-                Install VS Code Extension
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- System Requirements -->
-      <section class="section" style="background: var(--rw-surface-soft)">
-        <div class="container">
-          <div style="max-width: 800px; margin: 0 auto">
-            <div class="card">
-              <h3>🚀 System Requirements</h3>
-              <ul style="line-height: 1.8">
-                <li>
-                  <strong>Operating System:</strong> Linux x64, Windows 10/11
-                  (64-bit)
-                </li>
-                <li>
-                  <strong>Memory:</strong> 4GB RAM minimum, 8GB recommended
-                </li>
-                <li><strong>Disk Space:</strong> 500MB available space</li>
-                <li>
-                  <strong>Network:</strong> Internet connection for AI model
-                  access
-                </li>
-                <li>
-                  <strong>Terminal:</strong> Any terminal emulator (xterm,
-                  gnome-terminal, etc.)
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="container">
-        <p>
-          © 2025 RinaWarp. Need help?
-          <a href="/support.html" style="color: var(--rw-accent)"
-            >Contact Support</a
-          >
-        </p>
+        <article class="rw-download-block">
+          <h2>System Requirements</h2>
+          <ul class="rw-list">
+            <li>OS: Linux x64 or Windows 10/11 (64-bit)</li>
+            <li>Memory: 4 GB minimum, 8 GB recommended</li>
+            <li>Disk Space: ~500 MB free</li>
+            <li>Internet: Required for remote servers & updates</li>
+          </ul>
+        </article>
       </div>
-    </footer>
+    </section>
+  </main>
 
-    <script src="js/rinawarp-ui-kit-v3.js" defer></script>
-  </body>
+  <footer class="rw-footer">
+    <div class="rw-footer-inner">
+      <p>
+        © 2025 RinaWarp Technologies, LLC. All rights reserved.
+        RinaWarp<span class="tm">™</span> and RinaWarp Terminal Pro<span class="tm">™</span>
+        are trademarks of RinaWarp Technologies, LLC.
+      </p>
+      <p class="rw-footer-links">
+        <a href="/support.html">Need help?</a>
+      </p>
+    </div>
+  </footer>
+</body>
 </html>

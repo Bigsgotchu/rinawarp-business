@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RinaWarp Pricing</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+
+  <!-- Enhanced JSON-LD structured data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "RinaWarp",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "url": "https://rinawarptech.com/",
+  "image": "https://rinawarptech.com/assets/rinawarp-logo.png",
+  "publisher": {
+    "@type": "Organization",
+    "name": "RinaWarp Technologies, LLC",
+    "url": "https://rinawarptech.com/"
+  },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free Tier",
+      "price": "0",
+      "priceCurrency": "USD",
+      "category": "free",
+      "url": "https://rinawarptech.com/download",
+      "description": "Free forever tier for testing and light use."
+    },
+    {
+      "@type": "Offer",
+      "name": "Basic",
+      "price": "9.99",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "9.99",
+        "priceCurrency": "USD",
+        "billingDuration": "P1M",
+        "unitText": "month"
+      },
+      "url": "https://rinawarptech.com/pricing"
+    },
+    {
+      "@type": "Offer",
+      "name": "Starter",
+      "price": "29",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "29",
+        "priceCurrency": "USD",
+        "billingDuration": "P1M",
+        "unitText": "month"
+      },
+      "url": "https://rinawarptech.com/pricing"
+    },
+    {
+      "@type": "Offer",
+      "name": "Creator",
+      "price": "69",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "69",
+        "priceCurrency": "USD",
+        "billingDuration": "P1M",
+        "unitText": "month"
+      },
+      "url": "https://rinawarptech.com/pricing"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro",
+      "price": "99",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "99",
+        "priceCurrency": "USD",
+        "billingDuration": "P1M",
+        "unitText": "month"
+      },
+      "url": "https://rinawarptech.com/pricing"
+    },
+    {
+      "@type": "Offer",
+      "name": "Founder Lifetime Access",
+      "price": "699",
+      "priceCurrency": "USD",
+      "category": "lifetime",
+      "url": "https://rinawarptech.com/pricing#lifetime",
+      "availability": "https://schema.org/LimitedAvailability",
+      "description": "Founder Wave lifetime access, capped at 200 seats. Under 100 seats allocated for current launch window."
+    },
+    {
+      "@type": "Offer",
+      "name": "Pioneer Lifetime Wave",
+      "price": "800",
+      "priceCurrency": "USD",
+      "category": "lifetime",
+      "url": "https://rinawarptech.com/pricing#lifetime"
+    },
+    {
+      "@type": "Offer",
+      "name": "Future Lifetime Access",
+      "price": "999",
+      "priceCurrency": "USD",
+      "category": "lifetime",
+      "url": "https://rinawarptech.com/pricing#lifetime"
+    }
+  ]
+}
+</script>
+
+  <style>
+    body { font-family: Inter, sans-serif; margin:0; background:#0b0b0e; color:white; }
+    .container { max-width:1200px; margin:0 auto; padding:3rem 1.5rem; }
+    .section { margin-bottom:4rem; }
+    .section-header { text-align:center; margin-bottom:3rem; }
+    .section-header h1 { font-size:2.8rem; margin-bottom:1rem; }
+    .section-header h2 { font-size:2.2rem; margin-bottom:1rem; }
+    .section-subtitle { font-size:1.1rem; color:#a1a1aa; max-width:600px; margin:0 auto; }
+    .pricing-grid {
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+      gap:2rem; margin-bottom:3rem;
+    }
+    .pricing-card {
+      background:#11131c;
+      border-radius:20px;
+      padding:2rem;
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 0 24px rgba(0,255,255,0.2);
+      transition:transform 0.2s ease;
+      position:relative;
+    }
+    .pricing-card:hover { transform:translateY(-5px); }
+    .pricing-card.featured { border:2px solid #ff1fad; }
+    .pricing-card .badge {
+      position:absolute; top:-10px; right:20px;
+      background:linear-gradient(90deg,#ff1fad,#12c9ff);
+      color:white; padding:0.5rem 1rem; border-radius:999px;
+      font-size:0.8rem; font-weight:600;
+    }
+    .pricing-card .badge-hot {
+      background:linear-gradient(90deg,#ff4757,#ff6348);
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform:scale(1); }
+      50% { transform:scale(1.05); }
+      100% { transform:scale(1); }
+    }
+    .pricing-card h2, .pricing-card h3 { margin:0 0 1rem; font-size:1.5rem; }
+    .price { font-size:2.5rem; margin:1rem 0; font-weight:700; }
+    .price-period { font-size:1rem; color:#a1a1aa; font-weight:400; }
+    .tagline { color:#a1a1aa; margin-bottom:1.5rem; }
+    .pricing-features { list-style:none; padding:0; margin:1.5rem 0; }
+    .pricing-features li { margin:0.75rem 0; color:#e5e5e5; }
+    .footnote { font-size:0.85rem; color:#888; margin-top:1rem; }
+    .button-mermaid {
+      background:linear-gradient(90deg,#ff1fad,#12c9ff);
+      color:white; border:none; padding:0.9rem 1.8rem;
+      border-radius:12px; font-weight:600; cursor:pointer;
+      text-decoration:none; display:inline-block;
+      transition:transform 0.2s ease;
+    }
+    .button-mermaid:hover { transform:translateY(-2px); }
+    .lifetime-grid { grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); }
+    .lifetime-card { background:linear-gradient(135deg, rgba(255,31,173,0.1), rgba(18,214,255,0.1)); }
+    .lifetime-card.highlighted { border:2px solid #ff1fad; box-shadow:0 0 40px rgba(255,31,173,0.3); }
+    .scarcity { background:rgba(255,71,87,0.1); padding:1rem; border-radius:10px; margin:1rem 0; border-left:4px solid #ff4757; }
+    .scarcity strong { color:#ff6b7a; }
+    .disclaimer { font-size:0.8rem; color:#888; font-style:italic; }
+    .legal-note { text-align:center; color:#888; font-size:0.9rem; margin-top:2rem; padding:1rem; border-top:1px solid #333; }
+    .lifetime-section { background:linear-gradient(135deg, rgba(255,31,173,0.05), rgba(18,214,255,0.05)); padding:3rem; border-radius:20px; }
+  </style>
+</head>
+<body>
+
+<section id="pricing" class="container section">
+  <header class="section-header">
+    <h1>RinaWarp Pricing</h1>
+    <p class="section-subtitle">
+      Start free. Upgrade only when you're ready to scale your creativity and workflow.
+    </p>
+  </header>
+
+  <div class="pricing-grid">
+    <!-- FREE -->
+    <article class="pricing-card">
+      <h2>Free</h2>
+      <p class="price">$0<span class="price-period">/forever</span></p>
+      <p class="tagline">Perfect way to test drive RinaWarp.</p>
+      <ul class="pricing-features">
+        <li>✔ Core Terminal Pro features</li>
+        <li>✔ Basic AI prompts & tools</li>
+        <li>✔ Limited usage, no credit card</li>
+        <li>✔ Great as a funnel builder</li>
+      </ul>
+      <button class="button-mermaid">
+        Start Free Tier
+      </button>
+    </article>
+
+    <!-- BASIC -->
+    <article class="pricing-card">
+      <h2>Basic</h2>
+      <p class="price">$9.99<span class="price-period">/month</span></p>
+      <p class="tagline">For curious creators testing the waters.</p>
+      <ul class="pricing-features">
+        <li>✔ All Free features</li>
+        <li>✔ Higher usage limits</li>
+        <li>✔ Priority email support</li>
+        <li>✔ Great for solo experiments</li>
+      </ul>
+      <button class="button-mermaid">
+        Choose Basic
+      </button>
+    </article>
+
+    <!-- STARTER -->
+    <article class="pricing-card">
+      <h2>Starter</h2>
+      <p class="price">$29<span class="price-period">/month</span></p>
+      <p class="tagline">Serious tools for consistent creators.</p>
+      <ul class="pricing-features">
+        <li>✔ All Basic features</li>
+        <li>✔ Higher concurrency & usage</li>
+        <li>✔ Access to both apps*</li>
+        <li>✔ Great for small teams or channels</li>
+      </ul>
+      <p class="footnote">*Terminal Pro + AI Music Video Creator access as available.</p>
+      <button class="button-mermaid">
+        Choose Starter
+      </button>
+    </article>
+
+    <!-- CREATOR -->
+    <article class="pricing-card featured">
+      <div class="badge">Most Popular</div>
+      <h2>Creator</h2>
+      <p class="price">$69<span class="price-period">/month</span></p>
+      <p class="tagline">Built for working artists & power creators.</p>
+      <ul class="pricing-features">
+        <li>✔ All Starter features</li>
+        <li>✔ Higher limits for AI video + automation</li>
+        <li>✔ Priority roadmap influence</li>
+        <li>✔ Designed for content studios & pros</li>
+      </ul>
+      <button class="button-mermaid">
+        Choose Creator
+      </button>
+    </article>
+
+    <!-- PRO -->
+    <article class="pricing-card">
+      <h2>Pro</h2>
+      <p class="price">$99<span class="price-period">/month</span></p>
+      <p class="tagline">For teams that live inside RinaWarp.</p>
+      <ul class="pricing-features">
+        <li>✔ All Creator features</li>
+        <li>✔ Highest SaaS limits</li>
+        <li>✔ Priority support lane</li>
+        <li>✔ Great for agencies & production teams</li>
+      </ul>
+      <button class="button-mermaid">
+        Choose Pro
+      </button>
+    </article>
+  </div>
+
+  <!-- LIFETIME SECTION -->
+  <section id="lifetime" class="section lifetime-section">
+    <header class="section-header">
+      <h2>Lifetime Access Waves</h2>
+      <p class="section-subtitle">
+        One-time payment. No subscriptions. Own your tools and your workflow.
+      </p>
+    </header>
+
+    <div class="pricing-grid lifetime-grid">
+      <!-- FOUNDER WAVE -->
+      <article class="pricing-card lifetime-card highlighted neon-frame">
+        <div class="badge badge-hot">Founder Wave</div>
+        <h3>Founder Lifetime Access</h3>
+
+        <p class="price">$699<span class="price-period">/once</span></p>
+        <p class="tagline">
+          The original lifetime tier for early creators who want full platform access forever.
+        </p>
+
+        <ul class="pricing-features">
+          <li>✔ Terminal Pro lifetime access</li>
+          <li>✔ AI Music Video Creator lifetime access</li>
+          <li>✔ All future RinaWarp apps included</li>
+          <li>✔ Founder badge + early beta access</li>
+          <li>✔ Priority feature requests & support</li>
+        </ul>
+
+        <p class="scarcity">
+          ⚡ <strong>200 seats total.</strong>  
+          <em>Under 100 seats allocated for the current launch window.</em>
+        </p>
+
+        <p class="disclaimer">
+          Seat availability reflects the planned allocation for the current launch window.
+          It is not a real-time live counter.
+        </p>
+
+        <a href="/download" class="button-mermaid button-large">
+          Claim Founder Access
+        </a>
+      </article>
+
+      <!-- PIONEER WAVE -->
+      <article class="pricing-card lifetime-card">
+        <div class="badge">Coming Next</div>
+        <h3>Pioneer Lifetime Wave</h3>
+        <p class="price">$800<span class="price-period">/once</span></p>
+        <p class="tagline">
+          Second wave of lifetime users after Founder seats sell out.
+        </p>
+        <ul class="pricing-features">
+          <li>✔ Same core lifetime benefits</li>
+          <li>✔ Limited to 300 total seats</li>
+          <li>✔ Priority creator community access</li>
+        </ul>
+        <p class="scarcity">
+          🌊 Pioneer Wave unlocks once Founder Wave sells out.
+        </p>
+      </article>
+
+      <!-- FUTURE LIFETIME -->
+      <article class="pricing-card lifetime-card">
+        <h3>Future Lifetime Access</h3>
+        <p class="price">$999<span class="price-period">/once</span></p>
+        <p class="tagline">
+          Evergreen lifetime option for late joiners and future waves.
+        </p>
+        <ul class="pricing-features">
+          <li>✔ Lifetime RinaWarp platform access</li>
+          <li>✔ All current & future apps included</li>
+          <li>✔ Best for long-term power users</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="legal-note">
+      Pricing, features, and availability are subject to change as RinaWarp evolves.
+      Lifetime tiers refer to the life of the RinaWarp platform, not any individual device or account.
+    </p>
+  </section>
+</section>
+
+<footer style="text-align:center; margin-top:4rem; padding:2rem; border-top:1px solid #333; color:#888;">
+  © 2025 RinaWarp Technologies, LLC — All Rights Reserved •  
+  <a href="/privacy" style="color:#88e0ff;">Privacy</a> •  
+  <a href="/terms" style="color:#88e0ff;">Terms</a> •  
+  <a href="/refund-policy" style="color:#88e0ff;">Refunds</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{POST_TITLE}} - RinaWarp Blog</title>
+    <meta name="description" content="{{POST_DESCRIPTION}}" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{POST_TITLE}} - RinaWarp Blog" />
+    <meta property="og:description" content="{{POST_DESCRIPTION}}" />
+    <meta property="og:image" content="{{POST_OG_IMAGE}}" />
+    <meta property="og:url" content="{{POST_URL}}" />
+    <meta property="article:published_time" content="{{POST_DATE_ISO}}" />
+    <meta property="article:author" content="{{POST_AUTHOR}}" />
+    <meta property="article:section" content="{{POST_CATEGORY}}" />
+    <meta property="article:tag" content="{{POST_TAGS}}" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{POST_TITLE}} - RinaWarp Blog" />
+    <meta name="twitter:description" content="{{POST_DESCRIPTION}}" />
+    <meta name="twitter:image" content="{{POST_OG_IMAGE}}" />
+
+    <!-- RinaWarp UI Kit v3 -->
+    <link rel="stylesheet" href="/css/rinawarp-ui-kit-v3.css" />
+    <script src="/js/rinawarp-ui-kit-v3.js" defer></script>
+
+    <style>
+      .blog-hero {
+        background: var(--rw-gradient-hero);
+        padding: 120px 0 80px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .blog-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .blog-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .blog-post {
+        background: var(--rw-bg-card);
+        border-radius: var(--rw-radius-xl);
+        padding: var(--rw-space-8);
+        margin: var(--rw-space-8) 0;
+        border: 1px solid var(--rw-border-primary);
+      }
+
+      .blog-meta {
+        display: flex;
+        align-items: center;
+        gap: var(--rw-space-4);
+        margin-bottom: var(--rw-space-6);
+        color: var(--rw-text-secondary);
+        font-size: var(--rw-text-sm);
+      }
+
+      .blog-author {
+        display: flex;
+        align-items: center;
+        gap: var(--rw-space-2);
+      }
+
+      .author-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--rw-radius-full);
+        background: var(--rw-gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--rw-text-inverse);
+        font-weight: var(--rw-weight-semibold);
+      }
+
+      .blog-content h1,
+      .blog-content h2,
+      .blog-content h3 {
+        color: var(--rw-text-primary);
+        margin-top: var(--rw-space-8);
+        margin-bottom: var(--rw-space-4);
+      }
+
+      .blog-content p {
+        margin-bottom: var(--rw-space-4);
+        line-height: 1.7;
+      }
+
+      .blog-content blockquote {
+        border-left: 4px solid var(--rw-primary);
+        padding-left: var(--rw-space-4);
+        margin: var(--rw-space-6) 0;
+        font-style: italic;
+        color: var(--rw-text-secondary);
+      }
+
+      .blog-content code {
+        background: var(--rw-bg-tertiary);
+        padding: 2px 6px;
+        border-radius: var(--rw-radius);
+        font-family: var(--rw-font-mono);
+        font-size: 0.9em;
+      }
+
+      .blog-content pre {
+        background: var(--rw-bg-tertiary);
+        padding: var(--rw-space-4);
+        border-radius: var(--rw-radius);
+        overflow-x: auto;
+        margin: var(--rw-space-4) 0;
+      }
+
+      .blog-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--rw-space-2);
+        margin-top: var(--rw-space-6);
+      }
+
+      .tag {
+        background: var(--rw-bg-glass);
+        border: 1px solid var(--rw-border-primary);
+        padding: var(--rw-space-1) var(--rw-space-3);
+        border-radius: var(--rw-radius-full);
+        font-size: var(--rw-text-xs);
+        text-decoration: none;
+        color: var(--rw-text-secondary);
+      }
+
+      .tag:hover {
+        border-color: var(--rw-primary);
+        color: var(--rw-primary);
+      }
+
+      .related-posts {
+        margin-top: var(--rw-space-16);
+        padding-top: var(--rw-space-8);
+        border-top: 1px solid var(--rw-border-primary);
+      }
+
+      .related-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--rw-space-6);
+        margin-top: var(--rw-space-6);
+      }
+
+      .related-card {
+        background: var(--rw-bg-card);
+        border-radius: var(--rw-radius-lg);
+        padding: var(--rw-space-4);
+        border: 1px solid var(--rw-border-primary);
+        text-decoration: none;
+        transition: all var(--rw-transition);
+      }
+
+      .related-card:hover {
+        border-color: var(--rw-primary);
+        transform: translateY(-2px);
+      }
+
+      .related-card h4 {
+        color: var(--rw-text-primary);
+        margin-bottom: var(--rw-space-2);
+        font-size: var(--rw-text-lg);
+      }
+
+      .related-card p {
+        color: var(--rw-text-secondary);
+        font-size: var(--rw-text-sm);
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body class="rw-theme-mermaid">
+    <!-- Header -->
+    <header class="rw-header">
+      <div class="container">
+        <div class="rw-header-inner">
+          <a href="/" class="rw-logo">
+            <img
+              src="/assets/rinawarp-logo.png"
+              alt="RinaWarp"
+              width="40"
+              height="40"
+            />
+            RinaWarp
+          </a>
+          <nav class="rw-nav">
+            <a href="/" class="rw-nav-link">Home</a>
+            <a href="/terminal-pro.html" class="rw-nav-link">Terminal Pro</a>
+            <a href="/pricing.html" class="rw-nav-link">Pricing</a>
+            <a href="/support.html" class="rw-nav-link">Support</a>
+            <a href="/blog.html" class="rw-nav-link active">Blog</a>
+          </nav>
+          <button class="rw-mobile-menu-toggle" aria-label="Toggle menu">
+            ☰
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Blog Hero -->
+    <section class="blog-hero">
+      <div class="container">
+        <div class="blog-content">
+          <div class="blog-meta">
+            <div class="blog-author">
+              <div class="author-avatar">{{AUTHOR_INITIALS}}</div>
+              <span>{{POST_AUTHOR}}</span>
+            </div>
+            <span>•</span>
+            <span>{{POST_DATE}}</span>
+            <span>•</span>
+            <span>{{POST_READ_TIME}} min read</span>
+          </div>
+          <h1 class="rw-hero-title">{{POST_TITLE}}</h1>
+          <p class="rw-hero-subtitle">{{POST_DESCRIPTION}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+      <div class="container">
+        <div class="blog-content">
+          <article class="blog-post">
+            <!-- Blog Post Content -->
+            <div class="blog-content">
+              <!-- Replace this with actual blog post content -->
+              {{POST_CONTENT}}
+            </div>
+
+            <!-- Tags -->
+            <div class="blog-tags">{{POST_TAGS_HTML}}</div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+      <div class="container">
+        <div class="blog-content">
+          <h2>Related Articles</h2>
+          <div class="related-grid">{{RELATED_POSTS}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="section rw-bg-secondary">
+      <div class="container">
+        <div class="rw-footer-cta">
+          <h3>Stay Updated</h3>
+          <p>
+            Get the latest insights on AI development, terminal automation, and
+            productivity tips delivered to your inbox.
+          </p>
+          <form
+            class="newsletter-form"
+            data-async
+            action="/api/newsletter"
+            method="POST"
+            style="
+              display: flex;
+              gap: var(--rw-space-4);
+              max-width: 400px;
+              margin: 0 auto;
+            "
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              style="
+                flex: 1;
+                padding: var(--rw-space-3);
+                border: 1px solid var(--rw-border-primary);
+                border-radius: var(--rw-radius);
+                background: var(--rw-bg-card);
+                color: var(--rw-text-primary);
+              "
+            />
+            <button type="submit" class="rw-btn rw-btn-primary">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="rw-footer">
+      <div class="container">
+        <div class="rw-footer-content">
+          <div class="rw-footer-section">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="/terminal-pro.html">Terminal Pro</a></li>
+              <li><a href="/music-video-creator.html">Video Creator</a></li>
+              <li><a href="/pricing.html">Pricing</a></li>
+              <li><a href="/download.html">Download</a></li>
+            </ul>
+          </div>
+          <div class="rw-footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="/support.html">Help Center</a></li>
+              <li><a href="/faq.html">FAQ</a></li>
+              <li><a href="/contact.html">Contact</a></li>
+              <li><a href="/blog.html">Blog</a></li>
+            </ul>
+          </div>
+          <div class="rw-footer-section">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="/about.html">About</a></li>
+              <li><a href="/affiliates.html">Affiliates</a></li>
+              <li><a href="/founder-wave.html">Founder Wave</a></li>
+              <li><a href="/feedback-form.html">Feedback</a></li>
+            </ul>
+          </div>
+          <div class="rw-footer-section">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="/terms.html">Terms</a></li>
+              <li><a href="/privacy.html">Privacy</a></li>
+              <li><a href="/dmca.html">DMCA</a></li>
+              <li><a href="/refund-policy.html">Refund Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="rw-footer-bottom">
+          <div class="rw-footer-logo">
+            <img
+              src="/assets/rinawarp-logo.png"
+              alt="RinaWarp"
+              width="32"
+              height="32"
+            />
+            RinaWarp Terminal Pro
+          </div>
+          <div>© 2025 RinaWarp Technologies, LLC. All rights reserved.</div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2025 RinaWarp Technologies, LLC. All rights reserved.
+ *
+ * RinaWarp VSCode Extension is proprietary to RinaWarp Technologies, LLC.
+ * Unauthorized access, copying, or distribution is strictly prohibited.
+ */
+
 // extension.js
 const vscode = require("vscode");
 const https = require("https");
