@@ -119,3 +119,12 @@ vendor/
 
 # Profiling file
 *.prof
+
+# Large binary files (not suitable for Git)
+*.tar.xz
+*.AppImage
+*.exe
+*.dmg
+*.deb
+*.rpm
+
