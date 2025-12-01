@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Google Drive
+Comment=Access Google Drive files
+Icon=folder-download
+Exec=xdg-open https://drive.google.com
+Terminal=false
+Categories=FileManager;Network;
+Keywords=google;drive;cloud;storage;

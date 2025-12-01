@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rina Vex Music - Official Artist Page | RinaWarp</title>
+    <meta name="description" content="Discover Rina Vex's music - raw MP3 downloads and YouTube videos. The creative force behind RinaWarp's AI tools.">
+    <link rel="stylesheet" href="/css/rinawarp-styles.css">
+    
+    <!-- GA4 Tracking -->
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('event', 'view_rina_vex_music', { location: window.location.pathname });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SZK23HMCVP');
+    </script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Unified Components JavaScript -->
+    <script src="/js/unified-components.js"></script>
+    <script src="/js/stripe-links.js"></script>
+</head>
+<body>
+    <!-- Unified RinaWarp Header Component -->
+    <nav class="navbar rw-unified-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-brand">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 800 400"
+            xmlns="http://www.w3.org/2000/svg"
+            class="nav-logo"
+          >
+            <defs>
+              <linearGradient id="navGradUnified" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FF1B8D" />
+                <stop offset="50%" stop-color="#12D6FF" />
+                <stop offset="100%" stop-color="#00D1C1" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M150 200 C150 100, 300 100, 400 200 C500 300, 650 300, 650 200 
+                 C650 100, 500 100, 400 200 C300 300, 150 300, 150 200 Z"
+              fill="none"
+              stroke="url(#navGradUnified)"
+              stroke-width="15"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="nav-brand-text">RinaWarp</span>
+        </a>
+        
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/terminal-pro" class="nav-link">Terminal Pro</a></li>
+          <li><a href="/music-video-creator" class="nav-link">Music Video Creator</a></li>
+          <li><a href="/pricing" class="nav-link">Pricing</a></li>
+          <li><a href="/support" class="nav-link">Support</a></li>
+          <li><a href="/rina-vex-music" class="nav-link nav-cta">🎵 Rina Vex</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <a href="/download" class="nav-cta">Download</a>
+          <a href="/download" class="btn btn-small btn-primary nav-download">
+            Download Free Tier
+          </a>
+        </div>
+        
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+      
+      <!-- Mobile Menu Overlay -->
+      <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu-content">
+          <ul class="mobile-nav-menu">
+            <li><a href="/" class="mobile-nav-link" onclick="closeMobileMenu()">Home</a></li>
+            <li><a href="/terminal-pro" class="mobile-nav-link" onclick="closeMobileMenu()">Terminal Pro</a></li>
+            <li><a href="/music-video-creator" class="mobile-nav-link" onclick="closeMobileMenu()">Music Video Creator</a></li>
+            <li><a href="/pricing" class="mobile-nav-link" onclick="closeMobileMenu()">Pricing</a></li>
+            <li><a href="/support" class="mobile-nav-link" onclick="closeMobileMenu()">Support</a></li>
+            <li><a href="/rina-vex-music" class="mobile-nav-link nav-cta" onclick="closeMobileMenu()">🎵 Rina Vex</a></li>
+            <li class="mobile-cta-section">
+              <a href="/download" class="btn btn-primary mobile-download-btn">
+                Download Free Tier
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="rw-page rw-music-page">
+      <section class="rv-music-hero">
+        <h1>Rina Vex</h1>
+        <p class="rv-music-hero-sub">
+          Dark-pop. Sultry vocals. Cinematic vibes.  
+          The artist behind RinaWarp — and the reason the tools exist.
+        </p>
+      </section>
+
+      <!-- YouTube / main promo video -->
+      <section class="rv-youtube">
+        <!-- TODO: put your real YouTube video or playlist URL -->
+        <iframe
+          src="https://www.youtube.com/embed/XXXXXXXXXXX"
+          title="Rina Vex on YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </section>
+
+      <!-- Local tracks (served from /music/) -->
+      <section class="rv-music-grid">
+        <article class="rv-track-card">
+          <h3>For a Minute, Forever</h3>
+          <p class="rv-track-meta">Story: Reuniting with your brother for a few minutes on a Greyhound stop.</p>
+          <audio controls class="rv-audio">
+            <source src="/music/for-a-minute-forever.mp3" type="audio/mpeg" />
+            Your browser does not support audio playback.
+          </audio>
+        </article>
+
+        <article class="rv-track-card">
+          <h3>Silent Storm</h3>
+          <p class="rv-track-meta">Soft verses, heavy bass — classic Rina Vex energy.</p>
+          <audio controls class="rv-audio">
+            <source src="/music/silent-storm.mp3" type="audio/mpeg" />
+          </audio>
+        </article>
+
+        <article class="rv-track-card">
+          <h3>Greyhound Blues</h3>
+          <p class="rv-track-meta">Foster homes, buses, and finding your way back to yourself.</p>
+          <audio controls class="rv-audio">
+            <source src="/music/greyhound-blues.mp3" type="audio/mpeg" />
+          </audio>
+        </article>
+      </section>
+
+      <section class="rv-music-cta">
+        <p>
+          Want to turn these songs into visuals?
+        </p>
+        <div style="margin-top:1rem;">
+          <a href="/music-video-creator" class="btn btn-primary">
+            Make an AI Music Video
+          </a>
+          <a href="/download" class="btn btn-ghost">
+            Download Terminal Pro
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RinaWarp</h3>
+                    <p>AI-powered tools for developers and creators.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <ul>
+                        <li><a href="/terminal-pro">Terminal Pro</a></li>
+                        <li><a href="/music-video-creator">AI Music Video Creator</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Music</h3>
+                    <ul>
+                        <li><a href="/rina-vex-music">Rina Vex Music</a></li>
+                        <li><a href="https://youtube.com/@rinavex" target="_blank">YouTube Channel</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="/pricing">Pricing</a></li>
+                        <li><a href="/download">Download</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/support">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024–2025 RinaWarp Technologies, LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            if (!navMenu) return;
+            const isVisible = getComputedStyle(navMenu).display === 'flex';
+            navMenu.style.display = isVisible ? 'none' : 'flex';
+        }
+    </script>
+</body>
+</html>
+            </audio>
+          </article>
+
+          <!-- Song 3 -->
+          <article class="rw-track">
+            <div class="rw-track-meta">
+              <h3>Greyhound Blues</h3>
+              <p>Rina Vex · Storytelling / emotional</p>
+            </div>
+            <audio controls preload="metadata">
+              <source src="/music/greyhound-blues.mp3" type="audio/mpeg">
+              Your browser does not support the audio tag.
+            </audio>
+          </article>
+        </div>
+
+        <p class="rw-music-hint">
+          To update songs: upload your real MP3s to <code>/music/</code> on the server
+          using these exact filenames.
+        </p>
+      </section>
+
+      <!-- YOUTUBE / VIDEO SECTION -->
+      <section id="rv-youtube" class="rw-music-section rw-music-videos">
+        <h2>Watch Rina Vex on YouTube</h2>
+        <p class="rw-music-sub">
+          Full videos, AI-generated visuals, and behind-the-scenes content — all in one place.
+        </p>
+
+        <div class="rw-video-grid">
+          <!-- Replace the video IDs with your real Rina Vex YouTube links -->
+          <article class="rw-video-card">
+            <div class="rw-video-embed">
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_1"
+                title="Rina Vex Video 1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <h3>Featured Video #1</h3>
+            <p>Official Rina Vex visual powered by RinaWarp tools.</p>
+          </article>
+
+          <article class="rw-video-card">
+            <div class="rw-video-embed">
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_2"
+                title="Rina Vex Video 2"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <h3>Featured Video #2</h3>
+            <p>Dark pop energy, heavy bass, and neon visuals.</p>
+          </article>
+        </div>
+
+        <div class="rw-youtube-cta">
+          <a href="https://www.youtube.com/results?search_query=rina+vex" target="_blank" rel="noopener" class="btn btn-primary">
+            Open Rina Vex on YouTube
+          </a>
+        </div>
+      </section>
+
+      <!-- CROSS-PROMO WITH YOUR APPS -->
+      <section class="rw-music-apps">
+        <h2>How RinaWarp Powers Rina Vex</h2>
+        <div class="rw-music-apps-grid">
+          <article>
+            <h3>AI Music Video Creator</h3>
+            <p>
+              The unicorn-themed app that turns your songs into visuals.
+              All Rina Vex videos are built on the same tools we're giving you.
+            </p>
+            <a href="/music-video-creator" class="link-chevron">Explore AI Music Video Creator →</a>
+          </article>
+          <article>
+            <h3>Terminal Pro</h3>
+            <p>
+              The mermaid-themed terminal that automates your creator workflow —
+              from file management to AI prompts.
+            </p>
+            <a href="/terminal-pro" class="link-chevron">Explore Terminal Pro →</a>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RinaWarp</h3>
+                    <p>AI-powered tools for developers and creators.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <ul>
+                        <li><a href="/terminal-pro">Terminal Pro</a></li>
+                        <li><a href="/music-video-creator">AI Music Video Creator</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Music</h3>
+                    <ul>
+                        <li><a href="/rina-vex-music">Rina Vex Music</a></li>
+                        <li><a href="https://youtube.com/@rinavex" target="_blank">YouTube Channel</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="/pricing">Pricing</a></li>
+                        <li><a href="/download">Download</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RinaWarp. All rights reserved. | Music by Rina Vex</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Sticky Bottom CTA -->
+    <div class="rw-sticky-cta" id="rwStickyCtaMusic">
+        <span>Love the music? Try the tools!</span>
+        <div>
+            <a href="/download" class="btn btn-primary btn-sm">Download Free Tier</a>
+            <a href="/pricing" class="btn btn-ghost btn-sm">View Pricing</a>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const bar = document.getElementById('rwStickyCtaMusic');
+            if (!bar) return;
+            let shown = false;
+            function maybeShow() {
+                if (shown) return;
+                if (window.scrollY > 400) {
+                    bar.classList.add('rw-sticky-cta--visible');
+                    shown = true;
+                }
+            }
+            window.addEventListener('scroll', maybeShow, { passive: true });
+        })();
+    </script>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

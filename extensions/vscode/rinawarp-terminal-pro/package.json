@@ -1,0 +1,156 @@
+{
+  "name": "rinawarp-terminal-pro",
+  "displayName": "RinaWarp Terminal Pro",
+  "description": "AI-powered development assistant by RinaWarp with integrated Terminal Pro and Dev Dashboard.",
+  "version": "2.0.0",
+  "publisher": "RinaWarp",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Other",
+    "Extension Packs"
+  ],
+  "keywords": [
+    "terminal",
+    "ai",
+    "deployment",
+    "development",
+    "productivity"
+  ],
+  "activationEvents": [
+    "onCommand:rinawarp.openTerminal",
+    "onCommand:rinawarp.openDashboard",
+    "onCommand:rinawarp.runDeploy",
+    "onCommand:rinawarp.aiFix",
+    "onCommand:rinawarp.syncPlugins",
+    "onCommand:rinawarp.launchTerminalPro",
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rinawarp.openTerminal",
+        "title": "RinaWarp: Open Terminal Pro",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.openDashboard",
+        "title": "RinaWarp: Open Dev Dashboard",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.runDeploy",
+        "title": "RinaWarp: Run Deploy",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.aiFix",
+        "title": "RinaWarp: AI Fix Suggestions",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.syncPlugins",
+        "title": "RinaWarp: Sync Plugins",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.launchTerminalPro",
+        "title": "RinaWarp: Launch Terminal Pro",
+        "category": "RinaWarp"
+      },
+      {
+        "command": "rinawarp.account",
+        "title": "RinaWarp: Account Management",
+        "category": "RinaWarp"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "rinawarpView",
+          "name": "RinaWarp Terminal Pro",
+          "when": "true"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "rinawarp",
+          "title": "RinaWarp",
+          "icon": "$(terminal-terminal)"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "RinaWarp Terminal Pro",
+      "properties": {
+        "rinawarp.terminalProPath": {
+          "type": "string",
+          "default": "./build-output/RinaWarp Terminal Pro-1.0.0.AppImage",
+          "description": "Path to Terminal Pro executable"
+        },
+        "rinawarp.dashboardUrl": {
+          "type": "string",
+          "default": "http://localhost:8080/dev-dashboard.html",
+          "description": "URL for Dev Dashboard"
+        },
+        "rinawarp.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:3001",
+          "description": "Backend API URL"
+        },
+        "rinawarp.userData": {
+          "type": "object",
+          "default": {},
+          "description": "Stored user authentication data"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "clean": "rimraf out dist *.vsix",
+    "compile": "webpack --mode production",
+    "compile:check": "tsc --noEmit",
+    "watch": "webpack --mode development --watch",
+    "lint": "eslint src --ext ts",
+    "lint:fix": "eslint src --ext ts --fix",
+    "pretest": "npm run lint",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "build": "npm run clean && npm run compile",
+    "dev": "npm run watch"
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.126",
+    "@types/vscode": "^1.106.1",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^8.57.1",
+    "glob": "^8.1.0",
+    "mocha": "^10.8.2",
+    "rimraf": "^5.0.10",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "vsce": "^2.15.0",
+    "webpack": "^5.103.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "axios": "^1.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bigsgotchu/rinawarptech-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Bigsgotchu/rinawarptech-website/issues"
+  },
+  "homepage": "https://rinawarptech.com",
+  "license": "MIT"
+}

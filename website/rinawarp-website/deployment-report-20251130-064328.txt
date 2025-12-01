@@ -1,0 +1,77 @@
+RinaWarp Website Deployment Report
+=================================
+
+Deployment Date: Sun Nov 30 06:43:28 AM MST 2025
+Environment: production
+Build Directory: /home/karina/Documents/RinaWarp/website/rinawarp-website
+
+Files Deployed:
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/icons/apple-touch-icon.png
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/icons/icon-16.png
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/icons/icon-32.png
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/img/rinavex-cover.png
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/img/rinawarp-logo.png
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/img/rinawarp-og.jpg
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/music/README.md
+/home/karina/Documents/RinaWarp/website/rinawarp-website/assets/music/rina-cover.png
+/home/karina/Documents/RinaWarp/website/rinawarp-website/CANONICAL_PLACES_COMPLETE.md
+/home/karina/Documents/RinaWarp/website/rinawarp-website/changelog.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/config/stripe-config.json
+/home/karina/Documents/RinaWarp/website/rinawarp-website/css/conversion-upgrades.css
+/home/karina/Documents/RinaWarp/website/rinawarp-website/css/rinawarp-styles.css
+/home/karina/Documents/RinaWarp/website/rinawarp-website/DEPLOYMENT_INSTRUCTIONS.md
+/home/karina/Documents/RinaWarp/website/rinawarp-website/deployment-report-20251130-033219.txt
+/home/karina/Documents/RinaWarp/website/rinawarp-website/deployment-report-20251130-033640.txt
+/home/karina/Documents/RinaWarp/website/rinawarp-website/deployment-report-20251130-042003.txt
+/home/karina/Documents/RinaWarp/website/rinawarp-website/deployment-report-20251130-043634.txt
+/home/karina/Documents/RinaWarp/website/rinawarp-website/deployment-report-20251130-064328.txt
+/home/karina/Documents/RinaWarp/website/rinawarp-website/deploy.sh
+/home/karina/Documents/RinaWarp/website/rinawarp-website/download.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/downloads/terminal-pro/manifest.json
+/home/karina/Documents/RinaWarp/website/rinawarp-website/faq.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/FINAL_WEBSITE_FIX_COMPLETE.md
+/home/karina/Documents/RinaWarp/website/rinawarp-website/index.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/manifest.json
+/home/karina/Documents/RinaWarp/website/rinawarp-website/MUSIC_INTEGRATION_COMPLETE.md
+/home/karina/Documents/RinaWarp/website/rinawarp-website/music/RinaVex_Song1.mp3
+/home/karina/Documents/RinaWarp/website/rinawarp-website/music/RinaVex_Song2.mp3
+/home/karina/Documents/RinaWarp/website/rinawarp-website/music/RinaVex_Song3.mp3
+/home/karina/Documents/RinaWarp/website/rinawarp-website/music-video-creator.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/netlify.toml
+/home/karina/Documents/RinaWarp/website/rinawarp-website/pricing-backup.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/pricing.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/README.md
+/home/karina/Documents/RinaWarp/website/rinawarp-website/rina/index.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/rina-vex.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/rina-vex-music.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/rinawarp-website-production-20251130-033219.tar.gz
+/home/karina/Documents/RinaWarp/website/rinawarp-website/rinawarp-website-production-20251130-033640.tar.gz
+/home/karina/Documents/RinaWarp/website/rinawarp-website/rinawarp-website-production-20251130-042003.tar.gz
+/home/karina/Documents/RinaWarp/website/rinawarp-website/rinawarp-website-production-20251130-043634.tar.gz
+/home/karina/Documents/RinaWarp/website/rinawarp-website/robots.txt
+/home/karina/Documents/RinaWarp/website/rinawarp-website/scripts/full-clean-rebuild-2.sh
+/home/karina/Documents/RinaWarp/website/rinawarp-website/sitemap.xml
+/home/karina/Documents/RinaWarp/website/rinawarp-website/STRIPE_SETUP_GUIDE.md
+/home/karina/Documents/RinaWarp/website/rinawarp-website/support.html
+/home/karina/Documents/RinaWarp/website/rinawarp-website/terminal-pro.html
+
+Total Files: 48
+Total Size: 51M
+
+Optimization Status:
+- WebP Images: 0 files created
+- Minified CSS: No
+
+SEO Status:
+- robots.txt: Present
+- sitemap.xml: Present
+- manifest.json: Present
+
+Page Status:
+- Homepage: ✓
+- Terminal Pro: ✓
+- Music Video Creator: ✓
+- Pricing: ✓
+- Download: ✓
+
+Deployment completed successfully!
