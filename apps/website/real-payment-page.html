@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RinaWarp Terminal Pro - Pricing & Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        color: #ffffff;
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .header h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header p {
+        font-size: 1.25rem;
+        color: #a0a0a0;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .revenue-banner {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .pricing-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .pricing-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .pricing-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .pricing-card:hover::before {
+        opacity: 1;
+      }
+
+      .pricing-card.featured {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-color: rgba(102, 126, 234, 0.3);
+        transform: scale(1.05);
+      }
+
+      .pricing-card.featured::before {
+        opacity: 1;
+      }
+
+      .pricing-card h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #ffffff;
+      }
+
+      .price {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 1.5rem 0;
+        color: #ffffff;
+      }
+
+      .price .period {
+        font-size: 0.9rem;
+        color: #a0a0a0;
+        font-weight: 400;
+      }
+
+      .features {
+        list-style: none;
+        margin: 2rem 0;
+        text-align: left;
+      }
+
+      .features li {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        font-size: 0.95rem;
+        color: #e0e0e0;
+      }
+
+      .features li:last-child {
+        border-bottom: none;
+      }
+
+      .features li::before {
+        content: '✓';
+        color: #4ade80;
+        font-weight: bold;
+        margin-right: 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        margin: 1rem 0;
+      }
+
+      .spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .success-message {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        text-align: center;
+        display: none;
+      }
+
+      .error-message {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        text-align: center;
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .header h1 {
+          font-size: 2.5rem;
+        }
+
+        .pricing-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .pricing-card.featured {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🧜‍♀️ RinaWarp Terminal Pro</h1>
+        <p>AI-Powered Terminal with Professional Features</p>
+      </div>
+
+      <div class="revenue-banner" id="revenueBanner">💰 Loading revenue data...</div>
+
+      <div class="pricing-grid" id="pricingGrid">
+        <!-- Pricing cards will be loaded dynamically -->
+      </div>
+
+      <div class="success-message" id="successMessage">
+        ✅ Payment successful! Redirecting to your account...
+      </div>
+
+      <div class="error-message" id="errorMessage">❌ Payment failed. Please try again.</div>
+    </div>
+
+    <script>
+      // Configuration and Stripe initialization
+      let stripe = null;
+      let config = null;
+
+      // Load configuration and initialize Stripe
+      async function initializeStripe() {
+        try {
+          console.log('🔧 Loading configuration...');
+          const response = await fetch(`${API_BASE}/config`);
+          config = await response.json();
+
+          if (!config.stripePublishableKey) {
+            throw new Error('Stripe publishable key not found in configuration');
+          }
+
+          console.log('✅ Configuration loaded:', {
+            environment: config.environment,
+            timestamp: config.timestamp,
+          });
+
+          // Initialize Stripe with dynamic key
+          stripe = Stripe(config.stripePublishableKey);
+          console.log('💳 Stripe initialized with dynamic key');
+
+          // Load other data after Stripe is ready
+          await loadRevenueData();
+          await loadProducts();
+          checkForSuccess();
+        } catch (error) {
+          console.error('❌ Failed to initialize Stripe:', error);
+          document.getElementById('errorMessage').textContent =
+            'Failed to load payment system. Please refresh the page.';
+          document.getElementById('errorMessage').style.display = 'block';
+        }
+      }
+
+      // API endpoints
+      const API_BASE = 'https://rinawarptech.com/api';
+
+      // Revenue data
+      let revenueData = {};
+      let products = [];
+
+      // Load revenue data
+      async function loadRevenueData() {
+        try {
+          const response = await fetch(`${API_BASE}/revenue`);
+          revenueData = await response.json();
+          updateRevenueBanner();
+        } catch (error) {
+          console.error('Error loading revenue data:', error);
+          document.getElementById('revenueBanner').textContent = '💰 Revenue tracking unavailable';
+        }
+      }
+
+      // Load products
+      async function loadProducts() {
+        try {
+          const response = await fetch(`${API_BASE}/products`);
+          products = await response.json();
+          renderPricingCards();
+        } catch (error) {
+          console.error('Error loading products:', error);
+          document.getElementById('pricingGrid').innerHTML =
+            '<p>Error loading pricing. Please refresh the page.</p>';
+        }
+      }
+
+      // Update revenue banner
+      function updateRevenueBanner() {
+        const banner = document.getElementById('revenueBanner');
+        banner.innerHTML = `
+                💰 Total Revenue: $${revenueData.totalRevenue?.toFixed(2) || '0.00'} | 
+                Monthly: $${revenueData.monthlyRevenue?.toFixed(2) || '0.00'} | 
+                Subscriptions: ${revenueData.subscriptions || 0} | 
+                One-time: ${revenueData.oneTimePayments || 0}
+            `;
+      }
+
+      // Render pricing cards
+      function renderPricingCards() {
+        const grid = document.getElementById('pricingGrid');
+
+        // Define our pricing structure
+        const pricingPlans = [
+          {
+            name: 'Free',
+            price: '$0',
+            period: '/forever',
+            features: [
+              '10 AI Queries per day',
+              '2 Macros',
+              '10 Voice Commands per day',
+              '1 Device License',
+              '3 Themes',
+              'Community Support',
+            ],
+            buttonText: 'Get Started Free',
+            buttonAction: 'downloadFree',
+          },
+          {
+            name: 'Basic',
+            price: '$29.99',
+            period: '/month',
+            features: [
+              '500 AI Queries per day',
+              '25 Macros',
+              '200 Voice Commands per day',
+              '3 Device Licenses',
+              '20 Themes',
+              'Email Support',
+              'Basic Analytics',
+            ],
+            buttonText: 'Subscribe to Basic',
+            buttonAction: 'subscribe',
+            priceId: 'price_1S9aIvG2ToGP7Chn28SGZBhC', // Basic price ID from Stripe
+          },
+          {
+            name: 'Professional',
+            price: '$79.99',
+            period: '/month',
+            features: [
+              '2,000 AI Queries per day',
+              '100 Macros',
+              '1,000 Voice Commands per day',
+              '10 Device Licenses',
+              'Unlimited Themes',
+              'Priority Support',
+              'Advanced Analytics',
+            ],
+            buttonText: 'Subscribe to Professional',
+            buttonAction: 'subscribe',
+            priceId: 'price_1S9aIwG2ToGP7ChnUCqmkFh4', // Professional price ID
+            featured: true,
+          },
+          {
+            name: 'Business',
+            price: '$149.99',
+            period: '/month',
+            features: [
+              '10,000 AI Queries per day',
+              '500 Macros',
+              '5,000 Voice Commands per day',
+              '50 Device Licenses',
+              'Unlimited Themes',
+              'Dedicated Support',
+              'Team Management',
+              'Advanced Analytics',
+            ],
+            buttonText: 'Subscribe to Business',
+            buttonAction: 'subscribe',
+            priceId: 'price_1S9aIwG2ToGP7Chnt7ZNKEyV', // Business price ID
+          },
+          {
+            name: 'Enterprise',
+            price: '$299.99',
+            period: '/month',
+            features: [
+              'Unlimited AI Queries',
+              'Unlimited Macros',
+              'Unlimited Voice Commands',
+              'Unlimited Device Licenses',
+              'Unlimited Themes',
+              '24/7 Dedicated Support',
+              'Enterprise Team Management',
+              'Custom Integrations',
+              'Advanced Analytics & Reporting',
+            ],
+            buttonText: 'Subscribe to Enterprise',
+            buttonAction: 'subscribe',
+            priceId: 'price_1S9aIxG2ToGP7ChnzazEKl8X', // Enterprise price ID
+          },
+          {
+            name: 'Lifetime',
+            price: '$999.99',
+            period: ' one-time',
+            features: [
+              'Unlimited AI Queries',
+              'Unlimited Macros',
+              'Unlimited Voice Commands',
+              'Unlimited Device Licenses',
+              'Unlimited Themes',
+              'Lifetime Support',
+              'All Enterprise Features',
+              'Future Updates Included',
+            ],
+            buttonText: 'Buy Lifetime',
+            buttonAction: 'purchase',
+            priceId: 'price_1S9aIxG2ToGP7ChnaLGcW2r5', // Lifetime price ID
+          },
+        ];
+
+        grid.innerHTML = pricingPlans
+          .map(
+            (plan) => `
+                <div class="pricing-card ${plan.featured ? 'featured' : ''}">
+                    <h3>${plan.name}</h3>
+                    <div class="price">${plan.price}<span class="period">${plan.period}</span></div>
+                    <ul class="features">
+                        ${plan.features.map((feature) => `<li>${feature}</li>`).join('')}
+                    </ul>
+                    <button 
+                        class="btn" 
+                        onclick="${plan.buttonAction}('${plan.name}', '${plan.priceId || ''}')"
+                        ${plan.buttonAction === 'downloadFree' ? '' : 'id="btn-' + plan.name.toLowerCase() + '"'}
+                    >
+                        ${plan.buttonText}
+                    </button>
+                    <div class="loading" id="loading-${plan.name.toLowerCase()}">
+                        <div class="spinner"></div>
+                        Processing payment...
+                    </div>
+                </div>
+            `,
+          )
+          .join('');
+      }
+
+      // Handle free download
+      function downloadFree() {
+        window.location.href =
+          'https://rinawarp-downloads.s3.amazonaws.com/macos/RinaWarp Terminal Pro.app';
+      }
+
+      // Handle subscription
+      async function subscribe(planName, priceId) {
+        if (!stripe) {
+          showError('Payment system not ready. Please refresh the page.');
+          return;
+        }
+
+        const button = document.getElementById(`btn-${planName.toLowerCase()}`);
+        const loading = document.getElementById(`loading-${planName.toLowerCase()}`);
+
+        try {
+          button.disabled = true;
+          loading.style.display = 'block';
+
+          const customerEmail = prompt('Enter your email address:');
+          if (!customerEmail) {
+            button.disabled = false;
+            loading.style.display = 'none';
+            return;
+          }
+
+          const response = await fetch(`${API_BASE}/create-checkout-session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              priceId: priceId,
+              planName: planName,
+              customerEmail: customerEmail,
+            }),
+          });
+
+          const { url } = await response.json();
+
+          if (url) {
+            window.location.href = url;
+          } else {
+            throw new Error('No checkout URL received');
+          }
+        } catch (error) {
+          console.error('Error creating checkout session:', error);
+          showError('Failed to start checkout. Please try again.');
+          button.disabled = false;
+          loading.style.display = 'none';
+        }
+      }
+
+      // Handle one-time purchase
+      async function purchase(planName, priceId) {
+        if (!stripe) {
+          showError('Payment system not ready. Please refresh the page.');
+          return;
+        }
+
+        const button = document.getElementById(`btn-${planName.toLowerCase()}`);
+        const loading = document.getElementById(`loading-${planName.toLowerCase()}`);
+
+        try {
+          button.disabled = true;
+          loading.style.display = 'block';
+
+          const customerEmail = prompt('Enter your email address:');
+          if (!customerEmail) {
+            button.disabled = false;
+            loading.style.display = 'none';
+            return;
+          }
+
+          const response = await fetch(`${API_BASE}/create-payment-session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              priceId: priceId,
+              planName: planName,
+              customerEmail: customerEmail,
+            }),
+          });
+
+          const { url } = await response.json();
+
+          if (url) {
+            window.location.href = url;
+          } else {
+            throw new Error('No payment URL received');
+          }
+        } catch (error) {
+          console.error('Error creating payment session:', error);
+          showError('Failed to start payment. Please try again.');
+          button.disabled = false;
+          loading.style.display = 'none';
+        }
+      }
+
+      // Show success message
+      function showSuccess() {
+        const success = document.getElementById('successMessage');
+        success.style.display = 'block';
+        setTimeout(() => {
+          success.style.display = 'none';
+        }, 5000);
+      }
+
+      // Show error message
+      function showError(message) {
+        const error = document.getElementById('errorMessage');
+        error.textContent = message;
+        error.style.display = 'block';
+        setTimeout(() => {
+          error.style.display = 'none';
+        }, 5000);
+      }
+
+      // Check for success parameter
+      function checkForSuccess() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+          showSuccess();
+          loadRevenueData(); // Refresh revenue data
+        }
+      }
+
+      // Initialize page
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('🚀 RinaWarp Terminal Pro - Payment Page Loaded');
+        initializeStripe();
+
+        // Refresh revenue data every 30 seconds
+        setInterval(() => {
+          if (stripe) {
+            loadRevenueData();
+          }
+        }, 30000);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "/docs-d00": {
+    "__comp": "5e95c892",
+    "__context": {
+      "plugin": "aba21aa0"
+    }
+  },
+  "/docs-c4c": {
+    "__comp": "a7bd4aaa",
+    "__props": "0058b4c6"
+  },
+  "/docs-34b": {
+    "__comp": "a94703ab"
+  },
+  "/docs/-ee3": {
+    "__comp": "17896441",
+    "content": "23374ca6"
+  },
+  "/docs/deployment/EXECUTION_GUIDE-31f": {
+    "__comp": "17896441",
+    "content": "a20774b8"
+  },
+  "/docs/deployment/SECURITY_REPORT-f79": {
+    "__comp": "17896441",
+    "content": "bece0ef3"
+  },
+  "/docs/deployment/SECURITY_REPORT_20250926_053823-7a2": {
+    "__comp": "17896441",
+    "content": "1ce9392d"
+  },
+  "/docs/development/REORGANIZATION_PLAN-129": {
+    "__comp": "17896441",
+    "content": "be560c4c"
+  },
+  "/docs/development/STRIPE-PRODUCTS-GUIDE-700": {
+    "__comp": "17896441",
+    "content": "39022c70"
+  },
+  "/docs/intro-61d": {
+    "__comp": "17896441",
+    "content": "0e384e19"
+  },
+  "/docs/legal/COPYRIGHT_NOTICE-6d6": {
+    "__comp": "17896441",
+    "content": "9c782b47"
+  },
+  "/docs/legal/IMMEDIATE_ACTION_PLAN-46e": {
+    "__comp": "17896441",
+    "content": "c75ce6a0"
+  },
+  "/docs/legal/LEGAL_ACTION_PLAN-50a": {
+    "__comp": "17896441",
+    "content": "7a357ad0"
+  },
+  "/docs/legal/LICENSING_AGREEMENTS-edc": {
+    "__comp": "17896441",
+    "content": "cbb96b34"
+  },
+  "/docs/legal/MONITORING_SYSTEM-790": {
+    "__comp": "17896441",
+    "content": "a0674809"
+  },
+  "/docs/legal/SECURITY_GUIDE-04b": {
+    "__comp": "17896441",
+    "content": "0d6538d8"
+  },
+  "/docs/legal/SECURITY_SUMMARY-ca7": {
+    "__comp": "17896441",
+    "content": "6a6710a1"
+  },
+  "/docs/legal/TERMINAL_PRO_SECURITY_TEMPLATE-372": {
+    "__comp": "17896441",
+    "content": "90b4ff77"
+  },
+  "/docs/legal/TRADEMARK_REGISTRATION_GUIDE-460": {
+    "__comp": "17896441",
+    "content": "b33dcecd"
+  },
+  "/-2e1": {
+    "__comp": "c4f5d8e4",
+    "__context": {
+      "plugin": "a7456010"
+    },
+    "config": "5e9f5e1a"
+  }
+}

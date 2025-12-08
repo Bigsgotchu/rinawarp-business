@@ -1,0 +1,25 @@
+---
+sidebar_position: 1
+---
+
+# Introduction
+
+Welcome to the RinaWarp Platforms documentation.
+
+RinaWarp Platforms is an AI-powered development ecosystem that includes Terminal Pro, CLI tools, an Agent System, and more.
+
+## Getting Started
+
+To get started with RinaWarp Platforms, follow the guides in the development section.
+
+## Features
+
+- Multi-provider AI integration (OpenAI, Groq, Claude, Gemini, Ollama)
+- Cross-platform desktop app with Electron
+- CLI tools for automation
+- Agent system for task orchestration
+- Secure licensing with Stripe
+
+## Support
+
+For support, visit our [GitHub repository](https://github.com/RinaWarpTech/RinaWarp-Platforms).

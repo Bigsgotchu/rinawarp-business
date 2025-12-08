@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Hardened Runtime entitlements for RinaWarp Terminal Pro -->
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+    
+    <!-- Allow unsigned executable memory for performance -->
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <true/>
+    
+    <!-- Allow DYLD environment variables for debugging (development only) -->
+    <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+    <true/>
+    
+    <!-- Network client access -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+    
+    <!-- File system access - user selected files read-only -->
+    <key>com.apple.security.files.user-selected.read-only</key>
+    <true/>
+    
+    <!-- File system access - user selected files read-write -->
+    <key>com.apple.security.files.user-selected.read-write</key>
+    <true/>
+    
+    <!-- Downloads folder access -->
+    <key>com.apple.security.files.downloads.read-only</key>
+    <true/>
+    
+    <!-- Disable library validation for plugins -->
+    <key>com.apple.security.cs.disable-library-validation</key>
+    <true/>
+    
+    <!-- Allow out-of-process network requests -->
+    <key>com.apple.security.cs.allow-out-of-process-networking</key>
+    <true/>
+    
+    <!-- Terminal access for shell integration -->
+    <key>com.apple.security.automation.apple-events</key>
+    <true/>
+    
+    <!-- Screen capture (for terminal recording features) -->
+    <key>com.apple.security.screen-capture</key>
+    <true/>
+    
+    <!-- Accessibility features -->
+    <key>com.apple.security.accessibility</key>
+    <true/>
+</dict>
+</plist>

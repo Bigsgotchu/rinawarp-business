@@ -1,0 +1,24 @@
+{
+  "id": "legal/SECURITY_SUMMARY",
+  "title": "🛡️ RinaWarp Technologies Security Implementation Summary",
+  "description": "✅ COMPLETED SECURITY ACTIONS",
+  "source": "@site/docs/legal/SECURITY_SUMMARY.md",
+  "sourceDirName": "legal",
+  "slug": "/legal/SECURITY_SUMMARY",
+  "permalink": "/docs/legal/SECURITY_SUMMARY",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/RinaWarpTech/RinaWarp-Platforms/tree/main/docs/docs/legal/SECURITY_SUMMARY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "RinaWarp Technologies, LLC - Security & IP Protection Guide",
+    "permalink": "/docs/legal/SECURITY_GUIDE"
+  },
+  "next": {
+    "title": "RinaWarp Terminal Pro - Security Implementation",
+    "permalink": "/docs/legal/TERMINAL_PRO_SECURITY_TEMPLATE"
+  }
+}

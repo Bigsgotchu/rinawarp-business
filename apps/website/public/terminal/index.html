@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RinaWarp Terminal Pro | AI-Powered Developer Terminal</title>
+    <meta
+      name="description"
+      content="RinaWarp Terminal Pro — the next-generation AI-powered terminal for developers. Voice control, AI code completion, team collaboration, and blazing-fast productivity."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div>RinaWarp</div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/music-video">Music Video Creator</a>
+        <a href="/pricing">Bundles</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <h1>RinaWarp Terminal Pro</h1>
+      <p>
+        Experience the future of development. AI-powered automation, voice control, intelligent
+        refactoring, and real-time team collaboration — all in one beautiful terminal.
+      </p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary" onclick="scrollToPricing()">View Plans</button>
+        <a href="/activate" class="btn btn-secondary">Activate License</a>
+      </div>
+    </section>
+
+    <!-- ================= FEATURE GRID ================= -->
+    <section class="features" style="background: #111">
+      <div class="feature">
+        <h2>AI Code Intelligence</h2>
+        <p>
+          RinaWarp understands your codebase context and provides real-time code completion,
+          refactoring, and optimization suggestions.
+        </p>
+        <ul>
+          <li>Context-aware AI completions</li>
+          <li>Smart refactoring & debugging</li>
+          <li>Pattern learning across projects</li>
+        </ul>
+      </div>
+      <div class="feature">
+        <h2>Voice Integration</h2>
+        <p>
+          Command your terminal naturally. Build, deploy, or search — all hands-free with advanced
+          voice recognition and intent parsing.
+        </p>
+        <ul>
+          <li>Hands-free navigation</li>
+          <li>Natural language commands</li>
+          <li>Multi-language support</li>
+        </ul>
+      </div>
+      <div class="feature">
+        <h2>Team Collaboration</h2>
+        <p>
+          Collaborate with your team in real time. Shared sessions, synced environments, and secure
+          team credentials.
+        </p>
+        <ul>
+          <li>Shared multi-tab sessions</li>
+          <li>Real-time code collaboration</li>
+          <li>Centralized audit logs</li>
+        </ul>
+      </div>
+      <div class="feature">
+        <h2>Enterprise Security</h2>
+        <p>
+          Bank-grade encryption, SSO/LDAP integration, and full compliance monitoring built into
+          every Terminal Pro instance.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= PRICING ================= -->
+    <section id="pricing" class="features" style="background: #141414">
+      <div class="feature">
+        <h2>💼 Standard</h2>
+        <p>$9/month or $99/year</p>
+        <ul>
+          <li>AI code completion</li>
+          <li>Voice commands</li>
+          <li>3 projects</li>
+          <li>Community support</li>
+        </ul>
+        <div style="margin-top: 1.5rem">
+          <button class="btn btn-primary" onclick="startCheckout('terminal_standard_monthly')">
+            Subscribe Monthly
+          </button>
+          <button class="btn btn-secondary" onclick="startCheckout('terminal_standard_yearly')">
+            Subscribe Yearly
+          </button>
+        </div>
+      </div>
+
+      <div class="feature">
+        <h2>🚀 Pro</h2>
+        <p>$29/month or $299/year</p>
+        <ul>
+          <li>Unlimited AI requests</li>
+          <li>Advanced themes & customization</li>
+          <li>Plugin ecosystem access</li>
+          <li>API integration & priority support</li>
+        </ul>
+        <div style="margin-top: 1.5rem">
+          <button class="btn btn-primary" onclick="startCheckout('terminal_pro_monthly')">
+            Subscribe Monthly
+          </button>
+          <button class="btn btn-secondary" onclick="startCheckout('terminal_pro_yearly')">
+            Subscribe Yearly
+          </button>
+        </div>
+      </div>
+
+      <div class="feature">
+        <h2>👩‍💻 Team</h2>
+        <p>$49/month per seat</p>
+        <ul>
+          <li>Everything in Pro</li>
+          <li>Multi-seat license</li>
+          <li>Team collaboration tools</li>
+          <li>Advanced analytics dashboard</li>
+        </ul>
+        <div style="margin-top: 1.5rem">
+          <button class="btn btn-primary" onclick="startCheckout('terminal_team_monthly')">
+            Subscribe (per seat)
+          </button>
+        </div>
+      </div>
+
+      <div class="feature">
+        <h2>🔒 Lifetime License</h2>
+        <p>$299 one-time</p>
+        <ul>
+          <li>Permanent license</li>
+          <li>All future updates</li>
+          <li>Lifetime Pro access</li>
+          <li>No recurring fees</li>
+        </ul>
+        <div style="margin-top: 1.5rem">
+          <button class="btn btn-primary" onclick="startCheckout('terminal_lifetime')">
+            Buy Lifetime
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CALL TO ACTION ================= -->
+    <section class="hero" style="background: #0a0a0a">
+      <h2>Ready to code faster?</h2>
+      <p>
+        Join thousands of developers already using RinaWarp Terminal Pro to build, deploy, and
+        innovate at light speed.
+      </p>
+      <button class="btn btn-primary" onclick="scrollToPricing()">Get Started</button>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+      <p>© 2025 RinaWarp Technologies LLC — All rights reserved.</p>
+      <p>
+        <a href="/terms">Terms of Service</a> • <a href="/privacy">Privacy Policy</a> •
+        <a href="/refunds">Refund Policy</a> •
+        <a href="/contact">Contact</a>
+      </p>
+    </footer>
+
+    <script src="/checkout.js"></script>
+    <script>
+      function scrollToPricing() {
+        document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+      }
+    </script>
+  </body>
+</html>

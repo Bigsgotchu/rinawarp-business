@@ -1,0 +1,399 @@
+/* RinaWarp Terminal Pro - Theme System */
+
+/* Theme Toggle Animations */
+.theme-transition {
+    transition: all 0.3s ease;
+}
+
+/* Dark Theme */
+.theme-dark {
+    --rw-primary: #5865f2;
+    --rw-secondary: #57f287;
+    --rw-accent: #fee75c;
+    --rw-background: #1e1e1e;
+    --rw-surface: #2d2d30;
+    --rw-surface-light: #3c3c3c;
+    --rw-border: #464647;
+    --rw-text-primary: #cccccc;
+    --rw-text-secondary: #969696;
+    --rw-text-muted: #6e6e6e;
+    --terminal-bg: #1e1e1e;
+    --terminal-text: #cccccc;
+    --terminal-cursor: #5865f2;
+    --terminal-selection: rgba(88, 101, 242, 0.3);
+}
+
+/* Light Theme */
+.theme-light {
+    --rw-primary: #007acc;
+    --rw-secondary: #4caf50;
+    --rw-accent: #ff9800;
+    --rw-background: #f5f5f5;
+    --rw-surface: #ffffff;
+    --rw-surface-light: #f0f0f0;
+    --rw-border: #e0e0e0;
+    --rw-text-primary: #333333;
+    --rw-text-secondary: #666666;
+    --rw-text-muted: #999999;
+    --terminal-bg: #ffffff;
+    --terminal-text: #333333;
+    --terminal-cursor: #007acc;
+    --terminal-selection: rgba(0, 122, 204, 0.3);
+}
+
+/* Matrix Theme */
+.theme-matrix {
+    --rw-primary: #00ff41;
+    --rw-secondary: #39ff14;
+    --rw-accent: #00cc66;
+    --rw-background: #000000;
+    --rw-surface: #001100;
+    --rw-surface-light: #002200;
+    --rw-border: #003300;
+    --rw-text-primary: #00ff41;
+    --rw-text-secondary: #00cc66;
+    --rw-text-muted: #008844;
+    --terminal-bg: #000000;
+    --terminal-text: #00ff41;
+    --terminal-cursor: #00ff41;
+    --terminal-selection: rgba(0, 255, 65, 0.3);
+}
+
+/* Monokai Theme */
+.theme-monokai {
+    --rw-primary: #f92672;
+    --rw-secondary: #a6e22e;
+    --rw-accent: #66d9ef;
+    --rw-background: #272822;
+    --rw-surface: #3c3d37;
+    --rw-surface-light: #49483e;
+    --rw-border: #555751;
+    --rw-text-primary: #f8f8f2;
+    --rw-text-secondary: #d0d0c8;
+    --rw-text-muted: #9d9ea1;
+    --terminal-bg: #272822;
+    --terminal-text: #f8f8f2;
+    --terminal-cursor: #f92672;
+    --terminal-selection: rgba(249, 38, 114, 0.3);
+}
+
+/* Solarized Dark Theme */
+.theme-solarized-dark {
+    --rw-primary: #268bd2;
+    --rw-secondary: #859900;
+    --rw-accent: #b58900;
+    --rw-background: #002b36;
+    --rw-surface: #073642;
+    --rw-surface-light: #0a3a4a;
+    --rw-border: #586e75;
+    --rw-text-primary: #839496;
+    --rw-text-secondary: #657b83;
+    --rw-text-muted: #586e75;
+    --terminal-bg: #002b36;
+    --terminal-text: #839496;
+    --terminal-cursor: #268bd2;
+    --terminal-selection: rgba(38, 139, 210, 0.3);
+}
+
+/* Solarized Light Theme */
+.theme-solarized-light {
+    --rw-primary: #268bd2;
+    --rw-secondary: #859900;
+    --rw-accent: #b58900;
+    --rw-background: #fdf6e3;
+    --rw-surface: #eee8d5;
+    --rw-surface-light: #e3dcc8;
+    --rw-border: #93a1a1;
+    --rw-text-primary: #657b83;
+    --rw-text-secondary: #586e75;
+    --rw-text-muted: #93a1a1;
+    --terminal-bg: #fdf6e3;
+    --terminal-text: #657b83;
+    --terminal-cursor: #268bd2;
+    --terminal-selection: rgba(38, 139, 210, 0.3);
+}
+
+/* High Contrast Theme */
+.theme-high-contrast {
+    --rw-primary: #ffffff;
+    --rw-secondary: #ffff00;
+    --rw-accent: #00ffff;
+    --rw-background: #000000;
+    --rw-surface: #1a1a1a;
+    --rw-surface-light: #333333;
+    --rw-border: #ffffff;
+    --rw-text-primary: #ffffff;
+    --rw-text-secondary: #ffff00;
+    --rw-text-muted: #cccccc;
+    --terminal-bg: #000000;
+    --terminal-text: #ffffff;
+    --terminal-cursor: #ffff00;
+    --terminal-selection: rgba(255, 255, 0, 0.3);
+}
+
+/* Night Owl Theme */
+.theme-night-owl {
+    --rw-primary: #c792ea;
+    --rw-secondary: #ecc48d;
+    --rw-accent: #82aaff;
+    --rw-background: #011627;
+    --rw-surface: #1a2332;
+    --rw-surface-light: #243447;
+    --rw-border: #2f3b4a;
+    --rw-text-primary: #d6deeb;
+    --rw-text-secondary: #9aa5b1;
+    --rw-text-muted: #637777;
+    --terminal-bg: #011627;
+    --terminal-text: #d6deeb;
+    --terminal-cursor: #c792ea;
+    --terminal-selection: rgba(199, 146, 234, 0.3);
+}
+
+/* Theme Preview Cards */
+.theme-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.theme-preview-card {
+    background: var(--rw-surface);
+    border: 2px solid var(--rw-border);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-preview-card:hover {
+    border-color: var(--rw-primary);
+    transform: translateY(-2px);
+}
+
+.theme-preview-card.active {
+    border-color: var(--rw-primary);
+    box-shadow: 0 0 0 2px rgba(233, 0, 127, 0.2);
+}
+
+.theme-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.theme-preview-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.theme-preview-name {
+    font-weight: 600;
+    color: var(--rw-text-primary);
+}
+
+.theme-preview-colors {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.theme-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid var(--rw-border);
+}
+
+.theme-preview-description {
+    font-size: 0.8rem;
+    color: var(--rw-text-secondary);
+}
+
+/* Dynamic Theme Builder */
+.theme-builder {
+    background: var(--rw-surface);
+    border: 1px solid var(--rw-border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.theme-builder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.theme-builder-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.color-picker-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.color-picker-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--rw-text-primary);
+}
+
+.color-picker-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.color-picker-input input[type="color"] {
+    width: 40px;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.color-picker-input input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    background: var(--rw-surface-light);
+    border: 1px solid var(--rw-border);
+    border-radius: 4px;
+    color: var(--rw-text-primary);
+    font-family: var(--font-mono);
+}
+
+/* Theme Variables Editor */
+.theme-variables-editor {
+    background: var(--rw-background);
+    border: 1px solid var(--rw-border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+}
+
+.theme-variables-header {
+    background: var(--rw-surface-light);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--rw-border);
+    font-weight: 600;
+    color: var(--rw-text-primary);
+}
+
+.theme-variables-content {
+    padding: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.theme-variable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--rw-border);
+}
+
+.theme-variable:last-child {
+    border-bottom: none;
+}
+
+.variable-name {
+    font-size: 0.85rem;
+    color: var(--rw-text-secondary);
+    font-family: var(--font-mono);
+}
+
+.variable-value {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.variable-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--rw-border);
+}
+
+.variable-text {
+    font-size: 0.85rem;
+    color: var(--rw-text-primary);
+    font-family: var(--font-mono);
+}
+
+/* Theme Application Animations */
+@keyframes themeTransition {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+.theme-transitioning * {
+    animation: themeTransition 0.5s ease;
+}
+
+/* Responsive Theme Controls */
+@media (max-width: 768px) {
+    .theme-preview-grid {
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+    }
+    
+    .theme-builder-controls {
+        grid-template-columns: 1fr;
+    }
+    
+    .theme-builder-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+}
+
+/* Accessibility Theme Considerations */
+@media (prefers-contrast: high) {
+    :root {
+        --rw-border: #000000;
+        --rw-text-muted: #666666;
+    }
+    
+    .theme-dark,
+    .theme-light,
+    .theme-mermaid {
+        --rw-text-primary: #000000;
+        --rw-background: #ffffff;
+        --rw-surface: #ffffff;
+        --terminal-bg: #ffffff;
+        --terminal-text: #000000;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-transition {
+        transition: none;
+    }
+    
+    .theme-preview-card {
+        transition: none;
+    }
+    
+    .theme-transitioning * {
+        animation: none;
+    }
+}

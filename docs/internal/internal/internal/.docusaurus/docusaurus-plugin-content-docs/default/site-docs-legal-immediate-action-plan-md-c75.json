@@ -1,0 +1,24 @@
+{
+  "id": "legal/IMMEDIATE_ACTION_PLAN",
+  "title": "🚨 IMMEDIATE ACTION PLAN - RinaWarp Technologies, LLC",
+  "description": "CRITICAL SECURITY ACTIONS (Do These NOW)",
+  "source": "@site/docs/legal/IMMEDIATE_ACTION_PLAN.md",
+  "sourceDirName": "legal",
+  "slug": "/legal/IMMEDIATE_ACTION_PLAN",
+  "permalink": "/docs/legal/IMMEDIATE_ACTION_PLAN",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/RinaWarpTech/RinaWarp-Platforms/tree/main/docs/docs/legal/IMMEDIATE_ACTION_PLAN.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "COPYRIGHT NOTICE",
+    "permalink": "/docs/legal/COPYRIGHT_NOTICE"
+  },
+  "next": {
+    "title": "⚖️ RinaWarp Technologies Legal Action Plan",
+    "permalink": "/docs/legal/LEGAL_ACTION_PLAN"
+  }
+}

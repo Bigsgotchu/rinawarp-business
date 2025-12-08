@@ -1,0 +1,266 @@
+{
+  "timestamp": "2025-12-01T08:58:27.376Z",
+  "vulnerabilities": [
+    {
+      "type": "dependency",
+      "package": "node-pty",
+      "current": "^1.0.0",
+      "vulnerable": "<1.0.0",
+      "severity": "high",
+      "description": "Package node-pty has known vulnerabilities"
+    },
+    {
+      "type": "dependency",
+      "package": "xterm",
+      "current": "^5.3.0",
+      "vulnerable": "<5.3.0",
+      "severity": "high",
+      "description": "Package xterm has known vulnerabilities"
+    },
+    {
+      "type": "dependency",
+      "package": "electron",
+      "current": "^28.3.3",
+      "vulnerable": "<28.0.0",
+      "severity": "high",
+      "description": "Package electron has known vulnerabilities"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/main/main.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 5,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/main/main.js",
+      "severity": "medium",
+      "description": "Insecure HTTP protocol detected",
+      "count": 1,
+      "recommendation": "Use HTTPS for all external connections"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai-router.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 59,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai-router.js",
+      "severity": "medium",
+      "description": "Insecure HTTP protocol detected",
+      "count": 2,
+      "recommendation": "Use HTTPS for all external connections"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 6,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 56,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/license.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 4,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/license.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 24,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/main.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 19,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/memory-leak-detector.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 3,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/performance-monitor.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 4,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal-optimized.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 4,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 3,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 31,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ui.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 3,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ui.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ui.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 16,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/voice.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 3,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/voice.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/shared/preload.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 6,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "configuration",
+      "severity": "medium",
+      "description": "Content Security Policy not configured",
+      "recommendation": "Add CSP meta tag to index.html"
+    },
+    {
+      "type": "electron-builder",
+      "severity": "medium",
+      "description": "Windows code signing not configured",
+      "recommendation": "Configure certificateFile for Windows builds"
+    }
+  ],
+  "warnings": [],
+  "recommendations": [
+    {
+      "priority": "high",
+      "title": "Update Vulnerable Dependencies",
+      "description": "Found 3 vulnerable dependencies",
+      "actions": [
+        "Run npm audit fix to apply security patches",
+        "Update to latest secure versions",
+        "Consider using npm-check-updates",
+        "Implement dependency scanning in CI/CD"
+      ]
+    },
+    {
+      "priority": "high",
+      "title": "Fix Code Security Issues",
+      "description": "Found 22 code security patterns",
+      "actions": [
+        "Replace eval() with safer alternatives",
+        "Use DOM methods instead of innerHTML",
+        "Implement proper input validation",
+        "Review all external data handling"
+      ]
+    }
+  ],
+  "codeSigning": {
+    "status": "partial",
+    "certificates": {
+      "macos": {
+        "entitlements": "/home/karina/Documents/RinaWarp/desktop-app/RinaWarp-Terminal-Pro/entitlements.plist",
+        "configured": true
+      }
+    },
+    "signedFiles": [],
+    "platforms": {
+      "windows": false,
+      "macos": true,
+      "linux": false
+    }
+  },
+  "compliance": {},
+  "summary": {
+    "totalVulnerabilities": 27,
+    "criticalIssues": 0,
+    "highIssues": 8,
+    "mediumIssues": 19,
+    "lowIssues": 0,
+    "codeSigningReady": true
+  }
+}

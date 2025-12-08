@@ -1,0 +1,53 @@
+{
+  "name": "rinawarp-phone-manager",
+  "version": "1.0.0",
+  "description": "RinaWarp Phone Manager - Professional device management tool",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build": "electron-builder",
+    "package": "electron-builder --linux AppImage"
+  },
+  "keywords": [
+    "phone",
+    "manager",
+    "device",
+    "electron"
+  ],
+  "author": "RinaWarp Technologies",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
+  },
+  "build": {
+    "appId": "com.rinawarp.phone.manager",
+    "productName": "RinaWarp Phone Manager",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "styles.css"
+    ],
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.utilities"
+    }
+  },
+  "dependencies": {
+    "adbkit": "^2.11.1",
+    "node-ios-device": "^4.0.3"
+  }
+}

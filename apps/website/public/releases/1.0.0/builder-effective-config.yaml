@@ -1,0 +1,32 @@
+directories:
+  output: dist
+  buildResources: assets
+appId: com.rinawarptech.terminalpro
+productName: RinaWarp Terminal Pro
+files:
+  - filter:
+      - dist/
+      - electron/
+      - assets/
+      - backend/
+      - package.json
+extraResources:
+  - from: scripts/
+    to: scripts
+    filter:
+      - '**/*'
+asar: true
+linux:
+  target:
+    - AppImage
+    - deb
+  category: Development
+  maintainer: Karina @ RinaWarpTech
+  icon: assets/icon.png
+win:
+  target: nsis
+  icon: assets/icon.ico
+mac:
+  target: dmg
+  icon: assets/icon.icns
+electronVersion: 27.3.11
