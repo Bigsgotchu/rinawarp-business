@@ -1,28 +1,22 @@
-# Local ignore to silence large untracked areas while audit work is ongoing
-/.gitattributes
-/.github/
-/.wrangler/
-/.vscode/
-/node_modules/
-/apps/website/node_modules/
-/apps/website/node_modules/**
-/apps/website/node_modules/.bin/
-/audit/**/*.log
-/audit/config/
-/apps/admin-console/
-/apps/ai-music-video/
-/config/
-/docs/
-/domain/
-/functions/
-/infra/
-/packages/
-/public-assets/
-/scripts/
-/secrets/
-/services/
-/tools/
-/workers/
-/wrangler.toml
-/package.json
-/package-lock.json
+# General
+.DS_Store
+*.log
+*.tmp
+*.swp
+.env
+.env.*
+.vscode/
+.continue/
+
+# Dependencies
+node_modules/
+
+# Builds / dist
+dist/
+dist-website/
+build/
+coverage/
+
+# Netlify / tooling cache
+.netlify/
+.cache/

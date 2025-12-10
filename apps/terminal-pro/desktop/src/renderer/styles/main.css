@@ -2,24 +2,25 @@
 
 /* CSS Variables for RinaWarp Theme */
 :root {
-  /* RinaWarp Mermaid Theme Colors */
-  --rw-primary: #e9007f;        /* Bright magenta */
-  --rw-secondary: #00ffb3;      /* Bright cyan */
-  --rw-accent: #22d3ee;         /* Sky blue */
-  --rw-purple: #a855f7;         /* Purple accent */
-  --rw-background: #0a0a0a;     /* Near black */
-  --rw-surface: #1a1a1a;        /* Dark surface */
-  --rw-surface-light: #2a2a2a;  /* Lighter surface */
-  --rw-border: #333333;         /* Border color */
-  --rw-text-primary: #ffffff;   /* Primary text */
-  --rw-text-secondary: #b3b3b3; /* Secondary text */
-  --rw-text-muted: #666666;     /* Muted text */
+  /* RinaWarp Mermaid Theme Colors - Updated to match brand theme */
+  --rw-primary: #FF3FAE;        /* Hot Pink */
+  --rw-secondary: #1CC7B1;      /* Teal */
+  --rw-accent: #74D1FF;         /* Baby Blue */
+  --rw-coral: #FF6F61;          /* Coral */
+  --rw-purple: #A02BFF;         /* Cosmic Purple */
+  --rw-background: #050608;     /* Black */
+  --rw-surface: #060811;        /* Surface */
+  --rw-surface-light: #0B1020;  /* Surface Soft */
+  --rw-border: #1E2438;         /* Border */
+  --rw-text-primary: #E5E7EB;   /* Text Primary */
+  --rw-text-secondary: #9CA3AF; /* Text Muted */
+  --rw-text-muted: #6B7280;     /* Muted text */
   
-  /* Terminal Colors */
-  --terminal-bg: #000000;
-  --terminal-text: #ffffff;
+  /* Terminal Colors - Updated to match brand theme */
+  --terminal-bg: #050608;
+  --terminal-text: #E5E7EB;
   --terminal-cursor: var(--rw-primary);
-  --terminal-selection: rgba(233, 0, 127, 0.3);
+  --terminal-selection: rgba(255, 63, 174, 0.3);
   
   /* Spacing */
   --spacing-xs: 4px;

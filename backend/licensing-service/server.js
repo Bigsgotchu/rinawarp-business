@@ -32,6 +32,22 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
+// Optional auth middleware for license check
+function optionalAuth(req, res, next) {
+  const auth = req.headers.authorization || "";
+  if (!auth.startsWith("Bearer ")) return next(); // allow anonymous for now
+
+  const token = auth.slice("Bearer ".length);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret');
+    req.user = decoded;
+  } catch (err) {
+    // don't block, just mark invalid auth
+    req.user = null;
+  }
+  next();
+}
+
 // Mock license data for testing
 const MOCK_LICENSE = {
   id: 'license_123',
@@ -91,6 +107,74 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     service: 'license-service',
     timestamp: new Date().toISOString(),
+  });
+});
+
+// License check endpoint
+app.post("/license/check", optionalAuth, express.json(), (req, res) => {
+  const { licenseKey } = req.body || {};
+
+  if (!licenseKey) {
+    return res.status(400).json({ error: "Missing 'licenseKey' field" });
+  }
+
+  // 🔐 TODO: replace this stub with real DB / Supabase lookup
+  // For now, simple pattern-based logic:
+  let status = "invalid";
+  let plan = null;
+  let features = {
+    premiumMode: false,
+    maxDailyMessages: 0
+  };
+
+  if (licenseKey.startsWith("DEV-LIFETIME")) {
+    status = "valid";
+    plan = "lifetime";
+    features = {
+      premiumMode: true,
+      maxDailyMessages: 2000
+    };
+  } else if (licenseKey.startsWith("DEV-PRO")) {
+    status = "valid";
+    plan = "pro";
+    features = {
+      premiumMode: true,
+      maxDailyMessages: 999
+    };
+  } else if (licenseKey.startsWith("DEV-CREATOR")) {
+    status = "valid";
+    plan = "creator";
+    features = {
+      premiumMode: true,
+      maxDailyMessages: 500
+    };
+  } else if (licenseKey.startsWith("DEV-STARTER")) {
+    status = "valid";
+    plan = "starter";
+    features = {
+      premiumMode: true,
+      maxDailyMessages: 150
+    };
+  } else if (licenseKey.startsWith("DEV-BASIC")) {
+    status = "valid";
+    plan = "basic";
+    features = {
+      premiumMode: false,
+      maxDailyMessages: 50
+    };
+  } else if (licenseKey.startsWith("DEV-FREE")) {
+    status = "valid";
+    plan = "free";
+    features = {
+      premiumMode: false,
+      maxDailyMessages: 20
+    };
+  }
+
+  return res.json({
+    status,
+    plan,
+    features
   });
 });
 

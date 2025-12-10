@@ -93,6 +93,21 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // Network status
   isOnline: () => ipcRenderer.invoke('is-online'),
+
+  // 🔹 new Rina chat API
+  rinaChat: (payload) => ipcRenderer.invoke("rina:chat", payload),
+
+  // 🔹 Rina layout persistence
+  getRinaLayout: () => ipcRenderer.invoke("rina:get-layout"),
+  setRinaLayout: (layoutUpdate) =>
+    ipcRenderer.invoke("rina:set-layout", layoutUpdate),
+
+  // 🔹 License plan access
+  getLicensePlan: () => ipcRenderer.invoke("get-license-plan"),
+
+  // 🔹 Billing and license management
+  startUpgrade: (tier) => ipcRenderer.invoke("billing:start-upgrade", { tier }),
+  refreshLicense: () => ipcRenderer.invoke("license:refresh"),
 });
 
 // Theme management

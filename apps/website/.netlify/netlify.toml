@@ -7,9 +7,10 @@ plugins = []
 [functions."*"]
 
 [build]
-publish = "/home/karina/Documents/Rinawarp-Platforms/apps/website/dist-website"
+publish = "/home/karina/Documents/rinawarp-business/apps/website/dist-website"
 publishOrigin = "config"
 commandOrigin = "config"
+base = "/home/karina/Documents/rinawarp-business/apps/website"
 command = "npm run build"
 
 [build.environment]
@@ -28,6 +29,104 @@ NODE_VERSION = "20"
 [build.services]
 
 [[headers]]
+for = "/*.css:"
+
+[headers.values]
+"- Content-Type" = "text/css"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.js:"
+
+[headers.values]
+"- Content-Type" = "application/javascript"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.js:"
+
+[headers.values]
+"- Content-Type" = "application/javascript"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.css:"
+
+[headers.values]
+"- Content-Type" = "text/css"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/sw.js:"
+
+[headers.values]
+"- Cache-Control" = "no-store"
+"- Content-Type" = "text/plain"
+
+[[headers]]
+for = "/service-worker.js:"
+
+[headers.values]
+"- Cache-Control" = "no-store"
+"- Content-Type" = "text/plain"
+
+[[headers]]
+for = "/*.html:"
+
+[headers.values]
+"- Content-Type" = "text/html"
+"- Cache-Control" = "public, max-age=300"
+
+[[headers]]
+for = "/*.woff2:"
+
+[headers.values]
+"- Content-Type" = "font/woff2"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.png:"
+
+[headers.values]
+"- Content-Type" = "image/png"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.jpg:"
+
+[headers.values]
+"- Content-Type" = "image/jpeg"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.svg:"
+
+[headers.values]
+"- Content-Type" = "image/svg+xml"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/sw.js"
+
+[headers.values]
+Cache-Control = "no-store"
+Content-Type = "text/plain"
+
+[[headers]]
+for = "/service-worker.js"
+
+[headers.values]
+Cache-Control = "no-store"
+Content-Type = "text/plain"
+
+[[headers]]
+for = "/*.html"
+
+[headers.values]
+Content-Type = "text/html"
+Cache-Control = "public, max-age=300"
+
+[[headers]]
 for = "/*"
 
 [headers.values]
@@ -35,6 +134,62 @@ X-Frame-Options = "DENY"
 X-XSS-Protection = "1; mode=block"
 X-Content-Type-Options = "nosniff"
 Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+for = "/*.css"
+
+[headers.values]
+Content-Type = "text/css"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.js"
+
+[headers.values]
+Content-Type = "application/javascript"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.js"
+
+[headers.values]
+Content-Type = "application/javascript"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.css"
+
+[headers.values]
+Content-Type = "text/css"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.woff2"
+
+[headers.values]
+Content-Type = "font/woff2"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.png"
+
+[headers.values]
+Content-Type = "image/png"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.jpg"
+
+[headers.values]
+Content-Type = "image/jpeg"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.svg"
+
+[headers.values]
+Content-Type = "image/svg+xml"
+Cache-Control = "public, max-age=31536000, immutable"
 
 [[redirects]]
 from = "/*"

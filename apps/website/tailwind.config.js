@@ -1,9 +1,42 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./public/**/*.html",
+  ],
   theme: {
     extend: {
       colors: {
+        // Terminal Pro – Mermaid
+        terminal: {
+          hotPink: "#FF3FAE",
+          coral: "#FF6F61",
+          teal: "#1CC7B1",
+          babyBlue: "#74D1FF",
+          black: "#050608",
+          surface: "#060811",
+          surfaceSoft: "#0B1020",
+          border: "#1E2438",
+        },
+        // AI-MVC – Unicorn
+        aimvc: {
+          electricPink: "#FF2BD6",
+          cosmicPurple: "#A02BFF",
+          neonBlue: "#2BEAFF",
+          goldAccent: "#FFD966",
+          midnight: "#050013",
+          surface: "#09001F",
+          surfaceSoft: "#120233",
+          border: "#291A57",
+        },
+        brand: {
+          bg: "#02020A",
+          card: "#050618",
+          border: "#181827",
+          text: "#E5E7EB",
+          muted: "#9CA3AF",
+        },
         // Mermid palette - Primary brand colors
         mermid: {
           50: '#f0fdfa',
@@ -72,8 +105,14 @@ export default {
         xs: '2px',
       },
       boxShadow: {
+        "glow-terminal": "0 0 30px rgba(255, 63, 174, 0.35)",
+        "glow-aimvc": "0 0 30px rgba(43, 234, 255, 0.35)",
         glow: '0 0 20px rgba(20, 184, 166, 0.3)',
         'glow-lg': '0 0 30px rgba(20, 184, 166, 0.4)',
+      },
+      borderRadius: {
+        "2xl": "1.25rem",
+        "3xl": "1.75rem",
       },
     },
   },

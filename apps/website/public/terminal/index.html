@@ -1,184 +1,243 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RinaWarp Terminal Pro | AI-Powered Developer Terminal</title>
-    <meta
-      name="description"
-      content="RinaWarp Terminal Pro — the next-generation AI-powered terminal for developers. Voice control, AI code completion, team collaboration, and blazing-fast productivity."
-    />
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <header>
-      <div>RinaWarp</div>
-      <nav>
+<!DOCTYPE html>
+<html lang="en" class="page-terminal">
+<head>
+  <meta charset="UTF-8" />
+  <title>RinaWarp Terminal Pro — Mermaid Terminal for Power Users</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="RinaWarp Terminal Pro — a mermaid-themed, hot pink, coral, teal and baby blue terminal experience for serious builders."
+  />
+  <link rel="stylesheet" href="/css/brand.css" />
+</head>
+<body class="page-terminal">
+  <div class="main-shell">
+    <!-- NAV -->
+    <header class="nav">
+      <div class="nav-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">
+          RinaWarp Terminal Pro
+          <span>Mermaid Shell for Builders</span>
+        </div>
+      </div>
+      <nav class="nav-links">
         <a href="/">Home</a>
-        <a href="/music-video">Music Video Creator</a>
-        <a href="/pricing">Bundles</a>
-        <a href="/contact">Contact</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="/legal/terminal-pro-eula.html">EULA</a>
+        <button class="nav-cta" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">
+          Download
+          <span class="icon">⬇️</span>
+        </button>
       </nav>
     </header>
 
-    <!-- ================= HERO ================= -->
-    <section class="hero">
-      <h1>RinaWarp Terminal Pro</h1>
-      <p>
-        Experience the future of development. AI-powered automation, voice control, intelligent
-        refactoring, and real-time team collaboration — all in one beautiful terminal.
-      </p>
-      <div class="cta-buttons">
-        <button class="btn btn-primary" onclick="scrollToPricing()">View Plans</button>
-        <a href="/activate" class="btn btn-secondary">Activate License</a>
-      </div>
-    </section>
+    <!-- HERO -->
+    <main>
+      <section class="hero">
+        <div>
+          <div class="hero-left-eyebrow">
+            <span class="hero-badge-pill" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.45); color: #bfdbfe;">
+              Desktop app
+            </span>
+            <span>Mermaid color system • License-backed</span>
+          </div>
+          <h1 class="hero-title">
+            A terminal that looks <span class="highlight">as sharp as you ship</span>.
+          </h1>
+          <p class="hero-subtitle">
+            Hot pink, coral, teal and baby blue on deep black —
+            tuned for clarity, contrast and long sessions. RinaWarp Terminal Pro is
+            your daily driver shell, not a toy demo.
+          </p>
 
-    <!-- ================= FEATURE GRID ================= -->
-    <section class="features" style="background: #111">
-      <div class="feature">
-        <h2>AI Code Intelligence</h2>
-        <p>
-          RinaWarp understands your codebase context and provides real-time code completion,
-          refactoring, and optimization suggestions.
-        </p>
-        <ul>
-          <li>Context-aware AI completions</li>
-          <li>Smart refactoring & debugging</li>
-          <li>Pattern learning across projects</li>
-        </ul>
-      </div>
-      <div class="feature">
-        <h2>Voice Integration</h2>
-        <p>
-          Command your terminal naturally. Build, deploy, or search — all hands-free with advanced
-          voice recognition and intent parsing.
-        </p>
-        <ul>
-          <li>Hands-free navigation</li>
-          <li>Natural language commands</li>
-          <li>Multi-language support</li>
-        </ul>
-      </div>
-      <div class="feature">
-        <h2>Team Collaboration</h2>
-        <p>
-          Collaborate with your team in real time. Shared sessions, synced environments, and secure
-          team credentials.
-        </p>
-        <ul>
-          <li>Shared multi-tab sessions</li>
-          <li>Real-time code collaboration</li>
-          <li>Centralized audit logs</li>
-        </ul>
-      </div>
-      <div class="feature">
-        <h2>Enterprise Security</h2>
-        <p>
-          Bank-grade encryption, SSO/LDAP integration, and full compliance monitoring built into
-          every Terminal Pro instance.
-        </p>
-      </div>
-    </section>
+          <div class="hero-ctas">
+            <button class="btn-primary" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">
+              <span class="icon">⬇️</span>
+              Download for desktop
+            </button>
+            <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+              View features
+              <span class="icon">→</span>
+            </button>
+          </div>
+          <div class="hero-footnote">
+            One-time license. No dark patterns. Your terminal, your machine.
+          </div>
 
-    <!-- ================= PRICING ================= -->
-    <section id="pricing" class="features" style="background: #141414">
-      <div class="feature">
-        <h2>💼 Standard</h2>
-        <p>$9/month or $99/year</p>
-        <ul>
-          <li>AI code completion</li>
-          <li>Voice commands</li>
-          <li>3 projects</li>
-          <li>Community support</li>
-        </ul>
-        <div style="margin-top: 1.5rem">
-          <button class="btn btn-primary" onclick="startCheckout('terminal_standard_monthly')">
-            Subscribe Monthly
-          </button>
-          <button class="btn btn-secondary" onclick="startCheckout('terminal_standard_yearly')">
-            Subscribe Yearly
-          </button>
+          <div class="card-row">
+            <div class="card">
+              <div class="card-title">Mermaid color engine</div>
+              <div class="card-body">
+                Carefully balanced hot pink, coral, teal, and baby blue on deep blacks —
+                UI tuned for high legibility with just enough attitude.
+              </div>
+              <div class="card-pill-row">
+                <span class="card-pill">High contrast</span>
+                <span class="card-pill">Readable logs</span>
+                <span class="card-pill">Eye-friendly</span>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">Built for serious work</div>
+              <div class="card-body">
+                This isn't a toy theme. Terminal Pro hooks into your real workflow: shell,
+                editor, repos, and cloud tooling — with a secure license system under the hood.
+              </div>
+              <div class="card-pill-row">
+                <span class="card-pill">Stripe + Cloudflare</span>
+                <span class="card-pill">License verification</span>
+                <span class="card-pill">Offline friendly</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="feature">
-        <h2>🚀 Pro</h2>
-        <p>$29/month or $299/year</p>
-        <ul>
-          <li>Unlimited AI requests</li>
-          <li>Advanced themes & customization</li>
-          <li>Plugin ecosystem access</li>
-          <li>API integration & priority support</li>
-        </ul>
-        <div style="margin-top: 1.5rem">
-          <button class="btn btn-primary" onclick="startCheckout('terminal_pro_monthly')">
-            Subscribe Monthly
-          </button>
-          <button class="btn btn-secondary" onclick="startCheckout('terminal_pro_yearly')">
-            Subscribe Yearly
-          </button>
+        <!-- right side "glow" card -->
+        <aside>
+          <div class="pricing-card">
+            <div class="badge-pill" style="margin-bottom: 10px;">
+              <span>💾</span> Desktop download — Windows / macOS
+            </div>
+            <div class="pricing-line" style="margin-bottom: 8px;">
+              Your purchase is handled through Stripe, secured by Cloudflare,
+              and wired into our licensing service.
+            </div>
+            <ul class="pricing-list">
+              <li>License key delivered instantly after purchase</li>
+              <li>Secure verification against RinaWarp license service</li>
+              <li>Backed by clear EULA & Legal Hub</li>
+            </ul>
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">
+              Go to download section
+            </button>
+          </div>
+        </aside>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="section" id="features">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Designed for people who live in a terminal</div>
+            <div class="section-subtitle">
+              RinaWarp Terminal Pro focuses on clarity, feedback, and flow.
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="feature">
-        <h2>👩‍💻 Team</h2>
-        <p>$49/month per seat</p>
-        <ul>
-          <li>Everything in Pro</li>
-          <li>Multi-seat license</li>
-          <li>Team collaboration tools</li>
-          <li>Advanced analytics dashboard</li>
-        </ul>
-        <div style="margin-top: 1.5rem">
-          <button class="btn btn-primary" onclick="startCheckout('terminal_team_monthly')">
-            Subscribe (per seat)
-          </button>
+        <div class="feature-grid">
+          <article class="feature-item">
+            <h3>Mermaid palette tuned for focus</h3>
+            <p>
+              We took hot pink, coral, teal, and baby blue and tuned them against deep slate backgrounds
+              until logs, prompts and errors are instantly scannable.
+            </p>
+          </article>
+          <article class="feature-item">
+            <h3>Licensing without the drama</h3>
+            <p>
+              Stripe billing, Cloudflare Workers, and a dedicated license service.
+              No weird launchers, no hidden installers. One key. One app.
+            </p>
+          </article>
+          <article class="feature-item">
+            <h3>Production-ready integrations</h3>
+            <p>
+              The stack under Terminal Pro already runs in production: Cloudflare Pages, Workers,
+              KV, Stripe, and hardened routing. You're not the beta tester.
+            </p>
+          </article>
+          <article class="feature-item">
+            <h3>Future-proof 1.x track</h3>
+            <p>
+              Your license covers the 1.x line with improvements, polish passes and integrations
+              that make your terminal fit your workflow even tighter.
+            </p>
+          </article>
         </div>
-      </div>
+      </section>
 
-      <div class="feature">
-        <h2>🔒 Lifetime License</h2>
-        <p>$299 one-time</p>
-        <ul>
-          <li>Permanent license</li>
-          <li>All future updates</li>
-          <li>Lifetime Pro access</li>
-          <li>No recurring fees</li>
-        </ul>
-        <div style="margin-top: 1.5rem">
-          <button class="btn btn-primary" onclick="startCheckout('terminal_lifetime')">
-            Buy Lifetime
-          </button>
+      <!-- DOWNLOAD / PRICING -->
+      <section class="section" id="download">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Download Terminal Pro</div>
+            <div class="section-subtitle">
+              One-time license. Own your terminal experience.
+            </div>
+          </div>
         </div>
+
+        <div class="pricing-row">
+          <div class="pricing-card" id="pricing">
+            <div class="badge-pill" style="margin-bottom: 8px;">
+              <span>⚡</span> Terminal Pro License
+            </div>
+            <div class="pricing-price">
+              $<span id="tp-price">49</span> <span>USD • one-time</span>
+            </div>
+            <div class="pricing-line">
+              Includes Windows and macOS builds. License activation via secure online check.
+            </div>
+            <ul class="pricing-list">
+              <li>Mermaid theme with hot pink, coral, teal, baby blue</li>
+              <li>Optimized for long work sessions and teams</li>
+              <li>Secure updates for the 1.x product line</li>
+            </ul>
+            <a
+              href="/api/checkout?product=terminal-pro"
+              class="btn-primary"
+              style="width: 100%; justify-content: center;"
+            >
+              Go to secure checkout
+            </a>
+            <div style="margin-top: 8px; font-size: 11px; color: #9ca3af;">
+              Payments processed by Stripe. See
+              <a href="/legal/terms-of-service.html">Terms</a> and
+              <a href="/legal/privacy-policy.html">Privacy</a>.
+            </div>
+          </div>
+
+          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(34, 197, 235, 0.35), rgba(15, 23, 42, 0.98));">
+            <div class="badge-pill" style="margin-bottom: 8px;">
+              <span>🎬</span> Want visuals too?
+            </div>
+            <div class="pricing-line">
+              Pair Terminal Pro with AI Music Video Creator for a full RinaWarp studio experience —
+              code by day, videos by night.
+            </div>
+            <ul class="pricing-list">
+              <li>Turn tracks into AI-powered music videos</li>
+              <li>Credit system for predictable spend</li>
+              <li>Creator-friendly subscription tiers</li>
+            </ul>
+            <a href="/api/checkout?product=bundle" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 8px;">
+              Get the Bundle (Best Deal)
+            </a>
+            <button class="btn-outline" style="width: 100%; justify-content: center;" onclick="window.location.href='/ai-music-video/'">
+              Explore AI Music Video Creator
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div>© <span id="year"></span> RinaWarp Technologies LLC • Terminal Pro</div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
+        <a href="/legal/terms-of-service.html">Terms</a>
+        <a href="/legal/privacy-policy.html">Privacy</a>
       </div>
-    </section>
-
-    <!-- ================= CALL TO ACTION ================= -->
-    <section class="hero" style="background: #0a0a0a">
-      <h2>Ready to code faster?</h2>
-      <p>
-        Join thousands of developers already using RinaWarp Terminal Pro to build, deploy, and
-        innovate at light speed.
-      </p>
-      <button class="btn btn-primary" onclick="scrollToPricing()">Get Started</button>
-    </section>
-
-    <!-- ================= FOOTER ================= -->
-    <footer>
-      <p>© 2025 RinaWarp Technologies LLC — All rights reserved.</p>
-      <p>
-        <a href="/terms">Terms of Service</a> • <a href="/privacy">Privacy Policy</a> •
-        <a href="/refunds">Refund Policy</a> •
-        <a href="/contact">Contact</a>
-      </p>
     </footer>
+  </div>
 
-    <script src="/checkout.js"></script>
-    <script>
-      function scrollToPricing() {
-        document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
-      }
-    </script>
-  </body>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
