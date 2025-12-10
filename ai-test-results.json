@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-12-10T04:30:09.679Z",
+  "results": {
+    "aiAgentStarts": true,
+    "backendConnectivity": true,
+    "receivesResponses": true,
+    "handlesCommands": true,
+    "noCORSErrors": true,
+    "noNetworkErrors": true,
+    "noAuthErrors": true,
+    "noBlankResponses": true,
+    "errors": []
+  },
+  "score": 100
+}

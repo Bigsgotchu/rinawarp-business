@@ -1,0 +1,35 @@
+[build]
+  command = "echo 'Static site - no build step required'"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "18"
+  STRIPE_PUBLISHABLE_KEY = "pk_live_51RaxSiG2ToGP7ChngJgspX14GB9EWuOlE733KV9euRr6KcsxM2bBe95mjNdAVPcmD9vcDLwMdwMIseGrU999vqUS009PcSmqcm"
+  NETLIFY_SITE_URL = "https://rinawarp-tech-demo.netlify.app"
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; connect-src 'self' https://api.stripe.com; frame-src https://js.stripe.com"
+
+# Cache static assets
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Legal pages should be indexed
+[[headers]]
+  for = "/legal/*"
+  [headers.values]
+    X-Robots-Tag = "index, follow"

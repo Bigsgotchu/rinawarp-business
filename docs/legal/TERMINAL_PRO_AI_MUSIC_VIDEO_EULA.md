@@ -1,0 +1,447 @@
+# END USER LICENSE AGREEMENT — RINAWARP TERMINAL PRO + AI MUSIC VIDEO CREATOR
+
+**Effective Date:** [Auto-fill]
+**Last Updated:** [Auto-fill]
+
+---
+
+## 1. Agreement
+
+This **End User License Agreement** (“**EULA**”) is a legal agreement between you (“**Licensee**”) and **RinaWarp Technologies LLC** (“**Licensor**”) for the use of **RinaWarp Terminal Pro** and **AI Music Video Creator** software.
+
+**BY INSTALLING, COPYING, OR USING THE SOFTWARE, YOU AGREE TO BE BOUND BY THIS EULA.**
+
+If you do not agree, do not install or use the Software.
+
+---
+
+## 2. License Grant
+
+Licensor grants Licensee a **limited, non-exclusive, non-transferable, revocable license** to:
+
+- Install and use **one copy** of Terminal Pro and/or AI Music Video Creator
+- Use the Software on **authorized devices**
+- Access **licensed features** based on your subscription
+- Receive **software updates** during the license period
+
+---
+
+## 3. Software Description
+
+### 3.1 Terminal Pro
+
+**RinaWarp Terminal Pro** is a desktop application that provides:
+
+- Advanced terminal functionality
+- AI-powered command assistance
+- Cloud-based license verification
+- Secure authentication
+- Integration with RinaWarp services
+
+### 3.2 AI Music Video Creator
+
+**RinaWarp AI Music Video Creator** is a desktop application that provides:
+
+- AI-powered music video generation
+- Advanced video editing capabilities
+- Cloud-based rendering services
+- Integration with music and video platforms
+
+---
+
+## SECTION 3 — EULA (TERMINAL PRO + AI MUSIC VIDEO CREATOR)
+
+### 3.1 Desktop Software License
+
+The apps are licensed, not sold.
+
+### 3.2 Restrictions
+
+You may NOT:
+
+- Modify, crack, or reverse engineer
+- Use on more devices than allowed
+- Resell or redistribute builds
+- Circumvent payment or license checks
+
+### 3.3 Ownership
+
+RinaWarp retains full ownership of:
+
+- Source code
+- Branding
+- Algorithms
+- UI/UX
+- AI systems
+
+---
+
+## SECTION 4 — REFUND POLICY
+
+RinaWarp is a SaaS company. Refunds apply only when legally required or when:
+
+- A service fails to deliver purchased functionality
+- A user is charged in error
+- A duplicate payment is made
+
+We do not offer refunds for:
+
+- AI credits used
+- Subscription periods already consumed
+- "Not what I expected" claims
+- Abuse-related bans
+
+---
+
+## SECTION 5 — BILLING TERMS (STRIPE)
+
+### 5.1 Payment Processor
+
+Stripe is used for all transactions.
+
+### 5.2 Subscriptions
+
+Subscriptions renew automatically.
+
+### 5.3 One-Time Credits
+
+AI credits never expire unless policy changes.
+
+### 5.4 Chargebacks
+
+Chargebacks may result in account suspension.
+
+### 5.5 Taxes
+
+Users are responsible for applicable taxes.
+
+---
+
+## SECTION 6 — DMCA POLICY
+
+Report copyright issues to:
+
+[legal@rinawarptech.com](mailto:legal@rinawarptech.com)
+
+---
+
+## SECTION 7 — ACCEPTABLE USE POLICY (AUP)
+
+### Forbidden Activities
+
+- Harassment
+- Malware
+- Unauthorized scraping
+- Large-scale automation
+- Fraud or payment abuse
+- Generating harmful or unlawful AI content
+
+---
+
+## SECTION 8 — COOKIE POLICY
+
+RinaWarp uses:
+
+- Cloudflare analytics cookies
+- LocalStorage for auth tokens
+- Stripe checkout cookies
+
+---
+
+## SECTION 9 — SECURITY POLICY
+
+### Measures
+
+- HTTPS everywhere
+- Cloudflare security layers
+- KV encryption at rest
+- Employee least-privilege access
+- No plaintext secrets in repos
+
+---
+
+## SECTION 10 — DATA RETENTION SCHEDULE
+
+- KV analytics: 12 months
+- Billing records: 7 years (legal requirement)
+- Logs: 30–90 days
+- AI metadata: 90 days
+
+---
+
+## SECTION 11 — COPYRIGHT NOTICE
+
+© 2025 RinaWarp Technologies LLC
+All rights reserved.
+
+---
+
+## SECTION 12 — CONTACT INFORMATION
+
+- Support: support@rinawarptech.com
+- Business: karina@rinawarptech.com
+- Legal: legal@rinawarptech.com
+
+---
+
+
+## 4. License Types
+
+### 4.1 Per-User License
+
+- **Single user** may install on multiple devices
+- **Personal use** only
+- **Non-transferable** between users
+
+### 4.2 Per-Device License
+
+- **Single device** installation
+- **Any authorized user** on that device
+- **Non-transferable** between devices
+
+### 4.3 Subscription License
+
+- **Time-limited** access
+- **Auto-renewing** unless canceled
+- **Feature-based** access levels
+
+---
+
+## 5. Installation & Activation
+
+### 5.1 Installation Requirements
+
+- Compatible operating system
+- Internet connection for activation
+- Sufficient hardware resources
+- Administrator privileges
+
+### 5.2 Activation Process
+
+- Requires **valid license key**
+- Requires **email verification**
+- Requires **device information** (hashed)
+- May require **periodic validation**
+
+### 5.3 Offline Usage
+
+- **30-day offline period** allowed
+- **Re-validation required** after offline period
+- **Extended offline** requires special arrangement
+
+---
+
+## 6. Permitted Uses
+
+Licensee may:
+
+- Install and use Terminal Pro and AI Music Video Creator for intended purposes
+- Create and manage terminal sessions and music videos
+- Use AI-powered features
+- Access licensed functionality
+- Receive and install updates
+
+---
+
+## 7. Prohibited Uses
+
+Licensee may **NOT**:
+
+### 7.1 Reverse Engineering
+
+- Reverse engineer, decompile, or disassemble
+- Modify or create derivative works
+- Bypass license verification
+- Remove copyright notices
+
+### 7.2 Unauthorized Distribution
+
+- Redistribute or sublicense
+- Share license keys
+- Make available on public networks
+- Sell or rent access
+
+### 7.3 System Interference
+
+- Interfere with Cloudflare verification
+- Bypass security measures
+- Exploit vulnerabilities
+- Automate abuse of APIs
+
+### 7.4 Commercial Restrictions
+
+- Use for illegal commercial purposes
+- Resell Terminal Pro or AI Music Video Creator as a service
+- Compete with RinaWarp products
+- Violate intellectual property rights
+
+---
+
+## 8. Intellectual Property
+
+### 8.1 Licensor's Rights
+
+- All software, code, and documentation
+- Trademarks, logos, and branding
+- Patents and trade secrets
+- Copyrighted materials
+- AI models and algorithms
+
+### 8.2 Licensee's Rights
+
+- Limited right to use the Software
+- No ownership transfer
+- No right to modify or distribute
+- No right to reverse engineer
+
+---
+
+## 9. Updates & Maintenance
+
+### 9.1 Automatic Updates
+
+- RinaWarp may **automatically deploy updates**
+- Updates may include **security patches**
+- Updates may add or remove **features**
+- Updates may change **system requirements**
+
+### 9.2 Update Requirements
+
+- Some updates may be **mandatory**
+- Failure to update may **disable functionality**
+- Outdated versions may **lose support**
+- Critical updates may be **forced**
+
+### 9.3 Beta & Preview Features
+
+- Optional beta features
+- May be unstable or incomplete
+- Not covered by standard support
+- May be discontinued
+
+---
+
+## 10. Data Collection
+
+Terminal Pro and AI Music Video Creator may collect:
+
+- **License validation data** (hashed device info)
+- **Usage statistics** (anonymous metrics)
+- **Error reports** (diagnostic information)
+- **Feature usage** (improvement analytics)
+
+Terminal Pro and AI Music Video Creator do **NOT** collect:
+
+- Personal files or documents
+- Clipboard contents
+- Keyboard input (except for commands)
+- Sensitive personal information
+
+---
+
+## 11. Termination
+
+### 11.1 By Licensor
+
+Licensor may terminate this EULA if:
+
+- Licensee violates any terms
+- Payment is reversed or fraudulent
+- Licensee engages in prohibited activities
+- Security is compromised
+
+### 11.2 By Licensee
+
+Licensee may terminate by:
+
+- Uninstalling the Software
+- Contacting [support@rinawarptech.com](mailto:support@rinawarptech.com)
+- Ceasing all use
+
+### 11.3 Effects of Termination
+
+Upon termination:
+
+- License is **immediately revoked**
+- Software may **cease functioning**
+- Access to features is **disabled**
+- No refunds are **provided**
+
+---
+
+## 12. Warranty & Liability
+
+### 12.1 Disclaimer of Warranty
+
+Software is provided **"as is"** without warranties, including:
+
+- Merchantability or fitness
+- Error-free operation
+- Uninterrupted access
+- Specific results
+
+### 12.2 Limitation of Liability
+
+Licensor is **not liable** for:
+
+- Data loss or corruption
+- Business interruption
+- Indirect or consequential damages
+- Third-party actions
+- System failures
+
+**Maximum liability** shall not exceed fees paid in the preceding 12 months.
+
+---
+
+## 13. Indemnification
+
+Licensee agrees to **indemnify and hold harmless** Licensor from:
+
+- Unauthorized use or distribution
+- Violations of this EULA
+- Intellectual property infringement
+- Damage caused by Licensee's actions
+
+---
+
+## 14. Governing Law
+
+This EULA is governed by:
+
+- **State of Utah** laws (United States)
+- **Federal U.S. law** where applicable
+
+Disputes shall be resolved in Utah courts.
+
+---
+
+## 15. Miscellaneous
+
+### 15.1 Entire Agreement
+
+This EULA constitutes the entire agreement.
+
+### 15.2 Severability
+
+Invalid provisions do not affect others.
+
+### 15.3 Assignment
+
+Licensor may assign this EULA. Licensee may not.
+
+### 15.4 Waiver
+
+Failure to enforce does not constitute waiver.
+
+### 15.5 Force Majeure
+
+Neither party liable for uncontrollable events.
+
+### 15.6 Survival
+
+Confidentiality and IP provisions survive termination.
+
+---
+
+**© 2025 RinaWarp Technologies LLC. All rights reserved.**

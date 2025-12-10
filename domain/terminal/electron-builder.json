@@ -1,0 +1,96 @@
+{
+  "appId": "com.rinawarptech.terminalpro",
+  "productName": "RinaWarp Terminal Pro",
+  "copyright": "Copyright © 2025 RinaWarp Technologies",
+  "directories": {
+    "output": "release",
+    "buildResources": "assets"
+  },
+  "files": ["dist/**/*", "electron/**/*", "package.json", "assets/**/*"],
+  "extraResources": [
+    {
+      "from": "assets/",
+      "to": "assets",
+      "filter": ["**/*"]
+    }
+  ],
+  "mac": {
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "category": "public.app-category.developer-tools",
+    "icon": "assets/icon.icns",
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "entitlements": "electron/entitlements.mac.plist",
+    "entitlementsInherit": "electron/entitlements.mac.plist"
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      }
+    ],
+    "icon": "assets/icon.ico",
+    "verifyUpdateCodeSignature": false
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      }
+    ],
+    "category": "Development",
+    "icon": "assets/icon.png"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "assets/icon.ico",
+    "uninstallerIcon": "assets/icon.ico",
+    "installerHeaderIcon": "assets/icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "RinaWarp Terminal Pro"
+  },
+  "dmg": {
+    "icon": "assets/icon.icns",
+    "background": "assets/dmg-background.png",
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ],
+    "window": {
+      "width": 540,
+      "height": 380
+    }
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "rinawarp",
+    "repo": "terminal-pro",
+    "vPrefixedTagName": true,
+    "releaseType": "release",
+    "publishAutoUpdate": true
+  },
+  "buildVersion": "1.0.0",
+  "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}",
+  "compression": "maximum",
+  "asar": true,
+  "asarUnpack": ["**/node_modules/sharp/**/*"],
+  "afterSign": "scripts/after-sign.js",
+  "afterAllArtifactBuild": "scripts/after-all-artifacts.js"
+}

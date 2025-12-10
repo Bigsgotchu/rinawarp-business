@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" class="page-aimvc">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Music Video Creator — Neon Unicorn Visuals by RinaWarp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Turn your songs into AI-generated music videos with RinaWarp AI Music Video Creator. Neon unicorn theme, credits and creator-friendly pricing."
+  />
+  <link rel="stylesheet" href="/css/brand.css" />
+</head>
+<body class="page-aimvc">
+  <div class="main-shell">
+    <!-- NAV -->
+    <header class="nav">
+      <div class="nav-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">
+          AI Music Video Creator
+          <span>by RinaWarp</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="#how">How it works</a>
+        <a href="#plans">Plans</a>
+        <a href="/legal/ai-music-video-creator-eula.html">EULA</a>
+        <button class="nav-cta" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">
+          View plans
+          <span class="icon">🎧</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <main>
+      <section class="section" style="padding-top: 32px;">
+        <div class="aimvc-hero-shell">
+          <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.1fr); gap: 20px; align-items: center;">
+            <div>
+              <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+                <span class="glow-pill">Neon unicorn theme</span>
+                <span style="font-size:11px; color:var(--unicorn-text-muted);">
+                  Built for artists, labels and visual makers
+                </span>
+              </div>
+              <h1 class="hero-title" style="margin-bottom: 10px;">
+                Turn any track into <span class="highlight">AI-driven visuals</span> in minutes.
+              </h1>
+              <p class="hero-subtitle" style="max-width:520px;">
+                Drop in your music, pick a visual style, and let the engine generate
+                neon-lit, scroll-stopping music videos. A credit system keeps everything predictable.
+              </p>
+
+              <div class="hero-ctas">
+                <button class="btn-primary" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">
+                  <span class="icon">🎬</span>
+                  See creator plans
+                </button>
+                <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+                  How it works
+                  <span class="icon">→</span>
+                </button>
+              </div>
+              <div class="hero-footnote" style="color: var(--unicorn-text-muted);">
+                Built on Stripe + Cloudflare. You keep ownership of your audio.
+              </div>
+            </div>
+
+            <!-- pseudo preview panel -->
+            <div
+              style="
+                border-radius: 22px;
+                border: 1px solid rgba(168, 85, 247, 0.8);
+                padding: 14px;
+                background:
+                  radial-gradient(circle at top left, rgba(244, 114, 182, 0.36), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.26), transparent 60%),
+                  rgba(15, 23, 42, 0.98);
+                box-shadow: 0 30px 80px rgba(15, 23, 42, 0.9);
+              "
+            >
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div style="font-size:12px; color:var(--unicorn-text-muted);">
+                  Live render preview
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <span
+                    style="width:8px; height:8px; border-radius:999px; background:#f97316; box-shadow:0 0 12px rgba(248, 113, 113, 0.9);"
+                  ></span>
+                  <span
+                    style="width:8px; height:8px; border-radius:999px; background:#22c55e; box-shadow:0 0 12px rgba(34, 197, 94, 0.9);"
+                  ></span>
+                  <span
+                    style="width:8px; height:8px; border-radius:999px; background:#38bdf8; box-shadow:0 0 12px rgba(56, 189, 248, 0.9);"
+                  ></span>
+                </div>
+              </div>
+              <div
+                style="
+                  border-radius: 18px;
+                  border: 1px solid rgba(59, 130, 246, 0.55);
+                  height: 210px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  background:
+                    radial-gradient(circle at 20% 0%, rgba(248, 113, 113, 0.4), transparent 55%),
+                    radial-gradient(circle at 80% 100%, rgba(56, 189, 248, 0.4), transparent 55%),
+                    radial-gradient(circle at 50% 40%, rgba(168, 85, 247, 0.65), rgba(15, 23, 42, 0.9));
+                "
+              >
+                <div style="text-align:center;">
+                  <div style="font-size:13px; margin-bottom:4px;">"Unicorn Skyline (Neon)"</div>
+                  <div style="font-size:11px; color:var(--unicorn-text-muted);">
+                    AI-generated motion art synced to your track.
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:10px; font-size:11px; color:var(--unicorn-text-muted);">
+                Credits: <strong>12</strong> • Resolution: <strong>1080p</strong> • Aspect: <strong>9:16 / 16:9</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section" id="how">
+        <div class="section-header">
+          <div>
+            <div class="section-title">How AI Music Video Creator works</div>
+            <div class="section-subtitle">
+              Three steps from track to publish-ready visual.
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-item" style="border-color: rgba(244, 114, 182, 0.7);">
+            <h3>1. Upload or link your track</h3>
+            <p>
+              Drop a file or link from your preferred platform. We don't claim your master — you keep ownership;
+              we generate the visuals.
+            </p>
+          </article>
+          <article class="feature-item" style="border-color: rgba(168, 85, 247, 0.7);">
+            <h3>2. Choose a visual style</h3>
+            <p>
+              Neon unicorn, cyber-dreams, glitch, soft aura — pick a style and refine intensity, color bias, and motion.
+            </p>
+          </article>
+          <article class="feature-item" style="border-color: rgba(56, 189, 248, 0.7);">
+            <h3>3. Render with credits</h3>
+            <p>
+              Each render consumes credits. Simple pricing: you always see the cost before you click generate.
+              Use subscriptions for steady output or one-off packs for spikes.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- PLANS -->
+      <section class="section" id="plans">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Creator plans & credit system</div>
+            <div class="section-subtitle">
+              Simple pricing: predictable credits, clear tiers, no weird overages.
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-row">
+          <div class="pricing-card" style="border-color: rgba(148, 163, 184, 0.6);">
+            <div class="badge-pill" style="margin-bottom:8px;">
+              <span>🌱</span> Starter Creators
+            </div>
+            <div class="pricing-price">
+              $<span id="aimvc-starter">19</span> <span>/month</span>
+            </div>
+            <div class="pricing-line">
+              For solo artists and new creators experimenting with AI visuals.
+            </div>
+            <ul class="pricing-list">
+              <li>Monthly credits for a handful of full-length videos</li>
+              <li>Roll-over on unused credits (up to a cap)</li>
+              <li>Standard export formats for socials</li>
+            </ul>
+            <a
+              href="/api/checkout?product=ai-mvc-starter"
+              class="btn-primary"
+              style="width: 100%; justify-content: center;"
+            >
+              Start as a solo creator
+            </a>
+          </div>
+
+          <div
+            class="pricing-card"
+            style="
+              border-color: rgba(244, 114, 182, 0.8);
+              background: radial-gradient(circle at top left, rgba(244, 114, 182, 0.45), rgba(15, 23, 42, 0.98));
+            "
+          >
+            <div class="badge-pill" style="margin-bottom:8px; border-color: rgba(244, 114, 182, 0.9); color: #f9a8d4;">
+              <span>🚀</span> Pro + Labels
+            </div>
+            <div class="pricing-price">
+              $<span id="aimvc-pro">39</span> <span>/month</span>
+            </div>
+            <div class="pricing-line">
+              For heavy creators, label teams, and studios publishing regularly.
+            </div>
+            <ul class="pricing-list">
+              <li>Higher credit bundles for frequent releases</li>
+              <li>Team-friendly usage across projects</li>
+              <li>Priority render queues and support</li>
+            </ul>
+            <a
+              href="/api/checkout?product=ai-mvc-pro"
+              class="btn-outline"
+              style="width: 100%; justify-content: center;"
+            >
+              Upgrade to Pro
+            </a>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px; font-size: 11px; color: var(--unicorn-text-muted);">
+          All billing runs through Stripe. You can cancel anytime via the Stripe-powered customer portal.
+          See our <a href="/legal/subscription-billing-agreement.html">Subscription & Billing Agreement</a>.
+        </div>
+      </section>
+
+      <!-- LINK BACK TO TERMINAL -->
+      <section class="section">
+        <div class="pricing-card" style="border-color: rgba(56, 189, 248, 0.7);">
+          <div class="badge-pill" style="margin-bottom: 8px;">
+            <span>⚡</span> Pair it with Terminal Pro
+          </div>
+          <div class="pricing-line">
+            RinaWarp is best when your tools feel like a single studio. Terminal Pro for building,
+            AI Music Video Creator for releasing.
+          </div>
+          <button class="btn-outline" style="margin-top: 10px;" onclick="window.location.href='/terminal/'">
+            View Terminal Pro
+            <span class="icon">↗</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div>© <span id="year"></span> RinaWarp Technologies LLC • AI Music Video Creator</div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/legal/ai-music-video-creator-eula.html">AI-MVC EULA</a>
+        <a href="/legal/ai-ethical-policy.html">AI Ethics</a>
+        <a href="/legal/terms-of-service.html">Terms</a>
+        <a href="/legal/privacy-policy.html">Privacy</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

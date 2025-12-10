@@ -1,0 +1,88 @@
+# 🔐 SSH KEY PERMISSIONS FIX
+
+## ❌ **ISSUE: SSH Key Permissions Error**
+
+When you try to SSH from Mac to AWS, you get a permissions error because SSH keys need specific file permissions to be secure.
+
+## ✅ **SOLUTION: Set Correct Permissions**
+
+### **Step 1: Navigate to Your SSH Key**
+
+```bash
+# Find your SSH key file (usually in ~/.ssh/)
+ls -la ~/.ssh/
+
+# Or if you downloaded it to a specific location
+ls -la /path/to/your/key.pem
+```
+
+### **Step 2: Set Correct Permissions**
+
+```bash
+# Set the key file to read-only for owner only
+chmod 400 your-key-file.pem
+
+# Alternative: Set to 600 (read/write for owner only)
+chmod 600 your-key-file.pem
+```
+
+### **Step 3: Verify Permissions**
+
+```bash
+# Check the permissions (should show -r-------- or -rw-------)
+ls -la your-key-file.pem
+```
+
+## 🚀 **COMPLETE SSH COMMAND:**
+
+Once permissions are set, use this command:
+
+```bash
+ssh -i /path/to/your-key-file.pem ubuntu@18.212.105.169
+```
+
+## 🔍 **TROUBLESHOOTING:**
+
+### **If Still Getting Permission Errors:**
+
+```bash
+# Make sure the key file is in the right location
+# And has the correct permissions
+chmod 400 your-key-file.pem
+
+# Try with verbose output to see what's happening
+ssh -v -i /path/to/your-key-file.pem ubuntu@18.212.105.169
+```
+
+### **If Key File is in Wrong Location:**
+
+```bash
+# Move it to ~/.ssh/ directory
+mv your-key-file.pem ~/.ssh/
+chmod 400 ~/.ssh/your-key-file.pem
+```
+
+## 📝 **QUICK FIX COMMANDS:**
+
+```bash
+# 1. Set permissions
+chmod 400 your-key-file.pem
+
+# 2. Test connection
+ssh -i your-key-file.pem ubuntu@18.212.105.169
+
+# 3. If successful, check server status
+pm2 status
+sudo systemctl status nginx
+```
+
+## 🎯 **WHAT TO EXPECT:**
+
+After setting correct permissions:
+
+- ✅ SSH should connect without permission errors
+- ✅ You'll be logged into your AWS server
+- ✅ You can run diagnostic commands
+- ✅ You can restart services if needed
+
+**Try the chmod command first, then attempt the SSH connection again!**

@@ -1,0 +1,424 @@
+# RinaWarp Technologies - Multi-Application Hosting Structure
+
+## Domain Architecture: rinawarptech.com
+
+### Application Subdomains Structure
+
+```
+rinawarptech.com (Main Website)
+├── ai-music-creator.rinawarptech.com (RinaWarp AI Music Creator)
+├── api.rinawarptech.com (Backend APIs)
+├── admin.rinawarptech.com (Admin Dashboard)
+├── docs.rinawarptech.com (Documentation)
+├── blog.rinawarptech.com (Company Blog)
+└── app2.rinawarptech.com (Future Applications)
+```
+
+### 1. RinaWarp AI Music Creator Configuration
+
+#### Frontend: `ai-music-creator.rinawarptech.com`
+
+- **Purpose**: Main AI Music Video Creator application
+- **Technology**: React + Vite
+- **Build Output**: `frontend/dist/`
+- **Nginx Location**: `/var/www/ai-music-creator.rinawarptech.com/`
+
+#### Backend API: `api.rinawarptech.com`
+
+- **Purpose**: Centralized API for all applications
+- **Technology**: Node.js + Express
+- **Port**: 3001 (internal)
+- **Nginx Proxy**: `/api/` routes to backend
+
+### 2. Nginx Multi-Application Configuration
+
+```nginx
+# /etc/nginx/sites-available/rinawarptech.com
+
+# Main website (rinawarptech.com)
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name rinawarptech.com www.rinawarptech.com;
+
+    ssl_certificate /etc/ssl/certs/rinawarptech.com.crt;
+    ssl_certificate_key /etc/ssl/private/rinawarptech.com.key;
+
+    # Main company website
+    root /var/www/rinawarptech.com/main-site;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # API routes for all applications
+    location /api/ {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # WebSocket support for real-time features
+    location /ws {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# AI Music Creator Application
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name ai-music-creator.rinawarptech.com;
+
+    ssl_certificate /etc/ssl/certs/rinawarptech.com.crt;
+    ssl_certificate_key /etc/ssl/private/rinawarptech.com.key;
+
+    # RinaWarp AI Music Creator
+    root /var/www/ai-music-creator.rinawarptech.com;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    }
+
+    # API calls go to main API server
+    location /api/ {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # WebSocket for real-time video generation
+    location /ws {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # File uploads
+    client_max_body_size 100M;
+}
+
+# API Server (Centralized)
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name api.rinawarptech.com;
+
+    ssl_certificate /etc/ssl/certs/rinawarptech.com.crt;
+    ssl_certificate_key /etc/ssl/private/rinawarptech.com.key;
+
+    # API health check
+    location /health {
+        proxy_pass http://localhost:3001/api/health;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # All API routes
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+# Admin Dashboard
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name admin.rinawarptech.com;
+
+    ssl_certificate /etc/ssl/certs/rinawarptech.com.crt;
+    ssl_certificate_key /etc/ssl/private/rinawarptech.com.key;
+
+    # Admin dashboard (same as AI Music Creator but with admin features)
+    root /var/www/ai-music-creator.rinawarptech.com;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Restrict access to admin subdomain
+    location /api/ {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+### 3. Environment Configuration for Multi-App
+
+#### Frontend Environment (.env.production)
+
+```env
+# RinaWarp AI Music Creator - Production
+VITE_API_BASE_URL=https://api.rinawarptech.com
+VITE_WS_URL=wss://api.rinawarptech.com
+VITE_APP_NAME=RinaWarp AI Music Creator
+VITE_APP_DOMAIN=ai-music-creator.rinawarptech.com
+VITE_COMPANY_DOMAIN=rinawarptech.com
+VITE_STRIPE_PUBLISHABLE_KEY=pk_live_your_stripe_publishable_key
+VITE_APP_TYPE=music-video-creator
+VITE_MULTI_APP_MODE=true
+```
+
+#### Backend Environment (.env.production)
+
+```env
+NODE_ENV=production
+PORT=3001
+FRONTEND_URL=https://ai-music-creator.rinawarptech.com
+CORS_ORIGIN=https://ai-music-creator.rinawarptech.com,https://admin.rinawarptech.com,https://rinawarptech.com
+
+# Multi-app configuration
+APP_TYPE=music-video-creator
+COMPANY_DOMAIN=rinawarptech.com
+ADMIN_DOMAIN=admin.rinawarptech.com
+
+# AWS Production
+AWS_ACCESS_KEY_ID=your_production_aws_key
+AWS_SECRET_ACCESS_KEY=your_production_aws_secret
+AWS_REGION=us-east-1
+S3_BUCKET=rinawarp-production
+
+# AI Services
+OPENAI_API_KEY=your_production_openai_key
+PIXVERSE_API_KEY=your_production_pixverse_key
+STABLE_DIFFUSION_API_KEY=your_production_stable_diffusion_key
+RUNWAY_API_KEY=your_production_runway_key
+
+# Stripe Production
+STRIPE_SECRET_KEY=sk_live_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+```
+
+### 4. Directory Structure for Multi-App Hosting
+
+```
+/var/www/
+├── rinawarptech.com/
+│   ├── main-site/           # Company website
+│   └── shared-assets/      # Shared resources
+├── ai-music-creator.rinawarptech.com/
+│   ├── dist/               # Built React app
+│   ├── uploads/            # User uploads
+│   └── temp/               # Temporary files
+├── admin.rinawarptech.com/
+│   └── dist/               # Admin dashboard
+└── api.rinawarptech.com/
+    └── logs/               # API logs
+```
+
+### 5. DNS Configuration for Multi-Subdomain
+
+```
+# A Records
+rinawarptech.com → YOUR_SERVER_IP
+www.rinawarptech.com → YOUR_SERVER_IP
+api.rinawarptech.com → YOUR_SERVER_IP
+admin.rinawarptech.com → YOUR_SERVER_IP
+ai-music-creator.rinawarptech.com → YOUR_SERVER_IP
+
+# CNAME Records (if using CDN)
+cdn.rinawarptech.com → your-cdn-provider.com
+```
+
+### 6. SSL Certificate for Multi-Subdomain
+
+#### Option A: Wildcard Certificate
+
+```bash
+# Get wildcard certificate for *.rinawarptech.com
+sudo certbot certonly --manual --preferred-challenges dns -d "*.rinawarptech.com" -d "rinawarptech.com"
+```
+
+#### Option B: Multi-Domain Certificate
+
+```bash
+# Get certificate for all subdomains
+sudo certbot certonly --nginx -d rinawarptech.com -d www.rinawarptech.com -d api.rinawarptech.com -d admin.rinawarptech.com -d ai-music-creator.rinawarptech.com
+```
+
+### 7. Deployment Script for Multi-App
+
+Create `deploy-multi-app.sh`:
+
+```bash
+#!/bin/bash
+echo "🚀 Deploying RinaWarp Multi-Application Suite..."
+
+# Build AI Music Creator
+cd frontend
+npm run build:production
+echo "✅ AI Music Creator built"
+
+# Copy to subdomain directory
+sudo cp -r dist/* /var/www/ai-music-creator.rinawarptech.com/
+echo "✅ AI Music Creator deployed to ai-music-creator.rinawarptech.com"
+
+# Build backend
+cd ../backend
+npm run build:production
+echo "✅ Backend API built"
+
+# Restart services
+sudo systemctl reload nginx
+pm2 restart rinawarp-backend
+
+echo "🎉 Multi-app deployment complete!"
+echo "📱 AI Music Creator: https://ai-music-creator.rinawarptech.com"
+echo "🔧 Admin Dashboard: https://admin.rinawarptech.com"
+echo "🌐 Main Website: https://rinawarptech.com"
+echo "⚡ API Server: https://api.rinawarptech.com"
+```
+
+### 8. Application-Specific Features
+
+#### AI Music Creator App Features
+
+- **URL**: `ai-music-creator.rinawarptech.com`
+- **Features**: Video generation, avatar creation, music upload
+- **User Flow**: Public access with registration
+- **Monetization**: Coin system, subscription plans
+
+#### Admin Dashboard Features
+
+- **URL**: `admin.rinawarptech.com`
+- **Features**: User management, analytics, content moderation
+- **Access**: Admin authentication required
+- **Integration**: Connected to all applications
+
+#### Main Website Features
+
+- **URL**: `rinawarptech.com`
+- **Features**: Company info, product showcase, blog
+- **Integration**: Links to all applications
+- **Marketing**: SEO optimized, conversion focused
+
+### 9. Cross-Application Integration
+
+#### Shared Services
+
+- **Authentication**: Single sign-on across apps
+- **User Management**: Centralized user database
+- **Analytics**: Unified tracking across all apps
+- **Billing**: Centralized payment processing
+
+#### API Endpoints Structure
+
+```
+api.rinawarptech.com/
+├── /auth/          # Authentication
+├── /users/         # User management
+├── /music-video/   # AI Music Creator API
+├── /admin/         # Admin API
+├── /analytics/     # Analytics API
+└── /billing/      # Payment processing
+```
+
+### 10. Monitoring Multi-Application Setup
+
+#### Health Checks
+
+- **Main Site**: `https://rinawarptech.com`
+- **AI Music Creator**: `https://ai-music-creator.rinawarptech.com`
+- **Admin Dashboard**: `https://admin.rinawarptech.com`
+- **API Server**: `https://api.rinawarptech.com/health`
+
+#### Log Management
+
+```bash
+# Application logs
+tail -f /var/log/nginx/ai-music-creator.rinawarptech.com.access.log
+tail -f /var/log/nginx/api.rinawarptech.com.access.log
+
+# Backend logs
+pm2 logs rinawarp-backend
+```
+
+### 11. Future Application Integration
+
+#### Adding New Applications
+
+1. Create new subdomain (e.g., `app2.rinawarptech.com`)
+2. Add Nginx server block
+3. Deploy application files
+4. Update DNS records
+5. Configure SSL certificate
+
+#### Shared Resources
+
+- **CDN**: Shared assets across all apps
+- **Database**: Centralized data storage
+- **Redis**: Shared session storage
+- **File Storage**: Centralized S3 bucket
+
+---
+
+## Quick Start for Multi-App Deployment
+
+```bash
+# 1. Build all applications
+npm run build:production
+
+# 2. Deploy to server
+./deploy-multi-app.sh
+
+# 3. Verify all applications
+curl https://rinawarptech.com
+curl https://ai-music-creator.rinawarptech.com
+curl https://admin.rinawarptech.com
+curl https://api.rinawarptech.com/health
+```
+
+**Your RinaWarp Technologies multi-application suite will be live with:**
+
+- **Main Website**: <https://rinawarptech.com>
+- **AI Music Creator**: <https://ai-music-creator.rinawarptech.com>
+- **Admin Dashboard**: <https://admin.rinawarptech.com>
+- **API Server**: <https://api.rinawarptech.com>

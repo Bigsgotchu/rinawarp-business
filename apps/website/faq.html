@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal Pro • FAQ & Support</title>
+  <style>
+    :root {
+      --primary: #ff2a6d;
+      --secondary: #0ff0fc;
+      --dark: #0a0f1b;
+      --light: #e0ffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .faq-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .faq-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--primary);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-answer {
+      color: #ccc;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 10px;
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    .support-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .support-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .support-button {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .support-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(255, 42, 109, 0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .support-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Terminal Pro FAQ</h1>
+      <p class="subtitle">Frequently Asked Questions & Support</p>
+    </header>
+
+    <div class="faq-grid">
+      <!-- Installation Questions -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>📥 How do I install Terminal Pro?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p><strong>Windows:</strong> Download the ZIP file, extract it, and run <code>rinawarp-terminal-pro.exe</code>.</p>
+          <p><strong>Linux AppImage:</strong> Make it executable with <code>chmod +x RinaWarp-Terminal-Pro-*.AppImage</code> then run it.</p>
+          <p><strong>Linux Debian:</strong> Install with <code>sudo dpkg -i RinaWarp-Terminal-Pro-*.deb</code>.</p>
+          <p><strong>macOS:</strong> Coming soon within 24-48 hours.</p>
+        </div>
+      </div>
+
+      <!-- Requirements Question -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>💻 What are the system requirements?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p><strong>Minimum Requirements:</strong> 4GB RAM, 500MB disk space, modern CPU</p>
+          <p><strong>Windows:</strong> Windows 10/11 (64-bit)</p>
+          <p><strong>Linux:</strong> Ubuntu 20.04+, Fedora 35+, or equivalent</p>
+          <p><strong>macOS:</strong> macOS 11.0+ (Big Sur or later)</p>
+          <p><strong>Recommended:</strong> 8GB RAM, SSD storage, OpenGL 3.0+ GPU</p>
+        </div>
+      </div>
+
+      <!-- AI Features Question -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🤖 What AI features are included in the beta?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p>The beta includes:</p>
+          <ul>
+            <li>Basic command suggestions and autocompletion</li>
+            <li>Rina co-worker assistance</li>
+            <li>Simple command explanations</li>
+            <li>Basic @rina diagnostic commands</li>
+            <li>Usage limits with daily reset</li>
+          </ul>
+          <p>Advanced AI features will be available in Pro and Lifetime tiers.</p>
+        </div>
+      </div>
+
+      <!-- Pricing Question -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>💰 What are the pricing options?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p><strong>Free:</strong> Basic terminal functionality with limited AI features (20 messages/day)</p>
+          <p><strong>Pro:</strong> $29.99 - Full AI features, multiple sessions, premium themes (200 messages/day)</p>
+          <p><strong>Lifetime:</strong> $99.99 - One-time purchase with all features unlimited</p>
+          <p>Upgrade options will be available soon after the soft launch.</p>
+        </div>
+      </div>
+
+      <!-- Support Question -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🆘 How do I get support?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p>For support during the soft launch:</p>
+          <ul>
+            <li><strong>Email:</strong> support@rinawarptech.com</li>
+            <li><strong>Feedback:</strong> feedback@rinawarptech.com</li>
+            <li><strong>Diagnostic commands:</strong> @rina status, @rina diagnostics</li>
+            <li><strong>Crash reporting:</strong> @rina crashlog</li>
+          </ul>
+          <p>Response time: Typically within 24 hours during soft launch.</p>
+        </div>
+      </div>
+
+      <!-- Known Issues Question -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>⚠️ What are the known issues?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Current known issues in the beta:</p>
+          <ul>
+            <li>Windows installer is portable ZIP only</li>
+            <li>macOS version not yet available</li>
+            <li>Occasional AI latency</li>
+            <li>Theme changes may require restart</li>
+            <li>Linux Snap may need manual interface connections</li>
+            <li>Feedback upload may show success early</li>
+          </ul>
+          <p>These will be addressed in upcoming updates.</p>
+        </div>
+      </div>
+
+      <!-- Feedback Question -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>💬 How do I provide feedback?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p>We welcome your feedback during the soft launch!</p>
+          <ul>
+            <li>Use the in-app feedback system</li>
+            <li>Email feedback@rinawarptech.com</li>
+            <li>Use the @rina feedback command</li>
+            <li>Report bugs with @rina crashlog</li>
+          </ul>
+          <p>Your feedback helps shape the future of Terminal Pro!</p>
+        </div>
+      </div>
+
+      <!-- Upgrade Question -->
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🚀 How do I upgrade from Free to Pro/Lifetime?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          <p>The upgrade system is being finalized and will be available soon.</p>
+          <p>During the soft launch:</p>
+          <ul>
+            <li>Pro features are included for testing</li>
+            <li>Upgrade buttons will be enabled shortly</li>
+            <li>Existing users will get special pricing</li>
+            <li>Payment processing via Stripe</li>
+          </ul>
+          <p>Watch for announcements in the app!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support Section -->
+    <div class="support-section">
+      <h2 style="color: var(--secondary); margin-bottom: 15px;">Need More Help?</h2>
+      <p style="color: #ccc; margin-bottom: 20px;">Our team is here to support you during the soft launch.</p>
+
+      <div class="support-buttons">
+        <a href="mailto:support@rinawarptech.com" class="support-button">📧 Email Support</a>
+        <a href="mailto:feedback@rinawarptech.com" class="support-button">💬 Send Feedback</a>
+      </div>
+
+      <div style="margin-top: 20px; color: #aaa; font-size: 0.9rem;">
+        <p><strong>Support Hours:</strong> 9AM - 5PM MST (Soft Launch)</p>
+        <p><strong>Response Time:</strong> Typically within 24 hours</p>
+        <p><strong>Emergency:</strong> For critical issues, email with [URGENT] in subject</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 RinaWarp Technologies. Terminal Pro Soft Launch • Version 0.9.0-beta</p>
+    <p style="margin-top: 5px;">Having trouble? Email <a href="mailto:support@rinawarptech.com" style="color: var(--primary);">support@rinawarptech.com</a></p>
+  </footer>
+
+  <script>
+    function toggleFaq(element) {
+      const faqItem = element.closest('.faq-item');
+      const isActive = faqItem.classList.contains('active');
+
+      // Close all FAQ items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+        item.querySelector('.faq-question span:last-child').textContent = '+';
+      });
+
+      // Open clicked item if it wasn't active
+      if (!isActive) {
+        faqItem.classList.add('active');
+        element.querySelector('span:last-child').textContent = '−';
+      }
+    }
+
+    // Auto-open first FAQ item on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const firstFaq = document.querySelector('.faq-item');
+      if (firstFaq) {
+        firstFaq.classList.add('active');
+        firstFaq.querySelector('.faq-question span:last-child').textContent = '−';
+      }
+    });
+  </script>
+</body>
+</html>

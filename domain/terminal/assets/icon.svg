@@ -1,0 +1,76 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- RinaWarp Terminal Pro App Icon -->
+  <defs>
+    <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#001122;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#002244;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#003366;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="terminalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff6b9d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ff88;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="mermaidGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ff88;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background circle with gradient -->
+  <circle cx="256" cy="256" r="240" fill="url(#backgroundGradient)" stroke="#00d4ff" stroke-width="8"/>
+  
+  <!-- Terminal window -->
+  <rect x="80" y="120" width="352" height="240" rx="20" fill="#1a1a1a" stroke="url(#terminalGradient)" stroke-width="4" filter="url(#shadow)"/>
+  
+  <!-- Terminal header -->
+  <rect x="80" y="120" width="352" height="40" rx="20" fill="#2d3748"/>
+  <circle cx="100" cy="140" r="6" fill="#ff5f56"/>
+  <circle cx="120" cy="140" r="6" fill="#ffbd2e"/>
+  <circle cx="140" cy="140" r="6" fill="#27ca3f"/>
+  
+  <!-- Terminal content lines -->
+  <rect x="100" y="180" width="280" height="8" fill="#68d391" rx="4"/>
+  <rect x="100" y="200" width="240" height="8" fill="#90cdf4" rx="4"/>
+  <rect x="100" y="220" width="260" height="8" fill="#f687b3" rx="4"/>
+  <rect x="100" y="240" width="200" height="8" fill="#ffd700" rx="4"/>
+  
+  <!-- Command prompt -->
+  <rect x="100" y="280" width="320" height="12" fill="#00d4ff" rx="6"/>
+  <rect x="100" y="300" width="200" height="8" fill="#ffffff" rx="4"/>
+  
+  <!-- Mermaid tail (RinaWarp signature) -->
+  <path d="M256 380 Q320 420 256 480 Q192 420 256 380" fill="url(#mermaidGradient)" filter="url(#glow)"/>
+  
+  <!-- AI sparkles -->
+  <circle cx="150" cy="100" r="8" fill="#ffd700" opacity="0.8" filter="url(#glow)"/>
+  <circle cx="350" cy="80" r="6" fill="#00d4ff" opacity="0.7" filter="url(#glow)"/>
+  <circle cx="400" cy="150" r="10" fill="#ff6b9d" opacity="0.6" filter="url(#glow)"/>
+  <circle cx="320" cy="400" r="7" fill="#00ff88" opacity="0.8" filter="url(#glow)"/>
+  <circle cx="180" cy="420" r="5" fill="#ffd700" opacity="0.9" filter="url(#glow)"/>
+  
+  <!-- Terminal cursor -->
+  <rect x="310" y="300" width="4" height="8" fill="#00d4ff" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1s" repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- RinaWarp text -->
+  <text x="256" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#00d4ff">
+    RinaWarp Terminal Pro
+  </text>
+</svg>

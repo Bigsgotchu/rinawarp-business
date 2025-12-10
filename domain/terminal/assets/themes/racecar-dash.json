@@ -1,0 +1,72 @@
+{
+  "name": "Racecar Dashboard",
+  "description": "High-speed terminal with racing dashboard aesthetics",
+  "version": "1.0.0",
+  "author": "RinaWarp Technologies",
+  "colors": {
+    "background": "#000000",
+    "foreground": "#00ff00",
+    "cursor": "#ff0000",
+    "selection": "#ff6600",
+    "black": "#000000",
+    "red": "#ff0000",
+    "green": "#00ff00",
+    "yellow": "#ffff00",
+    "blue": "#0066ff",
+    "magenta": "#ff00ff",
+    "cyan": "#00ffff",
+    "white": "#ffffff",
+    "brightBlack": "#333333",
+    "brightRed": "#ff3333",
+    "brightGreen": "#33ff33",
+    "brightYellow": "#ffff33",
+    "brightBlue": "#3366ff",
+    "brightMagenta": "#ff33ff",
+    "brightCyan": "#33ffff",
+    "brightWhite": "#ffffff"
+  },
+  "ui": {
+    "accentColor": "#ff6600",
+    "warningColor": "#ffaa00",
+    "successColor": "#00ff00",
+    "errorColor": "#ff0000",
+    "infoColor": "#0066ff",
+    "borderColor": "#ff6600",
+    "shadowColor": "rgba(255, 102, 0, 0.3)"
+  },
+  "fonts": {
+    "primary": "Digital-7 Mono, 'Courier New', monospace",
+    "secondary": "Orbitron, 'Arial Black', sans-serif",
+    "size": 14,
+    "lineHeight": 1.2
+  },
+  "effects": {
+    "gaugeStyle": "neon",
+    "showSpeedometer": true,
+    "showTachometer": true,
+    "showFuelGauge": true,
+    "needleColor": "#ff6600",
+    "glowEffect": true,
+    "scanlines": true,
+    "carbonFiber": true
+  },
+  "animations": {
+    "needleSpeed": 0.8,
+    "glowPulse": true,
+    "typingEffect": "digital",
+    "cursorBlink": "fast"
+  },
+  "sounds": {
+    "keyClick": "digital-beep",
+    "enterSound": "rev-meter",
+    "errorSound": "warning-buzz",
+    "successSound": "checkpoint-chime"
+  },
+  "layout": {
+    "gaugeSize": 120,
+    "gaugeSpacing": 20,
+    "borderWidth": 2,
+    "cornerRadius": 8,
+    "padding": 16
+  }
+}

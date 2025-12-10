@@ -1,0 +1,56 @@
+{
+  "name": "rinawarp-terminal-pro",
+  "version": "1.0.0",
+  "description": "RinaWarp Terminal Pro - AI-Powered Terminal Emulator",
+  "main": "main.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never",
+    "test": "node ../test-electron.js"
+  },
+  "keywords": [
+    "terminal",
+    "ai",
+    "artificial intelligence",
+    "productivity",
+    "developer tools"
+  ],
+  "author": "RinaWarp Tech",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.0"
+  },
+  "build": {
+    "appId": "com.rinawarptech.terminal-pro",
+    "productName": "RinaWarp Terminal Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "../dist/**/*",
+      "../assets/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": "dmg",
+      "icon": "../assets/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "../assets/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "../assets/icon.png"
+    }
+  }
+}

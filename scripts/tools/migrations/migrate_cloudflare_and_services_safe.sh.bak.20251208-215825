@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+NEW_ROOT="$HOME/Documents/rinawarp-business"
+OLD_ROOT="$HOME/Documents/RinaWarp"
+
+LOG_DIR="$NEW_ROOT/audit/migrations"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/migration-cloudflare-services-safe-$(date +%Y%m%d-%H%M%S).log"
+
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "====================================================="
+echo " RINAWARP CLOUDFlARE + WEBSITE MIGRATION (SAFE MODE)"
+echo " Started: $(date)"
+echo " Log: $LOG_FILE"
+echo "====================================================="
+echo
+
+safe_copy() {
+  local src="$1"
+  local dest="$2"
+
+  # Skip obvious secrets
+  if [[ "$src" =~ \.pem$ || "$src" =~ \.key$ || "$src" =~ \.json$ || "$src" =~ \.env ]]; then
+    echo "SKIP (secret detected): $src"
+    return 0
+  fi
+
+  if [ ! -e "$src" ]; then
+    echo "SKIP (missing): $src"
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$dest")"
+
+  if [ -e "$dest" ]; then
+    echo "SKIP (exists): $dest"
+  else
+    echo "COPY: $src -> $dest"
+    cp -vn "$src" "$dest" || true
+  fi
+}
+
+safe_copy_dir() {
+  local src_dir="$1"
+  local dest_dir="$2"
+
+  if [ ! -d "$src_dir" ]; then
+    echo "SKIP DIR (missing): $src_dir"
+    return 0
+  fi
+
+  mkdir -p "$dest_dir"
+  echo "COPY DIR (non-overwrite): $src_dir -> $dest_dir"
+  cp -rvn "$src_dir"/. "$dest_dir"/ || true
+}
+
+echo "[1/6] Cloudflare license worker source -> workers/license-verify/src/"
+safe_copy_dir "$OLD_ROOT/cloudflare/license-verify-worker/src" \
+              "$NEW_ROOT/workers/license-verify/src"
+
+echo
+echo "[2/6] Cloudflare worker config (wrangler, docs)"
+safe_copy "$OLD_ROOT/cloudflare/license-verify-worker/wrangler.toml" \
+          "$NEW_ROOT/workers/license-verify/wrangler.toml"
+
+safe_copy "$OLD_ROOT/cloudflare/license-verify-worker/README.md" \
+          "$NEW_ROOT/docs/operations/workers/license-verify-README.md"
+
+echo
+echo "[3/6] Website Netlify / serverless functions -> services/website/netlify/functions/"
+# Root-level netlify functions
+safe_copy_dir "$OLD_ROOT/netlify/functions" \
+              "$NEW_ROOT/services/website/netlify/functions"
+
+# Older paths under src/
+safe_copy_dir "$OLD_ROOT/src/website/netlify/functions" \
+              "$NEW_ROOT/services/website/netlify/functions"
+
+safe_copy_dir "$OLD_ROOT/src/app/website/netlify/functions" \
+              "$NEW_ROOT/services/website/netlify/functions"
+
+echo
+echo "[4/6] Website deployment scripts -> scripts/deployment/website/"
+mkdir -p "$NEW_ROOT/scripts/deployment/website/"
+
+DEPLOY_SCRIPTS=(
+  "deploy-netlify.sh"
+  "deploy-to-rinawarptech.sh"
+  "deploy-production.sh"
+  "deploy-manual.sh"
+)
+
+for f in "${DEPLOY_SCRIPTS[@]}"; do
+  safe_copy "$OLD_ROOT/$f" "$NEW_ROOT/scripts/deployment/website/$f"
+done
+
+echo
+echo "[5/6] Website ops / deployment docs -> docs/operations/website/"
+mkdir -p "$NEW_ROOT/docs/operations/website/"
+
+WEBSITE_DOCS=(
+  "NETLIFY-DEPLOY-GUIDE.md"
+  "NETLIFY-DEPLOYMENT-SUCCESS-REPORT.md"
+  "LIVE-DEPLOYMENT-SUCCESS.md"
+  "HOMEPAGE-PREMIUM-LAUNCH-REPORT.md"
+  "HOMEPAGE-CONVERSION-REWRITE-SUMMARY.md"
+  "WEBSITE-REVENUE-PRODUCTION-READINESS.md"
+  "CSP-FIX-AND-FINAL-STATUS.md"
+  "rw-full-site-audit.txt"
+)
+
+for f in "${WEBSITE_DOCS[@]}"; do
+  safe_copy "$OLD_ROOT/$f" "$NEW_ROOT/docs/operations/website/$f"
+done
+
+echo
+echo "[6/6] DNS / zone files -> infra/dns/"
+mkdir -p "$NEW_ROOT/infra/dns/"
+
+safe_copy "$OLD_ROOT/rinawarptech.com.zone" \
+          "$NEW_ROOT/infra/dns/rinawarptech.com.zone"
+
+echo
+echo "====================================================="
+echo " CLOUDFlARE + WEBSITE MIGRATION COMPLETED (SAFE MODE)"
+echo " Finished: $(date)"
+echo " Log saved to: $LOG_FILE"
+echo "====================================================="

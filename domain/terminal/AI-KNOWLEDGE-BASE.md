@@ -1,0 +1,89 @@
+# RinaWarp Terminal Pro - AI Knowledge Base
+
+## Overview
+
+The AI assistant in RinaWarp Terminal Pro has been trained with lessons learned from real-world project cleanup and configuration management. This knowledge helps prevent common issues that developers face.
+
+## Key Learning Areas
+
+### 1. Project Organization
+
+- **Problem**: Multiple deployment scripts causing confusion
+- **Solution**: Consolidate to 3 essential scripts (dev-start.sh, prod-deploy.sh, setup-environment.sh)
+- **Prevention**: Always check for existing scripts before creating new ones
+
+### 2. Dependency Management
+
+- **Problem**: node_modules installed in wrong directories
+- **Solution**: Only install in project root directories
+- **Prevention**: Always run 'npm install' from correct package.json location
+
+### 3. Configuration Management
+
+- **Problem**: Hardcoded localhost URLs in production
+- **Solution**: Use environment variables and configuration files
+- **Prevention**: Never hardcode URLs, always use config variables
+
+### 4. File Structure Management
+
+- **Problem**: Too many files causing confusion
+- **Solution**: Organize into clear project structure with essential files only
+- **Prevention**: Regular cleanup and organization
+
+### 5. Business Configuration
+
+- **Problem**: Development URLs in production
+- **Solution**: Configure all URLs to use production domain
+- **Prevention**: Always use environment-based configuration
+
+## Available Commands
+
+### Project Health Commands
+
+- `project-health [path]` - Run comprehensive project health analysis
+- `cleanup-suggest [path]` - Suggest cleanup commands for current project
+- `deploy-setup [path]` - Set up production deployment configuration
+- `dependency-audit [path]` - Audit and clean up dependencies
+- `config-fix [path]` - Fix configuration issues
+- `business-setup [path]` - Set up business configuration
+- `learn-cleanup [topic]` - Learn about project cleanup and organization
+
+### Knowledge Topics
+
+- `learn-cleanup organization` - Project organization best practices
+- `learn-cleanup dependencies` - Dependency management lessons
+- `learn-cleanup configuration` - Configuration management lessons
+- `learn-cleanup all` - All knowledge base topics
+
+## Integration
+
+The AI knowledge base is automatically integrated into the terminal and will:
+
+1. **Analyze** user queries for common project issues
+2. **Suggest** specific commands and solutions
+3. **Prevent** common problems before they occur
+4. **Educate** users on best practices
+
+## Example Usage
+
+```bash
+# Check project health
+project-health
+
+# Get cleanup suggestions
+cleanup-suggest
+
+# Learn about dependencies
+learn-cleanup dependencies
+
+# Set up deployment
+deploy-setup
+```
+
+## Benefits for Clients
+
+1. **Prevention**: Avoid common project issues before they become problems
+2. **Education**: Learn best practices from real-world experience
+3. **Efficiency**: Get specific commands and solutions quickly
+4. **Consistency**: Follow proven patterns for project organization
+5. **Production Ready**: Ensure projects are deployment-ready from the start

@@ -1,0 +1,28 @@
+:root {
+  /* Terminal Pro (Mermaid) */
+  --terminal-hot-pink: #ff3fae;
+  --terminal-coral: #ff6f61;
+  --terminal-teal: #1cc7b1;
+  --terminal-baby-blue: #74d1ff;
+  --terminal-black: #050608;
+  --terminal-surface: #060811;
+  --terminal-surface-soft: #0b1020;
+  --terminal-border: #1e2438;
+
+  /* AI-MVC (Unicorn) – NOT pastel, neon/vibrant */
+  --aimvc-electric-pink: #ff2bd6;
+  --aimvc-cosmic-purple: #a02bff;
+  --aimvc-neon-blue: #2beaff;
+  --aimvc-gold-accent: #ffd966;
+  --aimvc-midnight: #050013;
+  --aimvc-surface: #09001f;
+  --aimvc-surface-soft: #120233;
+  --aimvc-border: #291a57;
+
+  /* Shared */
+  --brand-bg: #02020a;
+  --brand-card: #050618;
+  --brand-border: #181827;
+  --brand-text: #e5e7eb;
+  --brand-text-muted: #9ca3af;
+}

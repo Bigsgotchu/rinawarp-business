@@ -1,0 +1,16 @@
+[
+  {
+    "key": "RINA-INIT123-TEST",
+    "product": "terminal-pro",
+    "plan": "Pro",
+    "email": "test@rinawarptech.com",
+    "created": "2025-10-24T00:00:00Z"
+  },
+  {
+    "key": "RINA-INIT456-TEST",
+    "product": "music-video",
+    "plan": "Studio",
+    "email": "creator@sample.com",
+    "created": "2025-10-24T00:00:00Z"
+  }
+]

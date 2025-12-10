@@ -1,0 +1,30 @@
+{
+  "name": "RinaWarp Terminal Pro",
+  "version": "1.0.0",
+  "backend": {
+    "bridge_url": "http://127.0.0.1:5656/api/chat",
+    "exec_url": "http://127.0.0.1:5656/api/exec",
+    "health_url": "http://127.0.0.1:5656/",
+    "model": "mistralai/Mistral-7B-Instruct-v0.2",
+    "max_tokens": 1024,
+    "temperature": 0.7,
+    "stream": true
+  },
+  "defaults": {
+    "ai_mode": "local",
+    "fallback_mode": "ollama",
+    "voice_enabled": true,
+    "persona": "Rina",
+    "safe_commands": ["ls", "cat", "pwd", "whoami", "uptime", "date"]
+  },
+  "integration": {
+    "continue_support": true,
+    "cli_agent_enabled": true,
+    "autoconnect_on_start": true
+  },
+  "appearance": {
+    "theme": "holographic",
+    "accent_color": "#00FFF7",
+    "terminal_style": "warp"
+  }
+}

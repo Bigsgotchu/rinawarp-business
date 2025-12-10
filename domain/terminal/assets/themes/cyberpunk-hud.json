@@ -1,0 +1,69 @@
+{
+  "name": "Cyberpunk HUD",
+  "description": "Neon-soaked cyberpunk interface with glitch effects",
+  "version": "1.0.0",
+  "author": "RinaWarp Technologies",
+  "colors": {
+    "background": "#0a0a0a",
+    "foreground": "#00ff88",
+    "cursor": "#ff0088",
+    "selection": "#8800ff",
+    "black": "#000000",
+    "red": "#ff0044",
+    "green": "#00ff88",
+    "yellow": "#ffff00",
+    "blue": "#0088ff",
+    "magenta": "#ff0088",
+    "cyan": "#00ffff",
+    "white": "#ffffff",
+    "brightBlack": "#222222",
+    "brightRed": "#ff4488",
+    "brightGreen": "#44ffaa",
+    "brightYellow": "#ffff44",
+    "brightBlue": "#4488ff",
+    "brightMagenta": "#ff44aa",
+    "brightCyan": "#44ffff",
+    "brightWhite": "#ffffff"
+  },
+  "ui": {
+    "accentColor": "#ff0088",
+    "warningColor": "#ffaa00",
+    "successColor": "#00ff88",
+    "errorColor": "#ff0044",
+    "infoColor": "#0088ff",
+    "borderColor": "#8800ff",
+    "shadowColor": "rgba(255, 0, 136, 0.4)"
+  },
+  "fonts": {
+    "primary": "JetBrains Mono, 'Fira Code', monospace",
+    "secondary": "Exo 2, 'Arial', sans-serif",
+    "size": 14,
+    "lineHeight": 1.3
+  },
+  "effects": {
+    "glitchEffect": true,
+    "neonGlow": true,
+    "scanlines": true,
+    "matrixRain": false,
+    "hologram": true,
+    "glitchIntensity": 0.3
+  },
+  "animations": {
+    "glitchFrequency": 0.1,
+    "neonPulse": true,
+    "typingEffect": "glitch",
+    "cursorBlink": "slow"
+  },
+  "sounds": {
+    "keyClick": "cyber-beep",
+    "enterSound": "data-transmit",
+    "errorSound": "system-error",
+    "successSound": "hack-success"
+  },
+  "layout": {
+    "borderWidth": 1,
+    "cornerRadius": 0,
+    "padding": 12,
+    "glowRadius": 4
+  }
+}

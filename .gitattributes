@@ -1,0 +1,3 @@
+# Treat secrets as binary and exclude from diff tools
+secrets/* -diff
+

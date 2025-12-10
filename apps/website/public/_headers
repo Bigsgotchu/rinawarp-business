@@ -1,0 +1,72 @@
+/*.css:
+  - Content-Type: text/css
+  - Cache-Control: public, max-age=31536000, immutable
+
+/*.js:
+  - Content-Type: application/javascript
+  - Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.js:
+  - Content-Type: application/javascript
+  - Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.css:
+  - Content-Type: text/css
+  - Cache-Control: public, max-age=31536000, immutable
+
+
+/*.html:
+  - Content-Type: text/html
+  - Cache-Control: public, max-age=300
+
+/*.woff2:
+  - Content-Type: font/woff2
+  - Cache-Control: public, max-age=31536000, immutable
+
+/*.png:
+  - Content-Type: image/png
+  - Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg:
+  - Content-Type: image/jpeg
+  - Cache-Control: public, max-age=31536000, immutable
+
+/*.svg:
+  - Content-Type: image/svg+xml
+  - Cache-Control: public, max-age=31536000, immutable
+
+/*.AppImage:
+  - Content-Type: application/octet-stream
+  - Cache-Control: public, max-age=3600
+
+/*.deb:
+  - Content-Type: application/vnd.debian.binary-package
+  - Cache-Control: public, max-age=3600
+
+/*.rpm:
+  - Content-Type: application/x-rpm
+  - Cache-Control: public, max-age=3600
+
+/*.dmg:
+  - Content-Type: application/x-apple-diskimage
+  - Cache-Control: public, max-age=3600
+
+/*.exe:
+  - Content-Type: application/x-msdownload
+  - Cache-Control: public, max-age=3600
+
+/*.zip:
+  - Content-Type: application/zip
+  - Cache-Control: public, max-age=3600
+
+/*.json:
+  - Content-Type: application/json
+  - Cache-Control: public, max-age=3600
+
+/*.yml:
+  - Content-Type: text/yaml
+  - Cache-Control: public, max-age=3600
+
+/*.yaml:
+  - Content-Type: text/yaml
+  - Cache-Control: public, max-age=3600

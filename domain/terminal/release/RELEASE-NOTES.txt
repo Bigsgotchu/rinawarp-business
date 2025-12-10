@@ -1,0 +1,4 @@
+Rinawarp Terminal Pro — 2025-10-23T06:03:14-06:00
+
+* Linux installers built on Kali
+* Checksums in SHA256SUMS.txt

@@ -1,0 +1,16 @@
+# Commands to execute on your Oracle VM server:
+
+## Step 1: SSH into your Oracle VM
+ssh ubuntu@YOUR_SERVER_IP
+
+## Step 2: Add Stripe webhook secret to environment
+echo "STRIPE_WEBHOOK_SECRET=whsec_8dd90aa311dce345172987b5c121d74d633985cb55c96d00f5d490037bae8353" | sudo tee -a /home/ubuntu/RinaWarp-API/.env.production
+
+## Step 3: Restart the API service
+cd /home/ubuntu/RinaWarp-API
+pm2 restart rinawarp-api
+
+## Step 4: Verify the webhook secret is loaded
+cat /home/ubuntu/RinaWarp-API/.env.production | grep STRIPE_WEBHOOK_SECRET
+
+# The webhook secret is: whsec_8dd90aa311dce345172987b5c121d74d633985cb55c96d00f5d490037bae8353

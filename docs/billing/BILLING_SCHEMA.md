@@ -1,0 +1,110 @@
+# RinaWarp Billing KV Schema
+
+All billing-related data is stored in the `BILLING_KV` namespace.
+
+## Key Prefixes
+
+- `billing:customer:{stripeCustomerId}`
+- `billing:purchase:{purchaseId}`   (purchaseId = Stripe invoice/payment_intent/session id)
+- `billing:subscription:{subscriptionId}`
+- `billing:credits:{stripeCustomerId}`
+- `billing:index:customer_by_email:{emailLower}`
+- `billing:index:purchases_by_customer:{stripeCustomerId}`
+- `billing:index:subscriptions_active` (JSON array of subscription ids, small-ish)
+
+## Customer Document
+
+Key: `billing:customer:{stripeCustomerId}`
+
+```json
+{
+  "stripeCustomerId": "cus_123",
+  "email": "user@example.com",
+  "name": "Rina Warp",
+  "createdAt": "2025-12-08T20:00:00.000Z",
+  "updatedAt": "2025-12-08T20:10:00.000Z",
+  "ltvCents": 49900,
+  "lastSeenAt": "2025-12-08T20:10:00.000Z",
+  "flags": {
+    "hasTerminal": true,
+    "hasAmvc": true,
+    "hasBundle": false
+  }
+}
+```
+
+## Purchase Document
+
+Key: `billing:purchase:{purchaseId}`
+
+```json
+{
+  "id": "pi_123 or in_123 or cs_123",
+  "stripeCustomerId": "cus_123",
+  "email": "user@example.com",
+  "amountTotalCents": 49900,
+  "currency": "usd",
+  "productType": "terminal" | "ai_mvc" | "bundle",
+  "productId": "terminal_pro",
+  "priceId": "price_123",
+  "quantity": 1,
+  "kind": "one_time" | "subscription_first_invoice" | "subscription_renewal" | "refund",
+  "stripeInvoiceId": "in_123",
+  "stripePaymentIntentId": "pi_123",
+  "createdAt": "2025-12-08T20:10:00.000Z",
+  "metadata": {
+    "plan": "terminal_pro_lifetime",
+    "source": "checkout"
+  }
+}
+```
+
+## Subscription Document
+
+Key: `billing:subscription:{subscriptionId}`
+
+```json
+{
+  "id": "sub_123",
+  "stripeCustomerId": "cus_123",
+  "email": "user@example.com",
+  "status": "active",
+  "productId": "amvc_pro",
+  "priceId": "price_456",
+  "quantity": 1,
+  "currentPeriodEnd": 1765171200,
+  "cancelAtPeriodEnd": false,
+  "canceledAt": null,
+  "startedAt": 1762483200,
+  "latestInvoiceId": "in_123",
+  "latestPaymentIntentId": "pi_123"
+}
+```
+
+## Credits Document (for AMVC / bundles / packs)
+
+Key: `billing:credits:{stripeCustomerId}`
+
+```json
+{
+  "stripeCustomerId": "cus_123",
+  "remaining": 450,
+  "lastUpdated": "2025-12-08T20:10:00.000Z",
+  "history": [
+    {
+      "delta": 500,
+      "reason": "purchase_500_bundle",
+      "source": "stripe",
+      "timestamp": "2025-12-08T19:00:00.000Z"
+    },
+    {
+      "delta": -50,
+      "reason": "video_render",
+      "source": "amvc_app",
+      "timestamp": "2025-12-08T20:00:00.000Z"
+    }
+  ]
+}
+```
+
+Indexes are simple JSON objects or arrays used by the Admin API.

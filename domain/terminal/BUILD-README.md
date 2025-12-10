@@ -1,0 +1,352 @@
+# RinaWarp Terminal Pro - Build and Packaging System
+
+This document describes the complete build and packaging system for RinaWarp Terminal Pro, designed for revenue-ready distribution across all major platforms.
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** 18.0.0 or later
+- **npm** 9.0.0 or later
+- Platform-specific build tools (see below)
+
+### Basic Build Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Development build
+npm run dev
+
+# Production build for current platform
+npm run build:production
+
+# Build for all platforms
+npm run build:all
+
+# Platform-specific builds
+npm run build:macos      # macOS only
+npm run build:windows    # Windows only
+npm run build:linux      # Linux only
+
+# Distribution builds (with packaging)
+npm run dist:macos       # macOS installer
+npm run dist:windows     # Windows installer
+npm run dist:linux       # Linux packages
+```
+
+## 🏗️ Build System Architecture
+
+### Core Components
+
+1. **Build Scripts** (`scripts/`)
+   - `before-build.js` - Pre-build preparation and cleanup
+   - `after-build.js` - Post-build processing and metadata
+   - `after-sign.js` - Code signing verification
+   - `after-all-artifacts.js` - Final artifact processing
+
+2. **Platform Scripts**
+   - `build-macos.sh` - macOS-specific build process
+   - `build-windows.ps1` - Windows-specific build process
+   - `build-linux.sh` - Linux-specific build process
+   - `build-all.sh` - Multi-platform build orchestration
+
+3. **Verification & Testing**
+   - `verify-artifacts.js` - Artifact integrity verification
+   - `smoke-test.js` - Basic functionality testing
+
+4. **Distribution & Release**
+   - `create-release.js` - Release automation
+   - `.github/workflows/build.yml` - CI/CD pipeline
+
+## 📦 Platform-Specific Requirements
+
+### macOS
+
+**Prerequisites:**
+
+```bash
+# Install Xcode command line tools
+xcode-select --install
+
+# Install system dependencies
+# (Handled automatically by build scripts)
+```
+
+**Build Commands:**
+
+```bash
+# Basic build
+npm run dist:macos
+
+# With code signing (requires certificates)
+./scripts/build-macos.sh --codesign
+
+# With notarization (requires Apple ID)
+./scripts/build-macos.sh --notarize
+```
+
+**Outputs:**
+
+- `.dmg` - Disk image installer
+- `.zip` - Archive for auto-updates
+
+### Windows
+
+**Prerequisites:**
+
+```powershell
+# Install Visual Studio Build Tools
+
+# (Handled automatically by electron-builder)
+```
+
+**Build Commands:**
+
+```powershell
+# Basic build
+npm run dist:windows
+
+
+# With code signing (requires certificate)
+.\scripts\build-windows.ps1 -CodeSign
+```
+
+**Outputs:**
+
+- `.exe` - NSIS installer
+- `.msi` - Windows Installer package
+
+### Linux
+
+**Prerequisites:**
+
+```bash
+# Install system dependencies
+sudo apt-get install -y \
+    build-essential \
+    libgtk-3-dev \
+    libnotify-dev \
+    libnss3-dev \
+    libxss1 \
+    libgconf-2-4 \
+    libxrandr2 \
+    libasound2 \
+    libpangocairo-1.0-0 \
+
+    libatk1.0-0 \
+    libcairo-gobject2 \
+    libgtk-3-0 \
+    libgdk-pixbuf2.0-0
+```
+
+**Build Commands:**
+
+```bash
+
+# Basic build
+npm run dist:linux
+
+# Production build
+./scripts/build-linux.sh --release
+```
+
+**Outputs:**
+
+- `.AppImage` - Portable application
+
+- `.deb` - Debian package
+- `.rpm` - Red Hat package
+- `.tar.gz` - Archive
+
+## 🔐 Code Signing Setup
+
+### macOS Code Signing
+
+1. **Create Developer ID Certificate**
+
+   ```bash
+   # Request certificate from Apple
+   # https://developer.apple.com/account/resources/certificates/
+   ```
+
+2. **Configure environment variables:**
+
+   ```bash
+   export CSC_LINK=/path/to/certificate.p12
+   export CSC_KEY_PASSWORD=certificate_password
+   export APPLE_ID=your_apple_id
+
+   export APPLE_APP_SPECIFIC_PASSWORD=app_specific_password
+   ```
+
+### Windows Code Signing
+
+1. **Obtain Code Signing Certificate**
+   - Purchase from certified authority (DigiCert, GlobalSign, etc.)
+   - Export as `.p12` format
+
+2. **Configure environment variables:**
+
+   ```powershell
+   $env:WIN_CSC_LINK = "path\to\certificate.p12"
+   $env:WIN_CSC_KEY_PASSWORD = "certificate_password"
+   ```
+
+## 🚢 Distribution and Release
+
+### Automated Release Process
+
+1. **Tag Release:**
+
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+2. **GitHub Actions:**
+   - Automatically builds for all platforms
+   - Creates GitHub release with artifacts
+   - Uploads to GitHub Releases
+
+3. **Manual Release:**
+
+   ```bash
+   # Build all platforms
+
+   npm run build:all
+
+   # Verify artifacts
+   npm run verify
+
+   # Create release
+   node scripts/create-release.js
+   ```
+
+### Release Artifacts
+
+Each release includes:
+
+- **Platform installers** (DMG, EXE, AppImage, DEB, RPM)
+- **Checksums** (SHA256 verification)
+- **Release manifest** (build metadata)
+- **Installation guide** (platform instructions)
+
+## 🧪 Testing and Verification
+
+### Pre-Release Testing
+
+```bash
+# Run smoke tests
+npm run test:build
+
+
+# Verify all artifacts
+npm run verify
+
+# Test installation (platform-specific)
+# macOS: Mount DMG and verify app launches
+# Windows: Run installer and verify shortcuts
+# Linux: Install package and verify desktop integration
+```
+
+### Automated Testing
+
+The build system includes:
+
+- **Integrity checks** - File size and format validation
+- **Checksum verification** - SHA256 hash validation
+- **Metadata validation** - Package information accuracy
+- **Platform compliance** - OS-specific requirement checks
+
+## 🔄 Auto-Updates
+
+### Configuration
+
+Auto-updates are configured via:
+
+- **GitHub Releases** integration
+- **electron-updater** configuration
+- **Update server** (optional)
+
+### Update Channels
+
+- **Stable** - Production releases
+- **Beta** - Pre-release versions
+- **Alpha** - Development builds
+
+## 📋 Build Troubleshooting
+
+### Common Issues
+
+1. **Build Fails on macOS**
+
+   ```bash
+   # Clear Xcode cache
+   xcode-select --reset
+
+   # Update command line tools
+   softwareupdate --all --install --force
+   ```
+
+2. **Windows Build Issues**
+
+   ```powershell
+   # Run as Administrator
+   # Ensure Visual Studio Build Tools are installed
+   ```
+
+3. **Linux Missing Dependencies**
+
+   ```bash
+   # Install required system libraries
+   sudo apt-get install -y libgtk-3-dev libnotify-dev libnss3-dev
+   ```
+
+4. **Code Signing Issues**
+   - Verify certificate validity
+   - Check certificate passwords
+   - Ensure proper entitlements
+
+### Debug Mode
+
+```bash
+# Enable debug logging
+DEBUG=electron-builder:* npm run dist
+
+# Verbose output
+npm run dist -- --verbose
+```
+
+## 📊 Build Metrics
+
+The build system tracks:
+
+- **Build duration** by platform
+- **Artifact sizes** and compression ratios
+- **Success/failure rates**
+- **Platform-specific issues**
+
+## 🤝 Contributing
+
+When modifying the build system:
+
+1. **Test on all platforms** before submitting
+2. **Update documentation** for any new features
+3. **Verify CI/CD pipeline** compatibility
+4. **Include rollback procedures** for breaking changes
+
+## 📞 Support
+
+For build system issues:
+
+- Check the troubleshooting section above
+- Review GitHub Actions logs
+- Consult electron-builder documentation
+- Open issue with build logs and platform details
+
+---
+
+**Built with ❤️ for revenue-ready distribution**
+_RinaWarp Terminal Pro - Professional AI Terminal Assistant_

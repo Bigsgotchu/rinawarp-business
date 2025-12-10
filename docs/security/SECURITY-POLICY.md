@@ -1,0 +1,12 @@
+# RinaWarp Security Policy (Template)
+
+- Principle of least privilege for all services
+- Separate test and production Stripe keys
+- No hard-coded secrets in source code
+- All real secrets stored outside of Git in ./secrets or managed secret stores
+- Regular key rotation for:
+  - Stripe
+  - Cloudflare
+  - License server
+  - Database
+

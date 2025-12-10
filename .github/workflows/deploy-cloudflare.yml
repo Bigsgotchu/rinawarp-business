@@ -1,0 +1,60 @@
+name: Deploy RinaWarp Cloudflare
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy"
+        required: true
+        default: "production"
+        type: choice
+        options:
+          - production
+          - preview
+
+jobs:
+  deploy-pages-and-functions:
+    name: Deploy Cloudflare Pages + Functions
+    runs-on: ubuntu-latest
+
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_PAGES_PROJECT_NAME: "rinawarptech"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install website dependencies
+        working-directory: apps/website
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Build website
+        working-directory: apps/website
+        run: |
+          if npm run | grep -q "build"; then
+            npm run build
+          else
+            echo "No build script, skipping"
+          fi
+
+      # ⚠️ This uses wrangler pages deploy. You can comment this out
+      # if you prefer the Cloudflare Pages GitHub integration.
+      - name: Deploy to Cloudflare Pages
+        run: |
+          npx wrangler pages deploy \
+            apps/website/dist \
+            --project-name "$CF_PAGES_PROJECT_NAME" \
+            --branch "${{ github.ref_name }}"

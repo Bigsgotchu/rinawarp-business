@@ -1,0 +1,138 @@
+# 🚀 RinaWarp Website Deployment Guide
+
+## 📋 Quick Deployment to Netlify
+
+### Option 1: Manual Upload (Recommended)
+
+1. **Go to Netlify**: <https://app.netlify.com>
+2. **Create New Site**:
+   - Click "New site from Git" or "Deploy manually"
+   - If manual: Upload `rinawarp-netlify-deploy.tar.gz` and extract
+3. **Configure Settings**:
+   - **Build command**: Leave empty (static site)
+   - **Publish directory**: `public`
+   - **Base directory**: Leave empty
+4. **Deploy Site**
+
+### Option 2: Netlify CLI
+
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Initialize and deploy
+netlify init
+netlify deploy --prod --dir=public
+```
+
+### Option 3: GitHub Integration
+
+1. Push this repository to GitHub
+2. Connect GitHub repo to Netlify
+3. Set build settings as above
+
+## 🌐 Domain Configuration
+
+### Add Custom Domain (rinawarptech.com)
+
+1. **Netlify Dashboard** → Site Settings → Domain Management
+2. **Add Custom Domain**: `rinawarptech.com`
+3. **Verify Domain** (may take 2-5 minutes)
+4. **Wait for SSL** (5-10 minutes)
+5. **Enable HTTPS** once certificate is active
+
+### DNS Configuration
+
+Update your DNS records at your domain registrar:
+
+- **CNAME**: <www.rinawarptech.com> → [netlify-site-id].netlify.app
+- **A Record**: rinawarptech.com → 75.2.60.5
+
+## 📁 Site Structure
+
+```
+public/
+├── index.html              # Main hub page
+├── terminal/
+│   ├── index.html         # Terminal Pro product page
+│   ├── mermaid.css        # Terminal theme
+│   └── checkout.js        # Stripe integration
+├── music-video/
+│   ├── index.html         # Music Video Creator page
+│   ├── unicorn.css        # Music Video theme
+│   └── checkout.js        # Stripe integration
+├── shared/
+│   └── animations.css     # Shared animations
+├── styles.css             # Global styles
+├── contact.html           # Contact page
+├── privacy.html           # Privacy policy
+├── terms.html             # Terms of service
+└── refund.html            # Refund policy
+```
+
+## 🔧 API Configuration
+
+The site includes API routes for Stripe integration:
+
+- **Checkout**: `/api/create-checkout-session`
+- **Webhook**: `/api/stripe-webhook`
+
+For production, you'll need to:
+
+1. Deploy the API server (Express.js) separately
+2. Update the API proxy in netlify.toml
+3. Configure Stripe webhooks
+
+## ✅ Pre-Deployment Checklist
+
+- [ ] All pages load correctly locally
+- [ ] Stripe integration tested
+- [ ] Domain DNS configured
+- [ ] SSL certificate ready
+- [ ] Contact forms working
+- [ ] Mobile responsive design
+
+## 🚀 Post-Deployment
+
+1. **Test All Pages**:
+   - <https://rinawarptech.com/>
+   - <https://rinawarptech.com/terminal>
+   - <https://rinawarptech.com/music-video>
+   - <https://rinawarptech.com/contact>
+
+2. **Verify Stripe Integration**:
+   - Test checkout flows
+   - Confirm webhook delivery
+   - Check payment processing
+
+3. **Monitor Performance**:
+   - Check loading speeds
+   - Verify mobile responsiveness
+   - Monitor uptime
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+- **404 Errors**: Check if all files uploaded correctly
+- **Styling Issues**: Verify CSS files are loading
+- **API Errors**: Check API proxy configuration
+- **Domain Issues**: Verify DNS and SSL setup
+
+### Support
+
+- **Netlify Status**: <https://status.netlify.com>
+- **Documentation**: <https://docs.netlify.com>
+- **Community**: <https://community.netlify.com>
+
+## 🎯 Next Steps
+
+1. **Deploy to Netlify** using one of the methods above
+2. **Configure Domain** (rinawarptech.com)
+3. **Test All Features** in production
+4. **Launch Marketing** campaigns
+5. **Monitor Analytics** and user feedback
+
+---
+
+**🎉 Your RinaWarp website is ready for the world!**

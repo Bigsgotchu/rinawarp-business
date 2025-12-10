@@ -1,0 +1,32 @@
+$TTL 300
+@       IN  SOA ns1.cloudflare.com. dns.cloudflare.com. (
+        2025102801 ; serial
+        3600       ; refresh
+        900        ; retry
+        604800     ; expire
+        300 )      ; minimum
+
+; --- Netlify Load Balancer IPs ---
+@       IN  A     75.2.60.5
+@       IN  A     99.83.190.102
+
+; --- www Subdomain points to Netlify site ---
+www     IN  CNAME rinawarptech.netlify.app.
+
+; --- TXT Records (for Netlify verification & SPF email security) ---
+@       IN  TXT   "netlify-verification=rinawarptech-verify-2025"
+@       IN  TXT   "v=spf1 include:spf.netlify.app ~all"
+
+; --- Optional: Email Autodiscover / Autoconfig (for Outlook / Microsoft 365) ---
+_autodiscover IN CNAME autodiscover.outlook.com.
+_autoconfig   IN CNAME autodiscover.outlook.com.
+
+; --- MX Records (only include if you use Gmail or Outlook email) ---
+; @   IN MX 1 ASPMX.L.GOOGLE.COM.
+; @   IN MX 5 ALT1.ASPMX.L.GOOGLE.COM.
+; @   IN MX 5 ALT2.ASPMX.L.GOOGLE.COM.
+; @   IN MX 10 ALT3.ASPMX.L.GOOGLE.COM.
+; @   IN MX 10 ALT4.ASPMX.L.GOOGLE.COM.
+
+; --- Netlify verification fallback ---
+_netlify IN TXT "verification=rinawarptech.com"

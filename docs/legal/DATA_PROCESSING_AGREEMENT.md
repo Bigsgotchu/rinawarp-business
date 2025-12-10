@@ -1,0 +1,443 @@
+# DATA PROCESSING AGREEMENT — RINAWARP TECHNOLOGIES LLC
+
+**Effective Date:** [Auto-fill]
+**Last Updated:** [Auto-fill]
+
+---
+
+## 1. Introduction
+
+This **Data Processing Agreement** ("**DPA**") forms part of the agreement between **RinaWarp Technologies LLC** ("**Data Processor**", "**we**", "**us**", or "**our**") and the customer ("**Data Controller**", "**you**", or "**your**") regarding the processing of personal data. This DPA is incorporated by reference into our **Terms of Service** and **Commercial License Agreement**.
+
+This DPA applies when we process personal data on behalf of Data Controller in connection with our provision of services, including **Terminal Pro**, **AI Music Video Creator**, and related cloud services.
+
+---
+
+## 2. Definitions
+
+- **"Data Controller"**: The entity that determines the purposes and means of processing personal data
+- **"Data Processor"**: The entity that processes personal data on behalf of the Data Controller
+- **"Data Subject"**: An identified or identifiable natural person
+- **"Personal Data"**: Any information relating to an identified or identifiable natural person
+- **"Processing"**: Any operation performed on personal data
+- **"Subprocessor"**: Any third party engaged by Data Processor to process personal data
+- **"GDPR"**: Regulation (EU) 2016/679 (General Data Protection Regulation)
+- **"CCPA"**: California Consumer Privacy Act of 2018
+
+---
+
+## 3. Roles & Responsibilities
+
+### 3.1 Data Controller Responsibilities
+Data Controller is responsible for:
+
+- **Determining** the purposes and means of processing
+- **Ensuring** lawful basis for processing
+- **Obtaining** necessary consents from data subjects
+- **Responding** to data subject requests
+- **Complying** with applicable data protection laws
+
+### 3.2 Data Processor Responsibilities
+Data Processor is responsible for:
+
+- **Processing** personal data only on documented instructions
+- **Implementing** appropriate technical and organizational measures
+- **Assisting** Data Controller with compliance obligations
+- **Maintaining** records of processing activities
+- **Notifying** Data Controller of any breaches
+
+### 3.3 Joint Responsibilities
+Both parties agree to:
+
+- **Cooperate** with supervisory authorities
+- **Maintain** confidentiality of personal data
+- **Comply** with data protection impact assessments
+- **Implement** data protection by design and default
+- **Document** processing activities
+
+---
+
+## 4. Processing Details
+
+### 4.1 Nature & Purpose of Processing
+We process personal data for the following purposes:
+
+- **Service Provision**: Account management and software delivery
+- **Customer Support**: Troubleshooting and request handling
+- **Billing & Payments**: Payment processing and invoicing
+- **Security**: Authentication and fraud prevention
+- **Improvement**: Usage analytics and feature development
+
+### 4.2 Types of Personal Data
+We may process the following categories of personal data:
+
+- **Identification Data**: Names, usernames, email addresses
+- **Contact Data**: Phone numbers, mailing addresses
+- **Financial Data**: Payment information (processed via Stripe)
+- **Technical Data**: IP addresses, device information
+- **Usage Data**: Feature usage, session information
+- **Support Data**: Communication records, support tickets
+
+### 4.3 Data Subjects
+Personal data may relate to:
+
+- **Customers**: Individuals using our services
+- **Employees**: Of customer organizations
+- **End Users**: Of customer's products/services
+- **Contacts**: Business contacts and prospects
+- **Visitors**: To our websites and properties
+
+### 4.4 Processing Operations
+Processing operations may include:
+
+- **Collection**: Gathering personal data from data subjects
+- **Storage**: Secure storage in our systems
+- **Processing**: For service delivery and improvement
+- **Transmission**: Secure transfer between systems
+- **Deletion**: Secure erasure when no longer needed
+
+---
+
+## 5. Data Security Measures
+
+### 5.1 Technical Measures
+We implement the following technical security measures:
+
+- **Encryption**: AES-256 for data at rest, TLS 1.2+ for data in transit
+- **Access Controls**: Role-based access with least privilege
+- **Authentication**: Multi-factor authentication for sensitive systems
+- **Monitoring**: Continuous security monitoring and logging
+- **Backup**: Regular encrypted backups with geographic redundancy
+
+### 5.2 Organizational Measures
+Our organizational security measures include:
+
+- **Security Policies**: Comprehensive information security policies
+- **Employee Training**: Annual security awareness training
+- **Access Reviews**: Quarterly access permission reviews
+- **Incident Response**: Documented incident response procedures
+- **Vendor Management**: Security assessments for third parties
+
+### 5.3 Physical Measures
+For physical security of data:
+
+- **Data Center Security**: SOC 2 Type II certified facilities
+- **Access Controls**: Biometric and card-based access
+- **Surveillance**: 24/7 monitoring and recording
+- **Redundancy**: Multiple geographic locations
+- **Disaster Recovery**: Comprehensive backup systems
+
+---
+
+## 6. Subprocessors
+
+### 6.1 Authorized Subprocessors
+We may engage the following subprocessors:
+
+| **Category** | **Subprocessor** | **Purpose** | **Location** |
+|--------------|------------------|-------------|--------------|
+| **Cloud Infrastructure** | Cloudflare | CDN, Security | Global |
+| **Payment Processing** | Stripe | Payment processing | USA |
+| **Data Storage** | KV Storage | Database services | USA/EU |
+| **Email Services** | SendGrid | Transactional emails | USA |
+| **Analytics** | Cloudflare Analytics | Usage analytics | Global |
+
+### 6.2 Subprocessor Requirements
+All subprocessors must:
+
+- **Comply** with this DPA and applicable laws
+- **Implement** appropriate security measures
+- **Process** data only as instructed
+- **Assist** with data subject requests
+- **Notify** us of any breaches
+
+### 6.3 Subprocessor Changes
+For changes to subprocessors:
+
+- **Notification**: 30 days' advance notice
+- **Objection Right**: Data Controller may object
+- **Alternative Options**: We will provide alternatives
+- **Transition Period**: For smooth migration
+- **Documentation**: Updated subprocessor list
+
+---
+
+## 7. Data Subject Rights
+
+### 7.1 Right to Access
+We will assist Data Controller in responding to:
+
+- **Access Requests**: Data subjects' requests for their data
+- **Data Portability**: Requests for data in machine-readable format
+- **Information**: About processing activities
+- **Copies**: Of personal data being processed
+- **Purposes**: Explanation of processing purposes
+
+### 7.2 Right to Rectification
+For correction requests:
+
+- **Verification**: Of requested changes
+- **Propagation**: To all relevant systems
+- **Notification**: Of third parties if required
+- **Confirmation**: Of changes to data subject
+- **Documentation**: Of rectification actions
+
+### 7.3 Right to Erasure
+For deletion requests ("Right to be Forgotten"):
+
+- **Legal Basis Review**: Assessment of deletion requirements
+- **Data Deletion**: From all systems and backups
+- **Third-Party Notification**: Of deletion requests
+- **Verification**: Of deletion completion
+- **Confirmation**: To data subject
+
+### 7.4 Right to Restrict Processing
+For processing restriction requests:
+
+- **Assessment**: Of restriction requirements
+- **Implementation**: Of processing restrictions
+- **Storage**: Of restricted data securely
+- **Notification**: Of third parties if required
+- **Lifting**: Of restrictions when appropriate
+
+### 7.5 Right to Data Portability
+For data portability requests:
+
+- **Format Selection**: Machine-readable formats (JSON, CSV)
+- **Data Extraction**: From our systems
+- **Secure Transfer**: To data subject or designated recipient
+- **Direct Transmission**: To another controller if requested
+- **Documentation**: Of portability actions
+
+---
+
+## 8. International Data Transfers
+
+### 8.1 Transfer Mechanisms
+For international data transfers, we use:
+
+- **Standard Contractual Clauses**: EU-approved SCCs
+- **Binding Corporate Rules**: For intra-group transfers
+- **Privacy Shield**: Where applicable (US-EU transfers)
+- **Adequacy Decisions**: For approved countries
+- **Derogations**: Where applicable under GDPR
+
+### 8.2 Transfer Safeguards
+We implement additional safeguards:
+
+- **Data Localization**: Options for EU/US data residency
+- **Encryption**: End-to-end encryption for transfers
+- **Access Controls**: Geographic access restrictions
+- **Regular Audits**: Transfer compliance reviews
+- **Documentation**: Of transfer mechanisms
+
+### 8.3 Transfer Impact Assessments
+We conduct transfer impact assessments:
+
+- **Risk Assessment**: Of third-country transfers
+- **Legal Review**: Of transfer mechanisms
+- **Documentation**: Of assessment results
+- **Mitigation**: Of identified risks
+- **Review**: Of assessments regularly
+
+---
+
+## 9. Data Breach Notification
+
+### 9.1 Breach Definition
+A personal data breach means:
+
+- **Unauthorized access** to personal data
+- **Destruction** of personal data
+- **Loss** of personal data
+- **Alteration** of personal data
+- **Disclosure** of personal data to unauthorized parties
+
+### 9.2 Notification Requirements
+We will notify Data Controller of breaches:
+
+- **Without undue delay**: Typically within 24 hours
+- **In writing**: Via email to designated contacts
+- **Detailed information**: Nature, scope, and impact
+- **Remediation plans**: Steps being taken
+- **Regulatory reporting**: Assistance with notifications
+
+### 9.3 Breach Response
+Our breach response includes:
+
+- **Containment**: Immediate isolation of affected systems
+- **Investigation**: Root cause analysis
+- **Mitigation**: Implementation of fixes
+- **Documentation**: Comprehensive incident reporting
+- **Prevention**: Measures to prevent recurrence
+
+---
+
+## 10. Data Retention & Deletion
+
+### 10.1 Retention Periods
+We retain personal data according to:
+
+- **Purpose**: Only as long as necessary for the purpose
+- **Legal Requirements**: Minimum retention periods
+- **Customer Instructions**: Specific retention instructions
+- **Backup Policies**: Secure backup retention
+- **Documentation**: Of retention periods
+
+### 10.2 Deletion Procedures
+Our deletion procedures include:
+
+- **Secure Erasure**: NIST SP 800-88 compliant methods
+- **Verification**: Of deletion completion
+- **Backup Handling**: Secure backup media sanitization
+- **Documentation**: Of deletion actions
+- **Confirmation**: To Data Controller
+
+### 10.3 Data Return
+Upon termination or request:
+
+- **Format**: Machine-readable format
+- **Method**: Secure transfer method
+- **Timeline**: Within 30 days of request
+- **Costs**: Reasonable costs may apply
+- **Verification**: Of data completeness
+
+---
+
+## 11. Compliance & Audits
+
+### 11.1 Compliance Assistance
+We assist Data Controller with:
+
+- **Data Protection Impact Assessments** (DPIAs)
+- **Prior Consultations** with supervisory authorities
+- **Record Keeping** requirements
+- **Security Measures** implementation
+- **Breach Notifications** and responses
+
+### 11.2 Audit Rights
+Data Controller may audit our compliance:
+
+- **Frequency**: Annual audits
+- **Scope**: Limited to DPA compliance
+- **Notice**: 30 days' advance notice
+- **Confidentiality**: Protection of sensitive information
+- **Costs**: Data Controller bears audit costs
+
+### 11.3 Audit Procedures
+Audit procedures include:
+
+- **Document Review**: Of policies and procedures
+- **Interviews**: With relevant personnel
+- **System Inspections**: Of technical controls
+- **Reporting**: Of audit findings
+- **Remediation**: Of identified issues
+
+---
+
+## 12. Liability & Indemnification
+
+### 12.1 Liability Limitations
+Our liability is limited to:
+
+- **Direct Damages**: Only for breaches of this DPA
+- **Cap**: Maximum liability as per main agreement
+- **Exclusions**: Indirect, consequential, or punitive damages
+- **Mitigation**: Duty to mitigate damages
+- **Insurance**: Maintenance of appropriate insurance
+
+### 12.2 Indemnification
+We indemnify Data Controller for:
+
+- **Breaches** caused by our processing
+- **Violations** of data protection laws by us
+- **Fines** imposed due to our actions
+- **Costs** of defending claims
+- **Settlements** approved by us
+
+### 12.3 Mutual Indemnification
+Both parties agree to:
+
+- **Cooperate** in defense of claims
+- **Provide** necessary information
+- **Not admit** liability without consent
+- **Settle** claims reasonably
+- **Document** indemnification actions
+
+---
+
+## 13. Term & Termination
+
+### 13.1 Term
+This DPA remains in effect:
+
+- **Duration**: As long as personal data is processed
+- **Survival**: Certain provisions survive termination
+- **Renewal**: Automatic with main agreement
+- **Amendments**: As required by law or agreement
+- **Review**: Annual review of terms
+
+### 13.2 Termination Obligations
+Upon termination:
+
+- **Data Return**: Return of all personal data
+- **Data Deletion**: Secure deletion if requested
+- **Documentation**: Of termination actions
+- **Transition**: Assistance with transition
+- **Survival**: Of confidentiality and security obligations
+
+### 13.3 Post-Termination
+After termination:
+
+- **Data Retention**: Only as required by law
+- **Access**: No further access to data
+- **Cooperation**: With any ongoing investigations
+- **Documentation**: Retention as required
+- **Destruction**: Of data when no longer needed
+
+---
+
+## 14. Miscellaneous
+
+### 14.1 Governing Law
+This DPA is governed by:
+
+- **Utah State Law**: For interpretation
+- **GDPR**: For EU data subjects
+- **CCPA**: For California residents
+- **Other Laws**: As applicable to data processing
+- **Conflict Resolution**: As per main agreement
+
+### 14.2 Dispute Resolution
+Disputes are resolved through:
+
+- **Negotiation**: Good faith discussions
+- **Mediation**: Neutral third-party mediation
+- **Arbitration**: Binding arbitration
+- **Litigation**: As last resort
+- **Regulatory**: Cooperation with authorities
+
+### 14.3 Amendments
+This DPA may be amended:
+
+- **By Agreement**: Mutual written agreement
+- **For Compliance**: With changes in law
+- **Notification**: 30 days' notice of changes
+- **Objection Right**: For material changes
+- **Documentation**: Of all amendments
+
+---
+
+## 15. Contact Information
+
+For DPA-related inquiries:
+
+- **Data Protection Officer**: [dpo@rinawarptech.com](mailto:dpo@rinawarptech.com)
+- **Legal Department**: [legal@rinawarptech.com](mailto:legal@rinawarptech.com)
+- **Security Team**: [security@rinawarptech.com](mailto:security@rinawarptech.com)
+- **Support**: [support@rinawarptech.com](mailto:support@rinawarptech.com)
+- **Mail**: RinaWarp Technologies LLC, Attn: Data Protection Officer, [Address]
+
+---
+
+**© 2025 RinaWarp Technologies LLC. All rights reserved.**

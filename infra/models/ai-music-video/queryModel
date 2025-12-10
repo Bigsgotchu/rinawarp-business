@@ -1,0 +1,26 @@
+// src/ai/advanced-ai-manager.js
+import axios from "axios";
+
+export async function queryModel(prompt) {
+  try {
+    const response = await axios.post("http://127.0.0.1:11434/api/generate", {
+      model: "rina:latest",
+      prompt: prompt,
+      stream: false,
+      options: {
+        temperature: 0.7,
+        num_predict: 4096
+      }
+    });
+
+    // ✅ Safely return the model output
+    return response.data.response;
+
+  } catch (err) {
+    console.error("❌ Error querying model:", err.message);
+    if (err.response) {
+      console.error("Server responded with:", err.response.data);
+    }
+    throw err;
+  }
+}

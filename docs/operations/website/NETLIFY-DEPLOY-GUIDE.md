@@ -1,0 +1,191 @@
+# 🌐 Deploy to Netlify with Custom Domain (rinawarptech.com)
+
+## 🚀 **Step 1: Deploy to Netlify**
+
+### **Option A: Manual Upload (Quickest)**
+
+1. **Go to Netlify**: <https://app.netlify.com>
+2. **Create New Site**:
+   - Click "New site from Git" or "Deploy manually"
+   - Select "Deploy manually"
+3. **Upload Files**:
+   - Drag & drop `rinawarp-netlify-deploy-20251023-174852.tar.gz`
+   - Or extract and upload the `public/` folder contents
+4. **Configure Settings**:
+
+   ```
+   Build command: (leave empty)
+   Publish directory: public
+   Base directory: (leave empty)
+   ```
+
+5. **Deploy Site**
+
+### **Option B: Netlify CLI**
+
+```bash
+# If CLI is installed
+netlify deploy --prod --dir=public
+```
+
+## 🌐 **Step 2: Add Custom Domain (rinawarptech.com)**
+
+1. **Go to Site Settings**:
+   - In Netlify dashboard, click your site
+   - Go to "Domain management" → "Add custom domain"
+
+2. **Add Domain**:
+   - Enter: `rinawarptech.com`
+   - Click "Add domain"
+   - Click "Verify"
+
+3. **Wait for Verification**:
+   - DNS verification: 2-5 minutes
+   - SSL certificate: 5-10 minutes
+   - Status will change: "Not verified" → "Verifying" → "Verified"
+
+## 🔧 **Step 3: DNS Configuration**
+
+### **At Your Domain Registrar (Cloudflare/GoDaddy/etc.)**
+
+**Add these DNS records:**
+
+1. **CNAME Record**:
+
+   ```
+   Name: www
+   Target: [your-netlify-site-id].netlify.app
+   TTL: 300
+   ```
+
+2. **A Record**:
+
+   ```
+   Name: @
+   Target: 75.2.60.5
+   TTL: 300
+   ```
+
+### **Find Your Netlify Site ID**
+
+- Go to Netlify dashboard
+- Site Settings → General
+- Copy "Site ID" (looks like: `amazing-joliot-76d96b`)
+
+## 🔒 **Step 4: SSL & HTTPS**
+
+1. **Wait for SSL**:
+   - Check "Domain management" in Netlify
+   - Status: "No certificate" → "Issuing" → "Active"
+
+2. **Enable HTTPS**:
+   - Once SSL is "Active", toggle "Force HTTPS" ON
+
+3. **Test HTTPS**:
+   - Visit: <https://rinawarptech.com>
+   - Should load securely with green lock
+
+## 💳 **Step 5: Test Stripe Integration**
+
+1. **Update API URLs**:
+   - In your Stripe checkout code, update URLs to:
+   - Success: `https://rinawarptech.com/terminal/success`
+   - Cancel: `https://rinawarptech.com/terminal`
+
+2. **Test Payments**:
+   - Try Terminal Pro subscription
+   - Try Music Video Creator subscription
+   - Verify webhooks work
+
+## 📱 **Step 6: Final Testing**
+
+### **Test All Pages**
+
+- ✅ <https://rinawarptech.com/>
+- ✅ <https://rinawarptech.com/terminal>
+- ✅ <https://rinawarptech.com/music-video>
+- ✅ <https://rinawarptech.com/contact>
+
+### **Test Mobile**
+
+- ✅ Responsive design on phone
+- ✅ Touch interactions work
+- ✅ Forms submit correctly
+
+### **Test Performance**
+
+- ✅ Page loads < 3 seconds
+- ✅ Images load quickly
+- ✅ No console errors
+
+## 🚀 **Step 7: Launch!**
+
+1. **Verify Everything Works**:
+   - All pages load
+   - Stripe payments work
+   - Domain resolves correctly
+   - SSL is active
+
+2. **Update Marketing Materials**:
+   - Update links to rinawarptech.com
+   - Update social media profiles
+   - Send launch announcement
+
+3. **Monitor**:
+   - Check Netlify analytics
+   - Monitor Stripe dashboard
+   - Watch for user feedback
+
+## 🔧 **Troubleshooting**
+
+### **Domain Issues**
+
+- **DNS not resolving**: Check DNS records at registrar
+- **SSL not working**: Wait longer or check DNS settings
+- **Mixed content**: Ensure all resources use HTTPS
+
+### **Site Issues**
+
+- **404 errors**: Check if all files uploaded
+- **Styling broken**: Verify CSS files load correctly
+- **API errors**: Check API proxy configuration
+
+### **Performance Issues**
+
+- **Slow loading**: Check image optimization
+- **Mobile issues**: Test responsive design
+- **Console errors**: Check browser developer tools
+
+## 📊 **Post-Launch Monitoring**
+
+1. **Set up Analytics**:
+   - Google Analytics
+   - Netlify Analytics
+   - Stripe Dashboard
+
+2. **Monitor Metrics**:
+   - Page views
+   - Conversion rates
+   - Error rates
+   - Performance scores
+
+## 🎯 **Success Metrics**
+
+- ✅ Site loads at <https://rinawarptech.com>
+- ✅ SSL certificate active (green lock)
+- ✅ All pages accessible
+- ✅ Stripe payments working
+- ✅ Mobile responsive
+- ✅ Fast loading speeds
+
+---
+
+## 🎉 **You're Live!**
+
+Once deployed, your RinaWarp platform will be available at:
+
+- **Main Site**: <https://rinawarptech.com/>
+- **Terminal Pro**: <https://rinawarptech.com/terminal>
+- **Music Video Creator**: <https://rinawarptech.com/music-video>
+
+**Next**: Start marketing and watch your user base grow! 🚀

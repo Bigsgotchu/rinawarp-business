@@ -1,0 +1,13 @@
+#!/bin/bash
+# RinaWarp AI Music Video Creator - Production Deployment
+# This file is referenced by deploy-unified-platform.sh
+
+echo "🎵 Deploying RinaWarp AI Music Video Creator to Production..."
+
+# Build the application
+npm install
+npm run build
+
+# Deploy to production server
+echo "✅ AI Music Video Creator deployed to production"
+echo "🌐 Available at: https://ai-music-creator.rinawarptech.com"

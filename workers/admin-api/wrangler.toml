@@ -1,0 +1,16 @@
+name = "admin-api"
+main = "src/index.ts"
+compatibility_date = "2025-12-10"
+
+[env.production]
+vars = { ADMIN_API_SECRET = "HUNTrina12122" }
+
+[[kv_namespaces]]
+binding = "BILLING_KV"
+id = "your_billing_kv_id"  # Replace with your actual KV namespace ID
+preview_id = "your_billing_kv_preview_id"
+
+[[kv_namespaces]]
+binding = "LICENSES_KV"
+id = "your_licenses_kv_id"  # Replace with your actual KV namespace ID
+preview_id = "your_licenses_kv_preview_id"
