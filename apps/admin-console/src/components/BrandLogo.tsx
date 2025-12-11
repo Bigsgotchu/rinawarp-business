@@ -1,6 +1,6 @@
 import React from "react";
 
-type BrandVariant = "terminal" | "aimvc" | "main";
+type BrandVariant = "terminal" | "aimvc" | "admin" | "main";
 
 interface BrandLogoProps {
   variant?: BrandVariant;
@@ -11,23 +11,34 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   variant = "main",
   className = "",
 }) => {
-  let src = "/branding/Lumina Flow brand.png";
-  let alt = "RinaWarp Technologies";
+  const getBrandInfo = (variant: BrandVariant) => {
+    switch (variant) {
+      case "terminal":
+        return { text: "RinaWarp Terminal Pro", icon: "🖥️" };
+      case "aimvc":
+        return { text: "RinaWarp AI Music Video", icon: "🎵" };
+      case "admin":
+        return { text: "RinaWarp Admin Console", icon: "⚙️" };
+      default:
+        return { text: "RinaWarp Technologies", icon: "🚀" };
+    }
+  };
 
-  if (variant === "terminal") {
-    src = "/branding/Lumina Edge brand.png";
-    alt = "RinaWarp Terminal Pro";
-  } else if (variant === "aimvc") {
-    src = "/branding/Lumina Flow brand.png";
-    alt = "RinaWarp AI Music Video Creator";
-  }
+  const brandInfo = getBrandInfo(variant);
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className={`h-8 md:h-10 object-contain drop-shadow-lg ${className}`}
-      loading="lazy"
-    />
+    <div className={`flex items-center gap-2 ${className}`}>
+      <span className="text-xl" role="img" aria-label="RinaWarp">
+        {brandInfo.icon}
+      </span>
+      <div className="flex flex-col">
+        <span className="text-sm font-semibold text-white">
+          RinaWarp
+        </span>
+        <span className="text-xs text-neutral-400">
+          {brandInfo.text.replace("RinaWarp ", "")}
+        </span>
+      </div>
+    </div>
   );
 };

@@ -1,16 +1,22 @@
 name = "admin-api"
 main = "src/index.ts"
 compatibility_date = "2025-12-10"
+workers_dev = true
 
-[env.production]
-vars = { ADMIN_API_SECRET = "HUNTrina12122" }
+# Routes for custom domain
+routes = [
+  { pattern = "api.rinawarptech.com/api/admin/*", zone_id = "2a5d9b9e9bb3675812dda0d66d1f2c3b" }
+]
+
+[vars]
+ADMIN_API_SECRET = "HUNTrina12122"
 
 [[kv_namespaces]]
 binding = "BILLING_KV"
-id = "your_billing_kv_id"  # Replace with your actual KV namespace ID
-preview_id = "your_billing_kv_preview_id"
+id = "84d0fc93567e432d94b04b30e0b89e85"
+preview_id = "84d0fc93567e432d94b04b30e0b89e85"
 
 [[kv_namespaces]]
 binding = "LICENSES_KV"
-id = "your_licenses_kv_id"  # Replace with your actual KV namespace ID
-preview_id = "your_licenses_kv_preview_id"
+id = "1b91a65e297040fdb823d17cd124adc6"
+preview_id = "1b91a65e297040fdb823d17cd124adc6"

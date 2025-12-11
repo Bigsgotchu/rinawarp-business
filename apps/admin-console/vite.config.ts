@@ -8,6 +8,24 @@ export default defineConfig({
     strictPort: true
   },
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@radix-ui/react-dropdown-menu', 'lucide-react']
+        }
+      }
+    }
+  },
+  resolve: {
+    alias: {
+      '@': '/src',
+      '@components': '/src/components',
+      '@views': '/src/views',
+      '@lib': '/src/lib'
+    }
   }
 })

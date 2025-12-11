@@ -1352,22 +1352,45 @@ process.on('unhandledRejection', (reason, promise) => {
   // Start WebSocket server for collaboration
   setupWebSocketServer();
 
-  // Check license status before creating main window
-  const licenseKey = store.get("licenseKey");
+  // CRITICAL FIX: Wait for app to be ready before creating windows
+  app.whenReady().then(async () => {
+    // Check license status before creating main window
+    const licenseKey = store.get("licenseKey");
 
-  if (licenseKey) {
-    // License key exists, verify it with backend
-    verifyLicenseWithBackend(licenseKey)
-      .then(result => {
-        if (result.valid) {
-          // Valid license, proceed to main app
-          createMainWindow();
-          registerIPC();
-        } else {
-          // Invalid license, show license gate
+    if (licenseKey) {
+      // License key exists, verify it with backend
+      verifyLicenseWithBackend(licenseKey)
+        .then(result => {
+          if (result.valid) {
+            // Valid license, proceed to main app
+            createMainWindow();
+            registerIPC();
+          } else {
+            // Invalid license, show license gate
+            createMainWindowWithLicenseGate();
+            registerIPC();
+          }
+        })
+        .catch(error => {
+          console.error("License verification failed, showing license gate:", error);
           createMainWindowWithLicenseGate();
           registerIPC();
-        }
+        });
+    } else {
+      // No license key, show license gate
+      createMainWindowWithLicenseGate();
+      registerIPC();
+    }
+
+    // Initial Agent health check + periodic pings (every 60s)
+    checkAgentHealth({ broadcast: true });
+    setInterval(() => {
+      checkAgentHealth({ broadcast: true });
+    }, 60_000);
+
+    // Restore from crash if needed
+    await restoreTerminalState();
+  });
       })
       .catch(error => {
         console.error("License verification failed, showing license gate:", error);

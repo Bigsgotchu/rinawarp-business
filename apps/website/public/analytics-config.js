@@ -5,7 +5,7 @@
   'use strict';
 
   // Google Analytics 4 Configuration
-  const GA_MEASUREMENT_ID = 'G-YOUR-GA-ID'; // Replace with your actual GA ID
+  const GA_MEASUREMENT_ID = 'G-SZK23HMCVP'; // Your actual GA ID
 
   // Analytics configuration
   const AnalyticsConfig = {
@@ -49,7 +49,9 @@
     // Check if we're in development
     isDevelopment: function () {
       return (
-        window.location.hostname === 'localhost' || window.location.hostname.includes('netlify.app')
+        window.location.hostname === 'localhost' || 
+        window.location.hostname.includes('netlify.app') ||
+        window.location.hostname.includes('pages.dev')
       );
     },
 
@@ -67,13 +69,13 @@
     },
   };
 
-  // Google Analytics 4 implementation
+  // Google Analytics 4 implementation - FIXED VERSION
   const GoogleAnalytics = {
     init: function () {
       if (!AnalyticsConfig.googleAnalytics.enabled) return;
 
       Utils.safeExecute(() => {
-        // Load Google Tag Manager script
+        // Load Google Tag Manager script - FIXED VERSION
         const script = document.createElement('script');
         script.async = true;
         script.src = `https://www.googletagmanager.com/gtag/js?id=${AnalyticsConfig.googleAnalytics.measurementId}`;

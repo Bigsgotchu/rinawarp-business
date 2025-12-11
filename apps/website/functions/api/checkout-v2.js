@@ -1,6 +1,7 @@
 /**
  * Cloudflare Pages Function for Stripe Checkout Session Creation
  * Handles POST requests to create Stripe Checkout Sessions
+ * Updated to use RINA_PRICE_MAP environment variable with correct plan codes
  */
 
 import { Stripe } from 'stripe';
@@ -11,6 +12,7 @@ export const onRequestPost = async (context) => {
     const stripeSecretKey = context.env.STRIPE_SECRET_KEY;
     const stripeWebhookSecret = context.env.STRIPE_WEBHOOK_SECRET;
     const domain = context.env.DOMAIN || 'https://rinawarptech.com';
+    const priceMapJson = context.env.RINA_PRICE_MAP;
 
     // Initialize Stripe
     const stripe = new Stripe(stripeSecretKey, {
@@ -18,30 +20,57 @@ export const onRequestPost = async (context) => {
     });
 
     // Parse request body
-    const { plan, email } = await context.request.json();
+    const requestBody = await context.request.json();
+    const { plan, successUrl, cancelUrl, email } = requestBody;
 
-    if (!plan || !email) {
+    if (!plan) {
       return new Response(
-        JSON.stringify({ error: 'Plan and email are required' }),
+        JSON.stringify({ error: 'Plan is required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Map plan names to Stripe price IDs
-    const priceMap = {
-      student: 'price_1SVRVMGZrRdZy3W9094r1F5B',
-      professional: 'price_1SKxFDGZrRdZy3W9eqTQCKXd',
-      enterprise: 'price_1SKxF5GZrRdZy3W9Ck4Z8AJ2',
-    };
+    // Parse RINA_PRICE_MAP environment variable
+    let priceMap = {};
+    try {
+      if (priceMapJson) {
+        priceMap = JSON.parse(priceMapJson);
+      } else {
+        // Fallback price mapping if RINA_PRICE_MAP is not set - Updated with actual Stripe plan codes
+        console.warn('RINA_PRICE_MAP environment variable not set, using fallback mapping');
+        priceMap = {
+          'enterprise-yearly': 'price_1SVRVMGZrRdZy3W9094r1F5B',
+          'founder-lifetime': 'price_1SVRVLGZrRdZy3W976aXrw0g',
+          'pioneer-lifetime': 'price_1SVRVLGZrRdZy3W9LoPVNyem',
+          'pro-monthly': 'price_1SVRVKGZrRdZy3W9wFO3QPw6',
+          'creator-monthly': 'price_1SVRVJGZrRdZy3W9tRX5tsaH',
+          'starter-monthly': 'price_1SVRVJGZrRdZy3W9q6u9L82y'
+        };
+      }
+    } catch (parseError) {
+      console.error('Failed to parse RINA_PRICE_MAP:', parseError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid price map configuration' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     const priceId = priceMap[plan];
 
     if (!priceId) {
       return new Response(
-        JSON.stringify({ error: 'Invalid plan selected' }),
+        JSON.stringify({ 
+          error: 'Invalid plan selected',
+          availablePlans: Object.keys(priceMap),
+          receivedPlan: plan
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    // Use provided URLs or fallback to defaults
+    const finalSuccessUrl = successUrl || `${domain}/success.html`;
+    const finalCancelUrl = cancelUrl || `${domain}/cancel.html`;
 
     // Create Checkout Session
     const session = await stripe.checkout.sessions.create({
@@ -53,18 +82,18 @@ export const onRequestPost = async (context) => {
         },
       ],
       mode: 'subscription',
-      success_url: `${domain}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${domain}/cancel`,
+      success_url: `${finalSuccessUrl}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: finalCancelUrl,
       customer_email: email,
       metadata: {
         plan: plan,
-        email: email,
+        email: email || '',
       },
     });
 
-    // Return session URL
+    // Return session ID for Stripe.js redirect
     return new Response(
-      JSON.stringify({ url: session.url }),
+      JSON.stringify({ sessionId: session.id }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {

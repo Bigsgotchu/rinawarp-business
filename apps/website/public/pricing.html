@@ -1,1 +1,238 @@
-<!-- Pricing Page Placeholder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RinaWarp Pricing — Terminal Pro & AI Music Video Creator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Fair and clear pricing for RinaWarp Terminal Pro and AI Music Video Creator. One-time licenses and creator-friendly plans." />
+  <link rel="stylesheet" href="/css/brand.css" />
+  <link rel="stylesheet" href="/styles.css" />
+  
+  <!-- Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+  
+  <!-- Set Stripe publishable key -->
+  <script>
+    window.RINA_STRIPE_PUBLISHABLE_KEY = "pk_live_REPLACE_WITH_YOUR_PUBLISHABLE_KEY";
+  </script>
+  
+  <!-- Load checkout script -->
+  <script src="/checkout.js" defer></script>
+</head>
+<body>
+  <div class="main-shell">
+    <!-- NAV -->
+    <header class="nav">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <img src="/branding/Lumina Flow brand.png" alt="RinaWarp logo" />
+        </div>
+        <div class="nav-title">
+          RinaWarp Technologies
+          <span>Terminal • AI • Creators</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="#products">Products</a>
+        <a href="#pricing" class="active">Pricing</a>
+        <a href="/legal/">Legal</a>
+        <a href="https://master.rinawarptech.pages.dev/admin" target="_blank" rel="noreferrer">Admin</a>
+      </nav>
+    </header>
+
+    <!-- PRICING SECTION -->
+    <main>
+      <section class="section" id="pricing">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Pricing built to be fair & clear</div>
+            <div class="section-subtitle">
+              One-time license for Terminal Pro. Creator-friendly plans for AI Music Video Creator.
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-row">
+          <!-- Terminal Pro Plans -->
+          <div class="pricing-card">
+            <div class="badge-pill" style="margin-bottom: 8px;">
+              <span>⚡</span> Terminal Pro Starter
+            </div>
+            <div class="pricing-price">
+              $39 <span>one-time license</span>
+            </div>
+            <div class="pricing-line">
+              Perfect for students, developers, and small projects.
+            </div>
+            <ul class="pricing-list">
+              <li>One machine license with secure activation</li>
+              <li>Mermaid color scheme tuned for daily use</li>
+              <li>Basic project templates and workflows</li>
+              <li>Community support and documentation</li>
+            </ul>
+            <button 
+              class="btn btn-primary" 
+              style="width: 100%; justify-content: center;"
+              data-checkout-button
+              data-plan="student"
+            >
+              Get Starter Plan — $39
+            </button>
+          </div>
+
+          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.2), rgba(15, 23, 42, 0.98)); border-color: rgba(34, 197, 94, 0.5);">
+            <div class="badge-pill" style="border-color: rgba(34, 197, 94, 0.7); color: #86efac;">
+              <span>🚀</span> Terminal Pro Creator
+            </div>
+            <div class="pricing-price">
+              $89 <span>one-time license</span>
+            </div>
+            <div class="pricing-line">
+              Advanced features for power users and creators.
+            </div>
+            <ul class="pricing-list">
+              <li>Everything in Starter</li>
+              <li>Advanced themes and customizations</li>
+              <li>Plugin system and integrations</li>
+              <li>Priority support and updates</li>
+              <li>Team collaboration features</li>
+            </ul>
+            <button 
+              class="btn btn-primary" 
+              style="width: 100%; justify-content: center;"
+              data-checkout-button
+              data-plan="professional"
+            >
+              Get Creator Plan — $89
+            </button>
+          </div>
+
+          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(239, 68, 68, 0.2), rgba(15, 23, 42, 0.98)); border-color: rgba(239, 68, 68, 0.5);">
+            <div class="badge-pill" style="border-color: rgba(239, 68, 68, 0.7); color: #fca5a5;">
+              <span>🔥</span> Terminal Pro Enterprise
+            </div>
+            <div class="pricing-price">
+              $199 <span>one-time license</span>
+            </div>
+            <div class="pricing-line">
+              Complete solution for teams and enterprises.
+            </div>
+            <ul class="pricing-list">
+              <li>Everything in Creator</li>
+              <li>Unlimited machine activations</li>
+              <li>Custom integrations and API access</li>
+              <li>Dedicated support and SLA</li>
+              <li>On-premise deployment options</li>
+            </ul>
+            <button 
+              class="btn btn-primary" 
+              style="width: 100%; justify-content: center;"
+              data-checkout-button
+              data-plan="enterprise"
+            >
+              Get Enterprise Plan — $199
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Music Video Creator Plans -->
+        <div class="section-header" style="margin-top: 4rem;">
+          <div>
+            <div class="section-title">AI Music Video Creator Plans</div>
+            <div class="section-subtitle">
+              Credit-based system for creators who want professional visuals.
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-row">
+          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(168, 85, 247, 0.4), rgba(15, 23, 42, 0.98)); border-color: rgba(168, 85, 247, 0.7);">
+            <div class="badge-pill" style="border-color: rgba(244, 114, 182, 0.7); color: #f9a8d4;">
+              <span>🎬</span> AI-MVC Pro Monthly
+            </div>
+            <div class="pricing-price">
+              $29 <span>/month</span>
+            </div>
+            <div class="pricing-line">
+              For serious creators and music professionals.
+            </div>
+            <ul class="pricing-list">
+              <li>100 video credits per month</li>
+              <li>HD export (1080p)</li>
+              <li>Premium visual styles</li>
+              <li>Priority rendering queue</li>
+            </ul>
+            <button class="btn btn-outline" style="width: 100%; justify-content: center;">
+              Coming Soon
+            </button>
+          </div>
+
+          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.4), rgba(15, 23, 42, 0.98)); border-color: rgba(56, 189, 248, 0.7);">
+            <div class="badge-pill" style="border-color: rgba(56, 189, 248, 0.7); color: #7dd3fc;">
+              <span>💎</span> Complete Bundle
+            </div>
+            <div class="pricing-price">
+              $149 <span>best value</span>
+            </div>
+            <div class="pricing-line">
+              Terminal Pro Creator + AI-MVC Pro for 6 months.
+            </div>
+            <ul class="pricing-list">
+              <li>Terminal Pro Creator license</li>
+              <li>6 months AI-MVC Pro</li>
+              <li>600 video credits</li>
+              <li>Save $50 compared to separate purchases</li>
+            </ul>
+            <button class="btn btn-outline" style="width: 100%; justify-content: center;">
+              Coming Soon
+            </button>
+          </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="section-header" style="margin-top: 4rem;">
+          <div>
+            <div class="section-title">Frequently Asked Questions</div>
+          </div>
+        </div>
+
+        <div class="faq-section">
+          <div class="faq-item">
+            <h3>How does the license work?</h3>
+            <p>Terminal Pro uses secure activation tied to your hardware. You can deactivate and reactivate on different machines within reason.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I upgrade my plan?</h3>
+            <p>Yes! You can upgrade from Starter to Creator or Enterprise at any time. You'll only pay the difference.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What payment methods do you accept?</h3>
+            <p>We accept all major credit cards through Stripe. All payments are secure and encrypted.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Do you offer refunds?</h3>
+            <p>Yes, we offer a 30-day money-back guarantee. No questions asked.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div>© <span id="year"></span> RinaWarp Technologies LLC • Built in Utah</div>
+      <div class="footer-links">
+        <a href="/legal/terms-of-service.html">Terms</a>
+        <a href="/legal/privacy-policy.html">Privacy</a>
+        <a href="/legal/ai-ethical-policy.html">AI Ethics</a>
+        <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
+        <a href="/legal/ai-music-video-creator-eula.html">AI-MVC EULA</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

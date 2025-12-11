@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "google-workspace": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "workspace-mcp==1.4.7",
+        "--hash",
+        "sha256:4e98810f46bd370007e7c9a9337bcaf47cb91e21fed8fb59cf7c68d5a539a49f",
+        "workspace-mcp",
+        "--tool-tier",
+        "core"
+      ],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "204905093036-e60gsrmq3r61l5hsu3rto9v4h316ohet.apps.googleusercontent.com",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "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",
+        "OAUTHLIB_INSECURE_TRANSPORT": "1"
+      }
+    }
+  }
+}
