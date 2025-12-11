@@ -39,7 +39,7 @@ async function startCheckout(plan) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-    const response = await fetch('https://rinawarptech.com/create-checkout-session', {
+    const response = await fetch('/api/checkout-v2', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ function handleSuccessPage() {
 
     if (sessionId && document.getElementById('success-message')) {
       // Verify payment status with error handling
-      fetch(`https://rinawarptech.com/api/license/claim?session_id=${sessionId}`)
+      fetch(`/api/license/claim?session_id=${sessionId}`)
         .then((response) => {
           if (!response.ok) throw new Error('Failed to fetch session');
           return response.json();

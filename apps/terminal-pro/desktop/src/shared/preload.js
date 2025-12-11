@@ -116,7 +116,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onUpdateNone: (cb) => ipcRenderer.on("update:none", cb),
   onUpdateError: (cb) => ipcRenderer.on("update:error", (event, err) => cb(err)),
   onUpdateProgress: (cb) => ipcRenderer.on("update:progress", (event, data) => cb(data)),
-  onUpdateDownloaded: (cb) => ipcRenderer.on("update:downloaded", cb)
+  onUpdateDownloaded: (cb) => ipcRenderer.on("update:downloaded", cb),
+  // Crash recovery
+  getCrashRecoveryStatus: () => ipcRenderer.invoke("crash-recovery:get-status"),
+  clearCrashRecovery: () => ipcRenderer.invoke("crash-recovery:clear"),
 });
 
 // Add methods for changelog functionality

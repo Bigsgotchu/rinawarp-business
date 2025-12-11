@@ -70,3 +70,6 @@
 /*.yaml:
   - Content-Type: text/yaml
   - Cache-Control: public, max-age=3600
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' https://www.google-analytics.com data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:;

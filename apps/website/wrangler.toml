@@ -1,0 +1,21 @@
+name = "rinawarp-website"
+account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
+workers_dev = true
+compatibility_date = "2025-11-17"
+
+# Environment variables
+[vars]
+STRIPE_SECRET_KEY = "sk_test_..."
+STRIPE_WEBHOOK_SECRET = "whsec_..."
+DOMAIN = "https://rinawarptech.com"
+
+# D1 Database for licenses
+[[d1_databases]]
+binding = "DB"
+database_name = "licenses"
+database_id = "YOUR_DATABASE_ID"
+
+# R2 Bucket for downloads
+[[r2_buckets]]
+binding = "DOWNLOADS"
+bucket_name = "rinawarp-downloads"

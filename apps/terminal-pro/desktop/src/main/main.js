@@ -1240,7 +1240,82 @@ function registerIPC() {
             throw err;
         }
     });
+  // Add IPC handler for crash recovery status
+  ipcMain.handle("crash-recovery:get-status", async () => {
+    const state = store.get("crashRecovery");
+    if (state) {
+      return {
+        hasRecoveryData: true,
+        timestamp: state.timestamp,
+        hasTerminalState: state.lastTerminalState?.length > 0,
+        hasSession: !!state.lastSession,
+        hasFiles: !!state.lastFiles
+      };
+    }
+    return { hasRecoveryData: false };
+  });
+
+  // Add IPC handler to clear crash recovery data
+  ipcMain.handle("crash-recovery:clear", async () => {
+    store.delete("crashRecovery");
+    return true;
+  });
 }
+
+// ==== CRASH RECOVERY SYSTEM =======================================
+// Save terminal state before app quit
+function saveTerminalState() {
+  try {
+    const state = {
+      lastTerminalState: Array.from(terminals.entries()).map(([id, term]) => ({
+        id,
+        shell: term.shell,
+        cwd: term.cwd,
+        cols: term.cols,
+        rows: term.rows
+      })),
+      lastSession: store.get("lastSession"),
+      lastFiles: store.get("lastFiles"),
+      timestamp: new Date().toISOString()
+    };
+    store.set("crashRecovery", state);
+    console.log("[CrashRecovery] State saved");
+  } catch (e) {
+    console.error("[CrashRecovery] Failed to save state:", e);
+  }
+}
+
+// Restore terminal state after crash
+async function restoreTerminalState() {
+  try {
+    const state = store.get("crashRecovery");
+    if (state) {
+      console.log("[CrashRecovery] Restoring from crash...", state);
+      store.set("lastSession", state.lastSession);
+      store.set("lastFiles", state.lastFiles);
+      // State restored, will be shown in UI
+    }
+  } catch (e) {
+    console.error("[CrashRecovery] Failed to restore state:", e);
+  }
+}
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  saveTerminalState();
+  // Restart app after 2 seconds
+  setTimeout(() => {
+    app.relaunch();
+    app.quit();
+  }, 2000);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  saveTerminalState();
+});
 
 // Main entry point
 (async () => {
@@ -1310,6 +1385,14 @@ function registerIPC() {
   setInterval(() => {
     checkAgentHealth({ broadcast: true });
   }, 60_000);
+
+  // Restore from crash if needed
+  await restoreTerminalState();
+
+  // Save state before quit
+  app.on('before-quit', () => {
+    saveTerminalState();
+  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
