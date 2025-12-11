@@ -1,3 +1,19 @@
+import { UpdateBanner } from "./UpdateBanner.js";
+import { initCommandPalette } from './command-palette.js';
+import { initVoiceMode } from './voice.js';
+import Onboarding from './onboarding.js';
+
+// Initialize Sentry in renderer
+if (window.RINA_ENV?.SENTRY_DSN) {
+  import("@sentry/electron/renderer").then((SentryRenderer) => {
+    SentryRenderer.init({
+      dsn: window.RINA_ENV.SENTRY_DSN,
+      tracesSampleRate: 0.2,
+    });
+  });
+}
+// RinaTerminalUI.initTerminal is already self-initialized in terminal-optimized.js
+
 /**
  * RinaWarp Terminal Pro - Main Application Entry Point
  */
@@ -19,25 +35,28 @@ class RinaWarpApp {
         try {
             // Show loading screen
             this.showLoadingScreen();
-            
+
+            // Check if we need to show license gate
+            await this.checkLicenseGate();
+
             // Initialize core components
             await this.initializeComponents();
-            
+
             // Setup event listeners
             this.setupEventListeners();
-            
+
             // Check license status
             await this.checkLicenseStatus();
-            
+
             // Initialize UI
             this.initializeUI();
-            
+
             // Hide loading screen and show app
             this.hideLoadingScreen();
-            
+
             this.isInitialized = true;
             console.log('RinaWarp Terminal Pro initialized successfully');
-            
+
         } catch (error) {
             console.error('Failed to initialize app:', error);
             this.showError('Failed to initialize application. Please restart.');
@@ -139,31 +158,39 @@ class RinaWarpApp {
     }
 
     bindKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
-            // CmdOrCtrl + T - New Terminal
-            if ((e.metaKey || e.ctrlKey) && e.key === 't') {
-                e.preventDefault();
-                this.createNewTerminal();
-            }
-
-            // CmdOrCtrl + Shift + A - AI Features
-            if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'A') {
-                e.preventDefault();
-                this.showAIModal();
-            }
-
-            // CmdOrCtrl + Shift + V - Voice Commands
-            if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'V') {
-                e.preventDefault();
-                this.showVoiceModal();
-            }
-
-            // CmdOrCtrl + Shift + E - Explain Code
-            if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'E') {
-                e.preventDefault();
-                this.showCodeExplanation();
-            }
-        });
+      document.addEventListener('keydown', (e) => {
+        // CmdOrCtrl + T - New Terminal
+        if ((e.metaKey || e.ctrlKey) && e.key === 't') {
+          e.preventDefault();
+          this.createNewTerminal();
+        }
+  
+        // CmdOrCtrl + Shift + A - AI Features
+        if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'A') {
+          e.preventDefault();
+          this.showAIModal();
+        }
+  
+        // CmdOrCtrl + Shift + V - Voice Commands
+        if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'V') {
+          e.preventDefault();
+          this.showVoiceModal();
+        }
+  
+        // CmdOrCtrl + Shift + E - Explain Code
+        if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'E') {
+          e.preventDefault();
+          this.showCodeExplanation();
+        }
+  
+        // CmdOrCtrl + Alt + D - Toggle Debug Panel
+        if ((e.metaKey || e.ctrlKey) && e.altKey && e.key === 'd') {
+          e.preventDefault();
+          import('./agent-debug.js').then(module => {
+            module.agentDebug.toggle();
+          });
+        }
+      });
     }
 
     bindWindowEvents() {
@@ -206,14 +233,67 @@ class RinaWarpApp {
         }
     }
 
+    async checkLicenseGate() {
+        // Check URL parameters for license gate flag
+        const urlParams = new URLSearchParams(window.location.search);
+        const showLicenseGate = urlParams.get('showLicenseGate') === 'true';
+
+        if (showLicenseGate) {
+            // Show license gate and prevent app initialization until license is accepted
+            return new Promise((resolve) => {
+                const licenseGate = new window.LicenseGate();
+                licenseGate.initialize((licenseKey, licenseData) => {
+                    // License accepted, continue with app initialization
+                    console.log('License activated:', licenseKey);
+                    resolve();
+                });
+            });
+        }
+
+        // Check if we have a valid license in config
+        try {
+            const config = await window.RinaConfig.getConfig();
+
+            if (config.licenseKey) {
+                // License exists, verify it
+                const resp = await window.RinaLicense.verify(config.licenseKey);
+                if (!resp.ok || !resp.result || !resp.result.valid) {
+                    // Invalid license, show license gate
+                    return new Promise((resolve) => {
+                        const licenseGate = new window.LicenseGate();
+                        licenseGate.initialize((licenseKey, licenseData) => {
+                            resolve();
+                        });
+                    });
+                }
+            } else {
+                // No license, show license gate
+                return new Promise((resolve) => {
+                    const licenseGate = new window.LicenseGate();
+                    licenseGate.initialize((licenseKey, licenseData) => {
+                        resolve();
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('License check failed, showing license gate:', error);
+            return new Promise((resolve) => {
+                const licenseGate = new window.LicenseGate();
+                licenseGate.initialize((licenseKey, licenseData) => {
+                    resolve();
+                });
+            });
+        }
+    }
+
     updateLicenseUI(licenseInfo) {
         const licenseTier = document.querySelector('.license-tier');
         const upgradeBtn = document.getElementById('upgrade-btn');
-        
+
         if (licenseTier) {
             licenseTier.textContent = licenseInfo.tier || 'Free';
         }
-        
+
         if (upgradeBtn) {
             upgradeBtn.style.display = licenseInfo.tier === 'Free' ? 'block' : 'none';
         }
@@ -384,7 +464,65 @@ class RinaWarpApp {
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.rinaWarpApp = new RinaWarpApp();
+  // Initialize update banner
+  new UpdateBanner();
+
+  // Initialize main app
+  window.rinaWarpApp = new RinaWarpApp();
+
+  // Initialize command palette
+  initCommandPalette();
+
+  // Initialize voice mode
+  initVoiceMode();
+
+  // Initialize terminal (already self-initialized in terminal-optimized.js)
+  if (window.RinaTerminalUI) {
+    window.RinaTerminalUI.initTerminal?.();
+  }
+
+  // Initialize agent status indicator
+  import('./agent-status.js').then(module => {
+    module.agentStatus.startAutoPing();
+  });
+
+  // Initialize demo mode
+  import('./demo-mode.js').then(module => {
+    const DemoMode = module.DemoMode;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("demo-mode-btn");
+      if (!btn) return;
+
+      btn.addEventListener("click", () => {
+        if (DemoMode.isActive()) {
+          DemoMode.stop();
+          btn.textContent = "🎬 Demo Mode";
+        } else {
+          DemoMode.start();
+          btn.textContent = "⏹ Stop Demo";
+        }
+      });
+    });
+  });
+
+  // Initialize onboarding
+  Onboarding.startIfNeeded();
+
+  // Initialize academy
+  import('./onboarding-academy.js').then(module => {
+    module.initRinaAcademy();
+  });
+
+  // Initialize plugins
+  import('./plugin-system.js').then(module => {
+    module.loadBuiltInPlugins();
+  });
+
+  // Initialize feature gate
+  import('./feature-gate.js').then(module => {
+    module.initFeatureGate();
+  });
 });
 
 // Export for testing purposes

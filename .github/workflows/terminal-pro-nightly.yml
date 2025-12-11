@@ -1,0 +1,45 @@
+name: Terminal Pro Nightly
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # 08:00 UTC daily
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/terminal-pro/desktop
+
+    env:
+      NODE_ENV: production
+      RELEASE_CHANNEL: nightly
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: "apps/terminal-pro/desktop/package-lock.json"
+
+      - run: npm ci
+
+      - name: Run tests
+        run: |
+          npm run test:basic
+          npm run test:comprehensive
+
+      - name: Build nightly installers
+        run: npm run dist
+
+      - name: Upload to R2 (nightly)
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+        run: ./scripts/upload-to-r2.sh dist

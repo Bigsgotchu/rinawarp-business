@@ -1,0 +1,30 @@
+#update-banner {
+  width: 100%;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  background: linear-gradient(90deg, #00f5ff, #09c6f9, #6a00f4);
+  color: white;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#update-action button {
+  background: #111;
+  border: 1px solid white;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#update-action button:hover {
+  background: #fff;
+  color: #000;
+}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+`<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="./styles/themes.css">
     <link rel="stylesheet" href="./styles/terminal.css">
     <link rel="stylesheet" href="./styles/components.css">
+    <link rel="stylesheet" href="./styles/update-banner.css">
+    <link rel="stylesheet" href="styles/changelog.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="theme-mermaid">
@@ -45,6 +47,7 @@
                 </div>
             </div>
             <div class="header-right">
+                <button id="demo-mode-btn" class="rina-demo-button">🎬 Demo Mode</button>
                 <button class="header-btn" id="ai-btn" title="AI Features (Ctrl+Shift+A)">
                     <span class="icon">🤖</span>
                 </button>
@@ -82,6 +85,10 @@
                     <button class="tab-btn" data-tab="history">
                         <span class="icon">📚</span>
                         <span class="label">History</span>
+                    </button>
+                    <button class="tab-btn" data-tab="team">
+                        <span class="icon">👥</span>
+                        <span class="label">Team</span>
                     </button>
                 </div>
                 
@@ -134,6 +141,31 @@
                         </div>
                         <div class="history-list" id="history-list">
                             <!-- Command history will be shown here -->
+                        </div>
+                    </div>
+
+                    <div id="team-panel" class="panel">
+                        <div class="panel-header">
+                            <h3>Team Management</h3>
+                        </div>
+                        <div class="team-content">
+                            <div class="team-controls">
+                                <button id="createTeamBtn" class="team-btn">Create Team</button>
+                                <div class="invite-section">
+                                    <input id="inviteEmail" type="email" placeholder="user@example.com">
+                                    <select id="inviteRole">
+                                        <option value="member">Member</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                    <button id="inviteBtn" class="team-btn">Invite</button>
+                                </div>
+                            </div>
+                            <div class="team-info" id="teamInfo">
+                                <p>No team selected. Create or join a team to collaborate.</p>
+                            </div>
+                            <div class="team-members" id="teamMembers">
+                                <!-- Team members will be listed here -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,12 +265,119 @@
     </div>
 
     <!-- Scripts -->
+    <script type="module" src="./js/UpdateBanner.js"></script>
+    <script type="module" src="./js/ChangelogModal.js"></script>
     <script src="./js/terminal.js"></script>
     <script src="./js/ai.js"></script>
     <script src="./js/voice.js"></script>
     <script src="./js/license.js"></script>
+    <script src="./js/LicenseGate.js"></script>
     <script src="./js/ui.js"></script>
+    <script type="module" src="./js/terminal-optimized.js"></script>
+    <script type="module" src="./js/command-palette.js"></script>
     <script src="./js/main.js"></script>
 
+    <!-- Changelog Modal -->
+    <div id="changelog-modal" class="changelog-hidden">
+      <div class="changelog-backdrop"></div>
+
+      <div class="changelog-content">
+        <h1>What’s New in <span id="cl-version"></span></h1>
+
+        <div id="cl-body" class="changelog-body">
+          <!-- Filled dynamically -->
+        </div>
+
+        <div class="changelog-footer">
+          <button id="cl-close">Continue</button>
+        </div>
+      </div>
+    </div>
+
+<!-- ─────────────── Terminal Shell Layout ─────────────── -->
+<div id="terminal-shell">
+  <div id="terminal-tab-bar">
+    <button
+      id="terminal-new-tab-btn"
+      class="rw-btn rw-btn-tab-new"
+      title="New terminal (Ctrl+Shift+T)"
+    >
+      +
+    </button>
+    <div id="terminal-tabs"></div>
+  </div>
+  <div id="terminal-container"></div>
+</div>
+
+<!-- ─────────────── Command Palette Overlay ─────────────── -->
+<div id="rw-command-palette-overlay" class="rw-cmdp-overlay rw-cmdp-hidden">
+  <div class="rw-cmdp-panel">
+    <input
+      id="rw-command-palette-input"
+      class="rw-cmdp-input"
+      type="text"
+      placeholder="Type a command or search…"
+      autocomplete="off"
+    />
+    <ul id="rw-command-palette-results" class="rw-cmdp-results"></ul>
+    <div class="rw-cmdp-footer">
+      <span>Enter ↵ to run • Esc to close</span>
+      <span>Ctrl+Shift+P</span>
+    </div>
+  </div>
+</div>
+
+<!-- AI Panel -->
+<div id="ai-panel" class="ai-panel hidden">
+  <div class="ai-panel-header">
+    <span id="ai-panel-title"></span>
+    <button onclick="document.getElementById('ai-panel').classList.add('hidden')">×</button>
+  </div>
+  <pre id="ai-panel-body" class="ai-panel-body"></pre>
+</div>
+
+<!-- Voice HUD -->
+<div id="voice-hud" class="voice-hud hidden">
+  🎤 <span id="voice-status">Voice Ready</span>
+</div>
+
+  <!-- Agent Status Indicator -->
+  <div id="agent-status-indicator" class="agent-status offline">
+    ● Agent Offline
+  </div>
+
+  <!-- Agent Debug Panel -->
+  <div id="agent-debug-panel" class="agent-debug hidden">
+    <div class="agent-debug-header">
+        <span>Rina Agent Debugger</span>
+        <button id="agent-debug-close">✕</button>
+    </div>
+
+    <div id="agent-debug-log"></div>
+
+    <div class="agent-debug-footer">
+        <button id="agent-debug-copy">Copy Logs</button>
+        <button id="agent-debug-export">Export JSON</button>
+        <span id="agent-debug-mode-label">Debug: OFF</span>
+    </div>
+</div>
+
+<!-- Demo Mode UI -->
+<div class="rina-demo-banner"></div>
+<div class="rina-voice-hint"></div>
+
+<!-- Academy Panel -->
+<div class="rina-academy-panel">
+<div class="rina-academy-header">
+  <span>Rina Academy</span>
+</div>
+<div class="rina-academy-body">
+  <div class="rina-academy-list"></div>
+  <div class="rina-academy-detail"></div>
+</div>
+</div>
+
+<!-- Billing Bar -->
+<div class="rina-upgrade-bar"></div>
 </body>
 </html>

@@ -1,0 +1,145 @@
+name: RinaWarp Terminal Pro CI/CD
+
+on:
+  push:
+    branches: [ master, main, develop ]
+    paths:
+      - 'apps/terminal-pro/**'
+      - '.github/workflows/terminal-pro-ci-cd.yml'
+  pull_request:
+    branches: [ master, main, develop ]
+    paths:
+      - 'apps/terminal-pro/**'
+      - '.github/workflows/terminal-pro-ci-cd.yml'
+
+jobs:
+  terminal-pro-ci-cd:
+    name: Terminal Pro CI/CD Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/terminal-pro/desktop/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: apps/terminal-pro/desktop
+        run: |
+          echo "📦 Installing dependencies..."
+          npm ci
+
+      - name: Run Basic Tests
+        working-directory: apps/terminal-pro/desktop
+        id: basic-tests
+        run: |
+          echo "🧪 Running basic tests..."
+          npm run test:basic
+          exit_code=$?
+          echo "test_exit_code=$exit_code" >> $GITHUB_OUTPUT
+          echo "✅ Basic tests completed with exit code $exit_code"
+
+      - name: Run Comprehensive Tests
+        working-directory: apps/terminal-pro/desktop
+        id: comprehensive-tests
+        run: |
+          echo "🧪 Running comprehensive tests..."
+          npm run test:comprehensive
+          exit_code=$?
+          echo "test_exit_code=$exit_code" >> $GITHUB_OUTPUT
+          echo "✅ Comprehensive tests completed with exit code $exit_code"
+
+      - name: Generate HTML Test Report
+        working-directory: apps/terminal-pro/desktop
+        if: always()
+        run: |
+          echo "📊 Generating HTML test report..."
+          # Check if test results exist and generate report
+          if [ -f "test-results-comprehensive.json" ]; then
+            node generate-test-report.js -i test-results-comprehensive.json -o test-report.html
+            echo "✅ HTML test report generated"
+          else
+            echo "⚠️ No test results found, creating placeholder report"
+            cp test-report-template.html test-report.html
+          fi
+
+      - name: Upload Test Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: apps/terminal-pro/desktop/test-report.html
+          retention-days: 30
+
+      - name: Upload Test Results JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            apps/terminal-pro/desktop/test-results-basic.json
+            apps/terminal-pro/desktop/test-results-comprehensive.json
+          retention-days: 30
+
+      - name: Check Test Results
+        id: check-tests
+        run: |
+          echo "🔍 Checking test results..."
+          basic_exit_code=${{ steps.basic-tests.outputs.test_exit_code || 0 }}
+          comprehensive_exit_code=${{ steps.comprehensive-tests.outputs.test_exit_code || 0 }}
+
+          echo "Basic tests exit code: $basic_exit_code"
+          echo "Comprehensive tests exit code: $comprehensive_exit_code"
+
+          if [ "$basic_exit_code" -ne 0 ] || [ "$comprehensive_exit_code" -ne 0 ]; then
+            echo "❌ Some tests failed"
+            echo "tests_passed=false" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ All tests passed"
+            echo "tests_passed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build Application
+        if: steps.check-tests.outputs.tests_passed == 'true'
+        working-directory: apps/terminal-pro/desktop
+        run: |
+          echo "🚀 Building application..."
+          npm run build
+          echo "✅ Build completed successfully"
+
+      - name: Upload Build Artifacts
+        if: steps.check-tests.outputs.tests_passed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: apps/terminal-pro/desktop/build-output/
+          retention-days: 7
+
+      - name: Notify Test Failure
+        if: failure() && steps.check-tests.outputs.tests_passed == 'false'
+        run: |
+          echo "🚨 Test failure detected!"
+          echo "📋 Failed tests will be identified in the HTML report artifact"
+          echo "🔗 Download the 'test-report' artifact to see which features broke"
+          echo "💡 The HTML report provides detailed information about test failures"
+
+      - name: Display Test Summary
+        if: always()
+        run: |
+          echo "📊 Test Summary"
+          echo "============="
+          echo "📁 HTML Report: Available as 'test-report' artifact"
+          echo "📁 JSON Results: Available as 'test-results' artifact"
+          echo "📁 Build Artifacts: Available if tests passed"
+          echo ""
+          echo "💡 To identify which feature broke:"
+          echo "1. Download the 'test-report' artifact"
+          echo "2. Open test-report.html in any browser"
+          echo "3. Review failed test cases with detailed error messages"
+          echo "4. Check the JSON results for programmatic analysis"

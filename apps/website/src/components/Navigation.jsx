@@ -97,6 +97,12 @@ const Navigation = ({ user, onLogout }) => {
 
             {user ? (
               <div className="flex items-center gap-4">
+                <Link
+                  to="/portal"
+                  className="text-slate-700 hover:text-mermid-600 font-medium transition-colors"
+                >
+                  Portal
+                </Link>
                 <div className="flex items-center gap-2 text-sm text-slate-700">
                   <User className="w-4 h-4" />
                   <span>{user.email}</span>
@@ -184,6 +190,13 @@ const Navigation = ({ user, onLogout }) => {
 
               {user ? (
                 <div className="pt-4 border-t border-slate-200 space-y-2">
+                  <Link
+                    to="/portal"
+                    className="block w-full text-left text-slate-700 hover:text-mermid-600 font-medium py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Portal
+                  </Link>
                   <div className="flex items-center gap-2 text-sm text-slate-700">
                     <User className="w-4 h-4" />
                     <span>{user.email}</span>

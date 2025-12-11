@@ -11,6 +11,7 @@ import Navigation from './components/Navigation';
 import EmailCapture from './components/EmailCapture';
 import Login from './components/Login';
 import Register from './components/Register';
+import Portal from './pages/Portal';
 import { getUser, clearAuthData } from './utils/auth';
 
 function App() {
@@ -117,6 +118,16 @@ function App() {
                   onRegister={handleRegister}
                   onSwitchToLogin={() => (window.location.href = '/login')}
                 />
+              )
+            }
+          />
+          <Route
+            path="/portal"
+            element={
+              user ? (
+                <Portal />
+              ) : (
+                <Navigate to="/login" />
               )
             }
           />
