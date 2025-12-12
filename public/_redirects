@@ -1,8 +1,6 @@
-# Clean URLs for product pages
-/terminal-pro      /terminal-pro.html      200
-/music-video-creator   /music-video-creator.html   200
-/pricing           /pricing.html           200
-/download          /download.html          200
+/download    /download.html    200!
+/pricing     /pricing.html     200!
+/terminal-pro        /terminal-pro.html        200!
+/music-video-creator    /music-video-creator.html    200!
 
-# API passthrough
-/api/*             https://api.rinawarptech.com/:splat   200
+/api/*      https://api.rinawarptech.com/:splat    200
