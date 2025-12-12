@@ -1,3 +1,51 @@
+/* Unicorn Theme - Music Video Creator Color Palette */
+
+:root {
+  --rw-uni-bg: #050015;
+  --rw-uni-pink: #ff3bce;
+  --rw-uni-purple: #9b5cff;
+  --rw-uni-blue: #46a3ff;
+  --rw-uni-lime: #a3ff3b;
+  --rw-uni-text: #f9fafb;
+}
+
 body.unicorn {
-  background: radial-gradient(circle at top left, #111827 0, #020014 55%, #000 100%);
+  background: radial-gradient(circle at top, #15002b 0, #050015 55%, #000 100%);
+  color: var(--rw-uni-text);
+}
+
+.unicorn .gradient-text {
+  background-image: linear-gradient(
+    130deg,
+    var(--rw-uni-pink),
+    var(--rw-uni-purple),
+    var(--rw-uni-blue),
+    var(--rw-uni-lime)
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.unicorn .hero-card {
+  background: rgba(21, 0, 43, 0.8);
+  border: 1px solid rgba(155, 92, 255, 0.2);
+}
+
+.unicorn .rw-button {
+  background: linear-gradient(135deg, var(--rw-uni-pink), var(--rw-uni-purple));
+  border: none;
+}
+
+.unicorn .rw-button:hover {
+  background: linear-gradient(135deg, var(--rw-uni-purple), var(--rw-uni-blue));
+}
+
+.unicorn .rw-button-outline {
+  border: 2px solid var(--rw-uni-lime);
+  color: var(--rw-uni-lime);
+}
+
+.unicorn .rw-button-outline:hover {
+  background: var(--rw-uni-lime);
+  color: var(--rw-uni-bg);
 }

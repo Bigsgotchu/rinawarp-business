@@ -1,3 +1,51 @@
+/* Mermaid Theme - Terminal Pro Color Palette */
+
+:root {
+  --rw-bg: #020617;           /* black/navy base */
+  --rw-accent-pink: #ff2f9f;  /* hot pink */
+  --rw-accent-coral: #ff6b6b; /* coral */
+  --rw-accent-teal: #00f5d4;  /* teal */
+  --rw-accent-blue: #38bdf8;  /* baby blue */
+  --rw-text-main: #e5e7eb;
+}
+
 body.mermaid {
-  background: radial-gradient(circle at top left, #0f172a 0, #020617 55%, #000 100%);
+  background: radial-gradient(circle at top, #0b1020 0, #020617 55%, #000 100%);
+  color: var(--rw-text-main);
+}
+
+.mermaid .gradient-text {
+  background-image: linear-gradient(
+    120deg,
+    var(--rw-accent-pink),
+    var(--rw-accent-coral),
+    var(--rw-accent-teal),
+    var(--rw-accent-blue)
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.mermaid .hero-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.mermaid .rw-button {
+  background: linear-gradient(135deg, var(--rw-accent-pink), var(--rw-accent-coral));
+  border: none;
+}
+
+.mermaid .rw-button:hover {
+  background: linear-gradient(135deg, var(--rw-accent-coral), var(--rw-accent-teal));
+}
+
+.mermaid .rw-button-outline {
+  border: 2px solid var(--rw-accent-teal);
+  color: var(--rw-accent-teal);
+}
+
+.mermaid .rw-button-outline:hover {
+  background: var(--rw-accent-teal);
+  color: var(--rw-bg);
 }
