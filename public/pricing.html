@@ -2,14 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Pricing | RinaWarp Platforms</title>
+    <title>Pricing | RinaWarp Technologies</title>
+
+    <meta
+      name="description"
+      content="Simple, transparent pricing for RinaWarp Terminal Pro and the AI Music Video Creator. Start free, upgrade when you're ready."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet".css" />
+    <link rel="canonical" href="https://rinawarptech.com/pricing" />
+
+    <!-- Favicon Pack -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/assets/icons/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Pricing | RinaWarp Technologies" />
+    <meta
+      property="og:description"
+      content="Free tier to get started, plus affordable one-time and subscription options for RinaWarp Terminal Pro and AI Music Video Creator."
+    />
+    <meta property="og:image" content="/assets/og/og-main.png" />
+    <meta property="og:url" content="https://rinawarptech.com/pricing" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pricing | RinaWarp Technologies" />
+    <meta
+      name="twitter:description"
+      content="Pick the plan that matches your workflow. Free tier available."
+    />
+    <meta name="twitter:image" content="/assets/og/og-main.png" />
+
+    <link rel="stylesheet" href="/css/shared.css" />
+    <link rel="stylesheet" href="/css/mermaid.css" />
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YGX1R0MEB6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YGX1R0MEB6');
+
+      function trackCheckout(product) {
+        if (typeof gtag === 'function') {
+          gtag('event', 'begin_checkout', {
+            currency: 'USD',
+            items: [{ item_id: product }]
+          });
+        }
+      }
+    </script>
   </head>
-  href="/css/shared <body class="mermaid">
+  <body class="mermaid">
     <div class="main-shell">
 
-      <!-- NAVBAR -->
       <header class="rw-nav">
         <div class="rw-nav-left">
           <a href="/" class="rw-nav-logo">
@@ -61,9 +111,9 @@
               </ul>
 
               <!-- Stripe Checkout Integration -->
-              <form action="/api/checkout-v2" method="POST">
+              <form action="/api/checkout-v2" method="POST" onsubmit="trackCheckout('terminal-pro')">
                 <input type="hidden" name="product" value="terminal-pro" />
-                <button class="rw-button">Buy License</button>
+                <button class="rw-button" type="submit">Buy License</button>
               </form>
             </article>
 
@@ -80,9 +130,9 @@
               </ul>
 
               <!-- Stripe Monthly Plan -->
-              <form action="/api/checkout-v2" method="POST">
+              <form action="/api/checkout-v2" method="POST" onsubmit="trackCheckout('mvc-monthly')">
                 <input type="hidden" name="product" value="mvc-monthly" />
-                <button class="rw-button-outline">Join Monthly</button>
+                <button class="rw-button-outline" type="submit">Join Monthly</button>
               </form>
             </article>
 
@@ -90,7 +140,6 @@
         </section>
       </main>
 
-      <!-- FOOTER -->
       <footer class="rw-footer">
         <div>© 2025 RinaWarp Technologies LLC.</div>
         <div class="rw-footer-links">
