@@ -1,8 +1,8 @@
 # Redirects for clean product URLs
-/terminal     /terminal-pro.html     301
-/mvc          /music-video-creator.html   301
-/download     /download.html         301
-/pricing      /pricing.html          301
+/terminal     /terminal-pro.html     200
+/mvc          /music-video-creator.html   200
+/download     /download.html         200
+/pricing      /pricing.html          200
 
 # Send admin-related requests to your worker/API subdomain
 /api/*        https://api.rinawarptech.com/:splat   200
