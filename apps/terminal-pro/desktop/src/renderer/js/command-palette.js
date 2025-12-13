@@ -62,7 +62,7 @@ const COMMANDS = [
 
       const last = window.RinaTerminalUI?.getLastTerminalChunk?.();
       if (!last) {
-        alert("No terminal output available.");
+        console.debug("No terminal output available");
         return;
       }
 
@@ -80,7 +80,7 @@ const COMMANDS = [
     run: async () => {
       const lastCmd = window.RinaTerminalUI?.getLastCommand?.();
       if (!lastCmd) {
-        alert("No previous command found.");
+        console.debug("No previous command found");
         return;
       }
 

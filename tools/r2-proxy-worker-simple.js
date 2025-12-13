@@ -101,7 +101,7 @@ function setCacheHeaders(headers, path) {
 }
 
 function setCorsHeaders(headers) {
-  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Origin', 'https://rinawarptech.com');
   headers.set('Access-Control-Allow-Methods', 'GET, HEAD');
   headers.set('Access-Control-Allow-Headers', 'Content-Type, Range');
   headers.set('Access-Control-Expose-Headers', 'Content-Length, Content-Range, Accept-Ranges');

@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>RinaWarp Terminal Pro | AI-Powered Developer Terminal</title>
+    <title>RinaWarp Terminal Pro | The terminal you already know — without the friction</title>
     <meta
       name="description"
-      content="RinaWarp Terminal Pro combines voice integration, AI routing, and intelligent automation to supercharge your development workflow."
+      content="RinaWarp Terminal Pro - The terminal you already know without the friction. Local-first. Private by default. AI only when it helps."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/css/shared.css" />
@@ -21,40 +21,60 @@
         </div>
         <nav class="rw-nav-links">
           <a href="/">Home</a>
-          <a href="/terminal-pro.html">Terminal Pro</a>
+          <a href="/terminal-pro.html" class="active">Terminal Pro</a>
           <a href="/music-video-creator.html">Music Video Creator</a>
           <a href="/pricing.html">Pricing</a>
           <a href="/download.html">Download</a>
         </nav>
         <div class="rw-nav-cta">
-          <a href="/download.html" class="rw-button">Download</a>
+          <a href="/download.html" class="rw-button">Download for Windows</a>
         </div>
       </header>
 
       <main>
+        <!-- ALTERNATIVE HERO VARIANT -->
         <section class="grid-hero">
           <div>
             <img src="/assets/logo/terminal.png" alt="Terminal Pro Logo" class="hero-logo" />
-            <div class="badge">
-              <span class="badge-dot"></span>
-              Mermaid Theme · Dev Terminal
-            </div>
-            <h1>
-              RinaWarp Terminal Pro
-              <span class="gradient-text">— your AI copilots, inside the shell.</span>
+            <h1 style="font-size: 2.5rem; line-height: 1.2;">
+              The terminal you already know<br>
+              <span class="gradient-text">— without the friction.</span>
             </h1>
-            <p class="lead">
-              Voice commands, multi-model AI routing, and repo-aware context baked into your terminal.
+            <p style="font-size: 1.3rem; margin: 1.5rem 0; color: #f5f7ff;">
+              Local-first. Private by default.<br>
+              AI only when it helps.
             </p>
 
-            <div class="hero-actions">
-              <a href="/download.html" class="rw-button">Download Free Tier</a>
-              <a href="/pricing.html" class="rw-button-outline">Upgrade to Pro</a>
+            <!-- PRIMARY CTA -->
+            <div class="hero-actions" style="margin: 2rem 0;">
+              <a href="/download.html" class="rw-button" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">
+                ⬇ Download for Windows
+              </a>
+              <a href="/api/checkout-v2?product=terminal-pro" class="rw-button-outline" style="font-size: 1.1rem; padding: 1.2rem 2rem; margin-left: 1rem;">
+                💳 Buy Lifetime License
+              </a>
             </div>
 
-            <p class="hero-meta">
-              <span>macOS · Windows · Linux</span> · <span>Self-updating builds</span>
-            </p>
+            <!-- TRUST LINE -->
+            <div style="text-align: center; margin: 1.5rem 0;">
+              <p style="margin: 0; font-size: 1rem; color: #00ffd5;">
+                Runs 100% on your machine • Works offline • Stripe-secured checkout
+              </p>
+            </div>
+
+            <!-- PRICING OVERVIEW -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; max-width: 500px;">
+              <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #00ffd5;">Free Tier</h4>
+                <div style="font-size: 1.5rem; font-weight: bold;">$0</div>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.7;">Core terminal, unlimited time</p>
+              </div>
+              <div style="background: linear-gradient(135deg, rgba(255,45,146,0.12), rgba(26,233,255,0.08)); padding: 1.5rem; border-radius: 8px; text-align: center; border: 1px solid #30365a;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #00ffd5;">Pro License</h4>
+                <div style="font-size: 1.5rem; font-weight: bold;">$149</div>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.7;">One-time • Lifetime</p>
+              </div>
+            </div>
           </div>
 
           <aside class="hero-card">
@@ -83,6 +103,7 @@
           </aside>
         </section>
 
+        <!-- FEATURES SECTION -->
         <section class="section">
           <div class="section-header">
             <h2 class="section-title">What Terminal Pro gives you</h2>
@@ -108,11 +129,102 @@
             </article>
             <article class="feature-card">
               <div class="feature-icon"></div>
-              <h3 class="feature-title">Token & license metering</h3>
+              <h3 class="feature-title">Local-first privacy</h3>
               <p class="feature-body">
-                Built-in tracking and licensing via the RinaWarp Admin API.
+                Your commands and code never leave your machine. Full offline capability.
               </p>
             </article>
+          </div>
+        </section>
+
+        <!-- DETAILED PRICING SECTION -->
+        <section class="section" style="background: rgba(255,255,255,0.02);">
+          <div class="section-header">
+            <h2 class="section-title">Choose your plan</h2>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; max-width: 800px; margin: 0 auto;">
+            <!-- Free Tier -->
+            <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; border: 1px solid #30365a;">
+              <h3 style="margin-top: 0; color: #00ffd5;">Free Tier</h3>
+              <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">$0</div>
+              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">Forever</p>
+              
+              <ul style="text-align: left; line-height: 1.8; margin-bottom: 2rem;">
+                <li>✅ Core terminal</li>
+                <li>✅ Local shell access</li>
+                <li>✅ Works offline</li>
+                <li>✅ Basic UI</li>
+                <li>❌ AI features locked</li>
+                <li>❌ Voice commands locked</li>
+                <li>❌ Advanced workflows locked</li>
+              </ul>
+              
+              <a href="/download.html" class="rw-button-outline" style="width: 100%;">
+                Start Free
+              </a>
+              
+              <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+                Free is unlimited time. No expiration or countdowns.
+              </p>
+            </div>
+
+            <!-- Pro License -->
+            <div style="background: linear-gradient(135deg, rgba(255,45,146,0.12), rgba(26,233,255,0.08)); padding: 2rem; border-radius: 12px; border: 1px solid #30365a; position: relative;">
+              <div style="position: absolute; top: -10px; right: 20px; background: #00ffd5; color: #05061a; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
+                RECOMMENDED
+              </div>
+              <h3 style="margin-top: 0; color: #00ffd5;">Pro License</h3>
+              <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0;">$149</div>
+              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">One-time • Lifetime</p>
+              
+              <ul style="text-align: left; line-height: 1.8; margin-bottom: 2rem;">
+                <li>✅ All Free features</li>
+                <li>✅ AI code intelligence</li>
+                <li>✅ Voice commands</li>
+                <li>✅ Advanced workflows</li>
+                <li>✅ Auto-updates</li>
+                <li>✅ Priority support</li>
+                <li>✅ Token tracking & optimization</li>
+              </ul>
+              
+              <a href="/api/checkout-v2?product=terminal-pro" class="rw-button" style="width: 100%;">
+                Buy Lifetime License
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- WHY LOCAL-FIRST EXPLANATION -->
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">Why Local-First?</h2>
+          </div>
+          <div style="max-width: 800px; margin: 0 auto;">
+            <p style="font-size: 1.2rem; text-align: center; margin-bottom: 2rem;">
+              Most developer tools today require accounts, internet access, and cloud dependencies.<br>
+              <strong>RinaWarp is different.</strong>
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+              <div>
+                <h3 style="color: #00ffd5;">Your terminal runs locally</h3>
+                <p>No reliance on internet connectivity</p>
+              </div>
+              <div>
+                <h3 style="color: #00ffd5;">Your shell stays yours</h3>
+                <p>Complete control over your environment</p>
+              </div>
+              <div>
+                <h3 style="color: #00ffd5;">Your data never leaves your machine</h3>
+                <p>Privacy by default, not as an option</p>
+              </div>
+              <div>
+                <h3 style="color: #00ffd5;">AI is optional — not required</h3>
+                <p>Works great without any AI features</p>
+              </div>
+            </div>
+            <p style="font-size: 1.1rem; margin-top: 2rem; text-align: center; font-style: italic;">
+              "You shouldn't lose your terminal because Wi-Fi drops."
+            </p>
           </div>
         </section>
       </main>
@@ -127,5 +239,30 @@
         </div>
       </footer>
     </div>
+
+    <script>
+      // OS Detection for dynamic CTA
+      function detectOS() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isWindows = userAgent.indexOf('win') !== -1;
+        const isMac = userAgent.indexOf('mac') !== -1;
+        const isLinux = userAgent.indexOf('linux') !== -1;
+        
+        const ctaButton = document.querySelector('.rw-nav-cta .rw-button');
+        if (ctaButton) {
+          if (isWindows) {
+            ctaButton.textContent = 'Download for Windows';
+          } else if (isMac) {
+            ctaButton.innerHTML = 'Download for macOS<br><small style="opacity: 0.7;">Windows version ready</small>';
+          } else if (isLinux) {
+            ctaButton.innerHTML = 'Download for Linux<br><small style="opacity: 0.7;">Windows version          } else {
+ ready</small>';
+            ctaButton.innerHTML = 'Download for Windows<br><small style="opacity: 0.7;">Cross-platform coming soon</small>';
+          }
+        }
+      }
+      
+      detectOS();
+    </script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-11T17:08:35.502Z",
+  "timestamp": "2025-12-13T17:38:17.897Z",
   "vulnerabilities": [
     {
       "type": "dependency",
@@ -18,22 +18,10 @@
       "description": "Package xterm has known vulnerabilities"
     },
     {
-      "type": "dependency",
-      "package": "electron",
-      "current": "^28.3.3",
-      "vulnerable": "<28.0.0",
-      "severity": "high",
-      "description": "Package electron has known vulnerabilities"
-    },
-    {
       "type": "npm-audit",
       "package": "electron",
       "severity": "moderate",
-      "fix": {
-        "name": "electron",
-        "version": "39.2.6",
-        "isSemVerMajor": true
-      }
+      "fix": true
     },
     {
       "type": "npm-audit",
@@ -92,6 +80,22 @@
       "description": "Potential hardcoded credentials",
       "count": 7,
       "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/shared/telemetry-client.js",
+      "severity": "medium",
+      "description": "Insecure HTTP protocol detected",
+      "count": 1,
+      "recommendation": "Use HTTPS for all external connections"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/shared/telemetry-client-hardened.js",
+      "severity": "medium",
+      "description": "Insecure HTTP protocol detected",
+      "count": 1,
+      "recommendation": "Use HTTPS for all external connections"
     },
     {
       "type": "code-pattern",
@@ -215,18 +219,26 @@
     },
     {
       "type": "code-pattern",
-      "file": "src/renderer/js/license.js",
-      "severity": "high",
-      "description": "Direct innerHTML assignment detected",
-      "count": 4,
-      "recommendation": "Use textContent or DOM methods instead"
+      "file": "src/renderer/js/live-session-safe.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 14,
+      "recommendation": "Move sensitive data to environment variables"
     },
     {
       "type": "code-pattern",
       "file": "src/renderer/js/license.js",
       "severity": "medium",
       "description": "Potential hardcoded credentials",
-      "count": 24,
+      "count": 11,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/license-safe.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 11,
       "recommendation": "Move sensitive data to environment variables"
     },
     {
@@ -295,6 +307,30 @@
     },
     {
       "type": "code-pattern",
+      "file": "src/renderer/js/ai-agent.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 5,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai-agent.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai-agent.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 15,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
       "file": "src/renderer/js/UpdateBanner.js",
       "severity": "high",
       "description": "Direct innerHTML assignment detected",
@@ -322,7 +358,7 @@
       "file": "src/main/main.js",
       "severity": "medium",
       "description": "Potential hardcoded credentials",
-      "count": 72,
+      "count": 71,
       "recommendation": "Move sensitive data to environment variables"
     },
     {
@@ -331,6 +367,22 @@
       "severity": "medium",
       "description": "Insecure HTTP protocol detected",
       "count": 3,
+      "recommendation": "Use HTTPS for all external connections"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/core/test-canary-updates.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 4,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/core/CrashTelemetry.js",
+      "severity": "medium",
+      "description": "Insecure HTTP protocol detected",
+      "count": 1,
       "recommendation": "Use HTTPS for all external connections"
     },
     {
@@ -365,7 +417,7 @@
     {
       "priority": "high",
       "title": "Update Vulnerable Dependencies",
-      "description": "Found 9 vulnerable dependencies",
+      "description": "Found 8 vulnerable dependencies",
       "actions": [
         "Run npm audit fix to apply security patches",
         "Update to latest secure versions",
@@ -376,7 +428,7 @@
     {
       "priority": "high",
       "title": "Fix Code Security Issues",
-      "description": "Found 31 code security patterns",
+      "description": "Found 39 code security patterns",
       "actions": [
         "Replace eval() with safer alternatives",
         "Use DOM methods instead of innerHTML",
@@ -402,10 +454,10 @@
   },
   "compliance": {},
   "summary": {
-    "totalVulnerabilities": 44,
+    "totalVulnerabilities": 51,
     "criticalIssues": 0,
-    "highIssues": 17,
-    "mediumIssues": 24,
+    "highIssues": 16,
+    "mediumIssues": 32,
     "lowIssues": 0,
     "codeSigningReady": true
   }

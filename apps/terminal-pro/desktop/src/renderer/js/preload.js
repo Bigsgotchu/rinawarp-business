@@ -1,13 +1,12 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer } = require("electron");
 
-// Expose RINA_ENV to renderer
-contextBridge.exposeInMainWorld("RINA_ENV", {
-  SENTRY_DSN: process.env.SENTRY_DSN || null,
-});
-
-// Expose electronAPI for IPC
-contextBridge.exposeInMainWorld("electronAPI", {
-  getLicensePlan: () => ipcRenderer.invoke("get-license-plan"),
-  startBillingUpgrade: (data) => ipcRenderer.invoke("billing:start-upgrade", data),
-  licenseRefresh: () => ipcRenderer.invoke("license:refresh"),
+contextBridge.exposeInMainWorld("rinaAgent", {
+  status: () => ipcRenderer.invoke("rina-agent:status"),
+  tool: (tool, args, convoId) => ipcRenderer.invoke("rina-agent:tool", { tool, args, convoId }),
+  chat: (text, convoId) => ipcRenderer.invoke("rina-agent:chat", { text, convoId }),
+  onEvent: (cb) => {
+    const handler = (_evt, msg) => cb(msg);
+    ipcRenderer.on("rina-agent:event", handler);
+    return () => ipcRenderer.removeListener("rina-agent:event", handler);
+  }
 });

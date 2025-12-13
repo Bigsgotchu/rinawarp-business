@@ -28,7 +28,7 @@ export default {
 
     // Build response with CORS and security headers
     const headers = new Headers(r2Response.headers);
-    headers.set('Access-Control-Allow-Origin', '*');
+    headers.set('Access-Control-Allow-Origin', 'https://rinawarptech.com');
     headers.set('Cache-Control', cacheControl);
     headers.set('Content-Security-Policy', "default-src 'none'; style-src 'self';");
     headers.set('X-XSS-Protection', '1; mode=block');

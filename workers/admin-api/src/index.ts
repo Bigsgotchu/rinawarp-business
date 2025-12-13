@@ -1,3 +1,4 @@
+import { handleLicenseValidate } from "./license-validate";
 export interface Env {
   ADMIN_API_SECRET: string;
   BILLING_KV: KVNamespace;
@@ -203,6 +204,9 @@ export default {
         };
 
         return jsonResponse(billingSummary);
+      } else if (url.pathname === "/api/admin/licenses/validate" && request.method === "POST") {
+        return handleLicenseValidate(request, env);
+
       }
 
       return jsonResponse({ error: 'Not found' }, 404);

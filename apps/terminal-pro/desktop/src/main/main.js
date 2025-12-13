@@ -2,14 +2,16 @@ const path = require("path");
 const fs = require("fs");
 const os = require('os');
 const pty = require('node-pty');
+const { fork } = require("child_process");
 const recorder = require('node-record-lpcm16');
 const OpenAI = require("openai");
-const Sentry = require("@sentry/electron");
+// const Sentry = require("@sentry/electron"); // Disabled - causes import errors
 const WebSocket = require('ws');
 // Only initialize OpenAI if API key is available
 const ai = process.env.OPENAI_API_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
   : null;
+
 // Use dynamic import for electron-store (ESM module)
 let store;
 async function initStore() {
@@ -21,8 +23,11 @@ async function initStore() {
 // ==== CONFIG STORAGE (license etc.) ==================================
 
 function getConfigPath() {
-  const userDir = app.getPath("userData");
-  return path.join(userDir, "config.json");
+  const userDir = process.env.APPDATA || 
+    (process.platform === 'darwin' 
+      ? path.join(os.homedir(), 'Library', 'Application Support')
+      : path.join(os.homedir(), '.config'));
+  return path.join(userDir, "RinaWarp", "config.json");
 }
 
 // =============================
@@ -124,6 +129,40 @@ async function verifyLicenseWithBackend(licenseKey) {
 
 const RINA_AGENT_URL =
   process.env.RINA_AGENT_URL || "https://rinawarptech.com/api/agent";
+
+// ==== RINA AGENT PROCESS MANAGEMENT ====
+let rinaAgent = null;
+let lastHeartbeat = Date.now();
+
+function startRinaAgent() {
+  if (rinaAgent) return;
+
+  rinaAgent = fork(
+    path.join(__dirname, "../../../agent/index.js"),
+    [],
+    { stdio: ["pipe", "pipe", "pipe", "ipc"] }
+  );
+
+  rinaAgent.on("message", (msg) => {
+    if (msg.type === "agent:heartbeat") {
+      lastHeartbeat = Date.now();
+    }
+
+    if (msg.type === "agent:crash") {
+      console.error("[RinaAgent] crashed:", msg.error);
+      rinaAgent = null;
+      setTimeout(startRinaAgent, 1000);
+    }
+
+    // Forward agent messages to renderer
+    mainWindow?.webContents.send("rina:agent", msg);
+  });
+
+  rinaAgent.on("exit", () => {
+    rinaAgent = null;
+    setTimeout(startRinaAgent, 1000);
+  });
+}
 
 let mainWindow;
 let micStream = null;
@@ -406,6 +445,21 @@ function createMainWindowWithLicenseGate() {
 // -----------------------------
 function registerIPC() {
   // Config: get entire config (for non-license preferences)
+  // Agent IPC handlers
+  ipcMain.on("rina:agent:send", (_, msg) => {
+    rinaAgent?.send(msg);
+  });
+
+  ipcMain.handle("rina:agent:get-status", async () => {
+    const status = {
+      pid: rinaAgent?.pid,
+      lastHeartbeat,
+      running: !!rinaAgent,
+      uptime: process.uptime()
+    };
+    return status;
+  });
+
   ipcMain.handle("config:get", async () => {
     return readConfig();
   });
@@ -594,6 +648,7 @@ function registerIPC() {
     const status = await checkAgentHealth({ broadcast: true });
     return status;
   });
+  
   ipcMain.handle("rina:chat", async (event, payload = {}) => {
     const { prompt } = payload;
     const licenseKey = store.get("licenseKey", null);
@@ -642,6 +697,7 @@ function registerIPC() {
       };
     }
   });
+  
   // 🔹 Get Rina layout (open/width)
   ipcMain.handle("rina:get-layout", async () => {
     const layout = store.get("rinaLayout", {
@@ -746,6 +802,7 @@ function registerIPC() {
       return { plan: "free", features: {} };
     }
   });
+  
   // Add IPC handler for restarting app
   ipcMain.handle("update:restart", () => {
     autoUpdater.quitAndInstall();
@@ -1240,6 +1297,7 @@ function registerIPC() {
             throw err;
         }
     });
+  
   // Add IPC handler for crash recovery status
   ipcMain.handle("crash-recovery:get-status", async () => {
     const state = store.get("crashRecovery");
@@ -1300,27 +1358,32 @@ async function restoreTerminalState() {
   }
 }
 
-// Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error);
-  saveTerminalState();
-  // Restart app after 2 seconds
-  setTimeout(() => {
-    app.relaunch();
-    app.quit();
-  }, 2000);
-});
+// Handle uncaught exceptions (moved inside async function scope)
+function setupCrashHandlers(app) {
+  process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+    saveTerminalState();
+    // Restart app after 2 seconds
+    setTimeout(() => {
+      app.relaunch();
+      app.quit();
+    }, 2000);
+  });
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  saveTerminalState();
-});
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    saveTerminalState();
+  });
+}
 
 // Main entry point
 (async () => {
   // Import electron dynamically
-  const { app, BrowserWindow, ipcMain, shell } = await import('electron');
+  const electron = require('electron');
+  const { app, BrowserWindow, ipcMain, shell } = electron;
+
+  // Initialize store first
+  await initStore();
 
   // Initialize Sentry after electron is imported
   if (process.env.SENTRY_DSN) {
@@ -1332,28 +1395,21 @@ process.on('unhandledRejection', (reason, promise) => {
     });
   }
 
-  // Initialize auto-updater after app is ready
-  const { autoUpdater } = await import('electron-updater');
-  const log = await import('electron-log');
+  // Initialize auto-updater
+  const { autoUpdater: updater } = require('electron-updater');
+  autoUpdater = updater;
 
-  // Logging
-  autoUpdater.logger = log;
-  autoUpdater.logger.transports.file.level = "info";
-
-  // Where updates are hosted
-  autoUpdater.setFeedURL({
-    provider: "generic",
-    url: "https://download.rinawarptech.com/releases/"
-  });
-
-  // Initialize store first
-  await initStore();
+  // Setup crash handlers with app access
+  setupCrashHandlers(app);
 
   // Start WebSocket server for collaboration
   setupWebSocketServer();
 
   // CRITICAL FIX: Wait for app to be ready before creating windows
   app.whenReady().then(async () => {
+    // Start Rina Agent
+    startRinaAgent();
+
     // Check license status before creating main window
     const licenseKey = store.get("licenseKey");
 
@@ -1391,26 +1447,6 @@ process.on('unhandledRejection', (reason, promise) => {
     // Restore from crash if needed
     await restoreTerminalState();
   });
-      })
-      .catch(error => {
-        console.error("License verification failed, showing license gate:", error);
-        createMainWindowWithLicenseGate();
-        registerIPC();
-      });
-  } else {
-    // No license key, show license gate
-    createMainWindowWithLicenseGate();
-    registerIPC();
-  }
-
-  // Initial Agent health check + periodic pings (every 60s)
-  checkAgentHealth({ broadcast: true });
-  setInterval(() => {
-    checkAgentHealth({ broadcast: true });
-  }, 60_000);
-
-  // Restore from crash if needed
-  await restoreTerminalState();
 
   // Save state before quit
   app.on('before-quit', () => {

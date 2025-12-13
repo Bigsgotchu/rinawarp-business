@@ -2,6 +2,10 @@
  * RinaWarp Terminal Pro - Terminal Management
  */
 
+// Import GhostTextRenderer and v1 suggestions
+import { attachGhostText } from '../components/GhostTextRenderer.js';
+import { getV1Suggestion } from './v1-suggestions.js';
+
 class TerminalManager {
     constructor() {
         this.terminals = new Map();
@@ -16,6 +20,11 @@ class TerminalManager {
             scrollback: 1000,
             cursorBlink: true
         };
+        
+        // Ghost text state
+        this.ghostSuggestion = '';
+        this.ghostRenderer = null;
+        this.inputEl = null;
         
         this.initializeXterm();
     }
@@ -50,6 +59,7 @@ class TerminalManager {
                 const terminal = this.terminals.get(terminalId)?.terminal;
                 if (terminal) {
                     terminal.write(data);
+                    this.updateGhostSuggestion(data);
                 }
             });
             
@@ -114,6 +124,9 @@ class TerminalManager {
         
         // Setup global keyboard shortcuts
         this.setupKeyboardShortcuts();
+        
+        // Initialize ghost text after DOM is ready
+        this.initializeGhostText();
     }
 
     loadPreferences() {
@@ -173,6 +186,87 @@ class TerminalManager {
                 }
             }
         });
+    }
+
+    initializeGhostText() {
+        // Wait for DOM to be ready
+        setTimeout(() => {
+            this.setupGhostTextLayer();
+        }, 100);
+    }
+
+    setupGhostTextLayer() {
+        // Create ghost text layer
+        const ghostLayer = document.createElement('div');
+        ghostLayer.id = 'ghost-text-layer';
+        ghostLayer.style.cssText = `
+            position: absolute;
+            pointer-events: none;
+            z-index: 1000;
+            font-family: 'JetBrains Mono, Fira Code, Monaco, Cascadia Code, monospace';
+            font-size: 14px;
+            color: #6a737d;
+            white-space: pre;
+        `;
+        document.body.appendChild(ghostLayer);
+    }
+
+    updateGhostSuggestion(command) {
+        this.ghostSuggestion = getV1Suggestion(command) || '';
+        
+        if (this.ghostSuggestion) {
+            this.renderGhostText(this.ghostSuggestion);
+        } else {
+            this.clearGhostText();
+        }
+    }
+
+    renderGhostText(suggestion) {
+        const ghostLayer = document.getElementById('ghost-text-layer');
+        if (!ghostLayer || !this.inputEl) return;
+
+        const cursorPos = this.getCursorPosition();
+        if (cursorPos) {
+            ghostLayer.style.left = cursorPos.left + 'px';
+            ghostLayer.style.top = cursorPos.top + 'px';
+            ghostLayer.innerHTML = `<span class="ghost-text-suggestion">${suggestion}</span>`;
+        }
+    }
+
+    clearGhostText() {
+        const ghostLayer = document.getElementById('ghost-text-layer');
+        if (ghostLayer) {
+            ghostLayer.innerHTML = '';
+        }
+    }
+
+    getCursorPosition() {
+        if (!this.inputEl) return null;
+        
+        const style = window.getComputedStyle(this.inputEl);
+        const rect = this.inputEl.getBoundingClientRect();
+        
+        return {
+            left: rect.left + 10,
+            top: rect.top + 10
+        };
+    }
+
+    handleGhostTextAccept() {
+        if (!this.ghostSuggestion || !this.inputEl) return;
+        
+        // Apply suggestion
+        this.inputEl.value = this.ghostSuggestion;
+        this.ghostSuggestion = '';
+        this.clearGhostText();
+        
+        // Dispatch Enter key to execute
+        this.inputEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+        
+        // Update session state
+        if (window.sessionState) {
+            window.sessionState.acceptedSuggestions++;
+        }
     }
 
     createTerminal(options = {}) {
@@ -389,6 +483,11 @@ class TerminalManager {
         const terminalInfo = this.terminals.get(terminalId);
         if (!terminalInfo || !terminalInfo.shell) return;
         
+        // Update session state
+        if (window.sessionState) {
+            window.sessionState.commandsExecuted++;
+        }
+        
         // Send input to shell process via IPC
         try {
             await window.electronAPI.invoke('write-to-terminal', terminalId, data);
@@ -404,8 +503,13 @@ class TerminalManager {
         // Handle special key combinations
         const { key, domEvent } = event;
         
-        // Tab completion
+        // Tab completion - accept ghost text
         if (domEvent.key === 'Tab') {
+            if (this.ghostSuggestion) {
+                event.domEvent.preventDefault();
+                this.handleGhostTextAccept();
+                return;
+            }
             this.handleTabCompletion(terminalId);
         }
         

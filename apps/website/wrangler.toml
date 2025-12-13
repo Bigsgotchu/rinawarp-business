@@ -1,12 +1,10 @@
 name = "rinawarp-website"
-account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
-workers_dev = true
+account_id = "ba2f14cefa19dbdc42ff88d772410689"
+workers_dev = false
 compatibility_date = "2025-11-17"
 
-# Environment variables
+# Environment variables - will be set via secrets
 [vars]
-STRIPE_SECRET_KEY = "sk_test_..."
-STRIPE_WEBHOOK_SECRET = "whsec_..."
 DOMAIN = "https://rinawarptech.com"
 
 # D1 Database for licenses

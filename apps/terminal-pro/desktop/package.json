@@ -14,8 +14,8 @@
     "url": "https://github.com/RinaWarp/rinawarp-terminal-pro.git"
   },
   "scripts": {
-    "start": "electron .",
-    "dev": "electron . --dev",
+    "start": "npx electron .",
+    "dev": "npx electron . --dev",
     "build": "npm run security-audit && electron-builder",
     "build:win": "npm run security-audit && electron-builder --win",
     "build:mac": "npm run security-audit && ./scripts/build/build-macos.sh",
@@ -32,7 +32,7 @@
     "validate:signatures": "node scripts/validate-signatures.js",
     "customize:dmg": "node tools/dmg-customizer.js",
     "build:production": "npm run security-audit && npm run customize:dmg && electron-builder --mac --win --linux --publish=never",
-    "postinstall": "echo 'Dependencies installed successfully'",
+    "postinstall": "electron-builder install-app-deps",
     "test": "node test-comprehensive.js",
     "test:basic": "node test-basic.js",
     "test:comprehensive": "node test-comprehensive.js",
@@ -67,23 +67,42 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [ "x64" ]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "assets/icons/icon.ico",
-      "publisherName": "RinaWarp Technologies, LLC"
+      "publisherName": "RinaWarp Technologies, LLC",
+      "artifactName": "RinaWarp-Terminal-Pro-Setup-${version}-${arch}.${ext}",
+      "compression": "maximum",
+      "timeStampServer": "http://timestamp.sectigo.com"
     },
     "mac": {
       "target": [
-        { "target": "dmg", "arch": [ "x64", "arm64" ] },
-        { "target": "zip", "arch": [ "x64", "arm64" ] }
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
       ],
       "icon": "assets/icons/icon.icns",
       "category": "public.app-category.developer-tools",
       "hardenedRuntime": true,
       "entitlements": "entitlements.plist",
       "entitlementsInherit": "entitlements.plist",
-      "type": "distribution"
+      "type": "distribution",
+      "artifactName": "RinaWarp-Terminal-Pro-${version}-${arch}.${ext}",
+      "gatekeeperAssess": false
     },
     "linux": {
       "target": [
@@ -121,7 +140,8 @@
       "vendor": "RinaWarp Technologies",
       "synopsis": "AI-powered terminal application with advanced features",
       "description": "RinaWarp Terminal Pro is an AI-enhanced terminal application designed for developers and creators who need powerful command-line tools with intelligent assistance.",
-      "artifactName": "RinaWarp-Terminal-Pro-${version}-${arch}.${ext}"
+      "artifactName": "RinaWarp-Terminal-Pro-${version}-${arch}.${ext}",
+      "executableName": "rinawarp-terminal-pro"
     },
     "nsis": {
       "oneClick": false,
@@ -166,33 +186,53 @@
     },
     "publish": {
       "provider": "generic",
-      "url": "https://download.rinawarptech.com/releases/"
-    }
+      "url": "https://download.rinawarptech.com/releases/",
+      "channel": "latest"
+    },
+    "asarUnpack": [
+      "node_modules/electron-log/**/*",
+      "node_modules/openai/**/*",
+      "node_modules/stripe/**/*",
+      "node_modules/ws/**/*",
+      "node_modules/node-pty/**/*"
+    ],
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "compression": "maximum",
+    "removePackageScripts": false,
+    "npmRebuild": true,
+    "buildDependenciesFromSource": false,
+    "nodeGypRebuild": false,
+    "buildVersion": "1",
+    "buildNumber": "1"
   },
   "dependencies": {
+    "electron-log": "^5.4.3",
     "node-pty": "^1.0.0",
     "node-record-lpcm16": "^1.0.1",
     "openai": "^4.20.1",
     "stripe": "^14.9.0",
+    "ws": "^8.18.3",
     "xterm": "^5.3.0"
   },
   "devDependencies": {
-    "electron": "^28.3.3",
+    "@electron/rebuild": "^3.7.2",
+    "@sentry/electron": "^5.0.0",
+    "chai": "^4.3.7",
+    "commander": "^11.0.0",
     "electron-builder": "^24.13.3",
+    "electron-mocha": "^10.0.0",
+    "electron-rebuild": "^3.2.9",
     "eslint": "^8.55.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-security": "^2.1.1",
     "glob": "^10.3.10",
-    "@sentry/electron": "^5.0.0",
-    "chai": "^4.3.7",
     "mocha": "^10.2.0",
-    "sinon": "^15.0.0",
-    "electron-mocha": "^10.0.0",
     "nyc": "^15.1.0",
-    "commander": "^11.0.0"
+    "semver": "^7.7.3",
+    "sinon": "^15.0.0"
   },
   "optionalDependencies": {
-    "electron-updater": "^6.1.4"
+    "electron-updater": "^6.6.2"
   },
   "engines": {
     "node": ">=18.0.0",

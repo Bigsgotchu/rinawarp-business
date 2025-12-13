@@ -1,12 +1,15 @@
 {
   "dependencies": {
+    "body-parser": "^2.2.1",
     "chalk": "^5.6.2",
     "electron-store": "^11.0.2",
+    "express": "^5.2.1",
     "node-fetch": "^3.3.2",
     "stripe": "^20.0.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251209.0",
+    "@cspell/cspell-bundled-dicts": "^9.4.0",
     "electron-builder": "^26.0.12",
     "vitest": "^4.0.15"
   }

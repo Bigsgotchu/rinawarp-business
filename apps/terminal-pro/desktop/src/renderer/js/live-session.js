@@ -1,5 +1,5 @@
-// live-session.js
-// RinaWarp Terminal Pro – Live Session Client (Host + Guest)
+// live-session-safe.js
+// RinaWarp Terminal Pro – Live Session Client (Host + Guest) - Safe API Version
 
 const API_ROOT =
   window.RINA_API_ROOT ||
@@ -16,13 +16,23 @@ const LiveSessionState = {
   onGuestInput: null,  // callback(data) used by host to write into PTY
 };
 
+// Safe API call wrapper that prevents error spam
+async function safeApiCall(apiFunction, fallbackValue = null) {
+  try {
+    return await apiFunction();
+  } catch (error) {
+    console.debug("Live Session API unavailable (expected in dev):", error?.message || error);
+    return fallbackValue;
+  }
+}
+
 async function getAuthToken() {
   try {
     if (window.RinaAuth?.getToken) {
       return await window.RinaAuth.getToken();
     }
   } catch (err) {
-    console.error("[LiveSession] Failed to fetch auth token", err);
+    console.debug("Auth token unavailable:", err.message);
   }
   return null;
 }
@@ -150,10 +160,10 @@ function handleIncomingMessage(msg) {
 }
 
 /* ──────────────────────────────────────────────
- * Public API
+ * Public API (Safe Versions)
  * ─────────────────────────────────────────── */
 
-async function startHostSession(meta = {}) {
+async function safeStartHostSession(meta = {}) {
   if (LiveSessionState.connecting || LiveSessionState.connected) {
     appendLog("[live] Already connected; ignoring startHostSession");
     return LiveSessionState;
@@ -166,7 +176,7 @@ async function startHostSession(meta = {}) {
     return LiveSessionState;
   }
 
-  try {
+  const result = await safeApiCall(async () => {
     const res = await fetch(`${API_ROOT}/api/live-session/create`, {
       method: "POST",
       headers: {
@@ -178,9 +188,7 @@ async function startHostSession(meta = {}) {
 
     const json = await res.json();
     if (!res.ok || !json.ok) {
-      appendLog(`[live] Failed to create session: ${json.error || res.status}`);
-      setStatusUI("Create failed", "status-error");
-      return LiveSessionState;
+      throw new Error(json.error || `HTTP ${res.status}`);
     }
 
     LiveSessionState.sessionId = json.sessionId;
@@ -195,15 +203,19 @@ async function startHostSession(meta = {}) {
     }
 
     return LiveSessionState;
-  } catch (err) {
-    appendLog(`[live] Error creating session: ${err.message}`);
-    setStatusUI("Error", "status-error");
-    return LiveSessionState;
+  }, LiveSessionState);
+
+  if (result === LiveSessionState) {
+    // Safe call failed, show status
+    setStatusUI("Service unavailable", "status-error");
   }
+
+  return result;
 }
 
-async function joinSession(sessionId) {
-  if (!sessionId) return;
+async function safeJoinSession(sessionId) {
+  if (!sessionId) return LiveSessionState;
+
   const token = await getAuthToken();
   if (!token) {
     appendLog("[live] No auth token; cannot join live session");
@@ -211,7 +223,7 @@ async function joinSession(sessionId) {
     return LiveSessionState;
   }
 
-  try {
+  const result = await safeApiCall(async () => {
     const res = await fetch(`${API_ROOT}/api/live-session/join`, {
       method: "POST",
       headers: {
@@ -223,11 +235,7 @@ async function joinSession(sessionId) {
 
     const json = await res.json();
     if (!res.ok || !json.ok) {
-      appendLog(
-        `[live] Failed to join session: ${json.error || res.status}`
-      );
-      setStatusUI("Join failed", "status-error");
-      return LiveSessionState;
+      throw new Error(json.error || `HTTP ${res.status}`);
     }
 
     LiveSessionState.sessionId = json.sessionId;
@@ -242,11 +250,22 @@ async function joinSession(sessionId) {
     }
 
     return LiveSessionState;
-  } catch (err) {
-    appendLog(`[live] Error joining session: ${err.message}`);
-    setStatusUI("Error", "status-error");
-    return LiveSessionState;
+  }, LiveSessionState);
+
+  if (result === LiveSessionState) {
+    setStatusUI("Service unavailable", "status-error");
   }
+
+  return result;
+}
+
+// Original function names for compatibility (safe versions)
+async function startHostSession(meta = {}) {
+  return await safeStartHostSession(meta);
+}
+
+async function joinSession(sessionId) {
+  return await safeJoinSession(sessionId);
 }
 
 function sendPTYOutputFromHost(data) {
@@ -333,6 +352,8 @@ window.RinaLiveSession = {
   registerOnGuestInput,
   isLiveHost,
   isLiveGuest,
+  safeStartHostSession,
+  safeJoinSession,
 };
 
 document.addEventListener("DOMContentLoaded", () => {

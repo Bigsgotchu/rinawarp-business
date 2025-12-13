@@ -4,12 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
+    "build": "vite build --config vite.website.config.js",
     "deploy": "wrangler deploy",
     "db:migrate": "wrangler d1 execute licenses --file=d1-schema.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitejs/plugin-react": "^5.1.2",
+    "autoprefixer": "^10.4.22",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "rollup-plugin-visualizer": "^6.0.5",
     "stripe": "^16.12.0",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.2.7",
     "wrangler": "^3.60.2"
   },
   "devDependencies": {

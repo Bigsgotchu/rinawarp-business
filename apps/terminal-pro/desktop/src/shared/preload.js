@@ -126,7 +126,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 contextBridge.exposeInMainWorld("electronAPI", {
   getAppVersion: () => ipcRenderer.invoke("get-app-version"),
   getReleaseNotes: () => ipcRenderer.invoke("get-release-notes"),
-  ...window.electronAPI // Merge with existing methods
+
 });
 
 // New Rina Config API

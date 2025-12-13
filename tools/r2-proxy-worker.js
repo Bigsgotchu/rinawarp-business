@@ -63,7 +63,7 @@ export default {
         headers: {
           "Content-Type": object.httpMetadata?.contentType || "application/octet-stream",
           "Cache-Control": "public, max-age=3600",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://rinawarptech.com",
           "X-Content-Type-Options": "nosniff",
           "X-RinaWarp-Download": "true",
           "X-RinaWarp-Version": "0.9.0"

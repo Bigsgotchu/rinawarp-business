@@ -53,7 +53,7 @@ class LicenseGate {
         return false;
       }
     } catch (err) {
-      console.error('License verification failed:', err);
+      console.debug("License unavailable, showing free tier");
       this.setStatus('error');
       this.showLicenseGate();
       return false;
@@ -238,7 +238,7 @@ class LicenseGate {
       this.removeLicenseGate();
 
     } catch (err) {
-      console.error('License activation error:', err);
+      console.debug("License activation failed, user can retry");
       this.setStatus('error');
     }
   }

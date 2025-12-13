@@ -11,7 +11,16 @@ const app = express();
 const PORT = process.env.MUSIC_VIDEO_PORT || 3008;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(",") || [
+    "http://localhost:3000",
+    "http://localhost:5173", 
+    "https://rinawarptech.com"
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+}));
 app.use(express.json());
 app.use(express.static('public'));
 

@@ -10,9 +10,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.BILLING_SERVICE_PORT || 3005;
 
-// Initialize Stripe
+// NOTE: Stripe operations moved to canonical webhook at backend/stripe-secure/webhook.js
+// This service focuses on license management and checkout session creation only
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // Middleware
 app.use(cors());
@@ -36,9 +36,10 @@ app.post("/api/billing/create-checkout-session", express.json(), async (req, res
   }
 
   try {
-    // Create Stripe checkout session
+    // Create Stripe checkout session with required metadata
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
+      client_reference_id: licenseKey, // Required by audit
       line_items: [
         {
           price: tier === 'pro-monthly' ? process.env.STRIPE_PRO_PRICE_ID : process.env.STRIPE_LIFETIME_PRICE_ID,
@@ -51,6 +52,7 @@ app.post("/api/billing/create-checkout-session", express.json(), async (req, res
       metadata: {
         tier,
         licenseKey,
+        user_id: licenseKey, // Required by audit
       },
     });
 
@@ -63,59 +65,8 @@ app.post("/api/billing/create-checkout-session", express.json(), async (req, res
   }
 });
 
-// Stripe Webhook endpoint (must use RAW body)
-app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }),
-  async (req, res) => {
-    const sig = req.headers["stripe-signature"];
-
-    let event;
-    try {
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    } catch (err) {
-      console.error("❌ Stripe webhook signature failed:", err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
-
-    // Prevent duplicates
-    if (await saveProcessedEvent.check(event.id)) {
-      console.log(`⚠️ Duplicate event ignored: ${event.id}`);
-      return res.json({ received: true });
-    }
-
-    console.log(`🔔 Event received: ${event.type}`);
-
-    try {
-      switch (event.type) {
-        // ----- ONE-TIME LIFETIME PURCHASE -----
-        case "checkout.session.completed":
-          await handleCheckoutCompleted(event.data.object);
-          break;
-
-        // ----- SUBSCRIPTIONS -----
-        case "customer.subscription.created":
-        case "customer.subscription.updated":
-          await handleSubscriptionUpdate(event.data.object);
-          break;
-
-        case "invoice.payment_failed":
-        case "customer.subscription.deleted":
-          await handleSubscriptionCancelled(event.data.object);
-          break;
-
-        default:
-          console.log(`ℹ️ Unhandled event type: ${event.type}`);
-      }
-
-      await saveProcessedEvent.store(event.id);
-      res.json({ received: true });
-    } catch (err) {
-      console.error("❌ Webhook handler failed:", err);
-      res.status(500).send("Webhook handler failed");
-    }
-  }
-);
+// NOTE: Stripe webhooks are handled ONLY by backend/stripe-secure/webhook.js
+// This service must not verify Stripe signatures or parse webhook raw bodies.
 
 // -------------------------------
 // HANDLERS

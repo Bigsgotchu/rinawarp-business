@@ -1,0 +1,11 @@
+name = "rinawarptech"
+compatibility_date = "2024-01-01"
+
+[build]
+command = "echo 'No build needed - static files ready'"
+
+# Directory containing static files to serve
+pages_build_output_dir = "."
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
