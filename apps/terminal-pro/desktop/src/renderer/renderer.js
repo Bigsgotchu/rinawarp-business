@@ -1,10 +1,17 @@
 (function () {
   const $ = (id) => document.getElementById(id);
+
   const intentEl = $('intent'), planEl = $('plan'), outEl = $('output'), errEl = $('errors'),
         cwdEl = $('cwd'), btnCwd = $('btnCwd'), btnPlan = $('btnPlan'),
         btnDry = $('btnDry'), btnExec = $('btnExec'), btnRerun = $('btnRerun'), btnRollback = $('btnRollback'),
-        capDocker = $('cap-docker'), capGit = $('cap-git'), capNpm = $('cap-npm'), capNetwork = $('cap-network'), saveCaps = $('saveCaps'),
-        btnDiag = $('btnDiag'), btnExport = $('btnExport'), diagStatus = $('diagStatus'), diagModal = $('diagModal'), diagOut = $('diagOut'), diagClose = $('diagClose');
+        capDocker = $('cap-docker'), capGit = $('cap-git'), capNpm = $('cap-npm'), capNetwork = $('cap-network'), saveCaps = $('saveCaps');
+
+  // NEW refs
+  const btnDiag = $('btnDiag'), diagStatus = $('diagStatus');
+  const btnExport = $('btnExport'), btnFixPolicy = $('btnFixPolicy');
+  const btnShowGraph = $('btnShowGraph'), graphModal = $('graphModal'), graphClose = $('graphClose'), graphSvg = $('graphSvg');
+
+  let lastPlan = []; // NEW: keep raw plan for visualization
 
   function chipSet(el, on) { el.classList.toggle('tag-on', on); el.classList.toggle('tag-off', !on); }
   function getCwd() { return cwdEl.value && cwdEl.value.trim() ? cwdEl.value.trim() : process.cwd(); }
@@ -31,10 +38,11 @@
   saveCaps.onclick = saveCapsNow;
 
   function renderPlan(plan) {
+    lastPlan = plan || []; // keep for graph
     planEl.innerHTML = '';
-    plan.forEach((s, i) => {
+    lastPlan.forEach((s, i) => {
       const li = document.createElement('li');
-      li.textContent = `${i + 1}. ${s.description}  [ ${s.command} ]`;
+      li.textContent = `${i + 1}. ${s.id} — ${s.description}  [ ${s.command} ]`;
       li.title = 'Click to explain';
       li.style.cursor = 'help';
       li.onclick = async () => {
@@ -52,51 +60,155 @@
     if (res.status === 'ok') { renderPlan(res.plan); outEl.textContent = 'Review plan. F9=Dry-run · F10=Execute'; }
     else { errEl.textContent = res.message || 'Plan failed'; }
   }
-  async function doDry() {
-    const intent = intentEl.value.trim(); if (!intent) return;
-    const res = await window.Rina.dryrun(intent, getCwd());
-    if (res.status === 'ok') { renderPlan(res.plan); outEl.textContent = res.stdout || ''; errEl.textContent = res.stderr || ''; }
-    else { errEl.textContent = res.message || 'Dry-run failed'; }
-  }
-  async function doExec(resetFailed=false) {
-    const intent = intentEl.value.trim(); if (!intent) return;
-    if (!confirm(resetFailed ? 'Rerun failed steps only? (will keep successful steps skipped)' : 'Execute the plan?')) return;
-    const res = await window.Rina.execGraph(intent, getCwd(), true, resetFailed);
-    if (res.status === 'ok') { renderPlan([]); outEl.textContent = res.stdout || 'Completed.'; errEl.textContent = res.stderr || ''; }
-    else { renderPlan(res.plan || []); errEl.textContent = `[${res.status}] ${res.message}\n` + (res.stderr || ''); }
-  }
-  async function doRollback() {
-    if (!confirm('Rollback last successful steps?')) return;
-    const r = await window.Rina.rollback();
-    outEl.textContent = r.stdout || r.message || '';
-    errEl.textContent = r.stderr || '';
-  }
 
-  btnCwd.onclick = () => { cwdEl.value = process.cwd(); loadCaps(); };
-  btnPlan.onclick = doPlan; btnDry.onclick = doDry; btnExec.onclick = () => doExec(false); btnRerun.onclick = () => doExec(true); btnRollback.onclick = doRollback;
-  btnDiag.onclick = async () => {
-    diagStatus.textContent = 'Running diagnostics…';
-    const r = await window.Rina.diagRun();
-    diagOut.textContent = r.report || '';
-    diagStatus.textContent = 'Diagnostics complete';
-    diagModal.style.display = 'block';
-  };
+  // Diagnostics & Export (existing wiring assumed)
   btnExport.onclick = async () => {
     const cwd = getCwd();
-    // Collect last shown plan/output if available
-    const planItems = Array.from(planEl.querySelectorAll('li')).map(li => li.textContent);
+    const planItems = lastPlan;
     const execDetail = { output: outEl.textContent, errors: errEl.textContent };
     const r = await window.Rina.exportReport(cwd, planItems, execDetail);
     alert(`Exported: ${r.file}`);
   };
-  diagClose.onclick = () => { diagModal.style.display = 'none'; };
+
+  btnDiag.onclick = async () => {
+    diagStatus.textContent = 'Running diagnostics…';
+    const cwd = getCwd();
+    const r = await window.Rina.diagRun({ cwd });
+    document.getElementById('diagOut').textContent = r.report || '';
+    diagStatus.textContent = 'Diagnostics complete';
+    document.getElementById('diagModal').style.display = 'block';
+  };
+
+  // NEW: Quick-Fix policy
+  btnFixPolicy.onclick = async () => {
+    const r = await window.Rina.policyQuickFix(getCwd());
+    alert(`${r.message}\n${r.file}`);
+  };
+
+  // === DAG GRAPH ===
+  btnShowGraph.onclick = () => {
+    drawGraph(lastPlan, graphSvg);
+    graphModal.style.display = 'block';
+  };
+  graphClose.onclick = () => { graphModal.style.display = 'none'; };
+
+  // Simple layered layout without deps
+  function topoLayers(steps) {
+    const id2Step = new Map(steps.map(s => [s.id, s]));
+    const indeg = new Map(steps.map(s => [s.id, 0]));
+    for (const s of steps) for (const d of (s.requires||[])) indeg.set(s.id, (indeg.get(s.id)||0)+1);
+    const q = []; for (const [id, d] of indeg) if (d===0) q.push(id);
+    const layers = [];
+    const seen = new Set();
+    while (q.length) {
+      const layer = [...q]; q.length = 0; layers.push(layer);
+      for (const id of layer) {
+        seen.add(id);
+        for (const s of steps) {
+          if (!seen.has(s.id) && (s.requires||[]).includes(id)) {
+            indeg.set(s.id, (indeg.get(s.id)||0)-1);
+          }
+        }
+      }
+      for (const [id, d] of indeg) if (d===0 && !seen.has(id) && !q.includes(id)) q.push(id);
+    }
+    // any remaining (cycles) – shove into last layer
+    for (const s of steps) if (!layers.flat().includes(s.id)) {
+      if (!layers.length) layers.push([]); layers[layers.length-1].push(s.id);
+    }
+    return { layers, id2Step };
+  }
+
+  function drawGraph(steps, svg) {
+    const NS = 'http://www.w3.org/2000/svg';
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const { layers, id2Step } = topoLayers(steps);
+    const layerGap = 260, nodeW = 240, nodeH = 60, vGap = 24, margin = 40;
+
+    // positions
+    const pos = new Map();
+    layers.forEach((layer, x) => {
+      const totalH = layer.length*nodeH + (layer.length-1)*vGap;
+      const yStart = margin + Math.max(0, (svg.height.baseVal.value - totalH)/2);
+      layer.forEach((id, i) => {
+        const y = yStart + i*(nodeH+vGap);
+        const xPx = margin + x*layerGap;
+        pos.set(id, { x:xPx, y });
+      });
+    });
+
+    // edges
+    for (const s of steps) {
+      for (const d of (s.requires||[])) {
+        const a = pos.get(d), b = pos.get(s.id);
+        if (!a || !b) continue;
+        const path = document.createElementNS(NS, 'path');
+        const mx = (a.x + nodeW) + 40;
+        const dStr = `M ${a.x+nodeW} ${a.y+nodeH/2} C ${mx} ${a.y+nodeH/2}, ${b.x-40} ${b.y+nodeH/2}, ${b.x} ${b.y+nodeH/2}`;
+        path.setAttribute('d', dStr);
+        path.setAttribute('fill','none');
+        path.setAttribute('stroke','#555');
+        path.setAttribute('stroke-width','2');
+        svg.appendChild(path);
+      }
+    }
+
+    // nodes
+    for (const s of steps) {
+      const p = pos.get(s.id); if (!p) continue;
+      const g = document.createElementNS(NS, 'g');
+      const r = document.createElementNS(NS, 'rect');
+      r.setAttribute('x', p.x); r.setAttribute('y', p.y);
+      r.setAttribute('width', nodeW); r.setAttribute('height', nodeH);
+      r.setAttribute('rx','10'); r.setAttribute('ry','10');
+      r.setAttribute('fill','#1a1a1a'); r.setAttribute('stroke','#444');
+      const t1 = document.createElementNS(NS, 'text');
+      t1.setAttribute('x', p.x+12); t1.setAttribute('y', p.y+22);
+      t1.setAttribute('font-size','12'); t1.setAttribute('fill','#aaa');
+      t1.textContent = s.id;
+      const t2 = document.createElementNS(NS, 'text');
+      t2.setAttribute('x', p.x+12); t2.setAttribute('y', p.y+40);
+      t2.setAttribute('font-size','12'); t2.setAttribute('fill','#ddd');
+      t2.textContent = s.description;
+      g.appendChild(r); g.appendChild(t1); g.appendChild(t2);
+      svg.appendChild(g);
+    }
+  }
+
+  // rebind buttons (keep original bindings)
+  btnCwd.onclick = () => { cwdEl.value = process.cwd(); loadCaps(); };
+  btnPlan.onclick = doPlan;
+  btnDry.onclick = async () => { const intent = intentEl.value.trim(); if (!intent) return;
+    const res = await window.Rina.dryrun(intent, getCwd());
+    if (res.status === 'ok') { renderPlan(res.plan); outEl.textContent = res.stdout || ''; errEl.textContent = res.stderr || ''; }
+    else { errEl.textContent = res.message || 'Dry-run failed'; }
+  };
+  btnExec.onclick = async () => { const intent = intentEl.value.trim(); if (!intent) return;
+    if (!confirm('Execute the plan?')) return;
+    const res = await window.Rina.execGraph(intent, getCwd(), true, false);
+    if (res.status === 'ok') { renderPlan([]); outEl.textContent = res.stdout || 'Completed.'; errEl.textContent = res.stderr || ''; }
+    else { renderPlan(res.plan || []); errEl.textContent = `[${res.status}] ${res.message}\n` + (res.stderr || ''); }
+  };
+  btnRerun.onclick = async () => {
+    const intent = intentEl.value.trim(); if (!intent) return;
+    if (!confirm('Rerun failed steps only?')) return;
+    const res = await window.Rina.execGraph(intent, getCwd(), true, true);
+    if (res.status === 'ok') { renderPlan([]); outEl.textContent = res.stdout || 'Completed.'; errEl.textContent = res.stderr || ''; }
+    else { renderPlan(res.plan || []); errEl.textContent = `[${res.status}] ${res.message}\n` + (res.stderr || ''); }
+  };
+  btnRollback.onclick = async () => {
+    if (!confirm('Rollback last successful steps?')) return;
+    const r = await window.Rina.rollback();
+    outEl.textContent = r.stdout || r.message || '';
+    errEl.textContent = r.stderr || '';
+  };
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey && !e.shiftKey) { e.preventDefault(); doPlan(); }
-    else if (e.key === 'F9') { e.preventDefault(); doDry(); }
-    else if (e.key === 'F10') { e.preventDefault(); doExec(false); }
-    else if (e.key === 'Escape') { e.preventDefault(); intentEl.value = ''; clearOutputs(); }
+    else if (e.key === 'F9') { e.preventDefault(); btnDry.click(); }
+    else if (e.key === 'F10') { e.preventDefault(); btnExec.click(); }
+    else if (e.key === 'Escape') { e.preventDefault(); intentEl.value = ''; outEl.textContent=''; errEl.textContent=''; }
   });
 
-  // boot
   cwdEl.value = process.cwd(); loadCaps();
 })();

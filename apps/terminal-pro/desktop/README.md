@@ -1,3 +1,9 @@
+# RinaWarp Terminal Pro (Desktop)
+
+- Local-first, offline by default.
+- No GPS, no remote network calls.
+- Any location/GPS features live in a separate web service (see consent-gps-tracker-pages).
+
 # RinaWarp Terminal Pro (Electron)
 
 ## What You Are Building (Plain English)

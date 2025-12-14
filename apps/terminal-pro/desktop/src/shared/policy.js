@@ -39,4 +39,18 @@ function loadPolicy(cwd) {
   }
 }
 
-module.exports = { loadPolicy, DEFAULTS };
+function validatePolicy(cwd) {
+  try {
+    const p = path.join(cwd, '.rinawarp.yaml');
+    if (!fs.existsSync(p)) return { ok: false, error: 'file not found' };
+    const data = yaml.parse(fs.readFileSync(p, 'utf8'));
+    if (!data) return { ok: false, error: 'invalid yaml' };
+    // basic checks
+    if (typeof data.capabilities !== 'object') return { ok: false, error: 'capabilities not object' };
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+module.exports = { loadPolicy, validatePolicy, DEFAULTS };

@@ -1,0 +1,15 @@
+name: boundary
+on: [push, pull_request]
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Disallow GPS/web-service artifacts in desktop app
+        run: |
+          set -e
+          ! git grep -nE "(share\.html|functions/api|wrangler\.toml|Cloudflare|navigator\.geolocation|fetch\(.*/api/)" -- . || \
+            (echo "Boundary violation: web/GPS code found in desktop repo" && exit 1)
+      - name: Disallow external connects in CSP
+        run: |
+          grep -R "connect-src 'self'" -n src/main.js >/dev/null

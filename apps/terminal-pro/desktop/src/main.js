@@ -49,6 +49,14 @@ app.whenReady().then(() => {
   ensureHistory(); hardenSession();
   session.defaultSession.webRequest.onHeadersReceived((d, cb) => cb({ responseHeaders: { ...d.responseHeaders, 'Content-Security-Policy': [cspHeader()] } }));
   createWindow();
+  session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
+    const url = details.url;
+    // Block any http(s) request that isn't localhost or app asset
+    if (/^https?:\/\/(?!localhost|127\.0\.0\.1)/i.test(url)) {
+      return cb({ cancel: true });
+    }
+    cb({});
+  });
   app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
@@ -59,8 +67,32 @@ const { composePlanner } = require('./shared/planner_llm.js');
 const { getCapabilities, setCapabilities } = require('./shared/capabilities.js');
 const { execGraph, rollbackLastRun, exportReportBundle } = require('./shared/executor.js');
 const { explainStep } = require('./shared/explain.js');
-const { loadPolicy } = require('./shared/policy.js');
+const { loadPolicy, validatePolicy } = require('./shared/policy.js');
 const { auditWrite } = require('./shared/audit.js');
+
+function policyTemplate() {
+  return `# RinaWarp Workspace Policy — safe defaults
+capabilities:
+  docker: false
+  git: true
+  npm: true
+  network: false
+
+limits:
+  timeoutMs: 120000
+  maxBytes: 2000000
+
+policy:
+  confirmRequired: true
+  dryRunByDefault: false
+  concurrency: 3
+  stepPolicy:
+    - match: { capability: network }
+      timeoutMs: 180000
+      maxRetries: 3
+      retryBackoffMs: 800
+`;
+}
 
 // ---- Schemas
 const PlanSchema = z.object({ intent: z.string().min(1).max(2000), cwd: z.string().min(1) });
@@ -176,4 +208,15 @@ safeHandle('diag:export', async (_evt, { cwd, plan, execDetail }) => {
   const file = exportReportBundle({ cwd, plan, execDetail, diagnostics: diag });
   auditWrite('export', { cwd, file });
   return { status: 'ok', file };
+});
+
+// NEW IPC: create/repair .rinawarp.yaml when invalid/missing
+safeHandle('policy:quickfix', async (_evt, { cwd }) => {
+  const pv = validatePolicy(cwd);
+  const file = path.join(cwd, '.rinawarp.yaml');
+  if (pv.ok && fs.existsSync(file)) {
+    return { status: 'ok', message: 'policy already valid', file };
+  }
+  fs.writeFileSync(file, policyTemplate());
+  return { status: 'ok', message: 'policy template written', file };
 });
