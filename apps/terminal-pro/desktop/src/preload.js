@@ -9,6 +9,8 @@ const api = Object.freeze({
   explain: (step) => ipcRenderer.invoke('agent:explain', { step }),
   diagRun: () => ipcRenderer.invoke('diag:run'),
   exportReport: (cwd, plan, execDetail) => ipcRenderer.invoke('diag:export', { cwd, plan, execDetail }),
-  policyQuickFix: (cwd) => ipcRenderer.invoke('policy:quickfix', { cwd })
+  policyQuickFix: (cwd) => ipcRenderer.invoke('policy:quickfix', { cwd }),
+  execSubset: (intent, cwd, selectedIds, dryRun=false) =>
+    ipcRenderer.invoke('agent:execSubset', { intent, cwd, selectedIds, dryRun })
 });
 contextBridge.exposeInMainWorld('Rina', api);

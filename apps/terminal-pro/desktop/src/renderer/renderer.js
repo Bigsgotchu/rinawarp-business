@@ -10,12 +10,17 @@
   const btnDiag = $('btnDiag'), diagStatus = $('diagStatus');
   const btnExport = $('btnExport'), btnFixPolicy = $('btnFixPolicy');
   const btnShowGraph = $('btnShowGraph'), graphModal = $('graphModal'), graphClose = $('graphClose'), graphSvg = $('graphSvg');
+  const btnDrySel = $('btnDrySel'), btnExecSel = $('btnExecSel'), selSummary = $('selSummary');
 
   let lastPlan = []; // NEW: keep raw plan for visualization
+  let selectedIds = new Set();
 
   function chipSet(el, on) { el.classList.toggle('tag-on', on); el.classList.toggle('tag-off', !on); }
   function getCwd() { return cwdEl.value && cwdEl.value.trim() ? cwdEl.value.trim() : process.cwd(); }
   function clearOutputs() { planEl.innerHTML = ''; outEl.textContent = ''; errEl.textContent = ''; }
+  function updateSelSummary() {
+    selSummary.textContent = selectedIds.size ? `Selected: ${Array.from(selectedIds).join(', ')}` : 'No steps selected';
+  }
 
   async function loadCaps() {
     const { caps } = await window.Rina.capsGet(getCwd());
@@ -39,26 +44,51 @@
 
   function renderPlan(plan) {
     lastPlan = plan || []; // keep for graph
+    selectedIds.clear();
     planEl.innerHTML = '';
     lastPlan.forEach((s, i) => {
       const li = document.createElement('li');
-      li.textContent = `${i + 1}. ${s.id} — ${s.description}  [ ${s.command} ]`;
-      li.title = 'Click to explain';
-      li.style.cursor = 'help';
-      li.onclick = async () => {
-        const ex = await window.Rina.explain(s);
-        alert(ex.text);
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.style.marginRight = '6px';
+      cb.onchange = () => {
+        if (cb.checked) selectedIds.add(s.id); else selectedIds.delete(s.id);
+        updateSelSummary();
       };
+      const text = document.createElement('span');
+      text.textContent = `${i + 1}. ${s.id} — ${s.description}  [ ${s.command} ]`;
+      text.title = 'Click to explain';
+      text.style.cursor = 'help';
+      text.onclick = async () => { const ex = await window.Rina.explain(s); alert(ex.text); };
+
+      li.appendChild(cb);
+      li.appendChild(text);
       planEl.appendChild(li);
     });
+    updateSelSummary();
   }
 
   async function doPlan() {
     clearOutputs();
     const intent = intentEl.value.trim(); if (!intent) return;
     const res = await window.Rina.plan(intent, getCwd());
-    if (res.status === 'ok') { renderPlan(res.plan); outEl.textContent = 'Review plan. F9=Dry-run · F10=Execute'; }
+    if (res.status === 'ok') { renderPlan(res.plan); outEl.textContent = 'Review plan. Select steps if needed. F9=Dry-run · F10=Execute'; }
     else { errEl.textContent = res.message || 'Plan failed'; }
+  }
+
+  async function runSelected(dryRun) {
+    const intent = intentEl.value.trim(); if (!intent) return;
+    if (!selectedIds.size) { alert('Select at least one step.'); return; }
+    // show closure preview count (done server-side too, but UX feedback)
+    const res = await window.Rina.execSubset(intent, getCwd(), Array.from(selectedIds), dryRun);
+    if (res.status === 'ok') {
+      renderPlan(res.plan); // show the exact subset+deps that ran
+      outEl.textContent = res.stdout || (dryRun ? 'Dry-run complete.' : 'Completed.');
+      errEl.textContent = res.stderr || '';
+    } else {
+      renderPlan(res.plan || []);
+      errEl.textContent = `[${res.status}] ${res.message}\n` + (res.stderr || '');
+    }
   }
 
   // Diagnostics & Export (existing wiring assumed)
@@ -178,6 +208,11 @@
   // rebind buttons (keep original bindings)
   btnCwd.onclick = () => { cwdEl.value = process.cwd(); loadCaps(); };
   btnPlan.onclick = doPlan;
+  btnDrySel.onclick = () => runSelected(true);
+  btnExecSel.onclick = () => {
+    if (!confirm('Execute selected steps (with required dependencies)?')) return;
+    runSelected(false);
+  };
   btnDry.onclick = async () => { const intent = intentEl.value.trim(); if (!intent) return;
     const res = await window.Rina.dryrun(intent, getCwd());
     if (res.status === 'ok') { renderPlan(res.plan); outEl.textContent = res.stdout || ''; errEl.textContent = res.stderr || ''; }

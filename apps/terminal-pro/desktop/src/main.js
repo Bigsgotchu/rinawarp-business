@@ -107,6 +107,13 @@ const CapsSetSchema = z.object({
   caps: z.object({ docker: z.boolean().optional(), git: z.boolean().optional(), npm: z.boolean().optional(), network: z.boolean().optional() })
 });
 
+const ExecSubsetSchema = z.object({
+  intent: z.string().min(1),
+  cwd: z.string().min(1),
+  selectedIds: z.array(z.string().min(1)).min(1),
+  dryRun: z.boolean().optional().default(true)
+});
+
 function safeHandle(channel, handler) {
   ipcMain.handle(channel, async (evt, payload) => {
     try {
@@ -121,6 +128,23 @@ function safeHandle(channel, handler) {
 function cmdSync(cmd) {
   try { return String(child.execSync(cmd, { stdio: ['ignore','pipe','pipe'] })).trim(); }
   catch (e) { return `ERR: ${e.message}`; }
+}
+
+// helper: dependency closure
+function selectWithDeps(steps, ids) {
+  const idset = new Set(ids);
+  const map = new Map(steps.map(s => [s.id, s]));
+  // add required ancestors recursively
+  const toVisit = [...ids];
+  while (toVisit.length) {
+    const id = toVisit.pop();
+    const s = map.get(id);
+    if (!s) continue;
+    for (const dep of (s.requires || [])) {
+      if (!idset.has(dep)) { idset.add(dep); toVisit.push(dep); }
+    }
+  }
+  return steps.filter(s => idset.has(s.id));
 }
 
 safeHandle('agent:plan', async (_evt, payload) => {
@@ -219,4 +243,42 @@ safeHandle('policy:quickfix', async (_evt, { cwd }) => {
   }
   fs.writeFileSync(file, policyTemplate());
   return { status: 'ok', message: 'policy template written', file };
+});
+
+safeHandle('agent:execSubset', async (_evt, payload) => {
+  const { intent, cwd, selectedIds, dryRun } = ExecSubsetSchema.parse(payload);
+
+  const pv = validatePolicy(cwd);
+  if (!pv.ok) {
+    const msg = `Invalid .rinawarp.yaml:\n- ${pv.error}`;
+    return { status: 'error', message: msg, plan: [], stdout: '', stderr: msg };
+  }
+
+  let steps = await composePlanner(intent, cwd);
+  steps = applyPlugins(steps, { cwd, appRoot: path.join(__dirname, '..') });
+
+  // compute closure and keep relative DAG
+  const sub = selectWithDeps(steps, selectedIds);
+
+  // Plan must preserve dependencies that reference pruned nodes → ensure validity
+  const validIds = new Set(sub.map(s => s.id));
+  const subFixed = sub.map(s => ({ ...s, requires: (s.requires || []).filter(r => validIds.has(r)) }));
+
+  // Execute
+  if (dryRun) {
+    const res = await execGraph({ steps: subFixed, cwd, dry: true, confirm: false });
+    const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
+    const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
+    auditWrite('dryrun:selected', { intent, cwd, selected: selectedIds, size: subFixed.length });
+    appendHistory({ ts: Date.now(), method: 'dryrun:selected', intent, steps: subFixed, stdout, stderr });
+    return { status: 'ok', message: '', plan: subFixed, stdout, stderr };
+  } else {
+    const res = await execGraph({ steps: subFixed, cwd, dry: false, confirm: true });
+    const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
+    const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
+    const failed = Object.values(res).some(r => r.code !== 0);
+    auditWrite('exec:selected', { intent, cwd, selected: selectedIds, size: subFixed.length, status: failed ? 'error' : 'ok' });
+    appendHistory({ ts: Date.now(), method: 'exec:selected', intent, steps: subFixed, status: failed ? 'error' : 'ok', stdout, stderr });
+    return { status: failed ? 'error' : 'ok', message: failed ? 'one or more steps failed' : 'completed', plan: subFixed, stdout, stderr, detail: res };
+  }
 });
