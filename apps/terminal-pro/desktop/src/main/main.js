@@ -384,20 +384,27 @@ function broadcastToSession(sessionId, senderUserId, message) {
 // CREATE WINDOW
 // -----------------------------
 function createMainWindow() {
+  const preloadPath = path.join(__dirname, "../shared/preload.cjs");
+
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, "../shared/preload.js"),
+      preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: false,
     },
   });
 
   // Load the appropriate URL based on environment
-  const startUrl = `file://${path.join(__dirname, '../renderer/index.html')}`;
+  const isDev = !!process.env.VITE_DEV_SERVER_URL;
 
-  mainWindow.loadURL(startUrl);
+  if (isDev) {
+    mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
+  } else {
+    mainWindow.loadFile(path.join(__dirname, "../renderer/dist/index.html"));
+  }
 
   // Show window when ready to prevent visual flash
   mainWindow.once('ready-to-show', () => {
@@ -422,20 +429,27 @@ function createMainWindow() {
 
 // Function to create main window with license gate
 function createMainWindowWithLicenseGate() {
+  const preloadPath = path.join(__dirname, "../shared/preload.cjs");
+
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, "../shared/preload.js"),
+      preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: false,
     },
   });
 
   // Load the appropriate URL based on environment
-  const startUrl = `file://${path.join(__dirname, '../renderer/index.html')}?showLicenseGate=true`;
+  const isDev = !!process.env.VITE_DEV_SERVER_URL;
 
-  mainWindow.loadURL(startUrl);
+  if (isDev) {
+    mainWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}?showLicenseGate=true`);
+  } else {
+    mainWindow.loadFile(path.join(__dirname, "../renderer/dist/index.html"), { query: { showLicenseGate: 'true' } });
+  }
 
   // Show window when ready to prevent visual flash
   mainWindow.once('ready-to-show', () => {

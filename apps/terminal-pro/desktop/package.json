@@ -16,7 +16,9 @@
   },
   "scripts": {
     "start": "npx electron .",
-    "dev": "unset ELECTRON_RUN_AS_NODE && RW_WS_PORT=0 npx electron . --dev",
+    "dev:renderer": "vite --port 5173",
+    "dev:electron": "unset ELECTRON_RUN_AS_NODE && RW_WS_PORT=0 VITE_DEV_SERVER_URL=http://localhost:5173 npx electron . --dev",
+    "dev": "npm run dev:renderer & sleep 1 && npm run dev:electron",
     "build": "npm run security-audit && electron-builder",
     "build:win": "npm run security-audit && electron-builder --win",
     "build:mac": "npm run security-audit && ./scripts/build/build-macos.sh",
@@ -231,7 +233,8 @@
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "semver": "^7.7.3",
-    "sinon": "^15.0.0"
+    "sinon": "^15.0.0",
+    "vite": "^7.2.7"
   },
   "optionalDependencies": {
     "electron-updater": "^6.6.2"
