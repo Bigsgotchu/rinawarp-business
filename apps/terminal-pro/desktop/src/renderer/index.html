@@ -32,6 +32,8 @@
           <span class="muted">&nbsp;|&nbsp; LLM planner (opt-in) · DAG · Idempotence · Rollback</span>
           <span class="chip tag-on">Local-only</span>
           <span class="chip tag-off">No GPS</span>
+          <button id="btnLicense">Enter License</button>
+          <button id="btnBilling">Manage Billing</button>
         </div>
       </header>
       <main>
@@ -91,6 +93,21 @@
       <div class="row"><strong>Plan Graph</strong><button id="graphClose">Close</button></div>
       <svg id="graphSvg" width="2000" height="1000" style="border:1px solid #333; background:#0d0d0d; border-radius:8px"></svg>
     </div>
+
+    <!-- License Modal -->
+    <div id="licenseModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5);">
+      <div style="max-width:480px;margin:10% auto;background:#16161a;border:1px solid #2e2e36;border-radius:12px;padding:16px">
+        <h3>Enter License</h3>
+        <input id="licEmail" placeholder="you@example.com" style="width:100%;margin:6px 0;padding:10px">
+        <input id="licKey" placeholder="RWP-XXXX-XXXX-XXXX" style="width:100%;margin:6px 0;padding:10px">
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+          <button id="licCancel">Cancel</button>
+          <button id="licVerify">Verify</button>
+        </div>
+        <div id="licMsg"></div>
+      </div>
+    </div>
+
     <script src="./renderer.js"></script>
   </body>
 </html>

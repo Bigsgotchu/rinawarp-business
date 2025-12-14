@@ -246,4 +246,47 @@
   });
 
   cwdEl.value = process.cwd(); loadCaps();
+
+  // License Gate Modal
+  const btnLicense = $('btnLicense'), btnBilling = $('btnBilling');
+  const modal = $('licenseModal'), licEmail = $('licEmail'), licKey = $('licKey'), licCancel = $('licCancel'), licVerify = $('licVerify'), licMsg = $('licMsg');
+
+  // Open modal
+  btnLicense.onclick = async () => {
+    const curr = await window.rinawarp.licenseGet();
+    if (curr?.data?.email) licEmail.value = curr.data.email;
+    if (curr?.data?.key) licKey.value = curr.data.key;
+    licMsg.textContent = '';
+    modal.style.display = 'block';
+  };
+  licCancel.onclick = () => { modal.style.display = 'none'; };
+
+  // Verify
+  licVerify.onclick = async () => {
+    licMsg.textContent = 'Verifying…';
+    const r = await window.rinawarp.licenseVerify(licEmail.value.trim(), licKey.value.trim());
+    if (r.status === 'ok') {
+      licMsg.textContent = 'License verified. Pro features unlocked.';
+      setTimeout(() => modal.style.display = 'none', 700);
+    } else {
+      licMsg.textContent = 'Invalid or failed to verify. Check email/key.';
+    }
+  };
+
+  // Manage billing (opens portal in system browser)
+  btnBilling.onclick = async () => {
+    const e = (await window.rinawarp.licenseGet())?.data?.email || '';
+    const email = prompt('Billing email for Portal:', e || '');
+    if (!email) return;
+    const res = await window.rinawarp.billingPortal(email.trim());
+    if (res.status !== 'ok') alert(res.message || 'Portal unavailable');
+  };
+
+  // Simple gate helper you can use around Pro-only actions:
+  async function requireProOrToast() {
+    const lic = await window.rinawarp.licenseGet();
+    if (lic.valid) return true;
+    alert('Pro feature. Please verify your license in Settings.');
+    return false;
+  }
 })();

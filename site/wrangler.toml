@@ -1,0 +1,15 @@
+name = "rinawarp-site"
+compatibility_date = "2024-11-21"
+
+[vars]
+SITE_BASE = "https://rinawarptech.com"     # your domain
+CURRENCY = "usd"
+
+# KV storage
+[[kv_namespaces]]
+binding = "KV_STRIPE"
+id = "KV_STRIPE_ID"  # fill after creation
+
+# Secrets to set via `wrangler secret put`
+# - STRIPE_SECRET_KEY       (sk_live_...)
+# - STRIPE_WEBHOOK_SECRET   (whsec_...)

@@ -2,28 +2,91 @@ name: build-release
 on:
   push:
     tags: ['v*.*.*']
+
 jobs:
   build:
     strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+      matrix: { os: [macos-latest, windows-latest, ubuntu-latest] }
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
+      - name: Ensure Electron context
+        run: node -e "if(process.env.ELECTRON_RUN_AS_NODE){process.exit(1)}"
       - run: npm ci
-      - name: Linux headless display
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          echo "DISPLAY=:99" >> $GITHUB_ENV
-          sudo apt-get update
-          sudo apt-get install -y xvfb libnss3 libatk-bridge2.0-0 libxkbcommon0 libasound2
-          nohup Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
       - run: npm run test
       - run: npm run test:ui
-      - run: npm run build
-      - uses: actions/upload-artifact@v4
-        with:
-          name: rinawarp-${{ matrix.os }}
-          path: dist/**
+      - name: Build & Publish (electron-builder → GitHub Releases)
+        run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          WIN_CERT_PATH: ${{ secrets.WIN_CERT_PATH }}
+          WIN_CERT_PASSWORD: ${{ secrets.WIN_CERT_PASSWORD }}
+
+  alias-assets:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Install gh
+        uses: cli/gh-action@v2
+      - name: Download release assets (artifact directory already in Release by electron-builder)
+        run: echo "Assets already in Release; proceeding to alias uploads…"
+      - name: Prepare aliases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"  # e.g., v0.6.0 or v0.6.0-beta.1
+
+          # Query assets list
+          ASSETS_JSON=$(gh release view "$TAG" --json assets)
+          get_url() { echo "$ASSETS_JSON" | node -e "const j=JSON.parse(require('fs').readFileSync(0,'utf8')); const f=j.assets.find(a=>a.name.includes(process.argv[1])); if(f) console.log(f.name);" "$1"; }
+
+          # Map real filenames -> alias filenames (copy from release files)
+          # Update these substrings if your artifactName differs.
+          MAC_ARM_NAME=$(get_url "mac-arm64.dmg") || true
+          MAC_X64_NAME=$(get_url "mac-x64.dmg") || true
+          MAC_UNIVERSAL_NAME=$(get_url "mac-universal.dmg") || true
+          WIN_NAME=$(get_url "win-x64.exe") || true
+          APPIMG_NAME=$(get_url "linux-x86_64.AppImage") || true
+          DEB_NAME=$(get_url "amd64.deb") || true
+          RPM_NAME=$(get_url ".x86_64.rpm") || true
+
+          # Download each existing asset, re-upload under stable alias filename
+          download_and_upload () {
+            SRC="$1"; ALIAS="$2";
+            if [ -n "$SRC" ]; then
+              echo "Aliasing $SRC -> $ALIAS"
+              gh release download "$TAG" -p "$SRC"
+              cp "$SRC" "$ALIAS"
+              gh release upload "$TAG" "$ALIAS" --clobber
+            fi
+          }
+
+          # Prefer universal DMG if present, else fall back to arch-specific
+          if [ -n "$MAC_UNIVERSAL_NAME" ]; then
+            download_and_upload "$MAC_UNIVERSAL_NAME" "RinaWarp-mac-universal-latest.dmg"
+          else
+            download_and_upload "$MAC_ARM_NAME" "RinaWarp-mac-arm64-latest.dmg"
+            download_and_upload "$MAC_X64_NAME" "RinaWarp-mac-x64-latest.dmg"
+          fi
+          download_and_upload "$WIN_NAME" "RinaWarp-win-x64-latest.exe"
+          download_and_upload "$APPIMG_NAME" "RinaWarp-linux-x86_64-latest.AppImage"
+          download_and_upload "$DEB_NAME" "RinaWarp-linux-amd64-latest.deb"
+          download_and_upload "$RPM_NAME" "RinaWarp-linux-x86_64-latest.rpm"
+
+      - name: Generate SHA256 checksums & attach
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          TMPDIR=$(mktemp -d); cd "$TMPDIR"
+          gh release download "$TAG" -p "RinaWarp-*-latest.*"
+          shasum -a 256 RinaWarp-*-latest.* > SHA256SUMS.txt
+          gh release upload "$TAG" SHA256SUMS.txt --clobber

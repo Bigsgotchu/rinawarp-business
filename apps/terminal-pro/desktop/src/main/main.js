@@ -35,6 +35,11 @@ async function initStore() {
   return store;
 }
 
+// CSP header for license gate
+function cspHeader() {
+  return "default-src 'self'; base-uri 'none'; form-action 'self' https://checkout.stripe.com https://billing.stripe.com; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://rinawarptech.com; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; frame-src https://checkout.stripe.com https://billing.stripe.com;";
+}
+
 // ==== CONFIG STORAGE (license etc.) ==================================
 
 function getConfigPath() {
@@ -156,6 +161,9 @@ async function verifyLicenseWithBackend(licenseKey) {
   const data = await res.json();
   return data; // expected: { valid: boolean, data: { ... } }
 }
+
+// Import license store
+const { write: licWrite, read: licRead, clear: licClear, isValidCached } = require('./shared/license_store.js');
 
 // ==== RINA AGENT BRAIN (Cloudflare Worker) ===========================
 
@@ -545,6 +553,52 @@ function registerIPC() {
     } catch (e) {
       console.error("License verify failed:", e);
       return { ok: false, error: e.message };
+    }
+  });
+
+  // New license store IPC handlers
+  ipcMain.handle("license:get", async () => {
+    return { status: 'ok', data: licRead() || null, valid: isValidCached() };
+  });
+
+  ipcMain.handle("license:clear", async () => {
+    licClear();
+    return { status: 'ok' };
+  });
+
+  ipcMain.handle("license:verify", async (_evt, { email, key }) => {
+    if (!email || !key) return { status: 'error', message: 'email and key required' };
+    try {
+      const r = await fetch('https://rinawarptech.com/api/license/verify?email=' + encodeURIComponent(email) + '&key=' + encodeURIComponent(key), { method: 'GET' });
+      const j = await r.json();
+      if (j.ok) {
+        const payload = { email, key, ok: true, verifiedAt: Date.now() };
+        licWrite(payload);
+        return { status: 'ok', data: payload };
+      }
+      return { status: 'error', message: 'invalid license' };
+    } catch (e) {
+      // offline fallback: if cached valid, accept
+      if (isValidCached()) return { status: 'ok', data: licRead() };
+      return { status: 'error', message: e.message || 'verify failed' };
+    }
+  });
+
+  ipcMain.handle("billing:portal", async (_evt, { email }) => {
+    if (!email) return { status: 'error', message: 'email required' };
+    try {
+      const r = await fetch('https://rinawarptech.com/api/stripe/portal', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email })
+      });
+      const j = await r.json();
+      if (j.ok && j.url) {
+        const { shell } = require('electron');
+        shell.openExternal(j.url);
+        return { status: 'ok' };
+      }
+      return { status: 'error', message: j.error || 'portal unavailable' };
+    } catch (e) {
+      return { status: 'error', message: e.message || 'portal failed' };
     }
   });
 
@@ -1586,6 +1640,20 @@ process.on('uncaughtException', (error) => {
 
     // Setup crash handlers with app access
     setupCrashHandlers(app);
+
+    // Network allowlist for license verification
+    const ALLOWLIST = new Set([
+      'https://rinawarptech.com/api/license/verify',
+      'https://rinawarptech.com/api/stripe/portal'
+    ]);
+    const { session } = require('electron');
+    session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
+      const url = details.url;
+      if (/^https?:\/\//i.test(url) && !Array.from(ALLOWLIST).some(u => url.startsWith(u))) {
+        return cb({ cancel: true });
+      }
+      cb({});
+    });
 
     // Start WebSocket server for collaboration
     websocketServer = setupWebSocketServer();

@@ -1,6 +1,6 @@
 {
   "name": "rinawarp-terminal-pro",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "RinaWarp Terminal Pro — local-first intent → execution desktop app",
   "main": "src/main.js",
@@ -11,7 +11,8 @@
     "build": "electron-builder -mwl",
     "test": "vitest run",
     "test:ui": "playwright test",
-    "lint": "node ./scripts/lint.js || true"
+    "lint": "node ./scripts/lint.js || true",
+    "release:prod": "bash ./scripts/smoke.sh && bash ./scripts/audit.sh && ./scripts/release-r2.sh $VERSION && wrangler pages deploy ../site/public --project-name=rinawarptech --branch=prod && bash ./scripts/pages-verify.sh https://rinawarptech.com"
   },
   "dependencies": {
     "electron-store": "^8.2.0",
@@ -23,10 +24,19 @@
     "cross-env": "^7.0.3",
     "electron": "^31.7.0",
     "electron-builder": "^24.13.3",
+    "node-fetch": "^3.3.2",
     "playwright": "^1.48.2",
     "vitest": "^2.0.5"
   },
   "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "rinawarptech",
+        "repo": "terminal-pro"
+      }
+    ],
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
     "appId": "com.rinawarp.terminalpro",
     "productName": "RinaWarp Terminal Pro",
     "files": [

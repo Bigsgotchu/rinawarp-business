@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>RinaWarp Pricing | Free, Pro Monthly & Annual</title>
+  <meta name="description" content="RinaWarp Terminal Pro pricing. Start free. Go Pro monthly or save with annual." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/shared.css" />
+  <style>
+    .toggle{display:inline-flex;border:1px solid #2e2e36;border-radius:12px;overflow:hidden}
+    .toggle button{padding:8px 12px;background:#1b1b22;color:#eaeaea;border:0}
+    .toggle button.active{background:#2a2a33}
+    .badge-save{display:inline-block;margin-left:8px;padding:4px 8px;border-radius:999px;background:#12351f;color:#7CFFB0;font-size:12px;border:1px solid #1f5834}
+    .ribbon{position:absolute;top:12px;right:-40px;transform:rotate(45deg);background:#12351f;color:#7CFFB0;padding:6px 60px;border:1px solid #1f5834;font-size:12px;letter-spacing:.3px}
+    .pricing-card.highlight{position:relative}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .input{background:#121217;border:1px solid #2e2e36;color:#eaeaea;padding:10px;border-radius:10px}
+  </style>
+</head>
+<body class="mermaid">
+<div class="main-shell">
+  <header class="rw-nav">
+    <div class="rw-nav-left">
+      <a href="/" class="rw-nav-logo" aria-label="RinaWarp home">
+        <img src="/assets/logo/company.png" alt="RinaWarp Logo" />
+      </a>
+    </div>
+    <nav class="rw-nav-links" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/terminal-pro.html">Terminal Pro</a>
+      <a href="/music-video-creator.html">Music Video Creator</a>
+      <a aria-current="page" href="/pricing.html">Pricing</a>
+      <a href="/download.html">Download</a>
+    </nav>
+    <div class="rw-nav-cta">
+      <a href="/download.html" class="rw-button-outline">Download</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section">
+      <div class="section-header">
+        <h1 class="section-title">Start free. Upgrade when it pays for itself.</h1>
+        <p class="section-subtitle">Pro pricing loads live from Stripe. Pick monthly or save on annual.</p>
+      </div>
+
+      <div class="pricing-grid" id="pricing-grid">
+        <!-- Free -->
+        <article class="pricing-card" aria-labelledby="tier-free">
+          <div class="pricing-label" id="tier-free">Free tier</div>
+          <div class="pricing-price" aria-label="Price">$0</div>
+          <div class="pricing-period">No card required</div>
+          <ul class="pricing-list">
+            <li><span class="pricing-bullet"></span><span>Limited AI requests in Terminal Pro</span></li>
+            <li><span class="pricing-bullet"></span><span>Core terminal features & updates</span></li>
+            <li><span class="pricing-bullet"></span><span>Single-device license</span></li>
+          </ul>
+          <a href="/download.html" class="rw-button-outline">Start free</a>
+          <p class="pricing-meta">Great if you're just trying RinaWarp out.</p>
+        </article>
+
+        <!-- Pro -->
+        <article class="pricing-card highlight" aria-labelledby="tier-pro">
+          <div id="save-ribbon" class="ribbon" style="display:none">Save 0%</div>
+          <div class="pricing-label" id="tier-pro">Pro</div>
+
+          <div class="row" style="margin:6px 0 10px">
+            <div class="toggle" role="tablist" aria-label="Billing interval">
+              <button id="tab-monthly" class="active" role="tab" aria-selected="true">Monthly</button>
+              <button id="tab-annual" role="tab" aria-selected="false">Annual</button>
+            </div>
+            <span id="save-badge" class="badge-save" style="display:none"></span>
+          </div>
+
+          <div class="pricing-price" id="pro-price" aria-live="polite" aria-busy="true">$—</div>
+          <div class="pricing-period" id="pro-interval">Loading…</div>
+
+          <ul class="pricing-list">
+            <li><span class="pricing-bullet"></span><span>Unlocks full AI usage in Terminal Pro</span></li>
+            <li><span class="pricing-bullet"></span><span>Advanced voice automation & workflows</span></li>
+            <li><span class="pricing-bullet"></span><span>Priority support & faster updates</span></li>
+          </ul>
+
+          <button id="buy-pro" class="rw-button" disabled aria-disabled="true">Loading price…</button>
+          <p class="pricing-meta">Stripe Checkout handles billing & licensing securely.</p>
+
+          <hr style="border-color:#2e2e36;border-width:1px 0 0;margin:16px 0">
+          <div class="row">
+            <input id="portal-email" class="input" type="email" placeholder="you@example.com" aria-label="Your billing email">
+            <button id="manage-billing" class="rw-button-outline">Manage Billing</button>
+          </div>
+          <p id="portal-hint" class="pricing-meta">Use the email used at checkout. We'll open Stripe's Customer Portal.</p>
+          <div id="pricing-error" class="pricing-meta" role="status" aria-live="polite" style="display:none;color:#f5a97f"></div>
+        </article>
+
+        <!-- Teams -->
+        <article class="pricing-card" aria-labelledby="tier-teams">
+          <div class="pricing-label" id="tier-teams">Teams & Studio</div>
+          <div class="pricing-price">Custom</div>
+          <div class="pricing-period">For teams, labels & orgs</div>
+          <ul class="pricing-list">
+            <li><span class="pricing-bullet"></span><span>Multiple seats for Terminal Pro</span></li>
+            <li><span class="pricing-bullet"></span><span>Options for AI Music Video Creator usage</span></li>
+            <li><span class="pricing-bullet"></span><span>Custom onboarding & SSO options</span></li>
+          </ul>
+          <a href="/contact.html" class="rw-button-outline">Talk to us</a>
+          <p class="pricing-meta">We'll configure pricing to match how you work.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rw-footer">
+    <div>© 2025 RinaWarp Technologies LLC. All rights reserved.</div>
+    <div class="rw-footer-links">
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/dmca.html">DMCA</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </footer>
+</div>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"64f7898e1c7d4c919f37fdb1c1c96532"}'></script>
+
+<script type="module">
+  const $ = (id) => document.getElementById(id);
+  const fmt = (amount, currency) => new Intl.NumberFormat(navigator.language,{style:'currency',currency}).format(amount/100);
+
+  let prices = null;         // all stripe prices
+  let proMonthly = null;     // chosen monthly price
+  let proAnnual  = null;     // chosen annual price
+  let activePlan = 'monthly';
+
+  function renderSavings() {
+    if (proMonthly && proAnnual) {
+      const save = 1 - (proAnnual.unit_amount / (proMonthly.unit_amount * 12));
+      const pct = Math.round(save*100);
+      if (pct > 5) {
+        $('save-badge').style.display='inline-block';
+        $('save-badge').textContent=`Save ${pct}% annually`;
+        $('save-ribbon').style.display='block';
+        $('save-ribbon').textContent=`Save ${pct}%`;
+      } else { $('save-badge').style.display='none'; $('save-ribbon').style.display='none'; }
+    }
+  }
+
+  function pickProPrices(list) {
+    // Heuristic: product name contains "Pro" or "Terminal"
+    const proList = list.filter(p =>
+      /pro/i.test(p.product?.name || '') || /terminal/i.test(p.product?.name || '')
+    );
+    const monthly = proList.find(p => p.type==='recurring' && p.recurring?.interval==='month');
+    const annual  = proList.find(p => p.type==='recurring' && p.recurring?.interval==='year');
+    return { monthly, annual };
+  }
+
+  function renderPrice() {
+    const p = activePlan === 'monthly' ? proMonthly : proAnnual || proMonthly;
+    const isRecurring = p?.type === 'recurring' && p.recurring;
+    $('pro-price').textContent = p ? fmt(p.unit_amount, p.currency) : '$—';
+    $('pro-interval').textContent = isRecurring ? `Billed per ${p.recurring.interval}` : (p ? 'One-time' : '—');
+    $('pro-price').setAttribute('aria-busy','false');
+    renderSavings();
+  }
+
+  async function loadPrices() {
+    try {
+      const r = await fetch('/api/stripe/prices');
+      const j = await r.json();
+      if (!r.ok || !j.ok) throw new Error(j.error || 'prices error');
+      prices = j.data || [];
+      const { monthly, annual } = pickProPrices(prices);
+      proMonthly = monthly || null;
+      proAnnual  = annual  || null;
+
+      // Default to monthly; if only annual exists, flip
+      activePlan = proMonthly ? 'monthly' : 'annual';
+      $('tab-monthly').classList.toggle('active', activePlan==='monthly');
+      $('tab-annual').classList.toggle('active',  activePlan==='annual');
+      renderPrice();
+
+      const buy = $('buy-pro');
+      buy.disabled = !(proMonthly || proAnnual);
+      buy.ariaDisabled = String(buy.disabled);
+      buy.textContent = 'Upgrade to Pro';
+      buy.onclick = async () => {
+        try {
+          const plan = activePlan==='monthly' ? proMonthly : (proAnnual || proMonthly);
+          const mode = plan.type === 'recurring' ? 'subscription' : 'payment';
+          buy.disabled = true; buy.textContent = 'Redirecting…';
+          const res = await fetch('/api/stripe/checkout', {
+            method: 'POST', headers: {'content-type':'application/json'},
+            body: JSON.stringify({ priceId: plan.id, mode })
+          });
+          const k = await res.json();
+          if (k.ok && k.url) location.href = k.url;
+          else throw new Error(k.error || 'checkout failed');
+        } catch(e) {
+          showErr(`Checkout error: ${e.message||e}`);
+        } finally {
+          buy.disabled = false; buy.textContent = 'Upgrade to Pro';
+        }
+      };
+    } catch(e) {
+      showErr('Pricing temporarily unavailable. Please try again later.');
+      const buy = $('buy-pro'); buy.disabled = false; buy.textContent = 'Contact Sales';
+      buy.onclick = () => location.href='/contact.html';
+    }
+  }
+
+  function showErr(msg){ const el=$('pricing-error'); el.style.display='block'; el.textContent=msg; }
+
+  $('tab-monthly').onclick = () => { activePlan='monthly'; $('tab-monthly').classList.add('active'); $('tab-annual').classList.remove('active'); renderPrice(); };
+  $('tab-annual').onclick  = () => { activePlan='annual';  $('tab-annual').classList.add('active');  $('tab-monthly').classList.remove('active'); renderPrice(); };
+
+  // Manage Billing via Portal (email → KV lookup → portal link)
+  $('manage-billing').onclick = async () => {
+    const email = ($('portal-email').value || '').trim().toLowerCase();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('Enter a valid billing email.'); return; }
+    $('manage-billing').disabled = true;
+    try{
+      const r = await fetch('/api/stripe/portal', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ email }) });
+      const j = await r.json();
+      if (j.ok && j.url) location.href = j.url;
+      else throw new Error(j.error || 'portal unavailable');
+    }catch(e){ showErr(`Portal: ${e.message||e}`); }
+    finally{ $('manage-billing').disabled = false; }
+  };
+
+  loadPrices();
+</script>
+</body>
+</html>
