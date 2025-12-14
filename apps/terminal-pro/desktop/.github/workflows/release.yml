@@ -1,41 +1,29 @@
-name: Release Engineering Pipeline
-
+name: build-release
 on:
   push:
-    tags:
-      - 'v*.*.*'
-  workflow_dispatch:
-
+    tags: ['v*.*.*']
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+      - name: Linux headless display
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+          sudo apt-get update
+          sudo apt-get install -y xvfb libnss3 libatk-bridge2.0-0 libxkbcommon0 libasound2
+          nohup Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+      - run: npm run test
+      - run: npm run test:ui
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: |
-          cd apps/terminal-pro/desktop
-          npm ci
-
-      - name: Run validation
-        run: |
-          cd apps/terminal-pro/desktop
-          node scripts/release-engineering.js validate
-
-      - name: Build application
-        run: |
-          cd apps/terminal-pro/desktop
-          node scripts/release-engineering.js build --skip-tests
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-artifacts
-          path: apps/terminal-pro/desktop/build-output/*
+          name: rinawarp-${{ matrix.os }}
+          path: dist/**

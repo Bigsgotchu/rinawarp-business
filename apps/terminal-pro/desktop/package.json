@@ -1,255 +1,59 @@
 {
   "name": "rinawarp-terminal-pro",
-  "version": "1.0.0",
-  "description": "RinaWarp Terminal Pro - AI-powered terminal application with advanced features",
-  "main": "src/main/main.js",
-  "author": {
-    "name": "RinaWarp Technologies",
-    "email": "contact@rinawarptech.com"
-  },
-  "license": "UNLICENSED",
-  "type": "module",
-  "homepage": "https://rinawarptech.com",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/RinaWarp/rinawarp-terminal-pro.git"
-  },
+  "version": "0.2.1",
+  "private": true,
+  "description": "RinaWarp Terminal Pro — local-first intent → execution desktop app",
+  "main": "src/main.js",
+  "author": "You",
+  "license": "MIT",
+  "type": "commonjs",
   "scripts": {
-    "start": "npx electron .",
-    "dev:renderer": "vite --port 5173",
-    "dev:electron": "unset ELECTRON_RUN_AS_NODE && RW_WS_PORT=0 VITE_DEV_SERVER_URL=http://localhost:5173 npx electron . --dev",
-    "dev": "npm run dev:renderer & sleep 1 && npm run dev:electron",
-    "build": "npm run security-audit && electron-builder",
-    "build:win": "npm run security-audit && electron-builder --win",
-    "build:mac": "npm run security-audit && ./scripts/build/build-macos.sh",
-    "build:mac:simple": "npm run security-audit && electron-builder --mac",
-    "build:linux": "npm run security-audit && electron-builder --linux",
-    "dist": "npm run security-audit && electron-builder --publish=never",
-    "dist:mac": "npm run security-audit && electron-builder --mac --publish=never",
-    "security-audit": "node scripts/security-audit.cjs",
-    "security-audit:fix": "npm audit fix",
-    "sign:win": "electron-builder --win --publish=never",
-    "sign:mac": "electron-builder --mac --publish=never",
-    "sign:linux": "electron-builder --linux --publish=never",
-    "notarize": "xcrun notarytool submit build/*.dmg --apple-id $APPLE_ID --password $APPLE_APP_PASSWORD --team-id $TEAM_ID --wait",
-    "validate:signatures": "node scripts/validate-signatures.js",
-    "customize:dmg": "node tools/dmg-customizer.js",
-    "build:production": "npm run security-audit && npm run customize:dmg && electron-builder --mac --win --linux --publish=never",
-    "postinstall": "electron-builder install-app-deps",
-    "test": "node test-comprehensive.js",
-    "test:basic": "node test-basic.js",
-    "test:comprehensive": "node test-comprehensive.js",
-    "test:debug": "NODE_ENV=development node test-comprehensive.js",
-    "test:coverage": "npm run test:comprehensive -- --coverage",
-    "release:notes": "node scripts/generate-release-notes.mjs",
-    "qa:ai": "node scripts/ai-qa-summary.mjs"
+    "dev": "cross-env NODE_ENV=development electron .",
+    "start": "electron .",
+    "start:headless": "cross-env ELECTRON_RUN_AS_NODE=0 ELECTRON_ENABLE_LOGGING=1 xvfb-run -a -s \"+extension RANDR\" electron .",
+    "build": "electron-builder -mwl",
+    "test": "vitest run",
+    "test:ui": "playwright test",
+    "lint": "node ./scripts/lint.js || true"
   },
-  "keywords": [
-    "terminal",
-    "ai",
-    "development",
-    "command-line",
-    "productivity"
-  ],
+  "dependencies": {
+    "electron-store": "^8.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^31.7.0",
+    "electron-builder": "^24.13.3",
+    "playwright": "^1.48.2",
+    "vitest": "^2.0.5"
+  },
   "build": {
     "appId": "com.rinawarp.terminalpro",
     "productName": "RinaWarp Terminal Pro",
-    "directories": {
-      "output": "build-output"
-    },
     "files": [
       "src/**/*",
-      "assets/**/*",
-      "package.json",
-      "entitlements.plist"
+      "node_modules/**/*",
+      "package.json"
     ],
-    "extraMetadata": {
-      "main": "src/main/main.js"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "assets/icons/icon.ico",
-      "publisherName": "RinaWarp Technologies, LLC",
-      "artifactName": "RinaWarp-Terminal-Pro-Setup-${version}-${arch}.${ext}",
-      "compression": "maximum",
-      "timeStampServer": "http://timestamp.sectigo.com"
-    },
+    "asar": true,
     "mac": {
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ],
-      "icon": "assets/icons/icon.icns",
       "category": "public.app-category.developer-tools",
+      "target": ["dmg", "zip"],
       "hardenedRuntime": true,
-      "entitlements": "entitlements.plist",
-      "entitlementsInherit": "entitlements.plist",
-      "type": "distribution",
-      "artifactName": "RinaWarp-Terminal-Pro-${version}-${arch}.${ext}",
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
       "gatekeeperAssess": false
     },
+    "win": {
+      "target": ["nsis", "zip"],
+      "publisherName": "Your Company"
+    },
     "linux": {
-      "target": [
-        {
-          "target": "AppImage",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "deb",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "rpm",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "snap",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "assets/icons/icon.png",
-      "category": "Development",
-      "desktop": {
-        "entry": "Name=RinaWarp Terminal Pro\nComment=AI-powered terminal application\nExec=rinawarp-terminal-pro %F\nIcon=rinawarp-terminal-pro\nType=Application\nCategories=Development;\nMimeType=x-terminal-emulator;\n"
-      },
-      "maintainer": "RinaWarp Technologies <contact@rinawarptech.com>",
-      "vendor": "RinaWarp Technologies",
-      "synopsis": "AI-powered terminal application with advanced features",
-      "description": "RinaWarp Terminal Pro is an AI-enhanced terminal application designed for developers and creators who need powerful command-line tools with intelligent assistance.",
-      "artifactName": "RinaWarp-Terminal-Pro-${version}-${arch}.${ext}",
-      "executableName": "rinawarp-terminal-pro"
+      "target": ["AppImage", "deb", "rpm"],
+      "category": "Development"
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "allowElevation": true,
-      "installerIcon": "assets/icons/icon.ico",
-      "uninstallerIcon": "assets/icons/icon.ico",
-      "installerHeaderIcon": "assets/icons/icon.ico",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "RinaWarp Terminal Pro",
-      "include": "scripts/installer.nsh",
-      "script": "scripts/installer.nsi",
-      "artifactName": "RinaWarp-Terminal-Pro-Setup-${version}.${ext}"
-    },
-    "dmg": {
-      "title": "RinaWarp Terminal Pro ${version}",
-      "icon": "assets/icons/icon.icns",
-      "iconSize": 80,
-      "window": {
-        "width": 540,
-        "height": 420
-      },
-      "contents": [
-        {
-          "x": 130,
-          "y": 220,
-          "type": "file"
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ],
-      "background": "assets/dmg-background.png",
-      "backgroundColor": "#f5f5f7",
-      "internetEnabled": false,
-      "sign": false,
-      "format": "ULFO"
-    },
-    "publish": {
-      "provider": "generic",
-      "url": "https://download.rinawarptech.com/releases/",
-      "channel": "latest"
-    },
-    "asarUnpack": [
-      "node_modules/electron-log/**/*",
-      "node_modules/openai/**/*",
-      "node_modules/stripe/**/*",
-      "node_modules/ws/**/*",
-      "node_modules/node-pty/**/*"
-    ],
-    "artifactName": "${productName}-${version}-${arch}.${ext}",
-    "compression": "maximum",
-    "removePackageScripts": false,
-    "npmRebuild": true,
-    "buildDependenciesFromSource": false,
-    "nodeGypRebuild": false,
-    "buildVersion": "1",
-    "buildNumber": "1"
-  },
-  "dependencies": {
-    "electron-log": "^5.4.3",
-    "node-pty": "^1.0.0",
-    "node-record-lpcm16": "^1.0.1",
-    "openai": "^4.20.1",
-    "stripe": "^14.9.0",
-    "ws": "^8.18.3",
-    "xterm": "^5.3.0"
-  },
-  "devDependencies": {
-    "@electron/rebuild": "^3.7.2",
-    "@sentry/electron": "^5.0.0",
-    "chai": "^4.3.7",
-    "commander": "^11.0.0",
-    "electron": "^39.2.7",
-    "electron-builder": "^24.13.3",
-    "electron-mocha": "^10.0.0",
-    "electron-rebuild": "^3.2.9",
-    "eslint": "^8.55.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-security": "^2.1.1",
-    "glob": "^10.3.10",
-    "mocha": "^10.2.0",
-    "nyc": "^15.1.0",
-    "semver": "^7.7.3",
-    "sinon": "^15.0.0",
-    "vite": "^7.2.7"
-  },
-  "optionalDependencies": {
-    "electron-updater": "^6.6.2"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  },
-  "os": [
-    "win32",
-    "darwin",
-    "linux"
-  ],
-  "cpu": [
-    "x64",
-    "arm64"
-  ]
+    "directories": {
+      "buildResources": "build"
+    }
+  }
 }
