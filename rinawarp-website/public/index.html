@@ -44,27 +44,40 @@
           "name": "Free",
           "price": "0",
           "priceCurrency": "USD",
-          "description": "Terminal only, Local agent heuristics, Persistent memory (No AI)"
+          "description": "Limited terminal sandbox, Limited commands per day, Core terminal features & updates, No AI agent, No voice, No premium modules"
+        },
+        {
+          "@type": "Offer",
+          "name": "Basic",
+          "price": "9.99",
+          "priceCurrency": "USD",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "9.99",
+            "priceCurrency": "USD",
+            "unitCode": "MON"
+          },
+          "description": "Unlimited sandbox terminal, Basic AI agent usage, Limited productivity tools, No modules or premium automations, No real-time voice AI"
         },
         {
           "@type": "Offer",
           "name": "Pro",
-          "price": "149",
-          "priceCurrency": "USD",
-          "description": "Everything in Free, Ghost text + memory + tool registry"
-        },
-        {
-          "@type": "Offer",
-          "name": "Agent Pro",
-          "price": "19",
+          "price": "99",
           "priceCurrency": "USD",
           "priceSpecification": {
             "@type": "UnitPriceSpecification",
-            "price": "19",
+            "price": "99",
             "priceCurrency": "USD",
             "unitCode": "MON"
           },
-          "description": "Cloud AI reasoning, Multi-step planning, Future advanced tools"
+          "description": "Everything in Basic, Unlimited AI agent, Full terminal unlock, All modules included, Voice AI, Business-grade usage"
+        },
+        {
+          "@type": "Offer",
+          "name": "Lifetime",
+          "price": "699",
+          "priceCurrency": "USD",
+          "description": "Everything in Pro, Lifetime access, No recurring fees, Priority support, Limited to 200 users"
         }
       ],
       "creator": {
@@ -246,62 +259,80 @@
             <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; border: 1px solid #30365a;">
               <h3 style="margin-top: 0; color: #00ffd5;">Free</h3>
               <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">$0</div>
-              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">Terminal only</p>
-              
+              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">No card required</p>
+
               <ul style="text-align: left; line-height: 1.8;">
-                <li>✅ Terminal only</li>
-                <li>✅ Local agent heuristics</li>
-                <li>✅ Persistent memory</li>
-                <li>❌ AI features</li>
-                <li>❌ Ghost text</li>
-                <li>❌ Advanced tooling</li>
+                <li>✅ Limited terminal sandbox</li>
+                <li>✅ Limited commands per day</li>
+                <li>✅ Core terminal features & updates</li>
+                <li>❌ No AI agent</li>
+                <li>❌ No voice</li>
+                <li>❌ No premium modules</li>
               </ul>
-              
+
               <a href="/download.html" class="rw-button-outline" style="width: 100%; margin-top: 1.5rem; display: block; text-align: center;">
                 Start Free
               </a>
             </div>
 
-            <!-- Pro License -->
+            <!-- Basic Tier -->
+            <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; border: 1px solid #30365a;">
+              <h3 style="margin-top: 0; color: #00ffd5;">Basic</h3>
+              <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">$9.99</div>
+              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">/ month</p>
+
+              <ul style="text-align: left; line-height: 1.8;">
+                <li>✅ Unlimited sandbox terminal</li>
+                <li>✅ Basic AI agent usage</li>
+                <li>✅ Limited productivity tools</li>
+                <li>❌ No modules or premium automations</li>
+                <li>❌ No real-time voice AI</li>
+              </ul>
+
+              <a href="/api/checkout-v2?product=basic" class="rw-button-outline" style="width: 100%; margin-top: 1.5rem;">
+                Start Basic
+              </a>
+            </div>
+
+            <!-- Pro Tier -->
             <div style="background: linear-gradient(135deg, rgba(255,45,146,0.12), rgba(26,233,255,0.08)); padding: 2rem; border-radius: 12px; border: 1px solid #30365a; position: relative;">
               <div style="position: absolute; top: -10px; right: 20px; background: #00ffd5; color: #05061a; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
                 RECOMMENDED
               </div>
               <h3 style="margin-top: 0; color: #00ffd5;">Pro</h3>
-              <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0;">$149</div>
-              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">One-time • Lifetime</p>
-              
+              <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0;">$99<span style="font-size: 1rem;">/mo</span></div>
+              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">Business-grade usage</p>
+
               <ul style="text-align: left; line-height: 1.8;">
-                <li>✅ Everything in Free</li>
-                <li>✅ Ghost text + memory</li>
-                <li>✅ Tool registry</li>
-                <li>✅ Advanced workflows</li>
-                <li>✅ Auto-updates</li>
+                <li>✅ Everything in Basic</li>
+                <li>✅ Unlimited AI agent</li>
+                <li>✅ Full terminal unlock</li>
+                <li>✅ All modules included</li>
+                <li>✅ Voice AI</li>
                 <li>✅ Priority support</li>
               </ul>
-              
+
               <a href="/api/checkout-v2?product=terminal-pro" class="rw-button" style="width: 100%; margin-top: 1.5rem;">
-                Buy Pro License
+                Buy Pro
               </a>
             </div>
 
-            <!-- Agent Pro -->
+            <!-- Lifetime Tier -->
             <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; border: 1px solid #30365a;">
-              <h3 style="margin-top: 0; color: #00ffd5;">Agent Pro</h3>
-              <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">$19<span style="font-size: 1rem;">/mo</span></div>
-              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">Cloud AI reasoning</p>
-              
+              <h3 style="margin-top: 0; color: #00ffd5;">Lifetime</h3>
+              <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">$699</div>
+              <p style="margin: 0 0 1.5rem 0; opacity: 0.8;">One-time • Founder edition</p>
+
               <ul style="text-align: left; line-height: 1.8;">
                 <li>✅ Everything in Pro</li>
-                <li>✅ Cloud AI reasoning</li>
-                <li>✅ Multi-step planning</li>
-                <li>✅ Future advanced tools</li>
-                <li>✅ Priority AI processing</li>
-                <li>✅ Extended context window</li>
+                <li>✅ Lifetime access</li>
+                <li>✅ No recurring fees</li>
+                <li>✅ Priority support</li>
+                <li>✅ Limited to 200 users</li>
               </ul>
-              
-              <a href="/api/checkout-v2?product=agent-pro" class="rw-button-outline" style="width: 100%; margin-top: 1.5rem;">
-                Start Agent Pro
+
+              <a href="/api/checkout-v2?product=lifetime" class="rw-button-outline" style="width: 100%; margin-top: 1.5rem;">
+                Buy Lifetime
               </a>
             </div>
           </div>
