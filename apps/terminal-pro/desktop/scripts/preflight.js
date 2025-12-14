@@ -2,10 +2,11 @@
 if (!process.versions || !process.versions.node) {
   console.error('Unexpected runtime (no Node version).'); process.exit(1);
 }
-if (!process.versions.electron) {
+if (process.env.ELECTRON_RUN_AS_NODE) {
   console.error(
-    'ERROR: Not running under Electron. Use `npm run dev` or `npm start`.\n' +
-    'If you set ELECTRON_RUN_AS_NODE before, it has been unset for this run.'
+    'ERROR: ELECTRON_RUN_AS_NODE is still set. Unset failed.\n' +
+    'Use `npm run dev` or `npm start` which will unset it.'
   );
   process.exit(1);
 }
+console.log('Preflight: ELECTRON_RUN_AS_NODE is properly unset.');

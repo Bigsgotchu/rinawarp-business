@@ -6,8 +6,8 @@
   "main": "src/main.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "cross-env-shell NODE_ENV=development \"unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && node ./scripts/preflight.js && ./node_modules/.bin/electron .\"",
-    "start": "cross-env-shell \"unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && ./node_modules/.bin/electron .\"",
+    "dev": "cross-env NODE_ENV=development sh -c 'unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && node ./scripts/preflight.js && ./node_modules/.bin/electron .'",
+    "start": "sh -c 'unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && ./node_modules/.bin/electron .'",
     "build": "electron-builder -mwl",
     "test": "vitest run",
     "test:ui": "playwright test",
@@ -15,11 +15,12 @@
   },
   "dependencies": {
     "electron-store": "^8.2.0",
+    "electron-updater": "^6.3.9",
+    "yaml": "^2.6.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "cross-env-shell": "^1.0.0",
     "electron": "^31.7.0",
     "electron-builder": "^24.13.3",
     "playwright": "^1.48.2",

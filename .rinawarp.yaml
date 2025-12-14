@@ -1,0 +1,11 @@
+capabilities:
+  docker: false
+  git: true
+  npm: true
+  network: false
+limits:
+  timeoutMs: 120000
+  maxBytes: 2000000
+policy:
+  confirmRequired: true
+  dryRunByDefault: false

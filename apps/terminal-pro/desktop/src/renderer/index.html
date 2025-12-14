@@ -54,6 +54,10 @@
             <button id="btnRerun">Rerun Failed Only</button>
             <button id="btnRollback">Rollback last run</button>
           </div>
+          <div class="row">
+            <button id="btnDiag">Diagnostics</button>
+            <span id="diagStatus" class="muted small"></span>
+          </div>
           <p class="muted small">LLM off by default. Enable with environment vars (see commands below).</p>
         </div>
 
@@ -67,6 +71,10 @@
         </div>
       </main>
       <footer>Enter=Plan · F9=Dry-run · F10=Execute · Esc=Clear · Click a step to "Explain"</footer>
+    </div>
+    <div id="diagModal" style="display:none; position:fixed; inset:10%; background:#121212; border:1px solid #333; padding:12px; border-radius:8px; overflow:auto;">
+      <div class="row"><strong>Diagnostics</strong><button id="diagClose">Close</button></div>
+      <pre id="diagOut" style="white-space:pre-wrap;"></pre>
     </div>
     <script src="./renderer.js"></script>
   </body>

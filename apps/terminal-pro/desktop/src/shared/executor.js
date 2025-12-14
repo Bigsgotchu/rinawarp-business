@@ -3,6 +3,7 @@ const path = require('path');
 const os = require('os');
 const { spawn } = require('child_process');
 const { capabilityNeededFor, isCapabilityAllowed, getCapabilities } = require('./capabilities.js');
+const { loadPolicy } = require('./policy.js');
 
 const STATE_DIR = path.join(os.homedir(), '.rinawarp');
 const STATE_FILE = path.join(STATE_DIR, 'state.json');
@@ -27,8 +28,10 @@ function buildGraph(steps) {
   return { nodes, edges, indeg };
 }
 
-async function execGraph({ steps, cwd, dry=false, confirm=false, timeoutMs=120000, maxBytes=2_000_000, resetFailed=false }) {
-  const caps = getCapabilities(cwd);
+async function execGraph({ steps, cwd, dry=false, confirm=false, resetFailed=false }) {
+  const policy = loadPolicy(cwd);
+  const caps = policy.capabilities;
+  const { timeoutMs, maxBytes } = policy.limits;
   const state = readState();
   if (resetFailed) {
     // remove failure stamps for cwd

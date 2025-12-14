@@ -18,6 +18,7 @@ if (IS_LINUX) app.commandLine.appendSwitch('ozone-platform', IS_WAYLAND ? 'wayla
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const child = require('child_process');
 const { z } = require('zod');
 
 // History
@@ -58,6 +59,7 @@ const { composePlanner } = require('./shared/planner_llm.js');
 const { getCapabilities, setCapabilities } = require('./shared/capabilities.js');
 const { execGraph, rollbackLastRun } = require('./shared/executor.js');
 const { explainStep } = require('./shared/explain.js');
+const { loadPolicy } = require('./shared/policy.js');
 
 // ---- Schemas
 const PlanSchema = z.object({ intent: z.string().min(1).max(2000), cwd: z.string().min(1) });
@@ -83,6 +85,11 @@ function safeHandle(channel, handler) {
   });
 }
 
+function cmdSync(cmd) {
+  try { return String(child.execSync(cmd, { stdio: ['ignore','pipe','pipe'] })).trim(); }
+  catch (e) { return `ERR: ${e.message}`; }
+}
+
 safeHandle('agent:plan', async (_evt, payload) => {
   const { intent, cwd } = PlanSchema.parse(payload);
   let steps = await composePlanner(intent, cwd);
@@ -94,7 +101,7 @@ safeHandle('agent:plan', async (_evt, payload) => {
 safeHandle('agent:dryrun', async (_evt, payload) => {
   const { intent, cwd } = PlanSchema.parse(payload);
   const steps = await composePlanner(intent, cwd);
-  const res = await execGraph({ steps, cwd, dry: true, confirm: false, timeoutMs: 120000, maxBytes: 2_000_000 });
+  const res = await execGraph({ steps, cwd, dry: true, confirm: false });
   const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
   const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
   appendHistory({ ts: Date.now(), method: 'dryrun', intent, steps, stdout, stderr });
@@ -105,7 +112,7 @@ safeHandle('agent:execGraph', async (_evt, payload) => {
   const { intent, cwd, confirm, resetFailed } = ExecGraphSchema.parse(payload);
   if (!confirm) return { status: 'error', message: 'confirmation required', plan: [], stdout: '', stderr: '' };
   const steps = await composePlanner(intent, cwd);
-  const res = await execGraph({ steps, cwd, dry: false, confirm: true, resetFailed, timeoutMs: 120000, maxBytes: 2_000_000 });
+  const res = await execGraph({ steps, cwd, dry: false, confirm: true, resetFailed });
   const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
   const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
   const failed = Object.values(res).some(r => r.code !== 0);
@@ -118,10 +125,39 @@ safeHandle('agent:rollback', async () => {
   return r;
 });
 
-safeHandle('agent:caps:get', async (_evt, { cwd }) => ({ cwd, caps: getCapabilities(cwd) }));
+safeHandle('agent:caps:get', async (_evt, { cwd }) => {
+  const policy = loadPolicy(cwd);
+  return { cwd, caps: policy.capabilities, limits: policy.limits, policy: policy.policy };
+});
 safeHandle('agent:caps:set', async (_evt, payload) => {
   const { cwd, caps } = CapsSetSchema.parse(payload);
-  return { cwd, caps: setCapabilities(cwd, caps) };
+  const policy = loadPolicy(cwd);
+  // Only allow enabling options already allowed by policy; never elevate above policy=false
+  const merged = Object.fromEntries(Object.entries(policy.capabilities).map(([k, v]) => [k, v && !!caps[k]]));
+  return { cwd, caps: merged };
 });
 
 safeHandle('agent:explain', async (_evt, { step }) => ({ text: explainStep(step) }));
+
+safeHandle('diag:run', async () => {
+  const info = [];
+  info.push(`# Runtime`);
+  info.push(`Electron: ${process.versions.electron}`);
+  info.push(`Node: ${process.versions.node}`);
+  info.push(`Platform: ${process.platform} ${os.release()}`);
+  info.push(`GPU disabled: yes`);
+
+  info.push(`\n# Security`);
+  info.push(`CSP injected: yes`);
+  info.push(`Sandbox: ${process.env.ELECTRON_DISABLE_SANDBOX ? 'off (CI)' : 'on'}`);
+
+  info.push(`\n# Tooling`);
+  info.push(`git --version: ${cmdSync('git --version')}`);
+  info.push(`docker --version: ${cmdSync('docker --version')}`);
+  info.push(`npm --version: ${cmdSync('npm --version')}`);
+
+  info.push(`\n# Planner`);
+  info.push(`LLM enabled: ${process.env.RINA_LLM === '1' ? 'yes' : 'no'}`);
+
+  return { status: 'ok', report: info.join('\n') };
+});

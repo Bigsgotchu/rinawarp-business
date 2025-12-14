@@ -3,7 +3,8 @@
   const intentEl = $('intent'), planEl = $('plan'), outEl = $('output'), errEl = $('errors'),
         cwdEl = $('cwd'), btnCwd = $('btnCwd'), btnPlan = $('btnPlan'),
         btnDry = $('btnDry'), btnExec = $('btnExec'), btnRerun = $('btnRerun'), btnRollback = $('btnRollback'),
-        capDocker = $('cap-docker'), capGit = $('cap-git'), capNpm = $('cap-npm'), capNetwork = $('cap-network'), saveCaps = $('saveCaps');
+        capDocker = $('cap-docker'), capGit = $('cap-git'), capNpm = $('cap-npm'), capNetwork = $('cap-network'), saveCaps = $('saveCaps'),
+        btnDiag = $('btnDiag'), diagStatus = $('diagStatus'), diagModal = $('diagModal'), diagOut = $('diagOut'), diagClose = $('diagClose');
 
   function chipSet(el, on) { el.classList.toggle('tag-on', on); el.classList.toggle('tag-off', !on); }
   function getCwd() { return cwdEl.value && cwdEl.value.trim() ? cwdEl.value.trim() : process.cwd(); }
@@ -73,6 +74,14 @@
 
   btnCwd.onclick = () => { cwdEl.value = process.cwd(); loadCaps(); };
   btnPlan.onclick = doPlan; btnDry.onclick = doDry; btnExec.onclick = () => doExec(false); btnRerun.onclick = () => doExec(true); btnRollback.onclick = doRollback;
+  btnDiag.onclick = async () => {
+    diagStatus.textContent = 'Running diagnostics…';
+    const r = await window.Rina.diagRun();
+    diagOut.textContent = r.report || '';
+    diagStatus.textContent = 'Diagnostics complete';
+    diagModal.style.display = 'block';
+  };
+  diagClose.onclick = () => { diagModal.style.display = 'none'; };
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey && !e.shiftKey) { e.preventDefault(); doPlan(); }
     else if (e.key === 'F9') { e.preventDefault(); doDry(); }
