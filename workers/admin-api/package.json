@@ -9,7 +9,7 @@
     "publish": "wrangler publish"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20231016.0"
+    "@cloudflare/workers-types": "^4.20251209.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",

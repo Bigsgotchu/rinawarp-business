@@ -1,0 +1,197 @@
+# Stripe Product Creation CLI Commands
+
+Complete Stripe setup commands for RinaWarp Terminal Pro and Rina Agent Pro.
+
+## A) Login + Pick Mode
+
+```bash
+# Login to Stripe CLI
+stripe login
+
+# For live runs, append --live to commands or export live API key
+export STRIPE_API_KEY=sk_live_...
+```
+
+## B) Create Products
+
+### Terminal Pro (Lifetime License)
+```bash
+stripe products create \
+  --name="RinaWarp Terminal Pro" \
+  --description="Local-first terminal + Rina Agent integration. Privacy-focused development environment with intelligent command suggestions."
+```
+
+### Rina Agent Pro (Subscription Add-on)
+```bash
+stripe products create \
+  --name="Rina Agent Pro" \
+  --description="Advanced agent features: persistent memory, tool registry, inline suggestions, crash supervision, and enhanced workflow automation."
+```
+
+## C) Create Prices
+
+### Terminal Pro - Lifetime ($149 USD)
+```bash
+stripe prices create \
+  --currency=usd \
+  --unit-amount=14900 \
+  -d "product_data[name]=RinaWarp Terminal Pro (Lifetime)" \
+  -d "metadata[sku]=RWTP-LIFE-149" \
+  -d "metadata[tier]=terminal-pro" \
+  -d "metadata[billing]=lifetime"
+```
+
+### Rina Agent Pro - Monthly ($19 USD)
+```bash
+stripe prices create \
+  --currency=usd \
+  --unit-amount=1900 \
+  -d "recurring[interval]=month" \
+  -d "product_data[name]=Rina Agent Pro (Monthly)" \
+  -d "metadata[sku]=RINA-AGENT-MONTHLY-19" \
+  -d "metadata[tier]=agent-pro" \
+  -d "metadata[billing]=subscription"
+```
+
+### Rina Agent Pro - Annual ($190 USD - 2 months free)
+```bash
+stripe prices create \
+  --currency=usd \
+  --unit-amount=19000 \
+  -d "recurring[interval]=year" \
+  -d "product_data[name]=Rina Agent Pro (Annual)" \
+  -d "metadata[sku]=RINA-AGENT-YEARLY-190" \
+  -d "metadata[tier]=agent-pro" \
+  -d "metadata[billing]=subscription" \
+  -d "metadata[discount]=2-months-free"
+```
+
+## D) Webhook Endpoint Setup
+
+```bash
+stripe webhook_endpoints create \
+  -d "url=https://rinawarptech.com/api/stripe/webhook" \
+  -d "enabled_events[]=checkout.session.completed" \
+  -d "enabled_events[]=invoice.paid" \
+  -d "enabled_events[]=customer.subscription.deleted" \
+  -d "enabled_events[]=customer.subscription.updated" \
+  -d "enabled_events[]=payment_intent.succeeded" \
+  -d "enabled_events[]=payment_intent.payment_failed"
+```
+
+## E) Quick Setup Script
+
+Create `setup-stripe-products.sh`:
+
+```bash
+#!/bin/bash
+set -e
+
+echo "🚀 Setting up RinaWarp Stripe Products..."
+
+# Check if logged in
+if ! stripe status &> /dev/null; then
+    echo "❌ Please run 'stripe login' first"
+    exit 1
+fi
+
+# Create Terminal Pro product
+echo "📦 Creating Terminal Pro product..."
+TERMINAL_PRODUCT=$(stripe products create \
+  --name="RinaWarp Terminal Pro" \
+  --description="Local-first terminal + Rina Agent integration. Privacy-focused development environment with intelligent command suggestions." \
+  --format=json)
+
+TERMINAL_PRODUCT_ID=$(echo $TERMINAL_PRODUCT | jq -r '.id')
+
+# Create Terminal Pro lifetime price
+echo "💰 Creating Terminal Pro lifetime price..."
+stripe prices create \
+  --currency=usd \
+  --unit-amount=14900 \
+  -d "product_data[name]=RinaWarp Terminal Pro (Lifetime)" \
+  -d "metadata[sku]=RWTP-LIFE-149" \
+  -d "metadata[tier]=terminal-pro" \
+  -d "metadata[billing]=lifetime"
+
+# Create Agent Pro product
+echo "🤖 Creating Agent Pro product..."
+AGENT_PRODUCT=$(stripe products create \
+  --name="Rina Agent Pro" \
+  --description="Advanced agent features: persistent memory, tool registry, inline suggestions, crash supervision, and enhanced workflow automation." \
+  --format=json)
+
+AGENT_PRODUCT_ID=$(echo $AGENT_PRODUCT | jq -r '.id')
+
+# Create Agent Pro monthly price
+echo "💳 Creating Agent Pro monthly price..."
+stripe prices create \
+  --currency=usd \
+  --unit-amount=1900 \
+  -d "recurring[interval]=month" \
+  -d "product_data[name]=Rina Agent Pro (Monthly)" \
+  -d "metadata[sku]=RINA-AGENT-MONTHLY-19" \
+  -d "metadata[tier]=agent-pro" \
+  -d "metadata[billing]=subscription"
+
+# Create Agent Pro annual price
+echo "📅 Creating Agent Pro annual price..."
+stripe prices create \
+  --currency=usd \
+  --unit-amount=19000 \
+  -d "recurring[interval]=year" \
+  -d "product_data[name]=Rina Agent Pro (Annual)" \
+  -d "metadata[sku]=RINA-AGENT-YEARLY-190" \
+  -d "metadata[tier]=agent-pro" \
+  -d "metadata[billing]=subscription" \
+  -d "metadata[discount]=2-months-free"
+
+echo "✅ Stripe products created successfully!"
+echo "📋 Product IDs:"
+echo "   Terminal Pro: $TERMINAL_PRODUCT_ID"
+echo "   Agent Pro: $AGENT_PRODUCT_ID"
+```
+
+## F) Environment Variables
+
+Update your `.env` file:
+
+```bash
+# Stripe Configuration
+STRIPE_PUBLISHABLE_KEY=pk_test_...  # or pk_live_... for production
+STRIPE_SECRET_KEY=sk_test_...       # or sk_live_... for production
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Product IDs (from CLI output)
+TERMINAL_PRO_PRODUCT_ID=prod_...
+AGENT_PRO_PRODUCT_ID=prod_...
+
+# Price IDs (from CLI output)
+TERMINAL_PRO_LIFETIME_PRICE_ID=price_...
+AGENT_PRO_MONTHLY_PRICE_ID=price_...
+AGENT_PRO_ANNUAL_PRICE_ID=price_...
+```
+
+## G) Testing Commands
+
+```bash
+# List all products
+stripe products list
+
+# List all prices
+stripe prices list
+
+# Test webhook locally
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+
+# Test checkout creation
+stripe checkout sessions create \
+  --mode=payment \
+  --line-items price_123 \
+  --success-url https://yourapp.com/success \
+  --cancel-url https://yourapp.com/cancel
+```
+
+---
+
+**Note**: Remember to run these commands with `--live` flag for production setup, or set the `STRIPE_API_KEY` environment variable to your live secret key.

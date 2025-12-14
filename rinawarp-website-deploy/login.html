@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Sign In – RinaWarp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+<div class="wrapper theme-mermaid">
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="nav-left">
+          <div class="logo-mark"><span>RW</span></div>
+          <div class="brand-text">
+            <strong>RINAWARP</strong>
+            <span>Sign In</span>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="download.html">Download</a>
+          <a href="pricing.html">Pricing</a>
+          <a href="login.html" class="active">Sign In</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div class="section-header">
+        <div class="section-kicker">Account</div>
+        <h1 class="section-title">Sign in to your RinaWarp account</h1>
+        <p class="section-description">
+          Use a magic link or sign in with Google / GitHub. No passwords.
+        </p>
+      </div>
+
+      <div class="hero-card" style="max-width:480px;margin:auto;">
+        <!-- Magic link form -->
+        <form id="magicForm">
+          <label class="admin-label" for="email">Email address</label>
+          <input id="email" name="email" type="email" class="admin-input" required
+                 placeholder="you@example.com" />
+
+          <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem;">
+            Send magic link
+          </button>
+        </form>
+
+        <p id="magic-success" style="display:none;color:#10d7c2;margin-top:1rem;font-size:0.9rem;">
+          ✅ Magic link sent. Check your email to finish signing in.
+        </p>
+        <p id="magic-error" style="display:none;color:#ff2d92;margin-top:1rem;font-size:0.9rem;">
+          ❌ Could not send magic link. Please try again.
+        </p>
+
+        <div style="margin:1.5rem 0;text-align:center;font-size:0.85rem;color:var(--text-muted);">
+          <span style="opacity:0.7;">or</span>
+        </div>
+
+        <!-- OAuth buttons -->
+        <button class="btn btn-ghost" style="width:100%;margin-bottom:0.5rem;"
+                onclick="startOAuth('google')">
+          Continue with Google
+        </button>
+        <button class="btn btn-ghost" style="width:100%;"
+                onclick="startOAuth('github')">
+          Continue with GitHub
+        </button>
+
+        <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--text-muted);">
+          By signing in, you agree to our
+          <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<script>
+const redirectAfterLogin = "/portal.html";
+
+document.getElementById("magicForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  if (!email) return;
+
+  const successEl = document.getElementById("magic-success");
+  const errorEl = document.getElementById("magic-error");
+  successEl.style.display = "none";
+  errorEl.style.display = "none";
+
+  try {
+    const res = await fetch("/api/auth/magic-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, redirectTo: redirectAfterLogin }),
+    });
+
+    if (res.ok) {
+      successEl.style.display = "block";
+    } else {
+      errorEl.style.display = "block";
+    }
+  } catch (err) {
+    errorEl.style.display = "block";
+  }
+});
+
+function startOAuth(provider) {
+  // Backend handlers: /api/auth/google and /api/auth/github
+  const url = new URL(`/api/auth/${provider}`, window.location.origin);
+  url.searchParams.set("redirectTo", redirectAfterLogin);
+  window.location.href = url.toString();
+}
+</script>
+
+</body>
+</html>

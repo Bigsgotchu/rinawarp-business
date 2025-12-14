@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-13T17:38:17.897Z",
+  "timestamp": "2025-12-13T20:29:48.876Z",
   "vulnerabilities": [
     {
       "type": "dependency",
@@ -18,10 +18,12 @@
       "description": "Package xterm has known vulnerabilities"
     },
     {
-      "type": "npm-audit",
+      "type": "dependency",
       "package": "electron",
-      "severity": "moderate",
-      "fix": true
+      "current": "^39.2.7",
+      "vulnerable": "<28.0.0",
+      "severity": "high",
+      "description": "Package electron has known vulnerabilities"
     },
     {
       "type": "npm-audit",
@@ -134,7 +136,7 @@
       "file": "src/renderer/js/terminal.js",
       "severity": "high",
       "description": "Direct innerHTML assignment detected",
-      "count": 3,
+      "count": 5,
       "recommendation": "Use textContent or DOM methods instead"
     },
     {
@@ -150,7 +152,7 @@
       "file": "src/renderer/js/terminal.js",
       "severity": "medium",
       "description": "Potential hardcoded credentials",
-      "count": 31,
+      "count": 35,
       "recommendation": "Move sensitive data to environment variables"
     },
     {
@@ -456,7 +458,7 @@
   "summary": {
     "totalVulnerabilities": 51,
     "criticalIssues": 0,
-    "highIssues": 16,
+    "highIssues": 17,
     "mediumIssues": 32,
     "lowIssues": 0,
     "codeSigningReady": true

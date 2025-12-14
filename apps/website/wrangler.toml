@@ -6,12 +6,14 @@ compatibility_date = "2025-11-17"
 # Environment variables - will be set via secrets
 [vars]
 DOMAIN = "https://rinawarptech.com"
+# STRIPE_PUBLISHABLE_KEY should be set as a secret using: wrangler secret put STRIPE_PUBLISHABLE_KEY
+# Remove this comment after setting the secret
 
 # D1 Database for licenses
 [[d1_databases]]
 binding = "DB"
 database_name = "licenses"
-database_id = "YOUR_DATABASE_ID"
+database_id = "8c06aa6c-27e9-43d5-934a-b2fcb6da9bb2"
 
 # R2 Bucket for downloads
 [[r2_buckets]]

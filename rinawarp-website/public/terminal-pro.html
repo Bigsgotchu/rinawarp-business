@@ -8,10 +8,47 @@
       content="RinaWarp Terminal Pro - The terminal you already know without the friction. Local-first. Private by default. AI only when it helps."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "RinaWarp Terminal Pro",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Windows, macOS, Linux",
+      "description": "A production-grade, agent-powered terminal IDE with local /v1 compatibility, toolbelt integration, and enterprise observability.",
+      "softwareVersion": "1.0.0",
+      "publisher": {
+        "@type": "Organization",
+        "name": "RinaWarp Tech",
+        "url": "https://rinawarptech.com"
+      },
+      "url": "https://rinawarptech.com/terminal-pro.html",
+      "downloadUrl": "https://rinawarptech.com/download.html",
+      "releaseNotes": "https://rinawarptech.com/changelog/",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "category": "Free"
+      },
+      "applicationSubCategory": "Terminal, Agent IDE",
+      "featureList": [
+        "OpenAI-compatible /v1 endpoints",
+        "SSE streaming chat completions",
+        "Built-in toolbelt for project ops",
+        "Docker/Prisma deploy helpers",
+        "Security & observability defaults"
+      ],
+      "screenshot": [
+        "https://rinawarptech.com/assets/screenshots/terminal-pro.png"
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="/css/shared.css" />
     <link rel="stylesheet" href="/css/mermaid.css" />
   </head>
   <body class="mermaid">
+    <a href="#main" class="skip-link">Skip to content</a>
     <div class="main-shell">
       <header class="rw-nav">
         <div class="rw-nav-left">
@@ -31,7 +68,7 @@
         </div>
       </header>
 
-      <main>
+      <main id="main">
         <!-- ALTERNATIVE HERO VARIANT -->
         <section class="grid-hero">
           <div>
@@ -255,8 +292,8 @@
           } else if (isMac) {
             ctaButton.innerHTML = 'Download for macOS<br><small style="opacity: 0.7;">Windows version ready</small>';
           } else if (isLinux) {
-            ctaButton.innerHTML = 'Download for Linux<br><small style="opacity: 0.7;">Windows version          } else {
- ready</small>';
+            ctaButton.innerHTML = 'Download for Linux<br><small style="opacity: 0.7;">Windows version ready</small>';
+          } else {
             ctaButton.innerHTML = 'Download for Windows<br><small style="opacity: 0.7;">Cross-platform coming soon</small>';
           }
         }

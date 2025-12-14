@@ -1,0 +1,7 @@
+# RinaWarp Terminal Pro - Phase 1 Dogfood Hash
+# Generated: 2025-12-13T20:39:48.445Z
+# AppImage: RinaWarp-Terminal-Pro-1.0.0-x86_64.AppImage
+# Status: KNOWN-GOOD LAUNCHING BUILD
+# Rollback anchor for 48-72 hour stability testing
+
+7f3ddbb8de76ea45ccbd0068c600d50387b87a79259fb842923fcbc24751069f

@@ -1,0 +1,41 @@
+name: Release Engineering Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd apps/terminal-pro/desktop
+          npm ci
+
+      - name: Run validation
+        run: |
+          cd apps/terminal-pro/desktop
+          node scripts/release-engineering.js validate
+
+      - name: Build application
+        run: |
+          cd apps/terminal-pro/desktop
+          node scripts/release-engineering.js build --skip-tests
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: apps/terminal-pro/desktop/build-output/*

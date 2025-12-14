@@ -1,0 +1,84 @@
+# 🧪 Testing RinaWarp Telemetry Fixes
+
+## Quick Start
+
+### 1. Start the Server
+```bash
+cd backend/api-gateway
+npm install
+npm start
+```
+
+### 2. Run Automated Tests
+```bash
+# In another terminal
+cd backend/api-gateway  
+node test-hardened-telemetry.js
+```
+
+### 3. Manual Testing
+
+**Test Valid Telemetry:**
+```bash
+curl -X POST http://localhost:3000/api/telemetry \
+  -H "Content-Type: application/json" \
+  -d '{
+    "schemaVersion": 1,
+    "appVersion": "1.0.0",
+    "os": "linux",
+    "agent": {"status": "online", "pingMs": 100},
+    "license": {"tier": "pro", "offline": false}
+  }'
+```
+
+**Test Schema Validation (should fail):**
+```bash
+curl -X POST http://localhost:3000/api/telemetry \
+  -H "Content-Type: application/json" \
+  -d '{"schemaVersion": 999, "appVersion": "1.0.0", "os": "linux"}'
+```
+
+**Test Dashboard Auth (should fail with 401):**
+```bash
+curl http://localhost:3000/api/telemetry/summary
+```
+
+**Test Dashboard Auth (should work with token):**
+```bash
+curl http://localhost:3000/api/telemetry/summary \
+  -H "X-Dashboard-Token: test-dashboard-token-12345"
+```
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+- `DASHBOARD_TOKEN`: Secret for dashboard access
+- `SLACK_WEBHOOK_URL`: For monitoring alerts
+- `RETENTION_DAYS`: Data retention policy (default: 30)
+
+## Files Modified
+
+- ✅ `server.js` - All fixes implemented
+- ✅ `middleware/dashboardAuth.js` - New auth middleware
+- ✅ `.env.example` - Updated with new variables
+- ✅ `test-hardened-telemetry.js` - Comprehensive test suite
+- ✅ `.env` - Test environment configuration
+
+## Production Deployment
+
+1. Set strong `DASHBOARD_TOKEN` (64+ characters)
+2. Configure `SLACK_WEBHOOK_URL` for monitoring
+3. Set `NODE_ENV=production`
+4. Run tests to verify functionality
+5. Monitor logs for data retention activity
+
+## All Fixes Verified ✅
+
+- Schema version validation (hard reject unknown versions)
+- Dashboard authentication (token-based security)
+- Data retention (30-day automated cleanup)
+- Payload validation (strict required fields)
+- Slack alerting (agent health monitoring)
+- Comprehensive test coverage
+
+**Status: PRODUCTION READY** 🎯

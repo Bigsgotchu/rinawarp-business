@@ -11,6 +11,8 @@
     "@cloudflare/workers-types": "^4.20251209.0",
     "@cspell/cspell-bundled-dicts": "^9.4.0",
     "electron-builder": "^26.0.12",
-    "vitest": "^4.0.15"
+    "tsx": "^4.21.0",
+    "vitest": "^4.0.15",
+    "yaml": "^2.8.2"
   }
 }

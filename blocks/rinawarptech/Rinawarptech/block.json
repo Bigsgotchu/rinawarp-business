@@ -1,0 +1,7 @@
+{
+  "name": "Rinawarptech",
+  "version": "0.0.0-local",
+  "description": "Local scaffold for rinawarptech/Rinawarptech",
+  "entry": "./index.md",
+  "meta": { "source": "scaffold", "created": "local" }
+}

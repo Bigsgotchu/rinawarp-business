@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Contact RinaWarp Technologies</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="wrapper theme-mermaid">
+      <header class="site-header">
+        <div class="container">
+          <nav class="navbar">
+            <div class="nav-left">
+              <div class="logo-mark"><span>RW</span></div>
+              <div class="brand-text">
+                <strong>RINAWARP</strong>
+                <span>Contact</span>
+              </div>
+            </div>
+            <div class="nav-links">
+              <a href="index.html">Home</a>
+              <a href="terminal-pro.html">Terminal Pro</a>
+              <a href="music-video-creator.html">Music Video Creator</a>
+              <a href="pricing.html">Pricing</a>
+              <a href="download.html">Download</a>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-kicker">Get in touch</div>
+            <h1 class="section-title">We'd love to hear from you.</h1>
+            <p class="section-description">
+              Whether you have questions about our products, need support, or want to explore
+              partnerships, we're here to help.
+            </p>
+          </div>
+
+          <div class="admin-card" style="max-width: 500px; margin: 0 auto">
+            <form method="post" action="/api/contact">
+              <div class="admin-form-group">
+                <label class="admin-label" for="name">Name</label>
+                <input class="admin-input" type="text" id="name" name="name" required />
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label" for="email">Email</label>
+                <input class="admin-input" type="email" id="email" name="email" required />
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label" for="message">Message</label>
+                <textarea
+                  class="admin-input"
+                  id="message"
+                  name="message"
+                  rows="4"
+                  style="resize: vertical; min-height: 100px"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-flex">
+          <div>
+            ©
+            <span id="year"></span>
+            RinaWarp Technologies, LLC.
+          </div>
+          <div class="footer-links">
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="dmca.html">DMCA</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

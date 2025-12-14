@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "useGitignore": true,
+  "language": "en",
+  "caseSensitive": false,
+  "words": [
+    "observability",
+    "production",
+    "access",
+    "control",
+    "rinawarp",
+    "rinawarptech",
+    "pino",
+    "prometheus",
+    "typescript",
+    "morgan",
+    "tiny",
+    "json",
+    "authz",
+    "k6",
+    "supertest",
+    "helmet",
+    "cors",
+    "sse",
+    "openapi",
+    "ci",
+    "cd",
+    "localhost"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "**/*.lock",
+    "**/coverage",
+    "**/.next",
+    "**/build",
+    "rinawarp-website/public/qzje"
+  ]
+}

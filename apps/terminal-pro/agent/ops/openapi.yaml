@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: RinaWarp Agent API
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:{port}
+    variables: { port: { default: "3333" } }
+paths:
+  /health:
+    get:
+      summary: Liveness probe
+      responses:
+        "200": { description: OK }
+  /v1/models:
+    get:
+      summary: List models
+      responses:
+        "200":
+          description: List
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object: { type: string, enum: [list] }
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string }
+                        object: { type: string, enum: [model] }
+  /v1/chat/completions:
+    post:
+      summary: Create chat completion (OpenAI-compatible)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [model, messages]
+              properties:
+                model: { type: string, example: rina-agent }
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    required: [role, content]
+                    properties:
+                      role: { type: string, enum: [system, user, assistant, tool, function] }
+                      content: { type: string }
+                stream: { type: boolean }
+                temperature: { type: number, minimum: 0, maximum: 2 }
+                top_p: { type: number, exclusiveMinimum: 0, maximum: 1 }
+      responses:
+        "200":
+          description: Chat completion
+          content:
+            application/json: {}
+            text/event-stream: {}
+        "400": { description: Bad request }
+        "415": { description: Unsupported media type }

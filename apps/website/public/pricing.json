@@ -1,0 +1,113 @@
+{
+  "currency": "USD",
+  "plans": {
+    "free": {
+      "id": "free",
+      "name": "Free",
+      "price": 0,
+      "interval": "forever",
+      "checkout": null,
+      "features": [
+        "Limited terminal sandbox",
+        "Daily command limits",
+        "Safety-restricted execution",
+        "No AI agent",
+        "No voice",
+        "No premium modules"
+      ]
+    },
+
+    "basic": {
+      "id": "basic",
+      "name": "Basic",
+      "price": 9.99,
+      "interval": "month",
+      "stripe_price_id": "price_basic_999",
+      "features": [
+        "Unlimited local terminal",
+        "Entry-level Rina Agent assistance",
+        "Light productivity helpers"
+      ]
+    },
+
+    "starter": {
+      "id": "starter",
+      "name": "Starter",
+      "price": 29,
+      "interval": "month",
+      "featured": true,
+      "stripe_price_id": "price_starter_29",
+      "features": [
+        "Advanced agent suggestions",
+        "Automation basics",
+        "Expanded tooling set"
+      ]
+    },
+
+    "creator": {
+      "id": "creator",
+      "name": "Creator",
+      "price": 69,
+      "interval": "month",
+      "stripe_price_id": "price_creator_69",
+      "features": [
+        "Everything in Starter",
+        "Voice-enabled workflows",
+        "Higher agent limits",
+        "More modules"
+      ]
+    },
+
+    "pro": {
+      "id": "pro",
+      "name": "Pro",
+      "price": 99,
+      "interval": "month",
+      "stripe_price_id": "price_pro_99",
+      "features": [
+        "Unlimited agent usage (fair-use)",
+        "All modules included",
+        "Priority handling"
+      ]
+    },
+
+    "founder_lifetime": {
+      "id": "founder_lifetime",
+      "name": "Founder Lifetime",
+      "price": 699,
+      "interval": "one_time",
+      "limit": 200,
+      "stripe_price_id": "price_founder_699",
+      "features": [
+        "Lifetime license",
+        "Early access releases",
+        "Priority onboarding"
+      ]
+    },
+
+    "pioneer_lifetime": {
+      "id": "pioneer_lifetime",
+      "name": "Pioneer Lifetime",
+      "price": 800,
+      "interval": "one_time",
+      "limit": 300,
+      "stripe_price_id": "price_pioneer_800",
+      "features": [
+        "Lifetime license",
+        "Early access releases"
+      ]
+    },
+
+    "evergreen_lifetime": {
+      "id": "evergreen_lifetime",
+      "name": "Evergreen Lifetime",
+      "price": 999,
+      "interval": "one_time",
+      "stripe_price_id": "price_evergreen_999",
+      "features": [
+        "Lifetime license",
+        "Standard onboarding"
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+[build]
+  publish = "public"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "same-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "same-origin"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Redirect www to non-www for canonical URL
+[[redirects]]
+  from = "https://www.rinawarptech.com/*"
+  to = "https://rinawarptech.com/:splat"
+  status = 301
+  force = true
+
+# Redirect http to https
+[[redirects]]
+  from = "http://rinawarptech.com/*"
+  to = "https://rinawarptech.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.rinawarptech.com/*"
+  to = "https://rinawarptech.com/:splat"
+  status = 301
+  force = true

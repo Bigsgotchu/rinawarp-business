@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My Account – RinaWarp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .dashboard-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .card-subtitle {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .license-key {
+      font-family: monospace;
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      margin: 0.5rem 0;
+      word-break: break-all;
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .badge-active {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-revoked {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .device-list, .activity-list {
+      margin-top: 1rem;
+    }
+
+    .device-item, .activity-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .device-item:last-child, .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .device-info, .activity-info {
+      flex: 1;
+    }
+
+    .device-name, .activity-action {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .device-meta, .activity-meta {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .tab {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: 500;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      border-bottom-color: #667eea;
+      color: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .profile-section {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+      font-style: italic;
+    }
+
+    .btn-recover {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-recover:hover {
+      background: #5568d3;
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrapper theme-mermaid">
+
+<header class="site-header">
+  <div class="container">
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="logo-mark"><span>RW</span></div>
+        <div class="brand-text"><strong>RINAWARP</strong><span>My Account</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="download.html">Download</a>
+        <a href="user-portal.html" class="active">My Account</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+<section class="section">
+  <div class="section-header">
+    <div class="section-kicker">Your Account</div>
+    <h1 class="section-title">Welcome to Your RinaWarp Dashboard</h1>
+    <p class="section-description">Manage your licenses, devices, and account settings</p>
+  </div>
+
+  <div id="loading" class="loading">
+    <p>Loading your account data...</p>
+  </div>
+
+  <div id="authRequired" style="display: none;">
+    <div class="hero-card" style="max-width: 600px; margin: auto;">
+      <h2>Access Your Account</h2>
+      <p>Please log in to view your dashboard and manage your licenses.</p>
+
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="your@email.com" required>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%;" onclick="requestMagicLink()">
+        Send Magic Link
+      </button>
+
+      <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+        We'll send you a secure login link via email.
+      </p>
+    </div>
+  </div>
+
+  <div id="dashboardContent" style="display: none;">
+    <div class="profile-section">
+      <div class="card-header">
+        <h2 class="card-title">Your Profile</h2>
+        <button class="btn btn-small" onclick="openEditProfileModal()">Edit Profile</button>
+      </div>
+
+      <div class="card-subtitle">Account Information</div>
+
+      <div id="profileInfo">
+        <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+        <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+        <p><strong>Status:</strong> <span id="userStatus">Loading...</span></p>
+        <p><strong>Member Since:</strong> <span id="userCreated">Loading...</span></p>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('licenses')">My Licenses</div>
+      <div class="tab" onclick="switchTab('devices')">My Devices</div>
+      <div class="tab" onclick="switchTab('activity')">Activity Log</div>
+      <div class="tab" onclick="switchTab('settings')">Account Settings</div>
+    </div>
+
+    <div id="licenses-tab" class="tab-content active">
+      <div class="dashboard-grid" id="licensesGrid">
+        <!-- Licenses will be loaded here -->
+        <div class="loading">Loading your licenses...</div>
+      </div>
+    </div>
+
+    <div id="devices-tab" class="tab-content">
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3 class="card-title">Your Devices</h3>
+          <button class="btn btn-small" onclick="refreshDevices()">Refresh</button>
+        </div>
+
+        <div class="card-subtitle">Manage your activated devices</div>
+
+        <div class="device-list" id="devicesList">
+          <div class="loading">Loading your devices...</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="activity-tab" class="tab-content">
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Activity</h3>
+          <button class="btn btn-small" onclick="refreshActivity()">Refresh</button>
+        </div>
+
+        <div class="card-subtitle">Your recent account activity</div>
+
+        <div class="activity-list" id="activityList">
+          <div class="loading">Loading your activity...</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings-tab" class="tab-content">
+      <div class="dashboard-grid">
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3 class="card-title">Account Security</h3>
+          </div>
+
+          <div class="card-subtitle">Manage your security settings</div>
+
+          <div class="form-group">
+            <label>Authentication Method</label>
+            <p id="authMethod">Magic Link</p>
+          </div>
+
+          <button class="btn btn-ghost" style="margin-top: 1rem;" onclick="showSecurityOptions()">
+            Security Options
+          </button>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3 class="card-title">Billing & Subscriptions</h3>
+          </div>
+
+          <div class="card-subtitle">Manage your payment methods</div>
+
+          <button class="btn btn-primary" style="width: 100%;" onclick="openBillingPortal()">
+            Manage Billing
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- Edit Profile Modal -->
+<div class="modal" id="editProfileModal">
+  <div class="modal-content">
+    <h2 style="margin-top: 0;">Edit Profile</h2>
+    <form id="editProfileForm" onsubmit="saveProfile(event)">
+      <div class="form-group">
+        <label for="editName">Name</label>
+        <input type="text" id="editName" required>
+      </div>
+      <div class="form-group">
+        <label for="editEmail">Email</label>
+        <input type="email" id="editEmail" required>
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-ghost" onclick="closeEditProfileModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Magic Link Sent Modal -->
+<div class="modal" id="magicLinkSentModal">
+  <div class="modal-content">
+    <h2 style="margin-top: 0;">Check Your Email</h2>
+    <p>We've sent a magic login link to your email address.</p>
+    <p style="margin-top: 1rem; color: #666;">
+      The link will expire in 15 minutes for security.
+    </p>
+    <div style="margin-top: 1.5rem;">
+      <button type="button" class="btn btn-primary" onclick="closeMagicLinkSentModal()">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentUser = null;
+let userLicenses = [];
+let userDevices = [];
+let userActivity = [];
+
+// Initialize the dashboard
+async function initDashboard() {
+  try {
+    // Check if user is authenticated
+    const authCheck = await checkAuth();
+
+    if (!authCheck.authenticated) {
+      showAuthRequired();
+      return;
+    }
+
+    // Load user data
+    await loadUserData();
+
+    // Show dashboard
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('dashboardContent').style.display = 'block';
+
+  } catch (error) {
+    console.error('Dashboard init error:', error);
+    showAuthRequired();
+  }
+}
+
+// Check authentication status
+async function checkAuth() {
+  try {
+    const response = await fetch('/api/user/profile', {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (response.ok) {
+      return { authenticated: true };
+    } else {
+      return { authenticated: false };
+    }
+  } catch (error) {
+    console.error('Auth check error:', error);
+    return { authenticated: false };
+  }
+}
+
+// Load user data
+async function loadUserData() {
+  try {
+    const response = await fetch('/api/user/profile', {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to load user data');
+    }
+
+    const data = await response.json();
+
+    if (!data.ok) {
+      throw new Error(data.error || 'Failed to load user data');
+    }
+
+    currentUser = data.user;
+    userLicenses = data.licenses;
+    userDevices = data.devices;
+    userActivity = data.recent_activity;
+
+    // Update UI
+    updateProfileUI();
+    updateLicensesUI();
+    updateDevicesUI();
+    updateActivityUI();
+
+  } catch (error) {
+    console.error('Load user data error:', error);
+    alert('Failed to load your account data. Please try again.');
+  }
+}
+
+// Update profile UI
+function updateProfileUI() {
+  document.getElementById('userName').textContent = currentUser.name || 'Not set';
+  document.getElementById('userEmail').textContent = currentUser.email;
+  document.getElementById('userStatus').textContent = currentUser.status;
+  document.getElementById('userCreated').textContent = new Date(currentUser.created_at).toLocaleString();
+}
+
+// Update licenses UI
+function updateLicensesUI() {
+  const grid = document.getElementById('licensesGrid');
+
+  if (userLicenses.length === 0) {
+    grid.innerHTML = '<div class="empty-state">No licenses found. Have you purchased a license?</div>';
+    return;
+  }
+
+  grid.innerHTML = userLicenses.map(license => `
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3 class="card-title">${license.plan}</h3>
+        <span class="badge ${getStatusBadgeClass(license.status)}">${license.status}</span>
+      </div>
+
+      <div class="card-subtitle">License Key</div>
+
+      <div class="license-key">${license.id}</div>
+
+      <div style="margin-top: 1rem;">
+        <p><strong>Status:</strong> ${license.status}</p>
+        <p><strong>Created:</strong> ${new Date(license.created_at).toLocaleString()}</p>
+        <p><strong>Primary:</strong> ${license.is_primary ? 'Yes' : 'No'}</p>
+      </div>
+
+      <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+        <button class="btn btn-small" onclick="copyLicenseKey('${license.id}')">Copy Key</button>
+        <button class="btn btn-small btn-ghost" onclick="showLicenseDetails('${license.id}')">Details</button>
+        ${license.status === 'active' ? `
+        <button class="btn btn-small" style="background: #f5576c;" onclick="revokeLicense('${license.id}')">Revoke</button>
+        ` : ''}
+      </div>
+
+      ${license.status === 'active' ? `
+      <div style="margin-top: 1rem;">
+        <button class="btn-recover" onclick="requestLicenseRecovery('${license.id}')">
+          Send License to Email
+        </button>
+      </div>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+// Update devices UI
+function updateDevicesUI() {
+  const list = document.getElementById('devicesList');
+
+  if (userDevices.length === 0) {
+    list.innerHTML = '<div class="empty-state">No devices found. Activate your license on a device to see it here.</div>';
+    return;
+  }
+
+  list.innerHTML = userDevices.map(device => `
+    <div class="device-item">
+      <div class="device-info">
+        <div class="device-name">${device.device_name || 'Unknown Device'}</div>
+        <div class="device-meta">
+          ${device.os_name || 'Unknown OS'} ${device.os_version || ''} • ${device.app_version || 'Unknown Version'}<br>
+          Last active: ${new Date(device.last_active_at).toLocaleString()}
+        </div>
+      </div>
+      <div>
+        <span class="badge ${getStatusBadgeClass(device.status)}">${device.status}</span>
+        ${device.status === 'active' ? `
+        <button class="btn btn-small" style="background: #f5576c; margin-left: 0.5rem;" onclick="revokeDevice('${device.id}')">
+          Revoke
+        </button>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// Update activity UI
+function updateActivityUI() {
+  const list = document.getElementById('activityList');
+
+  if (userActivity.length === 0) {
+    list.innerHTML = '<div class="empty-state">No recent activity found.</div>';
+    return;
+  }
+
+  list.innerHTML = userActivity.map(activity => `
+    <div class="activity-item">
+      <div class="activity-info">
+        <div class="activity-action">${activity.action}</div>
+        <div class="activity-meta">
+          ${new Date(activity.created_at).toLocaleString()}
+          ${activity.license_id ? ` • License: ${activity.license_id}` : ''}
+          ${activity.ip_address ? ` • IP: ${activity.ip_address}` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Helper functions
+function getStatusBadgeClass(status) {
+  switch (status.toLowerCase()) {
+    case 'active': return 'badge-active';
+    case 'pending': return 'badge-pending';
+    case 'revoked': return 'badge-revoked';
+    default: return 'badge';
+  }
+}
+
+function showAuthRequired() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('authRequired').style.display = 'block';
+}
+
+// Tab switching
+function switchTab(tabName) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+
+  // Show selected tab
+  document.getElementById(tabName + '-tab').classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Modal functions
+function openEditProfileModal() {
+  document.getElementById('editName').value = currentUser.name || '';
+  document.getElementById('editEmail').value = currentUser.email;
+  document.getElementById('editProfileModal').classList.add('active');
+}
+
+function closeEditProfileModal() {
+  document.getElementById('editProfileModal').classList.remove('active');
+}
+
+function openMagicLinkSentModal() {
+  document.getElementById('magicLinkSentModal').classList.add('active');
+}
+
+function closeMagicLinkSentModal() {
+  document.getElementById('magicLinkSentModal').classList.remove('active');
+}
+
+// Profile editing
+async function saveProfile(event) {
+  event.preventDefault();
+
+  const name = document.getElementById('editName').value.trim();
+  const email = document.getElementById('editEmail').value.trim();
+
+  if (!name || !email) {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        email
+      }),
+      credentials: 'include'
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || 'Failed to update profile');
+    }
+
+    // Update current user data
+    currentUser.name = name;
+    currentUser.email = email;
+
+    // Update UI
+    updateProfileUI();
+
+    closeEditProfileModal();
+    alert('Profile updated successfully!');
+
+  } catch (error) {
+    console.error('Save profile error:', error);
+    alert('Failed to update profile: ' + error.message);
+  }
+}
+
+// Authentication functions
+async function requestMagicLink() {
+  const email = document.getElementById('loginEmail').value.trim();
+
+  if (!email) {
+    alert('Please enter your email address');
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/auth/magic-link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || 'Failed to send magic link');
+    }
+
+    // Show success modal
+    openMagicLinkSentModal();
+
+    // In a real implementation, you would redirect to the magic link
+    // For testing, we can simulate the magic link flow
+    console.log('Magic link:', data.magic_link);
+
+  } catch (error) {
+    console.error('Magic link request error:', error);
+    alert('Failed to send magic link: ' + error.message);
+  }
+}
+
+// Logout function
+async function logout() {
+  if (confirm('Are you sure you want to log out?')) {
+    // Clear session cookie
+    document.cookie = 'rw_user_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+    // Redirect to home page
+    window.location.href = 'index.html';
+  }
+}
+
+// Billing portal
+async function openBillingPortal() {
+  try {
+    // Find an active license with stripe customer
+    const activeLicense = userLicenses.find(l => l.status === 'active' && l.stripe_customer_id);
+
+    if (!activeLicense) {
+      alert('No active subscription found for billing management.');
+      return;
+    }
+
+    const response = await fetch('/api/billing/portal', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        licenseKey: activeLicense.id
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.url) {
+      throw new Error(data.error || 'Failed to open billing portal');
+    }
+
+    window.location.href = data.url;
+
+  } catch (error) {
+    console.error('Billing portal error:', error);
+    alert('Failed to open billing portal: ' + error.message);
+  }
+}
+
+// Utility functions
+function copyLicenseKey(licenseId) {
+  navigator.clipboard.writeText(licenseId).then(() => {
+    alert('License key copied to clipboard!');
+  }).catch(err => {
+    console.error('Copy failed:', err);
+    alert('Failed to copy license key');
+  });
+}
+
+function showLicenseDetails(licenseId) {
+  const license = userLicenses.find(l => l.id === licenseId);
+  if (license) {
+    alert(`License Details:\n\nID: ${license.id}\nPlan: ${license.plan}\nStatus: ${license.status}\nCreated: ${new Date(license.created_at).toLocaleString()}`);
+  }
+}
+
+function revokeLicense(licenseId) {
+  if (confirm('Are you sure you want to revoke this license? This action cannot be undone.')) {
+    alert('License revocation would be implemented here. License ID: ' + licenseId);
+  }
+}
+
+function revokeDevice(deviceId) {
+  if (confirm('Are you sure you want to revoke this device? This will deactivate the license on this device.')) {
+    alert('Device revocation would be implemented here. Device ID: ' + deviceId);
+  }
+}
+
+function requestLicenseRecovery(licenseId) {
+  if (confirm('Send this license key to your email address?')) {
+    alert('License recovery would be implemented here. License ID: ' + licenseId);
+  }
+}
+
+function refreshDevices() {
+  alert('Device refresh would be implemented here');
+}
+
+function refreshActivity() {
+  alert('Activity refresh would be implemented here');
+}
+
+function showSecurityOptions() {
+  alert('Security options would be implemented here');
+}
+
+// Initialize when page loads
+window.addEventListener('load', initDashboard);
+</script>
+
+</body>
+</html>

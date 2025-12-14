@@ -1,0 +1,293 @@
+# Production Observability & Access Control Guide
+
+This guide documents the production-ready observability and access control features implemented for the RinaWarp Terminal Pro Agent.
+
+## 📊 Observability Features
+
+### Structured Logging (Pino)
+
+**Location**: `src/logger.ts`
+
+Features:
+
+- **Request Correlation**: Each request gets a unique `rid` (request ID) for log correlation
+- **Structured JSON Logs**: Machine-readable logs for easy parsing and shipping
+- **Security Redaction**: Automatically removes sensitive headers (authorization, cookies)
+- **Environment-Controlled**: Log level configurable via `LOG_LEVEL` environment variable
+- **Optional Morgan**: Development-friendly logs via `LOG_TINY=true`
+
+**Usage**:
+
+```typescript
+import { logger, httpLogger } from "./logger";
+
+// Logs automatically include request correlation
+(req as any).log?.info({ rid: (req as any).rid }, "Processing request");
+```
+
+**Environment Variables**:
+
+- `LOG_LEVEL`: `debug`, `info`, `warn`, `error` (default: `info`)
+- `LOG_TINY`: Set to `"true"` to enable Morgan compatibility logging
+
+### Prometheus Metrics
+
+**Location**: `src/observability/metrics.ts`
+
+Features:
+
+- **HTTP Request Duration**: Histogram tracking all HTTP requests by method, route, and status
+- **Chat Completion Latency**: Specialized histogram for `/v1/chat/completions` endpoint
+- **Default Metrics**: Process and Node.js metrics automatically collected
+- **Prometheus Exposition**: `/metrics` endpoint for Prometheus scraping
+
+**Available Metrics**:
+
+```prometheus
+rinawarp_http_request_duration_seconds{method="POST",route="/v1/chat/completions",status="200"}
+rinawarp_chat_completion_duration_seconds
+rinawarp_process_cpu_user_seconds_total
+rinawarp_process_memory_rss_bytes
+# ... and many more
+```
+
+**Environment Variables**:
+
+- None required - metrics are always enabled
+- Access metrics at `GET /metrics`
+
+## 🛡️ Access Control Features
+
+### Rate Limiting
+
+**Location**: `src/middleware/rateLimit.ts`
+
+Features:
+
+- **Environment-Driven Configuration**: All limits configurable via environment variables
+- **Express Rate Limit v7**: Latest features and TypeScript support
+- **Flexible Windows**: Configurable time windows and request limits
+- **Header Validation**: Proper handling of forwarded headers
+
+**Environment Variables**:
+
+- `RL_ENABLE`: Set to `"true"` to enable rate limiting
+- `RL_WINDOW_MS`: Rate limit window in milliseconds (default: `60000` = 1 minute)
+- `RL_LIMIT`: Maximum requests per window (default: `120`)
+
+**Example Configuration**:
+
+```bash
+# Stricter limits for production
+RL_ENABLE=true
+RL_WINDOW_MS=60000
+RL_LIMIT=60
+
+# More permissive for development
+RL_ENABLE=true
+RL_WINDOW_MS=60000
+RL_LIMIT=300
+```
+
+### API Key Authentication
+
+**Location**: `src/middleware/apiKey.ts`
+
+Features:
+
+- **Optional Authentication**: Only enforced when `REQUIRE_API_KEY=true`
+- **Multiple Header Support**: Accepts `x-api-key` or `authorization: Bearer` headers
+- **Environment-Secured**: API key stored in environment variables
+- **Clean Integration**: Seamless middleware integration
+
+**Environment Variables**:
+
+- `REQUIRE_API_KEY`: Set to `"true"` to enforce API key authentication
+- `API_KEY`: The API key that clients must provide
+
+**Usage**:
+
+```bash
+# Enable API key authentication
+REQUIRE_API_KEY=true
+API_KEY=your-secret-key-here
+```
+
+**Client Usage**:
+
+```bash
+# Option 1: Using x-api-key header
+curl -H "x-api-key: your-secret-key-here" http://localhost:3333/v1/chat/completions
+
+# Option 2: Using authorization header
+curl -H "Authorization: Bearer your-secret-key-here" http://localhost:3333/v1/chat/completions
+```
+
+## 🔧 Configuration Reference
+
+### Complete Environment Configuration
+
+```bash
+# Logging
+LOG_LEVEL=info                    # debug, info, warn, error
+LOG_TINY=false                    # true to enable Morgan compatibility logs
+
+# Rate Limiting
+RL_ENABLE=false                   # true to enable rate limiting
+RL_WINDOW_MS=60000                # Rate limit window in ms
+RL_LIMIT=120                      # Requests per window
+
+# API Key Authentication
+REQUIRE_API_KEY=false             # true to enforce API key auth
+API_KEY=                          # Your API key (required if REQUIRE_API_KEY=true)
+
+# Chat Configuration
+SSE_CHUNK=80                     # Chunk size for SSE responses
+
+# Application
+PORT=3333                        # Server port
+REQUIRED_MODEL=rina-agent        # Required model name
+BODY_LIMIT=1mb                   # Request body size limit
+CORS_ORIGIN=*                    # CORS origin
+```
+
+## 📈 Monitoring & Alerting
+
+### Key Metrics to Monitor
+
+1. **Request Rate**: Monitor `rinawarp_http_request_duration_seconds` for traffic patterns
+2. **Error Rate**: Track 4xx and 5xx status codes via the route and status labels
+3. **Chat Latency**: Monitor `rinawarp_chat_completion_duration_seconds` for performance
+4. **Rate Limiting**: Track rate-limited requests via HTTP status codes
+5. **Authentication**: Monitor 401 responses for unauthorized access attempts
+
+### Alerting Examples
+
+```yaml
+# Prometheus alerting rules
+groups:
+
+- name: rinawarp
+
+  rules:
+
+  - alert: HighErrorRate
+
+    expr: rate(rinawarp_http_request_duration_seconds_count{status=~"4..|5.."}[5m]) > 0.1
+    for: 2m
+    annotations:
+      summary: "High error rate detected"
+
+  - alert: SlowChatResponses
+
+    expr: histogram_quantile(0.95, rate(rinawarp_chat_completion_duration_seconds_bucket[5m])) > 2
+    for: 5m
+    annotations:
+      summary: "Chat responses are slower than expected"
+```
+
+## 🚀 Production Deployment
+
+### Docker Configuration
+
+```dockerfile
+# Example Dockerfile additions
+ENV RL_ENABLE=true
+ENV RL_WINDOW_MS=60000
+ENV RL_LIMIT=60
+ENV REQUIRE_API_KEY=true
+ENV API_KEY=your-production-key
+ENV LOG_LEVEL=info
+ENV NODE_ENV=production
+```
+
+### Kubernetes Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rina-agent
+spec:
+  template:
+    spec:
+      containers:
+
+      - name: rina-agent
+
+        env:
+
+        - name: RL_ENABLE
+
+          value: "true"
+
+        - name: REQUIRE_API_KEY
+
+          value: "true"
+
+        - name: API_KEY
+
+          valueFrom:
+            secretKeyRef:
+              name: rina-secrets
+              key: api-key
+
+        - name: LOG_LEVEL
+
+          value: "info"
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+1. **High Memory Usage**: Check `rinawarp_process_memory_rss_bytes` metric
+2. **Rate Limiting Too Strict**: Adjust `RL_LIMIT` and `RL_WINDOW_MS`
+3. **Authentication Failures**: Verify `REQUIRE_API_KEY=true` and valid `API_KEY`
+4. **Missing Metrics**: Ensure `/metrics` endpoint is accessible
+
+### Debug Mode
+
+```bash
+# Enable debug logging
+LOG_LEVEL=debug
+
+# Enable development logging format
+LOG_TINY=true
+
+# Test rate limiting
+RL_ENABLE=true
+RL_WINDOW_MS=10000  # 10 second window
+RL_LIMIT=3          # Only 3 requests per window
+```
+
+## 📚 Testing
+
+Run the observability test suite:
+
+```bash
+node test-observability.js
+```
+
+This validates:
+
+- ✅ All files are created correctly
+- ✅ Logger implementation with request correlation
+- ✅ Prometheus metrics configuration
+- ✅ Rate limiting middleware
+- ✅ API key authentication
+- ✅ App integration
+
+## 🎯 Next Steps
+
+1. **Grafana Dashboard**: Create dashboards for the metrics
+2. **Alerting**: Set up Prometheus alerting rules
+3. **Log Aggregation**: Ship logs to ELK stack or similar
+4. **Performance Testing**: Load test with the new observability features
+5. **Security Audit**: Review API key management and rate limiting
+
+---
+
+**Status**: ✅ Production Ready  
+**Last Updated**: December 2025  
+**Version**: 1.0.0

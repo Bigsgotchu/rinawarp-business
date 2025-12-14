@@ -219,6 +219,7 @@
     "@sentry/electron": "^5.0.0",
     "chai": "^4.3.7",
     "commander": "^11.0.0",
+    "electron": "^39.2.7",
     "electron-builder": "^24.13.3",
     "electron-mocha": "^10.0.0",
     "electron-rebuild": "^3.2.9",
