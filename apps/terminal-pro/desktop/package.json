@@ -1,16 +1,13 @@
 {
   "name": "rinawarp-terminal-pro",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "description": "RinaWarp Terminal Pro — local-first intent → execution desktop app",
   "main": "src/main.js",
-  "author": "You",
-  "license": "MIT",
   "type": "commonjs",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development electron .",
-    "start": "electron .",
-    "start:headless": "cross-env ELECTRON_RUN_AS_NODE=0 ELECTRON_ENABLE_LOGGING=1 xvfb-run -a -s \"+extension RANDR\" electron .",
+    "dev": "cross-env-shell NODE_ENV=development \"unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && node ./scripts/preflight.js && ./node_modules/.bin/electron .\"",
+    "start": "cross-env-shell \"unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && ./node_modules/.bin/electron .\"",
     "build": "electron-builder -mwl",
     "test": "vitest run",
     "test:ui": "playwright test",
@@ -22,6 +19,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "cross-env-shell": "^1.0.0",
     "electron": "^31.7.0",
     "electron-builder": "^24.13.3",
     "playwright": "^1.48.2",
@@ -38,18 +36,28 @@
     "asar": true,
     "mac": {
       "category": "public.app-category.developer-tools",
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "hardenedRuntime": true,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
       "gatekeeperAssess": false
     },
     "win": {
-      "target": ["nsis", "zip"],
+      "target": [
+        "nsis",
+        "zip"
+      ],
       "publisherName": "Your Company"
     },
     "linux": {
-      "target": ["AppImage", "deb", "rpm"],
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
       "category": "Development"
     },
     "directories": {

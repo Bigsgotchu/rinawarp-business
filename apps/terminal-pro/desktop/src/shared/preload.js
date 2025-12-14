@@ -235,3 +235,9 @@ contextBridge.exposeInMainWorld("RinaAuth", {
     return await ipcRenderer.invoke("auth:getToken");
   },
 });
+
+// 🔹 Repo detection bridge
+contextBridge.exposeInMainWorld("RinaRepo", {
+  detect: (cwd) => ipcRenderer.invoke("repo:detect", { cwd }),
+  suggest: (profile) => ipcRenderer.invoke("repo:suggest", { profile }),
+});

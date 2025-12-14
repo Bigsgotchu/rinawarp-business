@@ -662,3 +662,53 @@ export async function askRinaChat(payload) {
     return "Sorry, I couldn't process that request right now.";
   }
 }
+
+/**
+ * Compatibility export for ai-router.js
+ * If askRinaChat exists, we use it. Otherwise we fall back to calling the local agent server directly.
+ */
+async function _defaultAskRinaChat(prompt) {
+  try {
+    const res = await fetch("http://127.0.0.1:3333/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "rina-agent",
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+
+    const data = await res.json();
+    return data?.choices?.[0]?.message?.content ?? "(no reply)";
+  } catch (e) {
+    return `Rina local agent not reachable. Start it, then retry.\n${String(e)}`;
+  }
+}
+
+export async function askAboutOutput(payload = {}) {
+  const {
+    command = "",
+    stdout = "",
+    stderr = "",
+    code = null,
+    cwd = "",
+  } = payload;
+
+  const prompt =
+`You are Rina. Explain the terminal command output clearly and suggest next steps if relevant.
+
+CWD: ${cwd}
+COMMAND: ${command}
+
+STDOUT:
+${stdout}
+
+STDERR:
+${stderr}
+
+EXIT CODE: ${code}
+`;
+
+  const fn = (typeof askRinaChat === "function") ? askRinaChat : _defaultAskRinaChat;
+  return await fn(prompt);
+}

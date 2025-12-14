@@ -3,6 +3,7 @@ import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css';
 import { askRinaChat } from './ai.js';
 import './live-session.js';
+import { maybeShowRepoPanel } from '../../../../agent/repo/panel/maybeShowRepoPanel';
 
 const terminals = new Map();
 let activeTerminalId = null;
@@ -10,6 +11,7 @@ let activeTerminalId = null;
 // store last chunk for AI context
 let lastTerminalChunk = "";
 let lastCommand = "";
+let firstCommandExecuted = false;
 
 // Initialize terminal state tracking
 window.RinaTerminalState = window.RinaTerminalState || {};
@@ -209,6 +211,18 @@ function setupGlobalTerminalEvents() {
         const cleaned = data.replace(/\r/g, "");
         if (cleaned.trim().length > 0) {
           lastCommand = cleaned;
+
+          // Check if this is the first command (user intent)
+          if (!firstCommandExecuted && cleaned.trim().length > 0) {
+            firstCommandExecuted = true;
+            if (window.repoPanel && !window.repoPanel.userIntentDetected) {
+              window.repoPanel.userIntentDetected = true;
+              window.repoPanel.checkAndShowPanel();
+            }
+            maybeShowRepoPanel(window.RinaTerminalState.cwd, (text) => {
+              window.RinaTerminalUI.showAIPanel("Rina noticed this project", text);
+            });
+          }
         }
       }
 
@@ -216,15 +230,21 @@ function setupGlobalTerminalEvents() {
       window.RinaTerminalState.lastOutput = data;
       window.RinaTerminalState.lastCommand = lastCommand;
 
-      // Hook error detection:
-      if (/error|not found|failed|exception/i.test(data)) {
-        window.RinaTerminalState.isError = true;
-      }
-
-      // 🔹 NEW: if we are hosting a live session, broadcast this PTY output
-      if (window.RinaLiveSession?.isLiveHost()) {
-        window.RinaLiveSession.sendPTYOutputFromHost(data);
-      }
+          // Hook error detection:
+          if (/error|not found|failed|exception/i.test(data)) {
+            window.RinaTerminalState.isError = true;
+    
+            // Check for repo panel on error (user intent)
+            if (window.repoPanel && !window.repoPanel.userIntentDetected) {
+              window.repoPanel.userIntentDetected = true;
+              window.repoPanel.checkAndShowPanel();
+            }
+          }
+    
+          // 🔹 NEW: if we are hosting a live session, broadcast this PTY output
+          if (window.RinaLiveSession?.isLiveHost()) {
+            window.RinaLiveSession.sendPTYOutputFromHost(data);
+          }
     }
   });
 

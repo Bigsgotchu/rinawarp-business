@@ -61,6 +61,12 @@ function getUpdateChannel() {
 }
 
 function configureAutoUpdater() {
+  const isDev = !app?.isPackaged || process.env.NODE_ENV !== "production";
+  if (isDev || !autoUpdater || typeof autoUpdater.setFeedURL !== "function") {
+    console.log("[AutoUpdate] skipped (dev or unavailable)");
+    return;
+  }
+
   const channel = getUpdateChannel();
 
   autoUpdater.setFeedURL({
@@ -71,6 +77,17 @@ function configureAutoUpdater() {
 
 // Emit events to renderer
 function setupAutoUpdaterIPC(mainWindow) {
+  // Dev safety: electron-updater is often unavailable in dev runs
+  if (!app?.isPackaged) {
+    console.log("[AutoUpdate] disabled in dev");
+    return;
+  }
+
+  if (typeof autoUpdater === "undefined" || typeof autoUpdater?.on !== "function") {
+    console.log("[AutoUpdate] electron-updater missing; skipping");
+    return;
+  }
+
   autoUpdater.on("checking-for-update", () => {
     mainWindow.webContents.send("update:checking");
   });

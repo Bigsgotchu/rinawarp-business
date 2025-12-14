@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-13T20:29:48.876Z",
+  "timestamp": "2025-12-14T06:59:18.108Z",
   "vulnerabilities": [
     {
       "type": "dependency",
@@ -170,6 +170,14 @@
       "description": "Potential hardcoded credentials",
       "count": 11,
       "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/repo-panel.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 1,
+      "recommendation": "Use textContent or DOM methods instead"
     },
     {
       "type": "code-pattern",
@@ -368,7 +376,7 @@
       "file": "src/main/main.js",
       "severity": "medium",
       "description": "Insecure HTTP protocol detected",
-      "count": 3,
+      "count": 1,
       "recommendation": "Use HTTPS for all external connections"
     },
     {
@@ -430,7 +438,7 @@
     {
       "priority": "high",
       "title": "Fix Code Security Issues",
-      "description": "Found 39 code security patterns",
+      "description": "Found 40 code security patterns",
       "actions": [
         "Replace eval() with safer alternatives",
         "Use DOM methods instead of innerHTML",
@@ -456,9 +464,9 @@
   },
   "compliance": {},
   "summary": {
-    "totalVulnerabilities": 51,
+    "totalVulnerabilities": 52,
     "criticalIssues": 0,
-    "highIssues": 17,
+    "highIssues": 18,
     "mediumIssues": 32,
     "lowIssues": 0,
     "codeSigningReady": true

@@ -1,5 +1,6 @@
 import { spawn } from "child_process";
 import { stateManager } from "../state";
+import { markUserIntent } from "../session/sessionState";
 
 export function runShell({ command, cwd }: any) {
   // Update working directory in state
@@ -10,10 +11,12 @@ export function runShell({ command, cwd }: any) {
   // Update last command in state
   stateManager.setLastCommand(command);
 
-  const proc = spawn(command, { 
-    cwd: cwd || stateManager.getWorkingDirectory() || process.cwd(), 
-    shell: true 
+  const proc = spawn(command, {
+    cwd: cwd || stateManager.getWorkingDirectory() || process.cwd(),
+    shell: true
   });
+
+  markUserIntent();
 
   proc.stdout.on("data", (data) => {
     process.send?.({

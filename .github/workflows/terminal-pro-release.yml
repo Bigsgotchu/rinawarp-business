@@ -32,6 +32,10 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Ensure Electron context
+        run: |
+          node -e "if(process.env.ELECTRON_RUN_AS_NODE){process.exit(1)}"
+
       - name: Run tests
         run: |
           npm run test:basic
