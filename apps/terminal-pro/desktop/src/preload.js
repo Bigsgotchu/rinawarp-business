@@ -7,6 +7,7 @@ const api = Object.freeze({
   capsGet: (cwd) => ipcRenderer.invoke('agent:caps:get', { cwd }),
   capsSet: (cwd, caps) => ipcRenderer.invoke('agent:caps:set', { cwd, caps }),
   explain: (step) => ipcRenderer.invoke('agent:explain', { step }),
-  diagRun: () => ipcRenderer.invoke('diag:run')
+  diagRun: () => ipcRenderer.invoke('diag:run'),
+  exportReport: (cwd, plan, execDetail) => ipcRenderer.invoke('diag:export', { cwd, plan, execDetail })
 });
 contextBridge.exposeInMainWorld('Rina', api);

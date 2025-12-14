@@ -4,7 +4,7 @@
         cwdEl = $('cwd'), btnCwd = $('btnCwd'), btnPlan = $('btnPlan'),
         btnDry = $('btnDry'), btnExec = $('btnExec'), btnRerun = $('btnRerun'), btnRollback = $('btnRollback'),
         capDocker = $('cap-docker'), capGit = $('cap-git'), capNpm = $('cap-npm'), capNetwork = $('cap-network'), saveCaps = $('saveCaps'),
-        btnDiag = $('btnDiag'), diagStatus = $('diagStatus'), diagModal = $('diagModal'), diagOut = $('diagOut'), diagClose = $('diagClose');
+        btnDiag = $('btnDiag'), btnExport = $('btnExport'), diagStatus = $('diagStatus'), diagModal = $('diagModal'), diagOut = $('diagOut'), diagClose = $('diagClose');
 
   function chipSet(el, on) { el.classList.toggle('tag-on', on); el.classList.toggle('tag-off', !on); }
   function getCwd() { return cwdEl.value && cwdEl.value.trim() ? cwdEl.value.trim() : process.cwd(); }
@@ -80,6 +80,14 @@
     diagOut.textContent = r.report || '';
     diagStatus.textContent = 'Diagnostics complete';
     diagModal.style.display = 'block';
+  };
+  btnExport.onclick = async () => {
+    const cwd = getCwd();
+    // Collect last shown plan/output if available
+    const planItems = Array.from(planEl.querySelectorAll('li')).map(li => li.textContent);
+    const execDetail = { output: outEl.textContent, errors: errEl.textContent };
+    const r = await window.Rina.exportReport(cwd, planItems, execDetail);
+    alert(`Exported: ${r.file}`);
   };
   diagClose.onclick = () => { diagModal.style.display = 'none'; };
   document.addEventListener('keydown', (e) => {

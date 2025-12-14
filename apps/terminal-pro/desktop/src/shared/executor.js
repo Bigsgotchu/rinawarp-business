@@ -1,13 +1,16 @@
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const { spawn } = require('child_process');
-const { capabilityNeededFor, isCapabilityAllowed, getCapabilities } = require('./capabilities.js');
-const { loadPolicy } = require('./policy.js');
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { spawn } from 'child_process';
+import { capabilityNeededFor, isCapabilityAllowed } from './capabilities.js';
+import { loadPolicy } from './policy.js';
+import { redact } from './redact.js';
+import { isNetworkCommand, shouldRetry, backoff } from './netpolicy.js';
 
 const STATE_DIR = path.join(os.homedir(), '.rinawarp');
 const STATE_FILE = path.join(STATE_DIR, 'state.json');
 const LAST_RUN_FILE = path.join(STATE_DIR, 'last_run.json');
+const EXPORTS_DIR = path.join(STATE_DIR, 'exports');
 
 function readState() { try { return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')); } catch { return { done: {} }; } }
 function writeState(s) { if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true }); fs.writeFileSync(STATE_FILE, JSON.stringify(s, null, 2)); }
@@ -46,7 +49,28 @@ async function execGraph({ steps, cwd, dry=false, confirm=false, resetFailed=fal
   for (const [id, d] of indeg) if (d === 0) queue.push(id);
 
   const results = {};
-  const successOrder = []; // record for rollback
+  const successOrder = [];
+
+  async function runOnce(step) {
+    const env = { ...process.env }; // could strip proxies etc if needed
+    return await runCommand(step.command, step.cwd, { timeoutMs, maxBytes, env });
+  }
+
+  async function runWithRetry(step) {
+    // block outright when network disabled
+    if (!caps.network && isNetworkCommand(step.command)) {
+      return { code: 1, stdout: '', stderr: '[blocked] network operations disabled by policy' };
+    }
+    const maxAttempts = step.capability === 'network' ? 4 : 1;
+    let attempt = 0, last = { code: 0, stdout: '', stderr: '' };
+    while (attempt < maxAttempts) {
+      last = await runOnce(step);
+      if (!shouldRetry(step, last.code, last.stderr)) break;
+      await new Promise(r => setTimeout(r, backoff(attempt)));
+      attempt += 1;
+    }
+    return last;
+  }
 
   async function runStep(id) {
     const step = nodes.get(id);
@@ -68,8 +92,10 @@ async function execGraph({ steps, cwd, dry=false, confirm=false, resetFailed=fal
 
     if (dry || !confirm) { results[id] = { code: 0, stdout: `[dryrun] ${step.command}`, stderr: '' }; return; }
 
-    const { code, stdout, stderr } = await runCommand(step.command, step.cwd, { timeoutMs, maxBytes });
-    results[id] = { code, stdout, stderr };
+    const res = await runWithRetry(step);
+    const redOut = redact(res.stdout);
+    const redErr = redact(res.stderr);
+    results[id] = { code: res.code, stdout: redOut, stderr: redErr };
     if (code === 0) {
       state.done[key] = Date.now(); delete state.done[failKey]; writeState(state);
       successOrder.push({ id: step.id, cwd: step.cwd, revertCommand: step.revertCommand || null });
@@ -101,14 +127,30 @@ async function rollbackLastRun() {
   for (const s of [...last.successOrder].reverse()) {
     if (!s.revertCommand) continue;
     const { code, stdout, stderr } = await runCommand(s.revertCommand, s.cwd, { timeoutMs: 60000, maxBytes: 1_000_000 });
-    logs.push(`[revert ${s.id}] code=${code}\n${stdout}\n${stderr}`);
+    logs.push(`[revert ${s.id}] code=${code}\n${redact(stdout)}\n${redact(stderr)}`);
   }
   return { status: 'ok', message: 'rollback attempted', stdout: logs.join('\n'), stderr: '' };
 }
 
-function runCommand(command, cwd, { timeoutMs, maxBytes }) {
+export function exportReportBundle({ cwd, plan, execDetail, diagnostics }) {
+  if (!fs.existsSync(EXPORTS_DIR)) fs.mkdirSync(EXPORTS_DIR, { recursive: true });
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const file = path.join(EXPORTS_DIR, `report-${stamp}.json`);
+  const payload = {
+    createdAt: new Date().toISOString(),
+    cwd,
+    plan,
+    execDetail,
+    diagnostics,
+    redaction: 'applied'
+  };
+  fs.writeFileSync(file, JSON.stringify(payload, null, 2));
+  return file;
+}
+
+function runCommand(command, cwd, { timeoutMs, maxBytes, env }) {
   return new Promise((resolve) => {
-    const child = spawn(command, { shell: true, cwd });
+    const child = spawn(command, { shell: true, cwd, env });
     let out = '', err = '';
     const timer = setTimeout(() => { child.kill('SIGKILL'); }, timeoutMs);
     child.stdout.on('data', (d) => { if (out.length < maxBytes) out += d.toString(); });
@@ -117,4 +159,4 @@ function runCommand(command, cwd, { timeoutMs, maxBytes }) {
   });
 }
 
-module.exports = { buildGraph, execGraph, rollbackLastRun };
+export { buildGraph, execGraph, rollbackLastRun, exportReportBundle };

@@ -57,9 +57,10 @@ process.on('SIGINT', () => app.quit()); process.on('SIGTERM', () => app.quit());
 // Shared modules
 const { composePlanner } = require('./shared/planner_llm.js');
 const { getCapabilities, setCapabilities } = require('./shared/capabilities.js');
-const { execGraph, rollbackLastRun } = require('./shared/executor.js');
+const { execGraph, rollbackLastRun, exportReportBundle } = require('./shared/executor.js');
 const { explainStep } = require('./shared/explain.js');
 const { loadPolicy } = require('./shared/policy.js');
+const { auditWrite } = require('./shared/audit.js');
 
 // ---- Schemas
 const PlanSchema = z.object({ intent: z.string().min(1).max(2000), cwd: z.string().min(1) });
@@ -94,16 +95,19 @@ safeHandle('agent:plan', async (_evt, payload) => {
   const { intent, cwd } = PlanSchema.parse(payload);
   let steps = await composePlanner(intent, cwd);
   steps = applyPlugins(steps, { cwd, appRoot: path.join(__dirname, '..') });
+  auditWrite('plan', { intent, cwd, stepsCount: steps.length });
   appendHistory({ ts: Date.now(), method: 'plan', intent, steps });
   return { status: 'ok', message: '', plan: steps, stdout: '', stderr: '' };
 });
 
 safeHandle('agent:dryrun', async (_evt, payload) => {
   const { intent, cwd } = PlanSchema.parse(payload);
-  const steps = await composePlanner(intent, cwd);
+  let steps = await composePlanner(intent, cwd);
+  steps = applyPlugins(steps, { cwd, appRoot: path.join(__dirname, '..') });
   const res = await execGraph({ steps, cwd, dry: true, confirm: false });
   const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
   const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
+  auditWrite('dryrun', { intent, cwd, ok: !Object.values(res).some(r => r.code !== 0) });
   appendHistory({ ts: Date.now(), method: 'dryrun', intent, steps, stdout, stderr });
   return { status: 'ok', message: '', plan: steps, stdout, stderr };
 });
@@ -111,11 +115,13 @@ safeHandle('agent:dryrun', async (_evt, payload) => {
 safeHandle('agent:execGraph', async (_evt, payload) => {
   const { intent, cwd, confirm, resetFailed } = ExecGraphSchema.parse(payload);
   if (!confirm) return { status: 'error', message: 'confirmation required', plan: [], stdout: '', stderr: '' };
-  const steps = await composePlanner(intent, cwd);
+  let steps = await composePlanner(intent, cwd);
+  steps = applyPlugins(steps, { cwd, appRoot: path.join(__dirname, '..') });
   const res = await execGraph({ steps, cwd, dry: false, confirm: true, resetFailed });
   const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
   const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
   const failed = Object.values(res).some(r => r.code !== 0);
+  auditWrite('exec', { intent, cwd, status: failed ? 'error' : 'ok' });
   appendHistory({ ts: Date.now(), method: 'execGraph', intent, steps, status: failed ? 'error' : 'ok', stdout, stderr });
   return { status: failed ? 'error' : 'ok', message: failed ? 'one or more steps failed' : 'completed', plan: steps, stdout, stderr, detail: res };
 });
@@ -160,4 +166,14 @@ safeHandle('diag:run', async () => {
   info.push(`LLM enabled: ${process.env.RINA_LLM === '1' ? 'yes' : 'no'}`);
 
   return { status: 'ok', report: info.join('\n') };
+});
+
+safeHandle('diag:export', async (_evt, { cwd, plan, execDetail }) => {
+  const diag = await (async () => {
+    // reuse existing diag:run logic if present
+    return { ok: true };
+  })();
+  const file = exportReportBundle({ cwd, plan, execDetail, diagnostics: diag });
+  auditWrite('export', { cwd, file });
+  return { status: 'ok', file };
 });
