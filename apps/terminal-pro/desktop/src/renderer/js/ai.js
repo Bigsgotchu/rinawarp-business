@@ -630,3 +630,35 @@ Provide:
 // Export for use in main application
 window.AIAssistant = AIAssistant;
 window.aiAssistant = new AIAssistant();
+
+// Export askRinaChat function for terminal-optimized.js
+export async function askRinaChat(payload) {
+  try {
+    // Use the existing AI assistant if available
+    if (window.aiAssistant && window.aiAssistant.isReady()) {
+      const prompt = typeof payload === 'string' ? payload : payload.prompt || payload.message || '';
+      return await window.aiAssistant.getAIResponse(prompt);
+    }
+
+    // Fallback to local agent API
+    const r = await fetch("http://127.0.0.1:3333/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "rina-agent",
+        messages: [{ role: "user", content: String(payload.prompt || payload.message || payload) }],
+      }),
+    });
+
+    if (!r.ok) {
+      const t = await r.text().catch(() => "");
+      throw new Error(`Rina agent error ${r.status}: ${t}`);
+    }
+
+    const json = await r.json();
+    return json?.choices?.[0]?.message?.content ?? "";
+  } catch (error) {
+    console.error('askRinaChat error:', error);
+    return "Sorry, I couldn't process that request right now.";
+  }
+}
