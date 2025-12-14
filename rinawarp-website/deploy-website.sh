@@ -23,6 +23,6 @@ fi
 
 # Deploy to Cloudflare Pages
 echo "🌐 Deploying to Cloudflare Pages..."
-wrangler pages deploy public --project-name=rinawarptech
+wrangler pages deploy --commit-dirty=true
 
 echo "✅ Deployment complete."
