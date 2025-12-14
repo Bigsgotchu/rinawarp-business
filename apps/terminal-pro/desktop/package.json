@@ -8,6 +8,7 @@
     "email": "contact@rinawarptech.com"
   },
   "license": "UNLICENSED",
+  "type": "module",
   "homepage": "https://rinawarptech.com",
   "repository": {
     "type": "git",
@@ -15,7 +16,7 @@
   },
   "scripts": {
     "start": "npx electron .",
-    "dev": "npx electron . --dev",
+    "dev": "unset ELECTRON_RUN_AS_NODE && RW_WS_PORT=0 npx electron . --dev",
     "build": "npm run security-audit && electron-builder",
     "build:win": "npm run security-audit && electron-builder --win",
     "build:mac": "npm run security-audit && ./scripts/build/build-macos.sh",
@@ -23,7 +24,7 @@
     "build:linux": "npm run security-audit && electron-builder --linux",
     "dist": "npm run security-audit && electron-builder --publish=never",
     "dist:mac": "npm run security-audit && electron-builder --mac --publish=never",
-    "security-audit": "node scripts/security-audit.js",
+    "security-audit": "node scripts/security-audit.cjs",
     "security-audit:fix": "npm audit fix",
     "sign:win": "electron-builder --win --publish=never",
     "sign:mac": "electron-builder --mac --publish=never",

@@ -1,12 +1,27 @@
-const path = require("path");
-const fs = require("fs");
-const os = require('os');
-const pty = require('node-pty');
-const { fork } = require("child_process");
-const recorder = require('node-record-lpcm16');
-const OpenAI = require("openai");
+import path from "path";
+import fs from "fs";
+import os from "os";
+import pty from 'node-pty';
+import { fork } from "child_process";
+import recorder from 'node-record-lpcm16';
+import OpenAI from "openai";
 // const Sentry = require("@sentry/electron"); // Disabled - causes import errors
-const WebSocket = require('ws');
+import { WebSocketServer } from 'ws';
+import * as electron from "electron";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+let updaterPkg;
+
+const { app, BrowserWindow, ipcMain, shell } = electron;
+
+if (!app) {
+  console.error("[Startup] FATAL: electron.app is missing (not running in Electron main process).");
+  process.exit(1);
+}
+
+console.log("[Startup] app defined?", !!app);
 // Only initialize OpenAI if API key is available
 const ai = process.env.OPENAI_API_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
@@ -16,7 +31,7 @@ const ai = process.env.OPENAI_API_KEY
 let store;
 async function initStore() {
   const { default: Store } = await import('electron-store');
-  store = new Store();
+  store = new Store({ projectName: 'rinawarp-terminal-pro' });
   return store;
 }
 
@@ -242,85 +257,92 @@ const sharedTerminalSessions = new Map(); // sessionId -> {terminalId, participa
 
 // WebSocket server setup
 function setupWebSocketServer() {
-    try {
-        // Create WebSocket server on port 8080 (or configurable port)
-        const port = process.env.WEBSOCKET_PORT || 8080;
-        websocketServer = new WebSocket.Server({ port });
+  try {
+    const desiredPort = 0;
+    const wss = new WebSocketServer({ port: desiredPort });
 
-        console.log(`[WebSocket] Server started on port ${port}`);
+    wss.on("listening", () => {
+      const addr = wss.address();
+      const actualPort = typeof addr === "object" && addr ? addr.port : desiredPort;
+      console.log(`[WebSocket] Server started on port ${actualPort}`);
+    });
 
-        websocketServer.on('connection', (socket, request) => {
-            console.log('[WebSocket] New connection established');
+    wss.on("error", (err) => {
+      console.error("[WebSocket] Server error:", err);
+    });
 
-            // Parse session ID and user ID from query parameters
-            const url = new URL(request.url, `http://${request.headers.host}`);
-            const searchParams = new URLSearchParams(url.search);
-            const sessionId = searchParams.get('sessionId');
-            const userId = searchParams.get('userId');
-            const token = searchParams.get('token');
+    wss.on('connection', (socket, request) => {
+        console.log('[WebSocket] New connection established');
 
-            if (!sessionId || !userId) {
-                console.error('[WebSocket] Missing sessionId or userId in connection');
-                socket.close(1008, 'Missing required parameters');
-                return;
+        // Parse session ID and user ID from query parameters
+        const url = new URL(request.url, `http://${request.headers.host}`);
+        const searchParams = new URLSearchParams(url.search);
+        const sessionId = searchParams.get('sessionId');
+        const userId = searchParams.get('userId');
+        const token = searchParams.get('token');
+
+        if (!sessionId || !userId) {
+            console.error('[WebSocket] Missing sessionId or userId in connection');
+            socket.close(1008, 'Missing required parameters');
+            return;
+        }
+
+        // Store connection info
+        socket.sessionId = sessionId;
+        socket.userId = userId;
+
+        // Add to session participants
+        if (!sharedTerminalSessions.has(sessionId)) {
+            sharedTerminalSessions.set(sessionId, {
+                terminalId: null,
+                participants: new Set()
+            });
+        }
+
+        const session = sharedTerminalSessions.get(sessionId);
+        session.participants.add(userId);
+
+        console.log(`[WebSocket] User ${userId} joined session ${sessionId}. Participants: ${session.participants.size}`);
+
+        // Handle messages
+        socket.on('message', (message) => {
+            try {
+                const data = JSON.parse(message);
+
+                // Broadcast to all participants in the same session
+                broadcastToSession(sessionId, userId, data);
+            } catch (error) {
+                console.error('[WebSocket] Error processing message:', error);
             }
-
-            // Store connection info
-            socket.sessionId = sessionId;
-            socket.userId = userId;
-
-            // Add to session participants
-            if (!sharedTerminalSessions.has(sessionId)) {
-                sharedTerminalSessions.set(sessionId, {
-                    terminalId: null,
-                    participants: new Set()
-                });
-            }
-
-            const session = sharedTerminalSessions.get(sessionId);
-            session.participants.add(userId);
-
-            console.log(`[WebSocket] User ${userId} joined session ${sessionId}. Participants: ${session.participants.size}`);
-
-            // Handle messages
-            socket.on('message', (message) => {
-                try {
-                    const data = JSON.parse(message);
-
-                    // Broadcast to all participants in the same session
-                    broadcastToSession(sessionId, userId, data);
-                } catch (error) {
-                    console.error('[WebSocket] Error processing message:', error);
-                }
-            });
-
-            // Handle connection close
-            socket.on('close', () => {
-                console.log(`[WebSocket] Connection closed for user ${userId} in session ${sessionId}`);
-
-                if (session) {
-                    session.participants.delete(userId);
-                    console.log(`[WebSocket] User ${userId} left session ${sessionId}. Remaining participants: ${session.participants.size}`);
-
-                    // Clean up session if no participants left
-                    if (session.participants.size === 0) {
-                        sharedTerminalSessions.delete(sessionId);
-                        console.log(`[WebSocket] Session ${sessionId} cleaned up (no participants)`);
-                    }
-                }
-            });
-
-            // Handle errors
-            socket.on('error', (error) => {
-                console.error(`[WebSocket] Error for user ${userId}:`, error);
-            });
         });
 
-        return true;
-    } catch (error) {
-        console.error('[WebSocket] Failed to start server:', error);
-        return false;
-    }
+        // Handle connection close
+        socket.on('close', () => {
+            console.log(`[WebSocket] Connection closed for user ${userId} in session ${sessionId}`);
+
+            if (session) {
+                session.participants.delete(userId);
+                console.log(`[WebSocket] User ${userId} left session ${sessionId}. Remaining participants: ${session.participants.size}`);
+
+                // Clean up session if no participants left
+                if (session.participants.size === 0) {
+                    sharedTerminalSessions.delete(sessionId);
+                    console.log(`[WebSocket] Session ${sessionId} cleaned up (no participants)`);
+                }
+            }
+        });
+
+        // Handle errors
+        socket.on('error', (error) => {
+            console.error(`[WebSocket] Error for user ${userId}:`, error);
+        });
+    });
+
+    return wss;
+  } catch (err) {
+    console.error('[WebSocket] Failed to start server:', err);
+    return null;
+  }
 }
 
 /**
@@ -373,9 +395,7 @@ function createMainWindow() {
   });
 
   // Load the appropriate URL based on environment
-  const startUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : `file://${path.join(__dirname, '../renderer/index.html')}`;
+  const startUrl = `file://${path.join(__dirname, '../renderer/index.html')}`;
 
   mainWindow.loadURL(startUrl);
 
@@ -413,9 +433,7 @@ function createMainWindowWithLicenseGate() {
   });
 
   // Load the appropriate URL based on environment
-  const startUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000?showLicenseGate=true'
-    : `file://${path.join(__dirname, '../renderer/index.html')}?showLicenseGate=true`;
+  const startUrl = `file://${path.join(__dirname, '../renderer/index.html')}?showLicenseGate=true`;
 
   mainWindow.loadURL(startUrl);
 
@@ -1178,8 +1196,8 @@ function registerIPC() {
     // ──────────────── WebSocket IPC Handlers ────────────────
     ipcMain.handle('websocket:start-server', async () => {
         try {
-            const success = setupWebSocketServer();
-            return { success, port: process.env.WEBSOCKET_PORT || 8080 };
+            const success = !!websocketServer;
+            return { success, port: null };
         } catch (error) {
             console.error('[WebSocket] Failed to start server:', error);
             return { success: false, error: error.message };
@@ -1283,18 +1301,149 @@ function registerIPC() {
             if (!session || session.terminalId !== terminalId) {
                 throw new Error("Invalid session or terminal");
             }
-
+ 
             // Broadcast terminal data to all participants
             broadcastToSession(sessionId, null, {
                 type: 'terminal-data',
                 terminalId,
                 data
             });
-
+ 
             return { success: true };
         } catch (err) {
             console.error("Broadcast error:", err);
             throw err;
+        }
+    });
+ 
+    // Repo detection IPC handler
+    ipcMain.handle('repo:detect', async (event, { cwd }) => {
+        try {
+            // Inline repo detection logic (same as in repo-panel.js)
+            function exists(root, file) {
+                try {
+                    return fs.existsSync(path.join(root, file));
+                } catch {
+                    return false;
+                }
+            }
+ 
+            function detectKind(root) {
+                if (exists(root, "package.json")) return "node";
+                if (exists(root, "pyproject.toml") || exists(root, "requirements.txt")) return "python";
+                if (exists(root, "go.mod")) return "go";
+                if (exists(root, "Cargo.toml")) return "rust";
+                if (exists(root, "Dockerfile")) return "docker";
+                return "unknown";
+            }
+ 
+            function detectEnv(root) {
+                const hasEnv = exists(root, ".env");
+                const hasEnvExample = exists(root, ".env.example") || exists(root, ".env.sample");
+                const missing = [];
+                if (!hasEnv && hasEnvExample) {
+                    missing.push(".env file missing");
+                }
+                return { hasEnv, hasEnvExample, missing };
+            }
+ 
+            function detectNodeDetails(root) {
+                const packageJsonPath = path.join(root, "package.json");
+                if (!fs.existsSync(packageJsonPath)) return {};
+ 
+                try {
+                    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+                    return {
+                        packageManager: exists(root, "yarn.lock") ? "yarn" : exists(root, "pnpm-lock.yaml") ? "pnpm" : "npm",
+                        entrypoint: packageJson.main || "index.js",
+                        scripts: packageJson.scripts || {},
+                    };
+                } catch {
+                    return {};
+                }
+            }
+ 
+            const kind = detectKind(cwd);
+            const env = detectEnv(cwd);
+            const nodeDetails = kind === "node" ? detectNodeDetails(cwd) : {};
+ 
+            const repo = {
+                root: cwd,
+                kind,
+                ...nodeDetails,
+                hasEnv: env.hasEnv,
+                hasEnvExample: env.hasEnvExample,
+                missingRequirements: env.missing,
+                confidence: kind === "unknown" ? 0 : 1,
+            };
+ 
+            return repo;
+        } catch (error) {
+            console.error('Repo detection error:', error);
+            return { kind: 'unknown', confidence: 0 };
+        }
+    });
+ 
+    // Repo suggestions IPC handler
+    ipcMain.handle('repo:suggest', async (event, { profile }) => {
+        try {
+            function suggestActions(profile) {
+                switch (profile.kind) {
+                    case 'node':
+                        return {
+                            firstSteps: [
+                                'Install dependencies',
+                                'Look for available scripts',
+                                'Start the development server if available',
+                            ],
+                            runCommands: [
+                                `${profile.packageManager ?? 'npm'} install`,
+                                `${profile.packageManager ?? 'npm'} run dev`,
+                            ],
+                            warnings: [
+                                'If install fails, check Node.js version compatibility',
+                            ],
+                            confidence: 0.9,
+                        };
+                    case 'python':
+                        return {
+                            firstSteps: [
+                                'Create a virtual environment',
+                                'Install dependencies',
+                                'Run the main entry point',
+                            ],
+                            runCommands: [
+                                'python -m venv .venv',
+                                'source .venv/bin/activate',
+                                'pip install -r requirements.txt',
+                            ],
+                            warnings: [
+                                'Ensure Python 3.9+ is installed',
+                            ],
+                            confidence: 0.85,
+                        };
+                    default:
+                        return {
+                            firstSteps: [
+                                'Explore the repository structure',
+                                'Check the README for setup instructions',
+                            ],
+                            runCommands: [],
+                            warnings: [],
+                            confidence: 0.3,
+                        };
+                }
+            }
+ 
+            return suggestActions(profile);
+        } catch (error) {
+            console.error('Repo suggestions error:', error);
+            return {
+                firstSteps: ['Explore the repository structure'],
+                runCommands: [],
+                warnings: [],
+                confidence: 0.3,
+            };
         }
     });
   
@@ -1360,15 +1509,19 @@ async function restoreTerminalState() {
 
 // Handle uncaught exceptions (moved inside async function scope)
 function setupCrashHandlers(app) {
-  process.on('uncaughtException', (error) => {
-    console.error('Uncaught Exception:', error);
-    saveTerminalState();
-    // Restart app after 2 seconds
-    setTimeout(() => {
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  saveTerminalState();
+  // Restart app after 2 seconds
+  setTimeout(() => {
+    if (app && app.isReady()) {
       app.relaunch();
-      app.quit();
-    }, 2000);
-  });
+      app.exit(0);
+    } else {
+      console.warn("[CrashRecovery] app not ready, skipping relaunch");
+    }
+  }, 2000);
+});
 
   process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
@@ -1378,12 +1531,11 @@ function setupCrashHandlers(app) {
 
 // Main entry point
 (async () => {
-  // Import electron dynamically
-  const electron = require('electron');
-  const { app, BrowserWindow, ipcMain, shell } = electron;
 
   // Initialize store first
   await initStore();
+
+  console.log('app:', app);
 
   // Initialize Sentry after electron is imported
   if (process.env.SENTRY_DSN) {
@@ -1395,18 +1547,23 @@ function setupCrashHandlers(app) {
     });
   }
 
-  // Initialize auto-updater
-  const { autoUpdater: updater } = require('electron-updater');
-  autoUpdater = updater;
-
-  // Setup crash handlers with app access
-  setupCrashHandlers(app);
-
-  // Start WebSocket server for collaboration
-  setupWebSocketServer();
+  // Initialize auto-updater (moved inside app.whenReady to avoid app undefined error)
 
   // CRITICAL FIX: Wait for app to be ready before creating windows
   app.whenReady().then(async () => {
+    console.log("[Startup] Electron ready");
+
+    // Setup crash handlers with app access
+    setupCrashHandlers(app);
+
+    // Start WebSocket server for collaboration
+    websocketServer = setupWebSocketServer();
+
+    // Initialize auto-updater after app is ready
+    updaterPkg = await import('electron-updater');
+    const { autoUpdater: updater } = updaterPkg;
+    autoUpdater = updater;
+
     // Start Rina Agent
     startRinaAgent();
 
