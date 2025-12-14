@@ -3,9 +3,20 @@ capabilities:
   git: true
   npm: true
   network: false
+
 limits:
   timeoutMs: 120000
   maxBytes: 2000000
+
 policy:
   confirmRequired: true
   dryRunByDefault: false
+  concurrency: 3
+  stepPolicy:
+    - match: { capability: network }
+      timeoutMs: 180000
+      maxRetries: 3
+      retryBackoffMs: 800
+    - match: { id: build }
+      timeoutMs: 300000
+      maxRetries: 1

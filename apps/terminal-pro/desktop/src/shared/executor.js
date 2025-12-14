@@ -5,7 +5,8 @@ import { spawn } from 'child_process';
 import { capabilityNeededFor, isCapabilityAllowed } from './capabilities.js';
 import { loadPolicy } from './policy.js';
 import { redact } from './redact.js';
-import { isNetworkCommand, shouldRetry, backoff } from './netpolicy.js';
+import { isNetworkCommand, shouldRetry, backoff, makeEnvForChild } from './netpolicy.js';
+import { precheckTools } from './tools.js';
 
 const STATE_DIR = path.join(os.homedir(), '.rinawarp');
 const STATE_FILE = path.join(STATE_DIR, 'state.json');
@@ -31,53 +32,77 @@ function buildGraph(steps) {
   return { nodes, edges, indeg };
 }
 
-async function execGraph({ steps, cwd, dry=false, confirm=false, resetFailed=false }) {
+function matchStepPolicy(step, policy) {
+  if (!Array.isArray(policy?.stepPolicy)) return {};
+  for (const rule of policy.stepPolicy) {
+    const m = rule.match || {};
+    if (m.id && m.id === step.id) return rule;
+    if (m.capability && m.capability === (step.capability || null)) return rule;
+  }
+  return {};
+}
+
+export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFailed=false }) {
   const policy = loadPolicy(cwd);
   const caps = policy.capabilities;
-  const { timeoutMs, maxBytes } = policy.limits;
+  const { timeoutMs: defaultTimeout, maxBytes } = policy.limits;
+  const concurrency = Math.max(1, Math.min(16, policy.policy.concurrency || 4));
+
+  // Precheck tools (fail early)
+  const toolCheck = precheckTools(cwd, steps);
+  if (toolCheck.missing.length) {
+    const msg = `missing required tools: ${toolCheck.missing.join(', ')}`;
+    return Object.fromEntries(steps.map(s => [s.id, { code: 127, stdout: '', stderr: msg }]));
+  }
+
   const state = readState();
   if (resetFailed) {
-    // remove failure stamps for cwd
-    for (const k of Object.keys(state.done)) {
-      if (k.startsWith(cwd + ':fail:')) delete state.done[k];
-    }
+    for (const k of Object.keys(state.done)) if (k.startsWith(cwd + ':fail:')) delete state.done[k];
     writeState(state);
   }
 
   const { nodes, edges, indeg } = buildGraph(steps);
-  const queue = [];
-  for (const [id, d] of indeg) if (d === 0) queue.push(id);
+  const ready = [];
+  for (const [id, d] of indeg) if (d === 0) ready.push(id);
 
   const results = {};
   const successOrder = [];
 
-  async function runOnce(step) {
-    const env = { ...process.env }; // could strip proxies etc if needed
-    return await runCommand(step.command, step.cwd, { timeoutMs, maxBytes, env });
+  async function runOnce(step, env, to) {
+    return await runCommand(step.command, step.cwd, { timeoutMs: to, maxBytes, env });
   }
 
-  async function runWithRetry(step) {
-    // block outright when network disabled
+  async function runWithPolicy(step) {
+    // Compute per-step policy
+    const rule = matchStepPolicy(step, policy.policy);
+    const stepTimeout = Number.isFinite(rule.timeoutMs) ? rule.timeoutMs : defaultTimeout;
+    const maxRetries = Number.isFinite(rule.maxRetries) ? rule.maxRetries : (step.capability === 'network' ? 3 : 0);
+    const baseBackoff = Number.isFinite(rule.retryBackoffMs) ? rule.retryBackoffMs : 500;
+
+    // Block explicit network ops when not allowed
     if (!caps.network && isNetworkCommand(step.command)) {
       return { code: 1, stdout: '', stderr: '[blocked] network operations disabled by policy' };
     }
-    const maxAttempts = step.capability === 'network' ? 4 : 1;
-    let attempt = 0, last = { code: 0, stdout: '', stderr: '' };
-    while (attempt < maxAttempts) {
-      last = await runOnce(step);
+
+    const env = makeEnvForChild(process.env, { networkAllowed: !!caps.network });
+    let attempt = 0;
+    let last = { code: 0, stdout: '', stderr: '' };
+
+    while (attempt <= maxRetries) {
+      last = await runOnce(step, env, stepTimeout);
       if (!shouldRetry(step, last.code, last.stderr)) break;
-      await new Promise(r => setTimeout(r, backoff(attempt)));
+      await new Promise(r => setTimeout(r, backoff(attempt, baseBackoff)));
       attempt += 1;
     }
     return last;
   }
 
-  async function runStep(id) {
+  async function execute(id) {
     const step = nodes.get(id);
-    const key = `${cwd}:${step.idempotenceKey}`;
+    const doneKey = `${cwd}:${step.idempotenceKey}`;
     const failKey = `${cwd}:fail:${step.id}`;
 
-    if (state.done[key]) { results[id] = { code: 0, stdout: `[skip] ${step.description}`, stderr: '' }; return; }
+    if (state.done[doneKey]) { results[id] = { code: 0, stdout: `[skip] ${step.description}`, stderr: '' }; return; }
 
     const needed = step.capability || capabilityNeededFor(step.command);
     if (!isCapabilityAllowed(caps, needed)) {
@@ -92,33 +117,52 @@ async function execGraph({ steps, cwd, dry=false, confirm=false, resetFailed=fal
 
     if (dry || !confirm) { results[id] = { code: 0, stdout: `[dryrun] ${step.command}`, stderr: '' }; return; }
 
-    const res = await runWithRetry(step);
+    const res = await runWithPolicy(step);
     const redOut = redact(res.stdout);
     const redErr = redact(res.stderr);
     results[id] = { code: res.code, stdout: redOut, stderr: redErr };
-    if (code === 0) {
-      state.done[key] = Date.now(); delete state.done[failKey]; writeState(state);
+
+    if (res.code === 0) {
+      state.done[doneKey] = Date.now();
+      delete state.done[failKey];
+      writeState(state);
       successOrder.push({ id: step.id, cwd: step.cwd, revertCommand: step.revertCommand || null });
     } else {
-      state.done[failKey] = Date.now(); writeState(state);
+      state.done[failKey] = Date.now();
+      writeState(state);
     }
   }
 
-  // Parallel by layers
-  while (queue.length) {
-    const layer = [...queue]; queue.length = 0;
-    await Promise.all(layer.map(runStep));
-    if (layer.some(id => results[id]?.code !== 0)) break;
-    for (const id of layer) for (const n of (buildGraph(steps).edges.get(id) || [])) {
-      indeg.set(n, indeg.get(n) - 1); if (indeg.get(n) === 0) queue.push(n);
+  // Concurrency-limited scheduler (Kahn by layers, but bounded pool)
+  const inQueue = [...ready];
+  const running = new Set();
+  async function pump() {
+    while (inQueue.length && running.size < concurrency) {
+      const id = inQueue.shift();
+      running.add(id);
+      execute(id).then(() => {
+        running.delete(id);
+        // If failed, stop scheduling descendants
+        if (results[id]?.code !== 0) return;
+        for (const n of (edges.get(id) || [])) {
+          indeg.set(n, indeg.get(n) - 1);
+          if (indeg.get(n) === 0) inQueue.push(n);
+        }
+        pump();
+      });
     }
+    if (running.size === 0 && inQueue.length === 0) return;
+    await new Promise(r => setTimeout(r, 10));
+    return pump();
   }
 
-  writeLastRun({ cwd, successOrder }); // for rollback
+  await pump();
+
+  writeLastRun({ cwd, successOrder });
   return results;
 }
 
-async function rollbackLastRun() {
+export async function rollbackLastRun() {
   const last = readLastRun();
   if (!last || !Array.isArray(last.successOrder) || last.successOrder.length === 0) {
     return { status: 'error', message: 'nothing to rollback', stdout: '', stderr: '' };
