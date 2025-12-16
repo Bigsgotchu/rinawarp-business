@@ -1,0 +1,377 @@
+name: Quality Gate
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .cache/pnpm
+
+jobs:
+  # Compute changed paths once for all jobs
+  changes:
+    name: Compute changed paths
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+      docs: ${{ steps.filter.outputs.docs }}
+      css: ${{ steps.filter.outputs.css }}
+      any: ${{ steps.filter.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filters: |
+            code:
+              - 'apps/**'
+              - 'packages/**'
+              - '**/*.{js,cjs,mjs,ts,tsx,json,yml,yaml}'
+            docs:
+              - '**/*.md'
+            css:
+              - '**/*.css'
+            any_changed:
+              - '**'
+
+  # Code Quality Gate
+  code-quality:
+    name: Code Quality Gate
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' || needs.changes.outputs.css == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - name: Setup Node & pnpm
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+
+      # Prime store & install fast
+      - name: PNPM fetch (prime store)
+        run: pnpm fetch
+      - name: Install deps (offline if possible)
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Cache ESLint results
+        uses: actions/cache@v4
+        with:
+          path: .cache/eslint
+          key: eslint-${{ runner.os }}-${{ hashFiles('**/*.{js,ts,tsx}', 'eslint.config.*', '.eslintrc*', 'pnpm-lock.yaml') }}
+          restore-keys: |
+            eslint-${{ runner.os }}-
+
+      - name: Run ESLint (cached)
+        run: pnpm lint:ci
+
+      - name: Check Prettier formatting
+        run: pnpm format:check
+
+      - name: Cache TS build info
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/*.tsbuildinfo
+          key: ts-${{ runner.os }}-${{ hashFiles('**/tsconfig*.json', 'pnpm-lock.yaml') }}
+          restore-keys: |
+            ts-${{ runner.os }}-
+
+      - name: Run TypeScript type checking
+        run: pnpm -r run typecheck
+
+      - name: Block debug statements in PR diff
+        shell: bash
+        run: |
+          echo "🚫 Checking for debug statements in PR diff..."
+          git fetch --no-tags --depth=50 origin ${{ github.base_ref }}
+          base=$(git merge-base HEAD origin/${{ github.base_ref }})
+          set +e
+          CHANGED=$(git diff --name-only "$base"...HEAD -- 'apps/**' 'packages/**')
+          if [ -n "$CHANGED" ]; then
+            if grep -rn --no-heading -E 'console\.log|debugger' $CHANGED; then
+              echo "❌ Found debug statements above"; exit 1
+            fi
+          fi
+          set -e
+
+      - name: Block large files (> 15 MB) introduced by PR
+        shell: bash
+        run: |
+          max=$((15*1024*1024))
+          git fetch --no-tags --depth-50 origin ${{ github.base_ref }}
+          base=$(git merge-base HEAD origin/${{ github.base_ref }})
+          while read -r mode old new path; do
+            # only check added/modified blobs
+            if [ "$new" != /dev/null ]; then
+              size=$(git cat-file -s "$new")
+              if [ "$size" -gt "$max" ]; then
+                echo "❌ $path is ${size} bytes (>15MB)"; exit 1
+              fi
+            fi
+          done < <(git diff --raw -z "$base"...HEAD | xargs -0 -n1 | paste - - - -)
+
+      - name: Secret scan (simple, PR diff)
+        shell: bash
+        run: |
+          git fetch --no-tags --depth-50 origin ${{ github.base_ref }}
+          base=$(git merge-base HEAD origin/${{ github.base_ref }})
+          DIFF=$(git diff "$base"...HEAD)
+          if echo "$DIFF" | egrep -i 'api[_-]?key|secret[_-]?key|token|password|AKIA|ASIA' >/dev/null; then
+            echo "🔒 Potential secret detected in PR diff"; exit 1
+          fi
+
+      - name: Run spell check (cached)
+        run: pnpm spell
+
+      - name: Run CSS linting
+        if: ${{ needs.changes.outputs.css == 'true' }}
+        run: pnpm lint:css
+
+  # Security Gate
+  security:
+    name: Security Gate
+    needs: changes
+    if: ${{ needs.changes.outputs.any == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm fetch && pnpm install --frozen-lockfile --prefer-offline
+      - name: Run security audit
+        run: pnpm audit --audit-level moderate
+      - name: Generate SBOM
+        run: pnpm sbom
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
+          if-no-files-found: error
+
+  # Test Gate
+  tests:
+    name: Test Gate
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm fetch && pnpm install --frozen-lockfile --prefer-offline
+      - name: Run tests
+        run: pnpm test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: node-${{ matrix.node-version }}
+
+  # Build Gate
+  build:
+    name: Build Gate
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm fetch && pnpm install --frozen-lockfile --prefer-offline
+      - name: Build all packages
+        run: pnpm -r run build
+      - name: Verify build outputs
+        run: |
+          echo "Verifying build outputs..."
+          find . -name "dist" -type d -maxdepth 4 | while read -r dir; do
+            echo "✓ Build directory exists: $dir"
+            ls -la "$dir" | head -5
+          done
+
+  # Dependency Gate
+  dependencies:
+    name: Dependency Gate
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm fetch && pnpm install --frozen-lockfile --prefer-offline
+      - name: Check for unused dependencies
+        run: pnpm deps:check
+      - name: Verify lockfile integrity
+        run: |
+          echo "Verifying lockfile integrity..."
+          pnpm install --lockfile-only
+          git diff --quiet || (echo "✗ Lockfile needs updating" && exit 1)
+
+  # Documentation Gate
+  documentation:
+    name: Documentation Gate
+    needs: changes
+    if: ${{ needs.changes.outputs.docs == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm fetch && pnpm install --frozen-lockfile --prefer-offline
+      - name: Check Markdown formatting
+        run: |
+          echo "Checking Markdown files..."
+          find . -name "*.md" -not -path "./node_modules/*" | xargs markdownlint --disable MD013
+      - name: Verify README files
+        run: |
+          echo "Checking for README files..."
+          find . -name "README.md" | head -10
+      - name: Check for TODO/FIXME in docs
+        run: |
+          echo "Checking for documentation completeness..."
+          (find . -name "*.md" -print0 | xargs -0 grep -nE "TODO|FIXME|XXX") && exit 1 || echo "No TODO/FIXME markers"
+
+  # PR Quality Gate Summary
+  quality-summary:
+    name: Quality Gate Summary
+    runs-on: ubuntu-latest
+    needs: [code-quality, security, tests, build, dependencies, documentation]
+    if: always()
+    steps:
+      - name: Quality Gate Status
+        run: |
+          echo "## 🔒 Quality Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Gate Status" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          # Code Quality
+          res="${{ needs.code-quality.result }}"
+          if [ "$res" = "success" ]; then
+            echo "| codequality | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$res" = "skipped" ]; then
+            echo "| codequality | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| codequality | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Security
+          res="${{ needs.security.result }}"
+          if [ "$res" = "success" ]; then
+            echo "| security | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$res" = "skipped" ]; then
+            echo "| security | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| security | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Tests
+          res="${{ needs.tests.result }}"
+          if [ "$res" = "success" ]; then
+            echo "| tests | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$res" = "skipped" ]; then
+            echo "| tests | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| tests | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Build
+          res="${{ needs.build.result }}"
+          if [ "$res" = "success" ]; then
+            echo "| build | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$res" = "skipped" ]; then
+            echo "| build | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| build | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Dependencies
+          res="${{ needs.dependencies.result }}"
+          if [ "$res" = "success" ]; then
+            echo "| dependencies | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$res" = "skipped" ]; then
+            echo "| dependencies | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| dependencies | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Documentation
+          res="${{ needs.documentation.result }}"
+          if [ "$res" = "success" ]; then
+            echo "| documentation | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$res" = "skipped" ]; then
+            echo "| documentation | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| documentation | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🎯 Overall Result" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.code-quality.result }}" = "success" -o "${{ needs.code-quality.result }}" = "skipped" ] &&
+             [ "${{ needs.security.result }}" = "success" -o "${{ needs.security.result }}" = "skipped" ] &&
+             [ "${{ needs.tests.result }}" = "success" -o "${{ needs.tests.result }}" = "skipped" ] &&
+             [ "${{ needs.build.result }}" = "success" -o "${{ needs.build.result }}" = "skipped" ] &&
+             [ "${{ needs.dependencies.result }}" = "success" -o "${{ needs.dependencies.result }}" = "skipped" ] &&
+             [ "${{ needs.documentation.result }}" = "success" -o "${{ needs.documentation.result }}" = "skipped" ]; then
+            echo "🟢 **All required gates PASSED/Skipped** - Ready for merge!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "🔴 **Quality gates FAILED** - Please fix issues before merging." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Fail on quality gate failure
+        if: |
+          (needs.code-quality.result != 'success' && needs.code-quality.result != 'skipped') ||
+          (needs.security.result != 'success' && needs.security.result != 'skipped') ||
+          (needs.tests.result != 'success' && needs.tests.result != 'skipped') ||
+          (needs.build.result != 'success' && needs.build.result != 'skipped') ||
+          (needs.dependencies.result != 'success' && needs.dependencies.result != 'skipped') ||
+          (needs.documentation.result != 'success' && needs.documentation.result != 'skipped')
+        run: |
+          echo "❌ One or more quality gates failed"
+          exit 1
