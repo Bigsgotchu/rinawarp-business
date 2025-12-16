@@ -63,6 +63,56 @@ if ls dist/*amd64.deb >/dev/null 2>&1; then alias_put "$(basename "$(ls dist/*am
 if ls dist/*.x86_64.rpm >/dev/null 2>&1; then alias_put "$(basename "$(ls dist/*.x86_64.rpm | head -n1)")" "RinaWarp-linux-x86_64-latest.rpm"; fi
 wrangler r2 object put "$BUCKET/$R2_LATEST/SHA256SUMS.txt" --file="$TMPDIR/SHA256SUMS.txt" >/dev/null
 
+# ===== META JSON (version + notes + asset aliases) =====
+META="${TMPDIR}/meta.json"
+DATE_ISO="$(date -I)"
+NOTES="${RELEASE_NOTES:-}"
+
+# If RELEASE_NOTES not provided, try CHANGELOG.md top section as fallback (first non-empty 6 lines)
+if [[ -z "$NOTES" && -f CHANGELOG.md ]]; then
+  NOTES="$(awk 'NF{print} !NF{exit}' CHANGELOG.md | head -n 6 | tr '\n' ' ' )"
+fi
+[[ -z "$NOTES" ]] && NOTES="RinaWarp ${VERSION} release."
+
+# Resolve which aliases exist (set to empty if not uploaded)
+alias_exists () { wrangler r2 object head "$BUCKET/$R2_LATEST/$1" >/dev/null 2>&1 && echo "1" || echo ""; }
+
+HAS_MAC_UNI=$(alias_exists "RinaWarp-mac-universal-latest.dmg")
+HAS_MAC_ARM=$(alias_exists "RinaWarp-mac-arm64-latest.dmg")
+HAS_MAC_X64=$(alias_exists "RinaWarp-mac-x64-latest.dmg")
+HAS_WIN=$(alias_exists "RinaWarp-win-x64-latest.exe")
+HAS_APPIMG=$(alias_exists "RinaWarp-linux-x86_64-latest.AppImage")
+HAS_DEB=$(alias_exists "RinaWarp-linux-amd64-latest.deb")
+HAS_RPM=$(alias_exists "RinaWarp-linux-x86_64-latest.rpm")
+# Build assets map relative to bucket root
+MAC_URL="$R2_LATEST/RinaWarp-mac-universal-latest.dmg"
+[[ -z "$HAS_MAC_UNI" && -n "$HAS_MAC_ARM" ]] && MAC_URL="$R2_LATEST/RinaWarp-mac-arm64-latest.dmg"
+[[ -z "$HAS_MAC_UNI" && -z "$HAS_MAC_ARM" && -n "$HAS_MAC_X64" ]] && MAC_URL="$R2_LATEST/RinaWarp-mac-x64-latest.dmg"
+
+cat > "$META" <<JSON
+{
+  "version": "${VERSION}",
+  "date": "${DATE_ISO}",
+  "notes": "$(echo "$NOTES" | sed 's/"/\\"/g')",
+  "assets": {
+    "mac": "/${MAC_URL}"$( [[ -n "$HAS_MAC_X64" ]] && echo ', "mac_x64": "/latest/RinaWarp-mac-x64-latest.dmg"' )$( [[ -n "$HAS_MAC_ARM" ]] && echo ', "mac_arm64": "/latest/RinaWarp-mac-arm64-latest.dmg"' ),
+    "win": $( [[ -n "$HAS_WIN" ]] && echo '"/latest/RinaWarp-win-x64-latest.exe"' || echo 'null' ),
+    "linux": $( [[ -n "$HAS_APPIMG" ]] && echo '"/latest/RinaWarp-linux-x86_64-latest.AppImage"' || echo 'null' ),
+    "deb": $( [[ -n "$HAS_DEB" ]] && echo '"/latest/RinaWarp-linux-amd64-latest.deb"' || echo 'null' ),
+    "rpm": $( [[ -n "$HAS_RPM" ]] && echo '"/latest/RinaWarp-linux-x86_64-latest.rpm"' || echo 'null' ),
+    "checksums": "/latest/SHA256SUMS.txt"
+  }
+}
+JSON
+
+echo "→ Upload meta.json"
+wrangler r2 object put "$BUCKET/$R2_PREFIX/meta.json" --file="$META" >/dev/null
+wrangler r2 object put "$BUCKET/$R2_LATEST/meta.json" --file="$META" >/dev/null
+
+echo "Done: meta.json uploaded to:"
+echo " - $R2_PUBLIC_BASE/$R2_PREFIX/meta.json"
+echo " - $R2_PUBLIC_BASE/$R2_LATEST/meta.json"
+
 # ===== WRITE /site DOWNLOAD PAGE + REDIRECTS =====
 mkdir -p "$SITE_DIR/public"
 cat > "$SITE_DIR/public/_redirects" <<EOF

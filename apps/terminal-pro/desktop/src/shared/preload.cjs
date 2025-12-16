@@ -6,7 +6,10 @@ const api = {
   licenseGet: () => ipcRenderer.invoke('license:get'),
   licenseClear: () => ipcRenderer.invoke('license:clear'),
   licenseVerify: (email, key) => ipcRenderer.invoke('license:verify', { email, key }),
-  billingPortal: (email) => ipcRenderer.invoke('billing:portal', { email })
+  billingPortal: (email) => ipcRenderer.invoke('billing:portal', { email }),
+  latestMeta: () => ipcRenderer.invoke('latest:meta'),
+  whatsNewGet: () => ipcRenderer.invoke('whatsnew:get'),
+  whatsNewDismiss: (version) => ipcRenderer.invoke('whatsnew:dismiss', { version })
 };
 
 try {

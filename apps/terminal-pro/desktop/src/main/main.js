@@ -10,6 +10,7 @@ import { WebSocketServer } from 'ws';
 import * as electron from "electron";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import fetch from 'node-fetch';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 let updaterPkg;
@@ -164,6 +165,9 @@ async function verifyLicenseWithBackend(licenseKey) {
 
 // Import license store
 const { write: licWrite, read: licRead, clear: licClear, isValidCached } = require('./shared/license_store.js');
+
+// Import whatsnew store
+const { read: wnRead, write: wnWrite } = require('./shared/whatsnew_store.js');
 
 // ==== RINA AGENT BRAIN (Cloudflare Worker) ===========================
 
@@ -1552,6 +1556,24 @@ function registerIPC() {
     store.delete("crashRecovery");
     return true;
   });
+
+  // IPC: fetch latest meta (proxied by site)
+  ipcMain.handle("latest:meta", async () => {
+    try {
+      const r = await fetch('https://rinawarptech.com/api/latest/meta');
+      const j = await r.json();
+      return { status: 'ok', meta: j };
+    } catch (e) {
+      return { status: 'error', error: e.message };
+    }
+  });
+
+  // IPC: whatsnew get/dismiss
+  ipcMain.handle("whatsnew:get", async () => ({ status: 'ok', data: wnRead() }));
+  ipcMain.handle("whatsnew:dismiss", async (_evt, { version }) => {
+    const d = wnRead(); d.lastSeenVersion = version || d.lastSeenVersion; d.dismissedAt = Date.now(); wnWrite(d);
+    return { status: 'ok' };
+  });
 }
 
 // ==== CRASH RECOVERY SYSTEM =======================================
@@ -1644,7 +1666,8 @@ process.on('uncaughtException', (error) => {
     // Network allowlist for license verification
     const ALLOWLIST = new Set([
       'https://rinawarptech.com/api/license/verify',
-      'https://rinawarptech.com/api/stripe/portal'
+      'https://rinawarptech.com/api/stripe/portal',
+      'https://rinawarptech.com/api/latest/meta'
     ]);
     const { session } = require('electron');
     session.defaultSession.webRequest.onBeforeRequest((details, cb) => {

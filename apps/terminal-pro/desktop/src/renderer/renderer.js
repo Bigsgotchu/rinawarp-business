@@ -289,4 +289,39 @@
     alert('Pro feature. Please verify your license in Settings.');
     return false;
   }
+
+  // What's New Modal
+  const wnModal = $('whatsNewModal'), wnTitle = $('wnTitle'), wnBody = $('wnBody'), wnClose = $('wnClose'), wnOk = $('wnOk'), wnSums = $('wnChecksums');
+
+  async function maybeShowWhatsNew() {
+    try {
+      const metaRes = await window.rinawarp.latestMeta();
+      if (metaRes.status !== 'ok') return;
+      const meta = metaRes.meta || {};
+      const store = await window.rinawarp.whatsNewGet();
+      const last = store?.data?.lastSeenVersion || null;
+      if (!meta.version) return;
+      if (meta.version !== last) {
+        wnTitle.textContent = `What's new in v${meta.version}`;
+        wnBody.textContent = meta.notes || 'Improvements and fixes.';
+        if (meta.assets?.checksums) {
+          wnSums.href = meta.assets.checksums.startsWith('/') ? meta.assets.checksums : `/download/checksums`;
+        } else {
+          wnSums.style.display = 'none';
+        }
+        wnModal.style.display = 'block';
+        const dismiss = async () => {
+          await window.rinawarp.whatsNewDismiss(meta.version);
+          wnModal.style.display = 'none';
+        };
+        wnClose.onclick = dismiss;
+        wnOk.onclick = dismiss;
+      }
+    } catch {}
+  }
+
+  // Call after app UI ready
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(maybeShowWhatsNew, 600);
+  });
 })();

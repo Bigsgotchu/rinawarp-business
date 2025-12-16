@@ -1,15 +1,25 @@
-name = "rinawarp-site"
+﻿name = "rinawarp-site"
 compatibility_date = "2024-11-21"
 
 [vars]
 SITE_BASE = "https://rinawarptech.com"     # your domain
+R2_PUBLIC_BASE = "https://downloads.rinawarptech.com"
 CURRENCY = "usd"
 
 # KV storage
 [[kv_namespaces]]
 binding = "KV_STRIPE"
-id = "KV_STRIPE_ID"  # fill after creation
+id = "1b91a65e297040fdb823d17cd124adc6"  # PRICING_KV
+
+[[kv_namespaces]]
+binding = "KV_ANALYTICS"
+id = "dff80fe842ef4fba8bfca23fa87069db"  # RINAWARP_ANALYTICS
+
+[[kv_namespaces]]
+binding = "KV_SITE"
+id = "a2627b88229343c5965bd6775a31ddb8"
 
 # Secrets to set via `wrangler secret put`
 # - STRIPE_SECRET_KEY       (sk_live_...)
 # - STRIPE_WEBHOOK_SECRET   (whsec_...)
+# - SMOKE_TOKEN             (long random string)
