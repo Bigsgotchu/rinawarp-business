@@ -15,7 +15,7 @@ export type ToolSpec<TArgs = any> = {
   name: string;
   description: string;
   schema: any;
-  requires: (keyof ToolContext["permissions"])[];
+  requires: (keyof ToolContext['permissions'])[];
   run: (args: TArgs, ctx: ToolContext) => Promise<any> | any;
 };
 
@@ -26,11 +26,11 @@ export function registerTool(spec: ToolSpec) {
 }
 
 export function listTools() {
-  return Array.from(tools.values()).map(t => ({
+  return Array.from(tools.values()).map((t) => ({
     name: t.name,
     description: t.description,
     schema: t.schema,
-    requires: t.requires
+    requires: t.requires,
   }));
 }
 

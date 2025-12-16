@@ -18,18 +18,18 @@ async function llmPlan(intent, cwd) {
       'Each step: {id, description, command, requires[], provides[], capability, revertCommand}',
       'Allowed capabilities: docker|git|npm|network|null',
       `cwd: ${cwd}`,
-      `intent: ${intent}`
+      `intent: ${intent}`,
     ].join('\n');
 
     const res = await fetch(`${BASE}/chat/completions`, {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: MODEL,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.2,
-        response_format: { type: 'json_object' }
-      })
+        response_format: { type: 'json_object' },
+      }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
@@ -41,15 +41,18 @@ async function llmPlan(intent, cwd) {
 
     // Validate minimal fields; fill cwd + idempotence
     const safe = steps.map((s, i) => ({
-      id: String(s.id || `s${i+1}`),
+      id: String(s.id || `s${i + 1}`),
       description: String(s.description || 'step'),
       command: String(s.command || 'echo noop'),
       cwd,
       requires: Array.isArray(s.requires) ? s.requires : [],
       provides: Array.isArray(s.provides) ? s.provides : [],
-      capability: ['docker','git','npm','network'].includes(s.capability) ? s.capability : null,
+      capability: ['docker', 'git', 'npm', 'network'].includes(s.capability) ? s.capability : null,
       revertCommand: s.revertCommand ? String(s.revertCommand) : null,
-      idempotenceKey: s.idempotenceKey || (Array.isArray(s.provides) && s.provides[0]) || String(s.id || `s${i+1}`)
+      idempotenceKey:
+        s.idempotenceKey ||
+        (Array.isArray(s.provides) && s.provides[0]) ||
+        String(s.id || `s${i + 1}`),
     }));
 
     // If LLM returned nothing useful, fallback

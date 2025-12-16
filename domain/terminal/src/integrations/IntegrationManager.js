@@ -167,15 +167,15 @@ export class IntegrationManager {
 
   handleVSCodeMessage(message) {
     switch (message.type) {
-    case 'file_opened':
-      this.handleFileOpened(message.data);
-      break;
-    case 'debug_started':
-      this.handleDebugStarted(message.data);
-      break;
-    case 'extension_installed':
-      this.handleExtensionInstalled(message.data);
-      break;
+      case 'file_opened':
+        this.handleFileOpened(message.data);
+        break;
+      case 'debug_started':
+        this.handleDebugStarted(message.data);
+        break;
+      case 'extension_installed':
+        this.handleExtensionInstalled(message.data);
+        break;
     }
   }
 
@@ -411,23 +411,23 @@ export class IntegrationManager {
 
   async initializeIntegration(integrationId) {
     switch (integrationId) {
-    case 'vscode':
-      await this.initializeVSCodeIntegration();
-      break;
-    case 'github':
-      await this.initializeGitHubIntegration();
-      break;
-    case 'slack':
-      await this.initializeSlackIntegration();
-      break;
-    case 'docker':
-      await this.initializeDockerIntegration();
-      break;
-    case 'aws':
-    case 'azure':
-    case 'gcp':
-      await this.initializeCloudIntegration(integrationId);
-      break;
+      case 'vscode':
+        await this.initializeVSCodeIntegration();
+        break;
+      case 'github':
+        await this.initializeGitHubIntegration();
+        break;
+      case 'slack':
+        await this.initializeSlackIntegration();
+        break;
+      case 'docker':
+        await this.initializeDockerIntegration();
+        break;
+      case 'aws':
+      case 'azure':
+      case 'gcp':
+        await this.initializeCloudIntegration(integrationId);
+        break;
     }
   }
 

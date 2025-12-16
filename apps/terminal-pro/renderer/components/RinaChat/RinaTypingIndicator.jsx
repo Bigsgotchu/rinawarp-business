@@ -1,5 +1,5 @@
-import React from "react";
-import "./rina-chat.css";
+import React from 'react';
+import './rina-chat.css';
 
 export default function RinaTypingIndicator() {
   return (

@@ -3,7 +3,7 @@
  * Adds "Rina remembers this project" toast once per session
  */
 
-import { kvGet, kvSet } from "./memory/store.js";
+import { kvGet, kvSet } from './memory/store.js';
 
 let memoryToastShown = false;
 
@@ -15,14 +15,14 @@ export function rememberProject(cwd: string, lastCommand: string): void {
     lastCommand,
     timestamp: Date.now(),
   };
-  
+
   kvSet(projectKey, JSON.stringify(projectData));
-  
+
   // Show toast only once per session
   if (!memoryToastShown) {
     showMemoryToast();
     memoryToastShown = true;
-    
+
     // Update session state
     if (typeof window !== 'undefined' && (window as any).sessionState) {
       (window as any).sessionState.memoryWrites++;
@@ -52,15 +52,15 @@ function showMemoryToast(): void {
     transform: translateX(100%);
     transition: all 0.3s ease;
   `;
-  
+
   document.body.appendChild(toast);
-  
+
   // Animate in
   setTimeout(() => {
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(0)';
   }, 100);
-  
+
   // Remove after 3 seconds
   setTimeout(() => {
     toast.style.opacity = '0';

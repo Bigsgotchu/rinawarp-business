@@ -1,0 +1,205 @@
+# Live Session Verification Checklist
+
+## Configuration Verification
+
+### ✅ Step 1: Environment Variables Configuration
+
+**Current Configuration:**
+
+- `RINAWARP_API_URL`: `https://api.rinawarptech.com` (default in code)
+- `RINA_AGENT_URL`: `https://rinawarptech.com/api/agent` (default in code)
+- `OPENAI_API_KEY`: Required for AI features (optional for live sessions)
+
+
+**Files to update:**
+
+- Create `.env` file in `apps/terminal-pro/desktop/` directory with:
+
+  ```bash
+  RINAWARP_API_URL="https://api.rinawarptech.com"
+  RINA_AGENT_URL="https://rinawarptech.com/api/agent"
+  OPENAI_API_KEY="YOUR_KEY"
+  ```
+
+### ✅ Step 2: Worker Route Configuration
+
+**Worker Route (wrangler.toml):**
+
+```toml
+routes = [
+  { pattern = "https://api.rinawarptech.com/api/live-session/*", zone_name = "rinawarptech.com" },
+  { pattern = "https://api.rinawarptech.com/ws/live-session/*", zone_name = "rinawarptech.com" }
+]
+```
+
+**Desktop API Root (live-session.js):**
+
+```javascript
+const API_ROOT = window.RINA_API_ROOT || 'https://api.rinawarptech.com';
+```
+
+**Status: ✅ MATCHED** - Both configured to use `https://api.rinawarptech.com`
+
+### ✅ Step 3: Worker Health Check
+
+**Endpoint:** `https://api.rinawarptech.com/api/live-session/health`
+
+**Expected Response:**
+
+```json
+{ "ok": true, "service": "live-session-worker" }
+```
+
+### ✅ Step 4: Authentication JWT Structure
+
+**Worker expects JWT with claims:**
+
+- `sub`: User ID (e.g., "user_123")
+- `teamId`: Team ID (e.g., "team_456")
+- `name`: User name (e.g., "Karina")
+
+
+**Verification method:**
+
+1. Login to desktop app
+2. Open DevTools (Ctrl+Shift+I) → Console
+3. Run: `await window.RinaAuth.getToken()`
+4. Decode JWT at https://jwt.io/
+5. Verify all required claims exist
+
+
+### ✅ Step 5: End-to-End Live Session Test
+
+**Host Computer:**
+
+1. Login to desktop app
+2. Click "Start Live Session"
+3. Verify status: `[live] Hosting session …`
+4. Verify status: `[ws] Connected`
+5. Copy Session ID
+
+
+**Guest Computer:**
+
+1. Login to desktop app
+2. Paste Session ID
+3. Click "Join"
+4. Verify status: `Live: Guest`
+5. Verify terminal output streaming
+6. Test PTY sync:
+   - Host runs: `ls`
+   - Guest sees output
+   - Guest types: `echo "guest test"`
+   - Host terminal executes it
+
+
+### ✅ Step 6: Replay API for Mission Control
+
+**Endpoint:** `https://api.rinawarptech.com/api/live-session/<sessionId>/logs`
+
+**Expected Response:**
+
+```json
+{
+  "ok": true,
+  "sessionId": "<sessionId>",
+  "logs": [
+    { "kind": "session_created", "ts": 1234567890, ... },
+    { "kind": "join", "ts": 1234567891, ... },
+    { "kind": "pty_output", "ts": 1234567892, ... },
+    { "kind": "pty_input", "ts": 1234567893, ... }
+  ]
+}
+```
+
+### ✅ Step 7: Production Build and Start
+
+**Commands:**
+
+```bash
+cd apps/terminal-pro/desktop
+npm run build
+npm run start
+```
+
+**Verification:**
+
+- Preload bridges load correctly
+- WebSockets connect in packaged app
+- Environment variables are baked in correctly
+
+
+## Implementation Details
+
+### Worker Architecture
+
+- **Database**: D1 (SQLite-compatible)
+- **KV Storage**: Cloudflare KV for session state
+- **WebSockets**: Native WebSocket streaming
+- **Authentication**: JWT Bearer token validation
+- **Event Logging**: All actions logged to D1 for replay
+
+
+### Desktop Integration
+
+- **Auth Bridge**: `window.RinaAuth.getToken()`
+- **Live Session API**: `window.RinaLiveSession`
+- **Terminal UI Bridge**: `window.RinaTerminalUI`
+
+
+### Required JWT Claims
+
+```json
+{
+  "sub": "user_123",
+  "teamId": "team_456",
+  "name": "Karina",
+  "iat": 1234567890,
+  "exp": 1234571490
+}
+```
+
+### Session Flow
+
+1. **Host** creates session → GETs WebSocket URL
+2. **Guest** joins session → GETs same WebSocket URL
+3. Both connect to WebSocket with JWT token
+4. PTY output from host → broadcast to guests
+5. PTY input from guest → forwarded to host
+6. All events logged for Mission Control replay
+
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Worker not responding**
+   - Check Cloudflare Workers dashboard
+   - Verify routes are deployed
+   - Check D1 database connection
+
+2. **Authentication failures**
+   - Verify JWT has all required claims
+   - Check token expiration
+   - Verify team membership
+
+3. **WebSocket connection issues**
+   - Check CORS headers
+   - Verify WebSocket endpoint URL
+   - Check browser console for errors
+
+4. **PTY sync not working**
+   - Verify terminal ID matching
+   - Check WebSocket message routing
+   - Inspect network traffic
+
+
+## Next Steps
+
+1. Create `.env` file with required variables
+2. Deploy worker with correct routes
+3. Test health endpoint
+4. Verify JWT structure
+5. Run end-to-end session test
+6. Test replay API
+7. Build and start production

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  listLicenses,
-  createLicense,
-  extendLicense,
-  revokeLicense,
-  License,
-} from '../lib/api';
+import { listLicenses, createLicense, extendLicense, revokeLicense, License } from '../lib/api';
 import { useAdmin } from '../lib/adminContext';
 
 const inputBase =
@@ -101,12 +95,7 @@ export default function LicensesPage() {
     setError(null);
     setSuccess(null);
     try {
-      await revokeLicense(
-        adminToken,
-        selected.licenseKey,
-        revokeReason,
-        revokeNotes || undefined,
-      );
+      await revokeLicense(adminToken, selected.licenseKey, revokeReason, revokeNotes || undefined);
       setSuccess('License revoked');
       setRevokeNotes('');
       await reload();
@@ -162,15 +151,11 @@ export default function LicensesPage() {
                 <tr
                   key={lic.licenseKey}
                   className={`cursor-pointer border-t border-slate-800/60 hover:bg-slate-900/40 ${
-                    selected?.licenseKey === lic.licenseKey
-                      ? 'bg-slate-900/70'
-                      : ''
+                    selected?.licenseKey === lic.licenseKey ? 'bg-slate-900/70' : ''
                   }`}
                   onClick={() => setSelected(lic)}
                 >
-                  <td className="px-3 py-2 font-mono text-xs text-emerald-300">
-                    {lic.licenseKey}
-                  </td>
+                  <td className="px-3 py-2 font-mono text-xs text-emerald-300">{lic.licenseKey}</td>
                   <td className="px-3 py-2 text-slate-200">{lic.email}</td>
                   <td className="px-3 py-2 text-slate-200">{lic.product}</td>
                   <td className="px-3 py-2 text-slate-400">{lic.plan}</td>
@@ -180,26 +165,21 @@ export default function LicensesPage() {
                         lic.status === 'active'
                           ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/40'
                           : lic.status === 'revoked'
-                          ? 'bg-red-500/10 text-red-300 border border-red-500/40'
-                          : 'bg-amber-500/10 text-amber-300 border border-amber-500/40'
+                            ? 'bg-red-500/10 text-red-300 border border-red-500/40'
+                            : 'bg-amber-500/10 text-amber-300 border border-amber-500/40'
                       }`}
                     >
                       {lic.status}
                     </span>
                   </td>
                   <td className="px-3 py-2 text-slate-400">
-                    {lic.expiresAt
-                      ? new Date(lic.expiresAt).toLocaleDateString()
-                      : '—'}
+                    {lic.expiresAt ? new Date(lic.expiresAt).toLocaleDateString() : '—'}
                   </td>
                 </tr>
               ))}
               {licenses.length === 0 && !loading && (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="px-3 py-6 text-center text-slate-500"
-                  >
+                  <td colSpan={6} className="px-3 py-6 text-center text-slate-500">
                     No licenses found. Try adjusting your search.
                   </td>
                 </tr>
@@ -213,14 +193,10 @@ export default function LicensesPage() {
       <div className="w-96 flex flex-col gap-4">
         {/* Create */}
         <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-          <h2 className="text-sm font-semibold text-slate-100 mb-3">
-            Create License
-          </h2>
+          <h2 className="text-sm font-semibold text-slate-100 mb-3">Create License</h2>
           <form className="space-y-2" onSubmit={handleCreateLicense}>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Customer Email
-              </label>
+              <label className="block text-xs text-slate-400 mb-1">Customer Email</label>
               <input
                 className={inputBase}
                 type="email"
@@ -230,9 +206,7 @@ export default function LicensesPage() {
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Product
-              </label>
+              <label className="block text-xs text-slate-400 mb-1">Product</label>
               <select
                 className={inputBase}
                 value={newProduct}
@@ -244,9 +218,7 @@ export default function LicensesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Plan ID
-              </label>
+              <label className="block text-xs text-slate-400 mb-1">Plan ID</label>
               <input
                 className={inputBase}
                 value={newPlan}
@@ -254,9 +226,7 @@ export default function LicensesPage() {
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">
-                Seats
-              </label>
+              <label className="block text-xs text-slate-400 mb-1">Seats</label>
               <input
                 className={inputBase}
                 type="number"
@@ -276,20 +246,13 @@ export default function LicensesPage() {
 
         {/* Extend */}
         <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-          <h2 className="text-sm font-semibold text-slate-100 mb-2">
-            Extend License
-          </h2>
+          <h2 className="text-sm font-semibold text-slate-100 mb-2">Extend License</h2>
           {!selected ? (
-            <p className="text-xs text-slate-500">
-              Select a license from the list to extend.
-            </p>
+            <p className="text-xs text-slate-500">Select a license from the list to extend.</p>
           ) : (
             <form className="space-y-2" onSubmit={handleExtendLicense}>
               <p className="text-xs text-slate-400 mb-1">
-                License:{' '}
-                <span className="font-mono text-emerald-300">
-                  {selected.licenseKey}
-                </span>
+                License: <span className="font-mono text-emerald-300">{selected.licenseKey}</span>
               </p>
               <div>
                 <label className="block text-xs text-slate-400 mb-1">
@@ -303,9 +266,7 @@ export default function LicensesPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">
-                  Notes (optional)
-                </label>
+                <label className="block text-xs text-slate-400 mb-1">Notes (optional)</label>
                 <textarea
                   className={inputBase}
                   rows={2}
@@ -325,25 +286,16 @@ export default function LicensesPage() {
 
         {/* Revoke */}
         <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-          <h2 className="text-sm font-semibold text-slate-100 mb-2">
-            Revoke License
-          </h2>
+          <h2 className="text-sm font-semibold text-slate-100 mb-2">Revoke License</h2>
           {!selected ? (
-            <p className="text-xs text-slate-500">
-              Select a license from the list to revoke.
-            </p>
+            <p className="text-xs text-slate-500">Select a license from the list to revoke.</p>
           ) : (
             <form className="space-y-2" onSubmit={handleRevokeLicense}>
               <p className="text-xs text-slate-400 mb-1">
-                License:{' '}
-                <span className="font-mono text-emerald-300">
-                  {selected.licenseKey}
-                </span>
+                License: <span className="font-mono text-emerald-300">{selected.licenseKey}</span>
               </p>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">
-                  Reason
-                </label>
+                <label className="block text-xs text-slate-400 mb-1">Reason</label>
                 <select
                   className={inputBase}
                   value={revokeReason}
@@ -356,9 +308,7 @@ export default function LicensesPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">
-                  Notes (optional)
-                </label>
+                <label className="block text-xs text-slate-400 mb-1">Notes (optional)</label>
                 <textarea
                   className={inputBase}
                   rows={2}

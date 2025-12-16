@@ -1,379 +1,334 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>RinaWarp Pricing | Free Tier, Pro, and Teams</title>
-  <meta name="description" content="Simple, transparent pricing for RinaWarp Terminal Pro. Start free, then upgrade when you're ready." />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/css/shared.css" />
-  <style>
-    .toggle{display:inline-flex;border:1px solid #2e2e36;border-radius:12px;overflow:hidden}
-    .toggle button{padding:8px 12px;background:#1b1b22;color:#eaeaea;border:0;cursor:pointer}
-    .toggle button.active{background:#2a2a33}
-    .badge-save{display:inline-block;margin-left:8px;padding:4px 8px;border-radius:999px;background:#12351f;color:#7CFFB0;font-size:12px;border:1px solid #1f5834}
-    .ribbon{position:absolute;top:12px;right:-40px;transform:rotate(45deg);background:#12351f;color:#7CFFB0;padding:6px 60px;border:1px solid #1f5834;font-size:12px;letter-spacing:.3px}
-    .pricing-card.highlight{position:relative}
-    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .input{background:#121217;border:1px solid #2e2e36;color:#eaeaea;padding:10px;border-radius:10px}
-    details.faq{border:1px solid #2e2e36;border-radius:10px;padding:12px;background:#121217}
-    details.faq+details.faq{margin-top:8px}
-    summary{cursor:pointer;outline:none}
-    .right-row{display:flex;gap:8px;align-items:center}
-  </style>
-</head>
-<body class="mermaid">
-  <div class="main-shell">
-    <header class="rw-nav">
-      <div class="rw-nav-left">
-        <a href="/" class="rw-nav-logo" aria-label="RinaWarp home">
-          <img src="/assets/logo/company.png" alt="RinaWarp Logo" />
-        </a>
-      </div>
-      <nav class="rw-nav-links">
-        <a href="/">Home</a>
-        <a href="/terminal-pro.html">Terminal Pro</a>
-        <a href="/music-video-creator.html">Music Video Creator</a>
-        <a aria-current="page" href="/pricing.html">Pricing</a>
-        <a href="/download.html">Download</a>
-      </nav>
-      <div class="rw-nav-cta right-row">
-        <button id="refresh-prices" class="rw-button-outline" title="Force refresh prices">↻ Refresh</button>
-        <a href="/download.html" class="rw-button-outline">Download</a>
-      </div>
-    </header>
-
-    <main>
-      <section class="section">
-        <div class="section-header">
-          <h1 class="section-title">Start free. Upgrade when it pays for itself.</h1>
-          <p class="section-subtitle">
-            Live pricing loads from Stripe using stable lookup keys. Switch monthly ↔ annual anytime.
-          </p>
-        </div>
-
-        <div class="pricing-grid">
-          <!-- Free -->
-          <article class="pricing-card">
-            <div class="pricing-label">Free</div>
-            <div class="pricing-price">$0</div>
-            <div class="pricing-period">Forever free</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Limited AI requests</span></li>
-              <li><span class="pricing-bullet"></span><span>Core terminal features</span></li>
-              <li><span class="pricing-bullet"></span><span>Single device</span></li>
-            </ul>
-            <a href="/download.html" class="rw-button-outline">Download</a>
-            <p class="pricing-meta">Perfect for trying RinaWarp.</p>
-          </article>
-
-          <!-- Basic -->
-          <article class="pricing-card" aria-labelledby="tier-basic">
-            <div class="pricing-label" id="tier-basic">Basic</div>
-            <div class="pricing-price" id="basic-price" aria-live="polite">$—</div>
-            <div class="pricing-period" id="basic-interval">Loading…</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Unlimited local terminal</span></li>
-              <li><span class="pricing-bullet"></span><span>Limited AI agent</span></li>
-              <li><span class="pricing-bullet"></span><span>Persistent memory</span></li>
-            </ul>
-            <button id="buy-basic" class="rw-button-outline" disabled>Buy Basic</button>
-            <p class="pricing-meta">Great for individual developers.</p>
-          </article>
-
-          <!-- Starter -->
-          <article class="pricing-card" aria-labelledby="tier-starter">
-            <div class="pricing-label" id="tier-starter">Starter</div>
-            <div class="pricing-price" id="starter-price" aria-live="polite">$—</div>
-            <div class="pricing-period" id="starter-interval">Loading…</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Advanced agent modes</span></li>
-              <li><span class="pricing-bullet"></span><span>More AI usage</span></li>
-              <li><span class="pricing-bullet"></span><span>Basic automation</span></li>
-            </ul>
-            <button id="buy-starter" class="rw-button-outline" disabled>Buy Starter</button>
-            <p class="pricing-meta">For power users.</p>
-          </article>
-
-          <!-- Creator -->
-          <article class="pricing-card" aria-labelledby="tier-creator">
-            <div class="pricing-label" id="tier-creator">Creator</div>
-            <div class="pricing-price" id="creator-price" aria-live="polite">$—</div>
-            <div class="pricing-period" id="creator-interval">Loading…</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Voice AI</span></li>
-              <li><span class="pricing-bullet"></span><span>Faster reasoning</span></li>
-              <li><span class="pricing-bullet"></span><span>Higher limits</span></li>
-            </ul>
-            <button id="buy-creator" class="rw-button-outline" disabled>Buy Creator</button>
-            <p class="pricing-meta">For content creators.</p>
-          </article>
-
-          <!-- Pro -->
-          <article class="pricing-card highlight" aria-labelledby="tier-pro">
-            <div class="pricing-label" id="tier-pro">Pro</div>
-            <div class="pricing-price" id="pro-price" aria-live="polite">$—</div>
-            <div class="pricing-period" id="pro-interval">Loading…</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Unlimited AI agent</span></li>
-              <li><span class="pricing-bullet"></span><span>Full automation suite</span></li>
-              <li><span class="pricing-bullet"></span><span>All modules unlocked</span></li>
-            </ul>
-            <button id="buy-pro" class="rw-button" disabled>Buy Pro</button>
-            <p class="pricing-meta">For professionals and teams.</p>
-          </article>
-        </div>
-
-        <!-- Lifetime Options -->
-        <div class="section-header" style="margin-top:40px">
-          <h2 class="section-title">Lifetime Access</h2>
-          <p class="section-subtitle">One-time payment, forever access. Limited availability.</p>
-        </div>
-        <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-          <!-- Founder Lifetime -->
-          <article class="pricing-card" aria-labelledby="tier-founder">
-            <div class="ribbon">Limited</div>
-            <div class="pricing-label" id="tier-founder">Founder Lifetime</div>
-            <div class="pricing-price" id="founder-price" aria-live="polite">$—</div>
-            <div class="pricing-period" id="founder-interval">One-time</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Early supporter edition</span></li>
-              <li><span class="pricing-bullet"></span><span>All Pro features</span></li>
-              <li><span class="pricing-bullet"></span><span>Priority support</span></li>
-            </ul>
-            <button id="buy-founder" class="rw-button" disabled>Buy Founder</button>
-            <p class="pricing-meta">Exclusive early access pricing.</p>
-          </article>
-
-          <!-- Pioneer Lifetime -->
-          <article class="pricing-card" aria-labelledby="tier-pioneer">
-            <div class="ribbon">Limited</div>
-            <div class="pricing-label" id="tier-pioneer">Pioneer Lifetime</div>
-            <div class="pricing-price" id="pioneer-price" aria-live="polite">$—</div>
-            <div class="pricing-period" id="pioneer-interval">One-time</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Second wave supporters</span></li>
-              <li><span class="pricing-bullet"></span><span>All Pro features</span></li>
-              <li><span class="pricing-bullet"></span><span>Priority support</span></li>
-            </ul>
-            <button id="buy-pioneer" class="rw-button" disabled>Buy Pioneer</button>
-            <p class="pricing-meta">Join the pioneer program.</p>
-          </article>
-
-          <!-- Lifetime -->
-          <article class="pricing-card" aria-labelledby="tier-lifetime">
-            <div class="pricing-label" id="tier-lifetime">Lifetime</div>
-            <div class="pricing-price" id="lifetime-price" aria-live="polite">$—</div>
-            <div class="pricing-period" id="lifetime-interval">One-time</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Evergreen access</span></li>
-              <li><span class="pricing-bullet"></span><span>All Pro features</span></li>
-              <li><span class="pricing-bullet"></span><span>Standard support</span></li>
-            </ul>
-            <button id="buy-lifetime" class="rw-button" disabled>Buy Lifetime</button>
-            <p class="pricing-meta">Pay once, use forever.</p>
-          </article>
-        </div>
-
-        <!-- Teams -->
-        <div class="section-header" style="margin-top:40px">
-          <h2 class="section-title">Teams & Enterprise</h2>
-        </div>
-        <div class="pricing-grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;">
-          <article class="pricing-card">
-            <div class="pricing-label">Custom Pricing</div>
-            <div class="pricing-price">Contact Us</div>
-            <div class="pricing-period">For teams and organizations</div>
-            <ul class="pricing-list">
-              <li><span class="pricing-bullet"></span><span>Multiple seats</span></li>
-              <li><span class="pricing-bullet"></span><span>Volume discounts</span></li>
-              <li><span class="pricing-bullet"></span><span>Custom integrations</span></li>
-            </ul>
-            <a href="/contact.html" class="rw-button-outline">Talk to Sales</a>
-            <p class="pricing-meta">Tailored solutions for your organization.</p>
-
-            <hr style="border-color:#2e2e36;border-width:1px 0 0;margin:16px 0">
-            <div class="row">
-              <input id="portal-email" class="input" type="email" placeholder="you@example.com" aria-label="Your billing email">
-              <button id="manage-billing" class="rw-button-outline">Manage Billing</button>
-            </div>
-            <div id="pricing-error" class="pricing-meta" role="status" aria-live="polite" style="display:none;color:#f5a97f"></div>
-          </article>
-        </div>
-
-        <!-- FAQ (no deps) -->
-        <div class="section-header" style="margin-top:28px">
-          <h2 class="section-title">Pricing FAQ</h2>
-        </div>
-        <div>
-          <details class="faq"><summary><strong>Can I switch between monthly and annual later?</strong></summary><div>Yes. Use the Stripe Customer Portal to switch plans anytime; proration applies.</div></details>
-          <details class="faq"><summary><strong>Do you offer refunds?</strong></summary><div>We offer a 14-day refund for first-time purchases if the product doesn’t fit.</div></details>
-          <details class="faq"><summary><strong>How are licenses delivered?</strong></summary><div>Right after checkout via email and the app’s “Enter License” flow. Works offline after first verification.</div></details>
-          <details class="faq"><summary><strong>Is tax included?</strong></summary><div>Taxes and VAT are handled by Stripe at checkout based on your location.</div></details>
-        </div>
-      </section>
-    </main>
-
-    <footer class="rw-footer">
-      <div>© 2025 RinaWarp Technologies LLC. All rights reserved.</div>
-      <div class="rw-footer-links">
-        <a href="/terms.html">Terms</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/dmca.html">DMCA</a>
-        <a href="/contact.html">Contact</a>
-      </div>
-    </footer>
-  </div>
-
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"64f7898e1c7d4c919f37fdb1c1c96532"}'></script>
-
-  <script>
-    (function(){
-      const $ = (id)=>document.getElementById(id);
-      const fmt = (a,c)=>new Intl.NumberFormat(navigator.language,{style:'currency',currency:c}).format(a/100);
-
-      // 10 min cache in localStorage
-      const CACHE_KEY = 'rw_prices_v1';
-      const CACHE_MS  = 10*60*1000;
-
-      let prices = {};
-
-      function cacheGet(){
-        try{
-          const raw = localStorage.getItem(CACHE_KEY);
-          if (!raw) return null;
-          const j = JSON.parse(raw);
-          if (Date.now() - (j.t||0) > CACHE_MS) return null;
-          return j.data || null;
-        }catch{return null}
+  <head>
+    <meta charset="utf-8" />
+    <title>RinaWarp Pricing | Free, Monthly, and Lifetime</title>
+    <meta
+      name="description"
+      content="Simple pricing for RinaWarp. Free forever, monthly tiers, and lifetime licenses."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/shared.css" />
+    <style>
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
       }
-      function cacheSet(data){
-        try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data })); }catch{}
+      .card {
+        background: #121217;
+        border: 1px solid #2e2e36;
+        border-radius: 14px;
+        padding: 16px;
       }
-
-      function resolvePrices(list){
-        const byProduct = {};
-        list.forEach(p => {
-          const name = p.product.name.toLowerCase().replace(/rinawarp\s+/i, '');
-          if (!byProduct[name]) byProduct[name] = [];
-          byProduct[name].push(p);
-        });
-
-        // Find the price for each tier
-        const findPrice = (tier, type = 'recurring') => {
-          const ps = byProduct[tier.toLowerCase()];
-          if (!ps) return null;
-          if (type === 'one_time') return ps.find(p => p.type === 'one_time');
-          return ps.find(p => p.type === 'recurring' && p.recurring?.interval === 'month');
-        };
-
-        return {
-          basic: findPrice('basic'),
-          starter: findPrice('starter'),
-          creator: findPrice('creator'),
-          pro: findPrice('pro'),
-          founder: findPrice('founder lifetime', 'one_time'),
-          pioneer: findPrice('pioneer lifetime', 'one_time'),
-          lifetime: findPrice('lifetime', 'one_time')
-        };
+      .title {
+        font-size: 18px;
+        font-weight: 600;
       }
-
-      function renderPrice(tier, price) {
-        const el = $(`${tier}-price`);
-        const intervalEl = $(`${tier}-interval`);
-        if (price) {
-          el.textContent = fmt(price.unit_amount, price.currency);
-          intervalEl.textContent = price.type === 'recurring' ? `Billed per ${price.recurring.interval}` : 'One-time';
-        } else {
-          el.textContent = '$—';
-          intervalEl.textContent = '—';
-        }
-        el.setAttribute('aria-busy', 'false');
+      .price {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 8px 0;
       }
-
-      async function fetchPrices(force=false){
-        if (!force) {
-          const cached = cacheGet();
-          if (cached?.length) return cached;
-        }
-        // Add a small cache-busting query param in case edge cache is sticky
-        const bust = Date.now().toString(36);
-        const r = await fetch('/api/stripe/prices?_=' + bust, { credentials:'omit' });
-        const j = await r.json();
-        if (!r.ok || j.ok === false) throw new Error(j.error || 'prices error');
-        const data = j.data || j; // tolerate raw array shape
-        cacheSet(data);
-        return data;
+      .per {
+        font-size: 12px;
+        opacity: 0.8;
       }
+      .btn {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #2e2e36;
+        background: #1b1b22;
+        color: #eaeaea;
+        text-decoration: none;
+      }
+      .btn.primary {
+        background: #00ffd5;
+        color: #05061a;
+        border-color: #00ffd5;
+      }
+      .muted {
+        font-size: 12px;
+        color: #9aa0a6;
+      }
+      .badge {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #2e2e36;
+        background: #1b1b22;
+        font-size: 12px;
+      }
+      .ribbon {
+        position: absolute;
+        top: 10px;
+        right: -40px;
+        transform: rotate(45deg);
+        background: #12351f;
+        color: #7cffb0;
+        padding: 6px 60px;
+        border: 1px solid #1f5834;
+        font-size: 12px;
+      }
+      .highlight {
+        position: relative;
+        border-color: #334155;
+        background: linear-gradient(135deg, rgba(255, 45, 146, 0.08), rgba(26, 233, 255, 0.06));
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body class="mermaid">
+    <div class="main-shell">
+      <header class="rw-nav">
+        <div class="rw-nav-left">
+          <a class="rw-nav-logo" href="/" aria-label="RinaWarp home"
+            ><img src="/assets/logo/company.png" alt="RinaWarp Logo"
+          /></a>
+        </div>
+        <nav class="rw-nav-links">
+          <a href="/">Home</a><a href="/terminal-pro.html">Terminal Pro</a>
+          <a href="/music-video-creator.html">Music Video Creator</a>
+          <a aria-current="page" href="/pricing.html">Pricing</a>
+          <a href="/download.html">Download</a>
+        </nav>
+        <div class="rw-nav-cta">
+          <a href="/download.html" class="rw-button-outline">Download</a>
+        </div>
+      </header>
 
-      async function loadPrices(force=false){
-        try{
-          const list = await fetchPrices(force);
-          prices = resolvePrices(list);
+      <main>
+        <section class="section">
+          <div class="section-header">
+            <h1 class="section-title">Straightforward pricing</h1>
+            <p class="section-subtitle">
+              Free forever. Monthly plans. Lifetime options. Checkout via Stripe.
+            </p>
+          </div>
 
-          // Render all prices
-          ['basic', 'starter', 'creator', 'pro', 'founder', 'pioneer', 'lifetime'].forEach(tier => {
-            renderPrice(tier, prices[tier]);
-          });
+          <div id="pricingGrid" class="grid"></div>
 
-          // Set up buy buttons
-          const tiers = ['basic', 'starter', 'creator', 'pro', 'founder', 'pioneer', 'lifetime'];
-          tiers.forEach(tier => {
-            const buy = $(`buy-${tier}`);
-            const price = prices[tier];
-            if (price) {
-              buy.disabled = false;
-              buy.textContent = `Buy ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
-              buy.onclick = async () => {
-                const mode = price.type === 'recurring' ? 'subscription' : 'payment';
-                buy.disabled = true;
-                buy.textContent = 'Redirecting…';
-                try {
-                  const res = await fetch('/api/stripe/checkout', {
-                    method: 'POST',
-                    headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify({ priceId: price.id, mode })
-                  });
-                  const k = await res.json();
-                  if (k.ok && k.url) location.href = k.url;
-                  else throw new Error(k.error || 'checkout failed');
-                } catch (e) {
-                  showErr(`Checkout error: ${e.message || e}`);
-                  buy.disabled = false;
-                  buy.textContent = `Buy ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
-                }
-              };
+          <div class="muted" style="margin-top: 12px">
+            Prices load live from Stripe by lookup key. If unavailable, we show the fallback you
+            provided.
+          </div>
+        </section>
+      </main>
+
+      <footer class="rw-footer">
+        <div>© 2025 RinaWarp Technologies LLC. All rights reserved.</div>
+        <div class="rw-footer-links">
+          <a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a
+          ><a href="/dmca.html">DMCA</a><a href="/contact.html">Contact</a>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        const tiers = [
+          // Free
+          {
+            id: 'free',
+            label: 'Free',
+            billing: 'free',
+            fallback: { amount: 0, currency: 'usd' },
+            features: ['Terminal core features', 'Updates', 'No card required'],
+          },
+          // Monthly subscriptions
+          {
+            id: 'basic',
+            label: 'Basic',
+            lookup_key: 'rw_basic_monthly',
+            billing: 'monthly',
+            fallback: { amount: 999, currency: 'usd' },
+            features: ['Light AI usage', 'Ghost text', '1 seat'],
+          },
+          {
+            id: 'starter',
+            label: 'Starter',
+            lookup_key: 'rw_starter_monthly',
+            billing: 'monthly',
+            fallback: { amount: 2900, currency: 'usd' },
+            features: ['More AI usage', 'Workflows', '1 seat'],
+          },
+          {
+            id: 'creator',
+            label: 'Creator',
+            lookup_key: 'rw_creator_monthly',
+            billing: 'monthly',
+            fallback: { amount: 6900, currency: 'usd' },
+            features: ['High AI usage', 'Voice tools', '2 seats'],
+          },
+          {
+            id: 'pro',
+            label: 'Pro',
+            lookup_key: 'rw_pro_monthly',
+            billing: 'monthly',
+            fallback: { amount: 9900, currency: 'usd' },
+            features: ['Unlimited AI usage*', 'Priority support', '3 seats'],
+            highlight: true,
+          },
+          // Lifetime one-time
+          {
+            id: 'founder',
+            label: 'Founder Lifetime',
+            lookup_key: 'rw_founder_lifetime',
+            billing: 'one_time',
+            fallback: { amount: 69900, currency: 'usd' },
+            features: ['Lifetime license', 'Priority updates'],
+          },
+          {
+            id: 'pioneer',
+            label: 'Pioneer Lifetime',
+            lookup_key: 'rw_pioneer_lifetime',
+            billing: 'one_time',
+            fallback: { amount: 80000, currency: 'usd' },
+            features: ['Lifetime license', 'Priority updates'],
+          },
+          {
+            id: 'lifetime',
+            label: 'Lifetime',
+            lookup_key: 'rw_lifetime',
+            billing: 'one_time',
+            fallback: { amount: 99900, currency: 'usd' },
+            features: ['Lifetime license', 'All updates'],
+          },
+        ];
+
+        const keys = tiers
+          .filter((t) => t.lookup_key)
+          .map((t) => t.lookup_key)
+          .join(',');
+        const fmt = (cents, cur) =>
+          new Intl.NumberFormat(navigator.language, { style: 'currency', currency: cur }).format(
+            cents / 100,
+          );
+
+        const state = { pricesByKey: {} };
+
+        async function loadStripePrices() {
+          try {
+            const u = '/api/stripe/prices?keys=' + encodeURIComponent(keys) + '&_=' + Date.now();
+            const r = await fetch(u, { cache: 'no-store' });
+            const j = await r.json();
+            if (r.ok && j.ok && Array.isArray(j.data)) {
+              const map = {};
+              for (const p of j.data) {
+                if (p.lookup_key) map[p.lookup_key.toLowerCase()] = p;
+              }
+              state.pricesByKey = map;
             } else {
-              buy.disabled = true;
-              buy.textContent = 'Coming Soon';
+              state.pricesByKey = {};
             }
-          });
-        }catch(e){
-          showErr('Pricing temporarily unavailable. Please try again later.');
-          ['basic', 'starter', 'creator', 'pro', 'founder', 'pioneer', 'lifetime'].forEach(tier => {
-            const buy = $(`buy-${tier}`);
-            buy.disabled = false;
-            buy.textContent = 'Contact Sales';
-            buy.onclick = () => location.href = '/contact.html';
-          });
+          } catch {
+            state.pricesByKey = {};
+          }
         }
-      }
 
-      function showErr(msg){ const el=$('pricing-error'); el.style.display='block'; el.textContent=msg; }
+        function priceFor(tier) {
+          if (!tier.lookup_key)
+            return {
+              amount: tier.fallback.amount,
+              currency: tier.fallback.currency,
+              source: 'fallback',
+              id: null,
+              mode: null,
+            };
+          const p = state.pricesByKey[tier.lookup_key.toLowerCase()];
+          if (p && p.active !== false) {
+            const mode = p.type === 'recurring' ? 'subscription' : 'payment';
+            return {
+              amount: p.unit_amount,
+              currency: p.currency,
+              source: 'stripe',
+              id: p.id,
+              mode,
+            };
+          }
+          const mode =
+            tier.billing === 'monthly'
+              ? 'subscription'
+              : tier.billing === 'one_time'
+                ? 'payment'
+                : null;
+          return {
+            amount: tier.fallback.amount,
+            currency: tier.fallback.currency,
+            source: 'fallback',
+            id: null,
+            mode,
+          };
+        }
 
-      $('manage-billing').onclick=async()=>{
-        const email = ($('portal-email').value||'').trim().toLowerCase();
-        if(!email){ showErr('Enter billing email.'); return; }
-        try{
-          const r = await fetch('/api/stripe/portal',{method:'POST',headers:{'content-type':'application/json'},body: JSON.stringify({ email })});
-          const j = await r.json();
-          if (j.ok && j.url) location.href = j.url;
-          else throw new Error(j.error || 'portal unavailable');
-        }catch(e){ showErr(`Portal: ${e.message||e}`); }
-      };
-      $('refresh-prices').onclick = () => loadPrices(true); // force fresh fetch
+        function card(tier) {
+          const { amount, currency, source, id, mode } = priceFor(tier);
+          const priceText = tier.billing === 'free' ? '$0' : fmt(amount, currency);
+          const per =
+            tier.billing === 'monthly' ? '/month' : tier.billing === 'one_time' ? 'one-time' : '';
+          const el = document.createElement('article');
+          el.className = 'card' + (tier.highlight ? ' highlight' : '');
+          el.innerHTML = `
+          ${tier.highlight ? '<div class="ribbon">Popular</div>' : ''}
+          <div class="title">${tier.label}</div>
+          <div class="price">${priceText} <span class="per">${per}</span></div>
+          <ul class="pricing-list" style="margin:10px 0 12px 0">
+            ${tier.features.map((f) => `<li><span class="pricing-bullet"></span><span>${f}</span></li>`).join('')}
+          </ul>
+          <div class="row">
+            ${
+              tier.billing === 'free'
+                ? `<a class="btn" href="/download.html">Start free</a>`
+                : `<button class="btn primary" data-tier="${tier.id}" ${id ? '' : 'data-fallback="1"'}>${tier.billing === 'monthly' ? 'Subscribe' : 'Buy lifetime'}</button>`
+            }
+            ${source === 'fallback' && tier.billing !== 'free' ? `<span class="badge">fallback</span>` : ''}
+          </div>
+        `;
+          // Wire checkout
+          if (tier.billing !== 'free') {
+            el.querySelector('button')?.addEventListener('click', async () => {
+              const p = priceFor(tier);
+              if (!p.id) {
+                alert('Price not live in Stripe yet. Using fallback display.');
+                return;
+              }
+              try {
+                const res = await fetch('/api/stripe/checkout', {
+                  method: 'POST',
+                  headers: { 'content-type': 'application/json' },
+                  body: JSON.stringify({ priceId: p.id, mode: p.mode }),
+                });
+                const j = await res.json();
+                if (j.ok && j.url) location.href = j.url;
+                else throw new Error(j.error || 'checkout failed');
+              } catch (e) {
+                alert('Checkout error. Please try again.');
+              }
+            });
+          }
+          return el;
+        }
 
-      loadPrices(false);
-    })();
-  </script>
-</body>
+        async function render() {
+          await loadStripePrices();
+          const grid = document.getElementById('pricingGrid');
+          grid.innerHTML = '';
+          // Order: Free → monthly tiers → lifetime
+          const order = (a, b) => {
+            const rank = (t) => (t.billing === 'free' ? 0 : t.billing === 'monthly' ? 1 : 2);
+            return rank(a) - rank(b) || (a.highlight ? -1 : 0);
+          };
+          tiers.sort(order).forEach((t) => grid.appendChild(card(t)));
+        }
+        render();
+      })();
+    </script>
+  </body>
 </html>

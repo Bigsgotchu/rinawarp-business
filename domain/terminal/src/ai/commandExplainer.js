@@ -169,9 +169,9 @@ class CommandExplainer {
         explanation:
           'Powerful text processing tool for pattern scanning and data extraction.',
         examples: [
-          'awk \'{print $1}\' file.txt',
-          'awk -F: \'{print $1}\' /etc/passwd',
-          'awk \'NR>1 {print $2}\' data.csv',
+          "awk '{print $1}' file.txt",
+          "awk -F: '{print $1}' /etc/passwd",
+          "awk 'NR>1 {print $2}' data.csv",
         ],
         category: 'text',
         difficulty: 'advanced',
@@ -180,9 +180,9 @@ class CommandExplainer {
       sed: {
         explanation: 'Stream editor for filtering and transforming text.',
         examples: [
-          'sed \'s/old/new/g\' file.txt',
-          'sed -n \'1,10p\' file.txt',
-          'sed -i \'s/old/new/g\' file.txt',
+          "sed 's/old/new/g' file.txt",
+          "sed -n '1,10p' file.txt",
+          "sed -i 's/old/new/g' file.txt",
         ],
         category: 'text',
         difficulty: 'advanced',

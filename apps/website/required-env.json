@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "cloudflare": {
+    "secrets": ["STRIPE_WEBHOOK_SECRET", "STRIPE_SECRET", "STRIPE_PUBLISHABLE_KEY"],
+    "kv": [],
+    "r2": ["DOWNLOADS"],
+    "vars": ["DOMAIN"]
+  },
+  "github": {
+    "secrets": ["CF_ACCOUNT_ID", "CF_API_TOKEN", "CF_ZONE_ID"],
+    "vars": ["PAGES_DOMAIN"]
+  }
+}

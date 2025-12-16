@@ -1,26 +1,26 @@
-import chalk from "chalk";
-import { run } from "../lib/exec.js";
+import chalk from 'chalk';
+import { run } from '../lib/exec.js';
 
 const modules = {
   site: {
-    path: "apps/website",
-    build: "npm run build",
+    path: 'apps/website',
+    build: 'npm run build',
   },
   terminal: {
-    path: "apps/terminal-pro/desktop",
-    build: "npm run build",
+    path: 'apps/terminal-pro/desktop',
+    build: 'npm run build',
   },
   api: {
-    path: "services/api",
-    build: "npm run build || tsc",
-  }
+    path: 'services/api',
+    build: 'npm run build || tsc',
+  },
 };
 
 export function build(target) {
-  console.log(chalk.magenta("\n🚀 RinaWarp Build System\n"));
+  console.log(chalk.magenta('\n🚀 RinaWarp Build System\n'));
 
-  if (!target || target === "all") {
-    Object.keys(modules).forEach(key => {
+  if (!target || target === 'all') {
+    Object.keys(modules).forEach((key) => {
       console.log(chalk.cyan(`\n📦 Building ${key}...`));
       run(`cd ${modules[key].path} && npm install`);
       run(`cd ${modules[key].path} && ${modules[key].build}`);

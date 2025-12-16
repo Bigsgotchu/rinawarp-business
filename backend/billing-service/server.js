@@ -28,11 +28,11 @@ app.get('/health', (req, res) => {
 });
 
 // Create checkout session for upgrades
-app.post("/api/billing/create-checkout-session", express.json(), async (req, res) => {
+app.post('/api/billing/create-checkout-session', express.json(), async (req, res) => {
   const { tier, licenseKey, success_url, cancel_url } = req.body;
 
   if (!tier || !licenseKey) {
-    return res.status(400).json({ error: "Missing tier or licenseKey" });
+    return res.status(400).json({ error: 'Missing tier or licenseKey' });
   }
 
   try {
@@ -42,7 +42,10 @@ app.post("/api/billing/create-checkout-session", express.json(), async (req, res
       client_reference_id: licenseKey, // Required by audit
       line_items: [
         {
-          price: tier === 'pro-monthly' ? process.env.STRIPE_PRO_PRICE_ID : process.env.STRIPE_LIFETIME_PRICE_ID,
+          price:
+            tier === 'pro-monthly'
+              ? process.env.STRIPE_PRO_PRICE_ID
+              : process.env.STRIPE_LIFETIME_PRICE_ID,
           quantity: 1,
         },
       ],
@@ -58,10 +61,9 @@ app.post("/api/billing/create-checkout-session", express.json(), async (req, res
 
     console.log(`💳 Checkout session created: ${session.id} for ${tier}`);
     res.json({ url: session.url, sessionId: session.id });
-
   } catch (err) {
-    console.error("❌ Stripe checkout error:", err.message);
-    res.status(500).json({ error: "Failed to create checkout session", details: err.message });
+    console.error('❌ Stripe checkout error:', err.message);
+    res.status(500).json({ error: 'Failed to create checkout session', details: err.message });
   }
 });
 
@@ -73,19 +75,19 @@ app.post("/api/billing/create-checkout-session", express.json(), async (req, res
 // -------------------------------
 
 async function handleCheckoutCompleted(session) {
-  console.log("💰 Checkout Completed:", session.id);
+  console.log('💰 Checkout Completed:', session.id);
 
   const tier = session.metadata?.tier;
   const licenseKey = session.metadata?.licenseKey;
 
   if (!licenseKey || !tier) {
-    console.error("❌ Missing metadata: licenseKey or tier");
+    console.error('❌ Missing metadata: licenseKey or tier');
     return;
   }
 
-  if (tier.startsWith("lifetime")) {
+  if (tier.startsWith('lifetime')) {
     await updateLicensePlan(licenseKey, {
-      plan: "lifetime",
+      plan: 'lifetime',
       features: {
         premiumMode: true,
         maxDailyMessages: Infinity,
@@ -98,18 +100,18 @@ async function handleCheckoutCompleted(session) {
 }
 
 async function handleSubscriptionUpdate(subscription) {
-  console.log("🔄 Subscription Update:", subscription.id);
+  console.log('🔄 Subscription Update:', subscription.id);
 
   const metadata = subscription.metadata || {};
   const licenseKey = metadata.licenseKey;
 
   if (!licenseKey) {
-    console.error("❌ No license key in metadata");
+    console.error('❌ No license key in metadata');
     return;
   }
 
   await updateLicensePlan(licenseKey, {
-    plan: "pro",
+    plan: 'pro',
     features: {
       premiumMode: true,
       maxDailyMessages: 200,
@@ -125,7 +127,7 @@ async function handleSubscriptionCancelled(subscription) {
   if (!licenseKey) return;
 
   await updateLicensePlan(licenseKey, {
-    plan: "free",
+    plan: 'free',
     features: {
       premiumMode: false,
       maxDailyMessages: 20,

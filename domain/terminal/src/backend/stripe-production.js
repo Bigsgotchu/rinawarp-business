@@ -306,32 +306,32 @@ export async function handleWebhook(req, res) {
 
   try {
     switch (event.type) {
-    case 'checkout.session.completed':
-      await handleCheckoutCompleted(event.data.object);
-      break;
+      case 'checkout.session.completed':
+        await handleCheckoutCompleted(event.data.object);
+        break;
 
-    case 'customer.subscription.created':
-      await handleSubscriptionCreated(event.data.object);
-      break;
+      case 'customer.subscription.created':
+        await handleSubscriptionCreated(event.data.object);
+        break;
 
-    case 'customer.subscription.updated':
-      await handleSubscriptionUpdated(event.data.object);
-      break;
+      case 'customer.subscription.updated':
+        await handleSubscriptionUpdated(event.data.object);
+        break;
 
-    case 'customer.subscription.deleted':
-      await handleSubscriptionDeleted(event.data.object);
-      break;
+      case 'customer.subscription.deleted':
+        await handleSubscriptionDeleted(event.data.object);
+        break;
 
-    case 'invoice.payment_succeeded':
-      await handlePaymentSucceeded(event.data.object);
-      break;
+      case 'invoice.payment_succeeded':
+        await handlePaymentSucceeded(event.data.object);
+        break;
 
-    case 'invoice.payment_failed':
-      await handlePaymentFailed(event.data.object);
-      break;
+      case 'invoice.payment_failed':
+        await handlePaymentFailed(event.data.object);
+        break;
 
-    default:
-      console.log(`Unhandled event type: ${event.type}`);
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
     }
 
     // Mark idempotency as processed

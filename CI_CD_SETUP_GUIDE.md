@@ -1,0 +1,209 @@
+# CI/CD Setup Guide
+
+This document provides a complete setup guide for the CI/CD pipeline, pre-commit hooks, versioning, and security hardening.
+
+## 🚀 One-time Setup Commands
+
+Run these commands to set up the complete CI/CD infrastructure:
+
+```bash
+# Install additional dependencies
+pnpm add -D -w @changesets/cli husky lint-staged pino
+
+# Initialize Changesets for versioning
+pnpm changeset init
+
+# Initialize Husky for pre-commit hooks
+pnpx husky init
+
+# Commit the setup
+git add . && git commit -m "chore(ci): add CI, pre-commit, releases"
+```
+
+## 📋 What's Been Added
+
+### 1. **GitHub Actions CI/CD Workflows**
+
+#### `.github/workflows/ci.yml`
+
+- **Triggers**: Push to main, Pull Requests
+- **Steps**:
+  - Checkout code
+  - Setup pnpm
+  - Install dependencies with lockfile
+  - Run linting across workspace
+  - Type checking (currently soft-fail for gradual adoption)
+  - Run tests with Vitest
+
+#### `.github/workflows/release.yml`
+
+- **Triggers**: Push to main
+- **Features**:
+  - Automatic versioning with Changesets
+  - NPM package publishing
+  - GitHub release creation
+  - Requires `GITHUB_TOKEN` and optionally `NPM_TOKEN` secrets
+
+### 2. **Pre-commit Hooks**
+
+#### `.husky/pre-commit`
+
+- Runs `lint-staged` for fast feedback
+- Automatically formats and lints staged files
+- Zero noise - only lints changed files
+
+#### Enhanced `lint-staged` Configuration
+
+```json
+{
+  "*.{ts,tsx,js,cjs,mjs,json}": ["eslint --fix --max-warnings=0", "prettier --write"],
+  "*.{md,yml,yaml,css,scss}": ["prettier --write"]
+}
+```
+
+### 3. **Versioning & Releases**
+
+#### Changesets Configuration (`.changeset/config.json`)
+
+- GitHub-flavored changelogs
+- Automatic version bumps
+- Controlled access (restricted)
+- Internal dependency updates
+
+#### Release Scripts
+
+- `pnpm release:version` - Bump package versions
+- `pnpm release:publish` - Publish to NPM
+- `pnpm release` - Complete release process
+
+### 4. **Electron Security Hardening**
+
+#### `apps/terminal-pro/electron/main/browserWindow.ts`
+
+- **Context Isolation**: Enabled
+- **Node Integration**: Disabled
+- **Sandbox**: Enabled
+- **Web Security**: Enabled
+- **CSP Headers**: Comprehensive security policy
+
+### 5. **Logging Infrastructure**
+
+#### `packages/shared/src/log.ts`
+
+- **Pino Logger**: High-performance JSON logging
+- **Environment Control**: `LOG_LEVEL` environment variable
+- **Structured Logging**: Contextual log entries
+
+### 6. **Dependency Management**
+
+#### Renovate Configuration (`renovate.json`)
+
+- **Auto-merging**: Minor and patch updates
+- **Range Strategy**: Preserve semver ranges
+- **PNPM Support**: Native pnpm integration
+- **Grouped Updates**: All non-major dependencies
+
+## 🔧 Configuration Files Summary
+
+| File                                               | Purpose                |
+| -------------------------------------------------- | ---------------------- |
+| `.github/workflows/ci.yml`                         | Continuous Integration |
+| `.github/workflows/release.yml`                    | Automated releases     |
+| `.husky/pre-commit`                                | Pre-commit hooks       |
+| `.changeset/config.json`                           | Version management     |
+| `renovate.json`                                    | Dependency updates     |
+| `apps/terminal-pro/electron/main/browserWindow.ts` | Electron security      |
+| `packages/shared/src/log.ts`                       | Logging utility        |
+
+## 📊 CI Pipeline Flow
+
+```
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Commit    │───▶│ Pre-commit   │───▶│   Push      │───▶│    CI       │
+│             │    │   Hooks      │    │   to Main   │    │  Pipeline   │
+└─────────────┘    └──────────────┘    └─────────────┘    └─────────────┘
+                           │                   │                   │
+                           ▼                   ▼                   ▼
+                   ┌──────────────┐    ┌─────────────┐    ┌─────────────┐
+                   │Lint & Format │    │   Tests     │    │   Build     │
+                   │   Staged     │    │             │    │   Deploy    │
+                   │   Files      │    │             │    │             │
+                   └──────────────┘    └─────────────┘    └─────────────┘
+```
+
+## 🔐 Security Features
+
+1. **Electron Hardening**
+   - Context isolation
+   - No node integration
+   - Sandboxed renderer
+   - CSP headers
+
+2. **Code Quality**
+   - ESLint with security rules
+   - TypeScript strict mode
+   - Prettier formatting
+   - Commit message conventions
+
+3. **Dependency Management**
+   - Renovate auto-updates
+   - Security vulnerability scanning
+   - Lockfile enforcement
+
+## 🚦 Getting Started
+
+1. **Setup the infrastructure**:
+
+   ```bash
+   pnpm add -D -w @changesets/cli husky lint-staged pino
+   pnpm changeset init
+   pnpm dlx husky init
+   ```
+
+2. **Configure secrets** (for releases):
+   - `GITHUB_TOKEN` (automatic)
+   - `NPM_TOKEN` (for package publishing)
+
+3. **Test the setup**:
+
+   ```bash
+   # Test locally
+   pnpm lint
+   pnpm test
+   pnpm typecheck
+
+   # Test pre-commit hooks
+   git add . && git commit -m "test: verify ci setup"
+   ```
+
+4. **Create your first release**:
+
+   ```bash
+   pnpm changeset
+   pnpm release
+   ```
+
+## 📈 Monitoring & Maintenance
+
+- **CI Status**: Check GitHub Actions tab
+- **Dependency Updates**: Renovate PRs
+- **Release Notes**: Auto-generated changelogs
+- **Security**: Dependabot alerts
+
+## 🎯 Benefits
+
+✅ **Fast Feedback**: Pre-commit hooks catch issues immediately  
+✅ **Quality Gates**: CI ensures code quality before merging  
+✅ **Automated Releases**: Version bumps and publishing handled automatically  
+✅ **Security First**: Electron hardening and dependency scanning  
+✅ **Developer Experience**: Zero-config linting and formatting  
+✅ **Maintainable**: Automated dependency updates
+
+---
+
+**Next Steps**:
+
+1. Run the setup commands above
+2. Push to main to trigger the CI pipeline
+3. Create your first changeset for versioning
+4. Monitor the automated dependency updates

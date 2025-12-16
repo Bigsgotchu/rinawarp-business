@@ -75,7 +75,7 @@ const Pricing = () => {
     {
       id: 'starter',
       name: 'Starter',
-      description: 'Unlock Rina\'s core agent workflow for daily professional terminal work.',
+      description: "Unlock Rina's core agent workflow for daily professional terminal work.",
       icon: Zap,
       price: { monthly: 29, yearly: 290 },
       originalPrice: { monthly: 39, yearly: 390 },
@@ -324,15 +324,25 @@ const Pricing = () => {
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-4">
             Start free. Upgrade only when Rina saves you real time.
-            <span className="block text-sm text-slate-500 mt-2">No ads. No telemetry. No data resale.</span>
+            <span className="block text-sm text-slate-500 mt-2">
+              No ads. No telemetry. No data resale.
+            </span>
           </p>
 
           {/* Trust badges */}
           <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">Local-first</span>
-            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">Offline-capable</span>
-            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">Stripe checkout</span>
-            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">Cancel anytime</span>
+            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">
+              Local-first
+            </span>
+            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">
+              Offline-capable
+            </span>
+            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">
+              Stripe checkout
+            </span>
+            <span className="rw-badge bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm">
+              Cancel anytime
+            </span>
           </div>
         </motion.div>
 
@@ -356,13 +366,17 @@ const Pricing = () => {
                 </div>
               )}
 
-              <div className={`card h-full ${
-                plan.popular ? 'border-2 border-mermid-500 shadow-xl' : 'border border-slate-200'
-              }`}>
+              <div
+                className={`card h-full ${
+                  plan.popular ? 'border-2 border-mermid-500 shadow-xl' : 'border border-slate-200'
+                }`}
+              >
                 <div className="text-center mb-6">
-                  <div className={`inline-flex p-3 rounded-lg mb-4 ${
-                    plan.popular ? 'bg-mermid-600 text-white' : 'bg-slate-100 text-slate-600'
-                  }`}>
+                  <div
+                    className={`inline-flex p-3 rounded-lg mb-4 ${
+                      plan.popular ? 'bg-mermid-600 text-white' : 'bg-slate-100 text-slate-600'
+                    }`}
+                  >
                     <plan.icon className="w-6 h-6" />
                   </div>
 
@@ -400,9 +414,7 @@ const Pricing = () => {
                 </div>
 
                 {plan.fineprint && (
-                  <p className="text-xs text-slate-500 text-center mt-4">
-                    {plan.fineprint}
-                  </p>
+                  <p className="text-xs text-slate-500 text-center mt-4">{plan.fineprint}</p>
                 )}
               </div>
             </motion.div>
@@ -430,11 +442,12 @@ const Pricing = () => {
           <div className="bg-slate-50 rounded-lg p-6 mb-8">
             <h3 className="font-semibold text-slate-900 mb-2">What "lifetime" means:</h3>
             <p className="text-slate-700 mb-2">
-              Lifetime licenses include all features available at time of purchase.
-              Future cloud services may require a separate plan.
+              Lifetime licenses include all features available at time of purchase. Future cloud
+              services may require a separate plan.
             </p>
             <p className="text-sm text-slate-600">
-              Lifetime licenses help fund long-term development — no ads, no telemetry, no VC pressure.
+              Lifetime licenses help fund long-term development — no ads, no telemetry, no VC
+              pressure.
             </p>
           </div>
 
@@ -455,9 +468,7 @@ const Pricing = () => {
                     <span className="text-slate-600 ml-2">one-time</span>
                   </div>
                   <p className="text-slate-600 mb-2">{plan.description}</p>
-                  {plan.limit && (
-                    <p className="text-sm font-medium text-slate-800">{plan.limit}</p>
-                  )}
+                  {plan.limit && <p className="text-sm font-medium text-slate-800">{plan.limit}</p>}
                 </div>
 
                 <ul className="space-y-3 mb-6">
@@ -478,9 +489,7 @@ const Pricing = () => {
                 </button>
 
                 {plan.fineprint && (
-                  <p className="text-xs text-slate-500 text-center">
-                    {plan.fineprint}
-                  </p>
+                  <p className="text-xs text-slate-500 text-center">{plan.fineprint}</p>
                 )}
               </motion.div>
             ))}
@@ -496,31 +505,46 @@ const Pricing = () => {
           className="max-w-3xl mx-auto"
         >
           <h2 className="text-2xl font-bold text-slate-900 text-center mb-8">FAQ</h2>
-          
+
           <div className="space-y-6">
             <div className="bg-white rounded-lg border border-slate-200 p-6">
-              <h3 className="font-semibold text-slate-900 mb-2">Do I have to start with a paid plan?</h3>
-              <p className="text-slate-700">No. Start on Free and upgrade when the agent saves you enough time to justify it.</p>
+              <h3 className="font-semibold text-slate-900 mb-2">
+                Do I have to start with a paid plan?
+              </h3>
+              <p className="text-slate-700">
+                No. Start on Free and upgrade when the agent saves you enough time to justify it.
+              </p>
             </div>
 
             <div className="bg-white rounded-lg border border-slate-200 p-6">
               <h3 className="font-semibold text-slate-900 mb-2">Is my data sent anywhere?</h3>
-              <p className="text-slate-700">Core features are local-first. If you enable cloud features, only what's required for that request is transmitted.</p>
+              <p className="text-slate-700">
+                Core features are local-first. If you enable cloud features, only what's required
+                for that request is transmitted.
+              </p>
             </div>
 
             <div className="bg-white rounded-lg border border-slate-200 p-6">
               <h3 className="font-semibold text-slate-900 mb-2">Can I cancel or downgrade?</h3>
-              <p className="text-slate-700">Yes. Cancel anytime. Plan changes take effect at the next billing cycle.</p>
+              <p className="text-slate-700">
+                Yes. Cancel anytime. Plan changes take effect at the next billing cycle.
+              </p>
             </div>
 
             <div className="bg-white rounded-lg border border-slate-200 p-6">
               <h3 className="font-semibold text-slate-900 mb-2">What about refunds?</h3>
-              <p className="text-slate-700">We offer a straightforward refund policy. If something isn't working as expected, contact support and we'll help.</p>
+              <p className="text-slate-700">
+                We offer a straightforward refund policy. If something isn't working as expected,
+                contact support and we'll help.
+              </p>
             </div>
 
             <div className="bg-white rounded-lg border border-slate-200 p-6">
               <h3 className="font-semibold text-slate-900 mb-2">Why are lifetime tiers limited?</h3>
-              <p className="text-slate-700">They're early-supporter tiers designed to fund development without ads or telemetry. Once each tier sells out, it closes permanently.</p>
+              <p className="text-slate-700">
+                They're early-supporter tiers designed to fund development without ads or telemetry.
+                Once each tier sells out, it closes permanently.
+              </p>
             </div>
           </div>
         </motion.div>
@@ -539,7 +563,10 @@ const Pricing = () => {
             <a href="/download" className="btn-primary px-8 py-3 rounded-lg font-semibold">
               Download for Windows
             </a>
-            <a href="/docs" className="bg-slate-100 text-slate-900 hover:bg-slate-200 px-8 py-3 rounded-lg font-semibold">
+            <a
+              href="/docs"
+              className="bg-slate-100 text-slate-900 hover:bg-slate-200 px-8 py-3 rounded-lg font-semibold"
+            >
               Read the Docs
             </a>
           </div>

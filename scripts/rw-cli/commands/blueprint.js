@@ -1,5 +1,5 @@
 export function blueprint() {
-  console.log("\n📐 Generating Architecture Blueprint\n");
+  console.log('\n📐 Generating Architecture Blueprint\n');
 
   const diagram = `
 terminal --> api --> gateway --> auth-service --> stripe

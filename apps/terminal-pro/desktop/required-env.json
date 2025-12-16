@@ -1,0 +1,24 @@
+{
+  "required": ["FEEDS_ORIGIN", "ARTIFACTS_ORIGIN"],
+  "cloudflare": {
+    "secrets": [],
+    "kv": [],
+    "r2": [],
+    "vars": []
+  },
+  "github": {
+    "secrets": [
+      "CF_API_TOKEN",
+      "CF_ZONE_ID",
+      "RINAWARP_PUBKEY",
+      "MAC_APPLE_ID",
+      "MAC_APPLE_ID_PASSWORD",
+      "MAC_TEAM_ID",
+      "WIN_CSC_LINK",
+      "WIN_CSC_KEY_PASSWORD",
+      "NPM_AUTH_TOKEN",
+      "SUPPORT_API_TOKEN"
+    ],
+    "vars": ["UPDATES_VERSION", "BUILD_NUMBER", "NODE_VERSION"]
+  }
+}

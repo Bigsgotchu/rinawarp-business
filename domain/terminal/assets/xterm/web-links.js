@@ -97,7 +97,6 @@
                     (i += s.length),
                     a.push(s),
                     n.isWrapped && -1 === s.indexOf(' '));
-
                   );
                   a.reverse();
                 }
@@ -110,7 +109,6 @@
                   (i += s.length),
                   a.push(s),
                   -1 === s.indexOf(' '));
-
                 );
               }
               return [a, o];

@@ -1,0 +1,382 @@
+name: Enhanced Quality Gate
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+  schedule:
+    # Weekly hook health check
+    - cron: '0 5 * * 1' # Mondays at 05:00 UTC
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ESLINT_BUDGET_MS: 120000
+  STYLELINT_BUDGET_MS: 60000
+  FIX_PIPELINE_BUDGET_MS: 180000
+
+jobs:
+  # Enhanced Code Quality Gate with Observability
+  code-quality:
+    name: Code Quality Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js (with version file)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache ESLint
+        uses: actions/cache@v4
+        with:
+          path: .cache/eslint
+          key: eslint-${{ runner.os }}-${{ hashFiles('**/*.{js,ts,tsx}', 'eslint.config.*', '.eslintrc*') }}
+
+      - name: Cache Stylelint
+        uses: actions/cache@v4
+        with:
+          path: .cache/stylelint
+          key: stylelint-${{ runner.os }}-${{ hashFiles('**/*.{css,scss,less}') }}
+
+      - name: Get changed files info
+        id: changed-files
+        run: |
+          echo "files=$(git diff --name-only --diff-filter=ACM | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+          echo "count=$(git diff --name-only --diff-filter=ACM | wc -l)" >> $GITHUB_OUTPUT
+
+      - name: Enhanced ESLint with timing
+        id: eslint-timed
+        run: |
+          echo "🚀 Running ESLint..."
+          start_time=$(date +%s)
+          if pnpm exec eslint --cache --cache-location .cache/eslint .; then
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "ESLINT_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ ESLint passed (${duration}s)"
+          else
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "ESLINT_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ ESLint failed (${duration}s)"
+            exit 1
+          fi
+
+      - name: Enhanced Stylelint with timing
+        id: stylelint-timed
+        run: |
+          echo "🎨 Running Stylelint..."
+          start_time=$(date +%s)
+          if pnpm exec stylelint --cache --cache-location .cache/stylelint "**/*.{css,scss,less}"; then
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "STYLELINT_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Stylelint passed (${duration}s)"
+          else
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "STYLELINT_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ Stylelint failed (${duration}s)"
+            exit 1
+          fi
+
+      - name: Check Prettier formatting
+        run: pnpm format:check
+        continue-on-error: false
+
+      - name: Run TypeScript type checking
+        run: pnpm -r run typecheck
+        continue-on-error: false
+
+      - name: Enhanced debug statements check
+        run: |
+          echo "🚫 Enhanced debug check..."
+          debug_count=$(pnpm exec grep -RInE "(console\.log|debugger)" -- apps packages 2>/dev/null | wc -l || echo "0")
+          echo "DEBUG_COUNT=$debug_count" >> $GITHUB_OUTPUT
+          if [ "$debug_count" -gt 0 ]; then
+            echo "❌ Found $debug_count debug statements. Please remove before committing:"
+            pnpm exec grep -RInE "(console\.log|debugger)" -- apps packages
+            exit 1
+          else
+            echo "✅ No debug statements found"
+          fi
+        continue-on-error: false
+
+      - name: Block large files (> 15 MB) on PRs
+        run: |
+          max=15728640
+          git ls-files -s | awk '{print $2}' | xargs -I{} git cat-file -s {} \
+            | awk -v max="$max" '{if ($1>max) {print "A file exceeds 15MB"; exit 1}}'
+        continue-on-error: false
+
+      - name: Enhanced secret scan
+        run: |
+          echo "🔒 Enhanced secret scan..."
+          secret_count=0
+          if git diff --staged | egrep -i 'api[_-]?key|secret[_-]?key|token|password|AKIA|ASIA' >/dev/null; then
+            echo "🔒 Potential secret detected in staged diff"
+            git diff --staged | egrep -i 'api[_-]?key|secret[_-]?key|token|password|AKIA|ASIA'
+            exit 1
+          else
+            echo "✅ No secrets detected in staged changes"
+          fi
+        continue-on-error: false
+
+      - name: Run spell check with metrics
+        id: spell-check
+        run: |
+          echo "📝 Running spell check..."
+          start_time=$(date +%s)
+          if pnpm spell; then
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "SPELL_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Spell check passed (${duration}s)"
+          else
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "SPELL_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ Spell check failed (${duration}s)"
+            exit 1
+          fi
+
+      - name: Enforce time budgets
+        run: |
+          echo "⏰ Enforcing time budgets..."
+          ESLINT_MS=${ESLINT_MS:-0}
+          STYLELINT_MS=${STYLELINT_MS:-0}
+          SPELL_MS=${SPELL_MS:-0}
+
+          echo "📊 Performance Metrics:"
+          echo "  ESLint: ${ESLINT_MS}ms (budget: ${ESLINT_BUDGET_MS}ms)"
+          echo "  Stylelint: ${STYLELINT_MS}ms (budget: ${STYLELINT_BUDGET_MS}ms)"
+          echo "  Spell check: ${SPELL_MS}ms"
+
+          if [ "$ESLINT_MS" -gt "$ESLINT_BUDGET_MS" ]; then
+            echo "❌ ESLint exceeded budget: ${ESLINT_MS}ms > ${ESLINT_BUDGET_MS}ms"
+            echo "💡 Consider enabling more aggressive caching or optimization"
+            exit 1
+          fi
+
+          if [ "$STYLELINT_MS" -gt "$STYLELINT_BUDGET_MS" ]; then
+            echo "❌ Stylelint exceeded budget: ${STYLELINT_MS}ms > ${STYLELINT_BUDGET_MS}ms"
+            echo "💡 Consider enabling more aggressive caching or optimization"
+            exit 1
+          fi
+
+          echo "✅ All tools within budget"
+
+      - name: Cache hit/miss analysis
+        run: |
+          echo "📈 Cache Analysis:"
+          if [ -d ".cache/eslint" ]; then
+            echo "✅ ESLint cache present"
+            ls -la .cache/eslint | head -5
+          else
+            echo "ℹ️  ESLint cache not found (cold run)"
+          fi
+
+          if [ -d ".cache/stylelint" ]; then
+            echo "✅ Stylelint cache present"
+            ls -la .cache/stylelint | head -5
+          else
+            echo "ℹ️  Stylelint cache not found (cold run)"
+          fi
+
+  # Enhanced Security Gate
+  security:
+    name: Security Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (with version file)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run security audit
+        id: security-audit
+        run: |
+          echo "🔒 Running security audit..."
+          start_time=$(date +%s)
+          if pnpm audit --audit-level moderate; then
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "SECURITY_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Security audit passed (${duration}s)"
+          else
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            echo "SECURITY_MS=$((duration * 1000))" >> $GITHUB_OUTPUT
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ Security audit failed (${duration}s)"
+            exit 1
+          fi
+
+      - name: Generate SBOM
+        run: pnpm sbom
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
+
+  # Hook Health Monitoring Job
+  hook-health:
+    name: Hook Health Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (with version file)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Hook Health Check
+        run: |
+          echo "🔍 Running hook health monitoring..."
+          bash scripts/ops/hook-health.sh
+
+  # Enhanced Quality Summary with Metrics
+  quality-summary:
+    name: Enhanced Quality Gate Summary
+    runs-on: ubuntu-latest
+    needs: [code-quality, security, hook-health]
+    if: always()
+    steps:
+      - name: Enhanced Quality Gate Status with Metrics
+        run: |
+          echo "## 🔒 Enhanced Quality Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### 📋 Gate Status" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate | Status | Duration | Cache |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|----------|-------|" >> $GITHUB_STEP_SUMMARY
+
+          # Code Quality with metrics
+          if [ "${{ needs.code-quality.result }}" = "success" ]; then
+            eslint_ms=${ESLINT_MS:-0}
+            stylelint_ms=${STYLELINT_MS:-0}
+            spell_ms=${SPELL_MS:-0}
+            total_ms=$((eslint_ms + stylelint_ms + spell_ms))
+            
+            cache_status="❓"
+            if [ -d ".cache/eslint" ]; then
+              cache_status="✅"
+            fi
+            
+            echo "| Code Quality | ✅ Passed | ${total_ms}ms | ${cache_status} |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "#### 📊 Performance Details" >> $GITHUB_STEP_SUMMARY
+            echo "- ESLint: ${eslint_ms}ms" >> $GITHUB_STEP_SUMMARY
+            echo "- Stylelint: ${stylelint_ms}ms" >> $GITHUB_STEP_SUMMARY
+            echo "- Spell Check: ${spell_ms}ms" >> $GITHUB_STEP_SUMMARY
+            echo "- **Total**: ${total_ms}ms" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Code Quality | ❌ Failed | N/A | N/A |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Security
+          if [ "${{ needs.security.result }}" = "success" ]; then
+            security_ms=${SECURITY_MS:-0}
+            echo "| Security | ✅ Passed | ${security_ms}ms | N/A |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Security | ❌ Failed | N/A | N/A |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Hook Health (if run)
+          if [ "${{ needs.hook-health.result }}" != "skipped" ]; then
+            if [ "${{ needs.hook-health.result }}" = "success" ]; then
+              echo "| Hook Health | ✅ Passed | N/A | N/A |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| Hook Health | ⚠️ Issues | N/A | N/A |" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🎯 Overall Result" >> $GITHUB_STEP_SUMMARY
+
+          # Check if all required gates passed
+          if [ "${{ needs.code-quality.result }}" = "success" ] && \
+             [ "${{ needs.security.result }}" = "success" ]; then
+            echo "🟢 **All quality gates PASSED** - Ready for merge!" >> $GITHUB_STEP_SUMMARY
+            
+            # Performance summary
+            if [ -n "${ESLINT_MS:-}" ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "### ⚡ Performance Summary" >> $GITHUB_STEP_SUMMARY
+              echo "Total CI time: ~$(( (ESLINT_MS + STYLELINT_MS + SECURITY_MS) / 1000 ))s" >> $GITHUB_STEP_SUMMARY
+              
+              if [ "${ESLINT_MS:-0}" -lt 30000 ]; then
+                echo "🚀 ESLint: Fast (< 30s)" >> $GITHUB_STEP_SUMMARY
+              elif [ "${ESLINT_MS:-0}" -lt 60000 ]; then
+                echo "⚡ ESLint: Good (< 60s)" >> $GITHUB_STEP_SUMMARY
+              else
+                echo "🐌 ESLint: Slow (> 60s)" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+            
+            echo "exit 0"
+          else
+            echo "🔴 **Quality gates FAILED** - Please fix issues before merging." >> $GITHUB_STEP_SUMMARY
+            echo "exit 1"
+          fi
+
+      - name: Fail on quality gate failure
+        if: |
+          needs.code-quality.result != 'success' ||
+          needs.security.result != 'success'
+        run: |
+          echo "❌ One or more quality gates failed"
+          exit 1

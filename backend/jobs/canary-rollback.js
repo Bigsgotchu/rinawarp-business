@@ -7,7 +7,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-const SUMMARY_URL = process.env.TELEMETRY_SUMMARY_URL || 'http://localhost:3000/api/telemetry/summary';
+const SUMMARY_URL =
+  process.env.TELEMETRY_SUMMARY_URL || 'http://localhost:3000/api/telemetry/summary';
 const DASHBOARD_TOKEN = process.env.DASHBOARD_TOKEN || 'test-dashboard-token-12345';
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 const CRASH_SPIKE_THRESHOLD = Number(process.env.CANARY_CRASH_SPIKE || 0.005); // 0.5%
@@ -32,7 +33,7 @@ async function postSlack(message) {
     await fetch(SLACK_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: message })
+      body: JSON.stringify({ text: message }),
     });
     console.log('📱 Slack notification sent');
   } catch (error) {
@@ -46,11 +47,11 @@ async function postSlack(message) {
 async function pinCanaryToVersion(version) {
   try {
     console.log(`🔒 Pinning canary to version ${version}...`);
-    
+
     // Read stable metadata files to use as rollback target
     const stableYml = path.join(STABLE_DIR, 'latest.yml');
     const stableMacYml = path.join(STABLE_DIR, 'latest-mac.yml');
-    
+
     // Check if stable files exist
     try {
       await fs.access(stableYml);
@@ -62,36 +63,35 @@ async function pinCanaryToVersion(version) {
     // Copy stable files to canary (effectively rolling back)
     const canaryYml = path.join(CANARY_DIR, 'latest.yml');
     const canaryMacYml = path.join(CANARY_DIR, 'latest-mac.yml');
-    
+
     const stableYmlContent = await fs.readFile(stableYml, 'utf8');
     const stableMacYmlContent = await fs.readFile(stableMacYml, 'utf8');
-    
+
     // Update version in metadata to show it's a rollback
     const canaryYmlContent = stableYmlContent.replace(
       /version: .*/,
-      `version: ${version} (rollback)`
+      `version: ${version} (rollback)`,
     );
     const canaryMacYmlContent = stableMacYmlContent.replace(
       /version: .*/,
-      `version: ${version} (rollback)`
+      `version: ${version} (rollback)`,
     );
-    
+
     await fs.writeFile(canaryYml, canaryYmlContent);
     await fs.writeFile(canaryMacYml, canaryMacYmlContent);
-    
+
     // Save rollback version for future reference
     const rollbackData = {
       version: version,
       rollbackTime: new Date().toISOString(),
-      reason: 'crash spike'
+      reason: 'crash spike',
     };
     await fs.writeFile(ROLLBACK_VERSION_FILE, JSON.stringify(rollbackData, null, 2));
-    
+
     console.log(`✅ Rolled back canary to ${version}`);
-    
+
     // TODO: Add cache purge for latest*.yml files
     // This depends on hosting method (CDN, nginx, etc.)
-    
   } catch (error) {
     console.error('Failed to rollback canary:', error);
     throw error;
@@ -120,17 +120,23 @@ async function getLastKnownGoodVersion() {
 function canaryHasCrashSpike(canary) {
   // Check minimum sample size
   if (canary.sampleCount < MIN_SAMPLES) {
-    console.log(`⏸️ Canary sample count too low for crash analysis: ${canary.sampleCount} < ${MIN_SAMPLES}`);
+    console.log(
+      `⏸️ Canary sample count too low for crash analysis: ${canary.sampleCount} < ${MIN_SAMPLES}`,
+    );
     return false;
   }
 
   // Check crash rate threshold
   if (canary.crashRate >= CRASH_SPIKE_THRESHOLD) {
-    console.log(`🚨 Canary crash spike detected: ${(canary.crashRate * 100).toFixed(2)}% >= ${(CRASH_SPIKE_THRESHOLD * 100).toFixed(2)}%`);
+    console.log(
+      `🚨 Canary crash spike detected: ${(canary.crashRate * 100).toFixed(2)}% >= ${(CRASH_SPIKE_THRESHOLD * 100).toFixed(2)}%`,
+    );
     return true;
   }
 
-  console.log(`✅ Canary crash rate acceptable: ${(canary.crashRate * 100).toFixed(3)}% < ${(CRASH_SPIKE_THRESHOLD * 100).toFixed(2)}%`);
+  console.log(
+    `✅ Canary crash rate acceptable: ${(canary.crashRate * 100).toFixed(3)}% < ${(CRASH_SPIKE_THRESHOLD * 100).toFixed(2)}%`,
+  );
   return false;
 }
 
@@ -140,12 +146,12 @@ function canaryHasCrashSpike(canary) {
 export async function runCanaryRollback() {
   try {
     console.log('🔍 Checking canary crash spike...');
-    
+
     // Fetch telemetry summary
     const response = await fetch(SUMMARY_URL, {
-      headers: { 'X-Dashboard-Token': DASHBOARD_TOKEN }
+      headers: { 'X-Dashboard-Token': DASHBOARD_TOKEN },
     });
-    
+
     if (!response.ok) {
       console.error(`Failed to fetch telemetry: ${response.status}`);
       return;
@@ -167,7 +173,9 @@ export async function runCanaryRollback() {
       return;
     }
 
-    console.log(`📊 Canary: ${canary.sampleCount} samples, ${(canary.crashRate * 100).toFixed(3)}% crash rate`);
+    console.log(
+      `📊 Canary: ${canary.sampleCount} samples, ${(canary.crashRate * 100).toFixed(3)}% crash rate`,
+    );
 
     // Check for crash spike
     if (!canaryHasCrashSpike(canary)) {
@@ -183,15 +191,15 @@ export async function runCanaryRollback() {
     }
 
     // Execute rollback
-    const msg = `🚨 Canary crash spike detected (${(canary.crashRate * 100).toFixed(2)}%). ` +
-                `Rolling back ${latestCanaryVersion} → ${rollbackTo}`;
-    
+    const msg =
+      `🚨 Canary crash spike detected (${(canary.crashRate * 100).toFixed(2)}%). ` +
+      `Rolling back ${latestCanaryVersion} → ${rollbackTo}`;
+
     await postSlack(msg);
     await pinCanaryToVersion(rollbackTo);
-    
+
     await postSlack(`🔄 Rolled back canary ${latestCanaryVersion} → ${rollbackTo}`);
     console.log('🚨 Canary rollback completed successfully');
-
   } catch (error) {
     console.error('Canary rollback job failed:', error);
     await postSlack(`❌ Canary rollback failed: ${error.message}`);

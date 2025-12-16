@@ -40,6 +40,39 @@ export interface PricingConfig {
   };
 }
 
+export interface AnalyticsSummary {
+  totalRevenue: number;
+  totalSales: number;
+  products: { id: string; name: string; revenue: number; sales: number }[];
+}
+
+export interface RecentSale {
+  id: string;
+  email: string;
+  productId: string;
+  productName: string;
+  amount: number;
+  currency: string;
+  timestamp: string;
+}
+
+export interface LogEntry {
+  id: string;
+  source: string;
+  level: string;
+  message: string;
+  timestamp: string;
+}
+
+export interface Customer {
+  id: string;
+  email: string;
+  name?: string;
+  createdAt: string;
+  subscriptionStatus: string;
+  products: string[];
+}
+
 async function adminFetch<T = any>(
   path: string,
   method: string,
@@ -61,9 +94,7 @@ async function adminFetch<T = any>(
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(
-      `API error ${res.status} on ${path}: ${text.slice(0, 300)}`,
-    );
+    throw new Error(`API error ${res.status} on ${path}: ${text.slice(0, 300)}`);
   }
 
   return (await res.json()) as T;
@@ -132,24 +163,13 @@ export async function revokeLicense(
   reason?: string,
   notes?: string,
 ): Promise<void> {
-  await adminFetch(
-    '/api/admin/licenses',
-    'DELETE',
-    adminToken,
-    { licenseKey, reason, notes },
-  );
+  await adminFetch('/api/admin/licenses', 'DELETE', adminToken, { licenseKey, reason, notes });
 }
 
 /* ------- PRICING ------- */
 
-export async function getPricingConfig(
-  adminToken: string | null,
-): Promise<PricingConfig> {
-  const data = await adminFetch<{ config: PricingConfig }>(
-    '/api/admin/pricing',
-    'GET',
-    adminToken,
-  );
+export async function getPricingConfig(adminToken: string | null): Promise<PricingConfig> {
+  const data = await adminFetch<{ config: PricingConfig }>('/api/admin/pricing', 'GET', adminToken);
   return data.config;
 }
 
@@ -165,4 +185,34 @@ export async function updatePricingConfig(
     { config, updatedBy },
   );
   return data.config;
+}
+
+/* ------- ANALYTICS ------- */
+
+export async function getAnalyticsSummary(adminToken: string | null): Promise<AnalyticsSummary> {
+  const data = await adminFetch<AnalyticsSummary>('/api/admin/analytics', 'POST', adminToken, {
+    action: 'summary',
+  });
+  return data;
+}
+
+export async function getRecentSales(adminToken: string | null): Promise<RecentSale[]> {
+  const data = await adminFetch<RecentSale[]>('/api/admin/analytics', 'POST', adminToken, {
+    action: 'recent_sales',
+  });
+  return data;
+}
+
+/* ------- LOGS ------- */
+
+export async function getLogs(adminToken: string | null): Promise<LogEntry[]> {
+  const data = await adminFetch<LogEntry[]>('/api/admin/logs', 'GET', adminToken);
+  return data;
+}
+
+/* ------- CUSTOMERS ------- */
+
+export async function getCustomers(adminToken: string | null): Promise<Customer[]> {
+  const data = await adminFetch<Customer[]>('/api/admin/stripe-customers', 'GET', adminToken);
+  return data;
 }

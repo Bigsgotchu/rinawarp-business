@@ -16,6 +16,7 @@ This policy applies to all content hosted on or accessible through our websites,
 ## 2. DMCA Compliance
 
 ### 2.1 Designated Agent
+
 We have designated an agent to receive notifications of claimed copyright infringement:
 
 **DMCA Agent Contact Information:**
@@ -27,6 +28,7 @@ Email: [dmca@rinawarptech.com](mailto:dmca@rinawarptech.com)
 Phone: +1 (800) 123-4567
 
 ### 2.2 Compliance Statement
+
 RinaWarp Technologies LLC complies with the provisions of the DMCA and will respond to valid infringement notices as required by law.
 
 ---
@@ -34,6 +36,7 @@ RinaWarp Technologies LLC complies with the provisions of the DMCA and will resp
 ## 3. Copyright Infringement Notification
 
 ### 3.1 Requirements for Valid Notice
+
 To file a copyright infringement notification with us, you must provide a written communication that includes substantially the following:
 
 1. **Physical or electronic signature** of a person authorized to act on behalf of the copyright owner
@@ -43,14 +46,18 @@ To file a copyright infringement notification with us, you must provide a writte
 5. **Statement** that the complaining party has a good faith belief that use of the material is not authorized by the copyright owner
 6. **Statement** that the information in the notification is accurate, and under penalty of perjury, that the complaining party is authorized to act on behalf of the copyright owner
 
+
 ### 3.2 Submission Methods
+
 You may submit your DMCA notice via:
 
 - **Email**: [dmca@rinawarptech.com](mailto:dmca@rinawarptech.com) (preferred method)
 - **Mail**: RinaWarp Technologies LLC, Attn: DMCA Agent, [Address]
 - **Online Form**: Through our DMCA reporting portal
 
+
 ### 3.3 Notice Format
+
 For efficient processing, we recommend using the following format:
 
 ```
@@ -75,11 +82,37 @@ Subject: DMCA Copyright Infringement Notice
    - Location within our Services:
 
 4. Authorization Statement:
+
+
+
+
+
+
+
+
+
+
+
+
+
    "I have a good faith belief that use of the copyrighted materials described above as allegedly infringing is not authorized by the copyright owner, its agent, or the law."
 
    "I swear, under penalty of perjury, that the information in the notification is accurate and that I am the copyright owner or am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed."
 
 5. Electronic Signature:
+
+
+
+
+
+
+
+
+
+
+
+
+
    [Your Full Name]
    [Date]
 ```
@@ -89,6 +122,7 @@ Subject: DMCA Copyright Infringement Notice
 ## 4. Counter-Notification Procedure
 
 ### 4.1 Requirements for Valid Counter-Notice
+
 If you believe that material you posted was removed or disabled by mistake or misidentification, you may file a counter-notification that includes:
 
 1. **Physical or electronic signature**
@@ -98,13 +132,17 @@ If you believe that material you posted was removed or disabled by mistake or mi
 5. **Consent** to the jurisdiction of the federal court in Utah
 6. **Statement** that you will accept service of process from the person who provided the original infringement notification
 
+
 ### 4.2 Submission Methods
+
 Counter-notifications may be submitted via:
 
 - **Email**: [dmca@rinawarptech.com](mailto:dmca@rinawarptech.com)
 - **Mail**: RinaWarp Technologies LLC, Attn: DMCA Agent, [Address]
 
+
 ### 4.3 Counter-Notice Format
+
 We recommend using the following format for counter-notifications:
 
 ```
@@ -122,12 +160,51 @@ Subject: DMCA Counter-Notification
    - Date of Removal (if known):
 
 3. Good Faith Statement:
+
+
+
+
+
+
+
+
+
+
+
+
+
    "I swear, under penalty of perjury, that I have a good faith belief that the material was removed or disabled as a result of mistake or misidentification of the material to be removed or disabled."
 
 4. Jurisdiction Consent:
+
+
+
+
+
+
+
+
+
+
+
+
+
    "I consent to the jurisdiction of the Federal District Court for the District of Utah and will accept service of process from the person who provided the original infringement notification."
 
 5. Electronic Signature:
+
+
+
+
+
+
+
+
+
+
+
+
+
    [Your Full Name]
    [Date]
 ```
@@ -137,6 +214,7 @@ Subject: DMCA Counter-Notification
 ## 5. Our Response to DMCA Notices
 
 ### 5.1 Initial Review
+
 Upon receiving a valid DMCA notice, we will:
 
 - **Acknowledge receipt** within 24-48 hours
@@ -144,7 +222,9 @@ Upon receiving a valid DMCA notice, we will:
 - **Verify the complaining party's** authority to act on behalf of the copyright owner
 - **Assess the infringement claim** based on the information provided
 
+
 ### 5.2 Action Timeline
+
 Our response timeline for valid notices:
 
 - **Acknowledgment**: Within 24-48 hours of receipt
@@ -152,7 +232,9 @@ Our response timeline for valid notices:
 - **Content Removal**: Within 5 business days of valid notice
 - **User Notification**: Within 1 business day of removal action
 
+
 ### 5.3 Removal Actions
+
 For valid infringement notices, we may take the following actions:
 
 - **Content Removal**: Remove or disable access to the infringing material
@@ -160,14 +242,17 @@ For valid infringement notices, we may take the following actions:
 - **Termination**: Terminate accounts for serious or repeated violations
 - **Preservation**: Preserve evidence for potential legal proceedings
 
+
 ---
 
 ## 6. Repeat Infringer Policy
 
 ### 6.1 Definition
+
 A "repeat infringer" is a user who has been subject to two or more valid DMCA takedown notices within a 12-month period.
 
 ### 6.2 Consequences
+
 For repeat infringers, we will:
 
 - **Issue warnings** for first and second offenses
@@ -175,7 +260,9 @@ For repeat infringers, we will:
 - **Terminate accounts** for fourth offenses (permanent ban)
 - **Ban re-registration** attempts by terminated users
 
+
 ### 6.3 Appeal Process
+
 Terminated users may appeal by:
 
 - **Submitting a formal appeal** to [dmca@rinawarptech.com](mailto:dmca@rinawarptech.com)
@@ -183,11 +270,13 @@ Terminated users may appeal by:
 - **Agreeing to comply** with our DMCA Policy going forward
 - **Accepting monitoring** for a probationary period
 
+
 ---
 
 ## 7. User Responsibilities
 
 ### 7.1 Compliance Obligations
+
 Users of our Services agree to:
 
 - **Respect copyright laws** and intellectual property rights
@@ -196,7 +285,9 @@ Users of our Services agree to:
 - **Attribute content** appropriately when required
 - **Remove infringing content** promptly when notified
 
+
 ### 7.2 Content Guidelines
+
 When using our AI Music Video Creator and other content creation tools, you must:
 
 - **Use licensed or original content** as inputs
@@ -205,7 +296,9 @@ When using our AI Music Video Creator and other content creation tools, you must
 - **Comply with fair use** principles where applicable
 - **Obtain necessary permissions** for commercial use
 
+
 ### 7.3 AI-Specific Responsibilities
+
 For AI-generated content, you are responsible for:
 
 - **Ensuring inputs** do not violate copyright laws
@@ -214,14 +307,17 @@ For AI-generated content, you are responsible for:
 - **Respecting rights holders'** intellectual property
 - **Complying with platform** content policies
 
+
 ---
 
 ## 8. Copyright Protection for Our Content
 
 ### 8.1 Our Intellectual Property
+
 All content, software, trademarks, and materials provided through our Services are protected by copyright and other intellectual property laws.
 
 ### 8.2 Permitted Uses
+
 You may use our content only as expressly permitted by:
 
 - Our **Terms of Service**
@@ -229,7 +325,9 @@ You may use our content only as expressly permitted by:
 - Specific license agreements
 - Applicable fair use provisions
 
+
 ### 8.3 Prohibited Uses
+
 You may not:
 
 - **Copy or reproduce** our software or content without permission
@@ -238,11 +336,13 @@ You may not:
 - **Remove copyright notices** from our materials
 - **Use our trademarks** without express authorization
 
+
 ---
 
 ## 9. Legal Proceedings & Cooperation
 
 ### 9.1 Law Enforcement Cooperation
+
 We cooperate with law enforcement and copyright owners by:
 
 - **Preserving evidence** of infringement
@@ -250,7 +350,9 @@ We cooperate with law enforcement and copyright owners by:
 - **Assisting in investigations** of copyright violations
 - **Complying with court orders** related to infringement
 
+
 ### 9.2 Evidence Preservation
+
 We maintain records of DMCA notices and related communications for:
 
 - **Legal compliance** requirements
@@ -258,7 +360,9 @@ We maintain records of DMCA notices and related communications for:
 - **Potential litigation** support
 - **Regulatory reporting** obligations
 
+
 ### 9.3 Jurisdiction
+
 All DMCA-related disputes will be resolved in the **federal courts of the District of Utah**, United States.
 
 ---
@@ -279,6 +383,7 @@ For DMCA-related inquiries or to submit notices:
 - **Legal Department**: [legal@rinawarptech.com](mailto:legal@rinawarptech.com)
 - **Support**: [support@rinawarptech.com](mailto:support@rinawarptech.com)
 - **Mail**: RinaWarp Technologies LLC, Attn: DMCA Agent, [Address]
+
 
 ---
 

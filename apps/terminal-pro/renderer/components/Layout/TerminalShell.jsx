@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
-import RinaChatPanel from "../RinaChat/RinaChatPanel";
-import "./terminal-shell.css";
+import React, { useEffect, useState, useCallback } from 'react';
+import RinaChatPanel from '../RinaChat/RinaChatPanel';
+import './terminal-shell.css';
 
 export default function TerminalShell({ TerminalView }) {
   const [isRinaOpen, setIsRinaOpen] = useState(true);
@@ -50,14 +50,14 @@ export default function TerminalShell({ TerminalView }) {
   useEffect(() => {
     function onKey(e) {
       // Ctrl+\ or Cmd+\ toggles Rina
-      if ((e.ctrlKey || e.metaKey) && e.key === "\\") {
+      if ((e.ctrlKey || e.metaKey) && e.key === '\\') {
         e.preventDefault();
         toggleRina();
       }
     }
 
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [toggleRina]);
 
   // Drag to resize
@@ -73,11 +73,11 @@ export default function TerminalShell({ TerminalView }) {
       if (isDragging) setIsDragging(false);
     }
 
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
     };
   }, [isDragging]);
 
@@ -89,7 +89,7 @@ export default function TerminalShell({ TerminalView }) {
         </div>
         <div className="ts-right">
           <button
-            className={`ts-rina-toggle ${isRinaOpen ? "active" : ""}`}
+            className={`ts-rina-toggle ${isRinaOpen ? 'active' : ''}`}
             onClick={toggleRina}
             title="Toggle Rina (Ctrl+\\)"
           >
@@ -114,15 +114,12 @@ export default function TerminalShell({ TerminalView }) {
 
         {/* Splitter + Sidebar */}
         <div
-          className={`ts-rina-wrapper ${isRinaOpen ? "open" : "closed"}`}
+          className={`ts-rina-wrapper ${isRinaOpen ? 'open' : 'closed'}`}
           style={{
             width: isRinaOpen ? sidebarWidth : 0,
           }}
         >
-          <div
-            className="ts-splitter"
-            onMouseDown={() => setIsDragging(true)}
-          />
+          <div className="ts-splitter" onMouseDown={() => setIsDragging(true)} />
           <div className="ts-rina-panel">
             <RinaChatPanel />
           </div>

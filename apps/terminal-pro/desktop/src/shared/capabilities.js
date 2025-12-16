@@ -1,7 +1,7 @@
 const Store = require('electron-store');
 const store = new Store({ name: 'settings' });
 
-const DEFAULT_CAPS = { docker: false, git: true, npm: true, network: false };
+const DEFAULT_CAPS = { docker: false, git: true, npm: true, network: false, csharp: false };
 
 function getCapabilities(workdir) {
   const all = store.get('capabilities', {});
@@ -21,6 +21,8 @@ function capabilityNeededFor(command) {
   if (/pip|python3?/.test(first) && /install/.test(command)) return 'network';
   return null;
 }
-function isCapabilityAllowed(caps, cap) { return !cap || !!caps[cap]; }
+function isCapabilityAllowed(caps, cap) {
+  return !cap || !!caps[cap];
+}
 
 module.exports = { getCapabilities, setCapabilities, capabilityNeededFor, isCapabilityAllowed };

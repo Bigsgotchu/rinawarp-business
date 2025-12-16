@@ -3,7 +3,7 @@ export const onRequest = async ({ request, env, next }) => {
   const url = new URL(request.url);
 
   // Only gate the admin page (keep APIs public)
-  if (url.pathname !== "/admin.html") {
+  if (url.pathname !== '/admin.html') {
     return next();
   }
 
@@ -23,7 +23,9 @@ export const onRequest = async ({ request, env, next }) => {
   try {
     const decoded = atob(auth.slice(6));
     if (decoded === cred) return next();
-  } catch (_) { /* ignore */ }
+  } catch (_) {
+    /* ignore */
+  }
 
   return unauthorized();
 };

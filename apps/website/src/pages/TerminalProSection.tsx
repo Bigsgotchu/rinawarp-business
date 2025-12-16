@@ -1,4 +1,4 @@
-import "./terminal-pro-section.css";
+import './terminal-pro-section.css';
 
 export function TerminalProSection() {
   return (
@@ -24,8 +24,8 @@ export function TerminalProSection() {
             type="button"
             className="tp-btn tp-btn-ghost"
             onClick={() => {
-              const el = document.getElementById("tp-demo-script");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
+              const el = document.getElementById('tp-demo-script');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
           >
             Watch a 3-minute demo
@@ -48,7 +48,7 @@ export function TerminalProSection() {
           <div className="tp-window-body">
             <pre>
               <code>
-{`$ git status
+                {`$ git status
 On branch main
 nothing to commit, working tree clean
 
@@ -83,11 +83,13 @@ export function TerminalProDemoScript() {
           <strong>Next steps:</strong> “What should I do next to clean this repo?”
         </li>
         <li>
-          <strong>Upgrade path:</strong> Show the in-app upgrade bar and mention Free → Pro → Enterprise.
+          <strong>Upgrade path:</strong> Show the in-app upgrade bar and mention Free → Pro →
+          Enterprise.
         </li>
       </ol>
       <p className="tp-demo-note">
-        Script is designed for Loom, YouTube, or live calls — just follow the numbered sequence and let Rina do the rest.
+        Script is designed for Loom, YouTube, or live calls — just follow the numbered sequence and
+        let Rina do the rest.
       </p>
     </section>
   );

@@ -1,14 +1,14 @@
-import Database from "better-sqlite3";
-import path from "path";
-import os from "os";
-import fs from "fs";
+import Database from 'better-sqlite3';
+import path from 'path';
+import os from 'os';
+import fs from 'fs';
 
-const dir = path.join(os.homedir(), ".rinawarp", "terminal-pro");
+const dir = path.join(os.homedir(), '.rinawarp', 'terminal-pro');
 fs.mkdirSync(dir, { recursive: true });
 
-export const db = new Database(path.join(dir, "rina-agent.sqlite"));
+export const db = new Database(path.join(dir, 'rina-agent.sqlite'));
 
-db.pragma("journal_mode = WAL");
+db.pragma('journal_mode = WAL');
 db.exec(`
   CREATE TABLE IF NOT EXISTS kv (
     key TEXT PRIMARY KEY,

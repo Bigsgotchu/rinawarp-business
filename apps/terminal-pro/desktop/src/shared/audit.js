@@ -12,7 +12,10 @@ function ensure() {
   if (!fs.existsSync(KEYFILE)) fs.writeFileSync(KEYFILE, crypto.randomBytes(32).toString('hex'));
   if (!fs.existsSync(FILE)) fs.writeFileSync(FILE, '');
 }
-function key() { ensure(); return fs.readFileSync(KEYFILE, 'utf8').trim(); }
+function key() {
+  ensure();
+  return fs.readFileSync(KEYFILE, 'utf8').trim();
+}
 
 export function auditWrite(event, payload) {
   try {
@@ -21,5 +24,7 @@ export function auditWrite(event, payload) {
     const data = { ts, event, payload };
     const h = crypto.createHmac('sha256', key()).update(JSON.stringify(data)).digest('hex');
     fs.appendFileSync(FILE, JSON.stringify({ ...data, h }) + '\n');
-  } catch { /* never throw */ }
+  } catch {
+    /* never throw */
+  }
 }

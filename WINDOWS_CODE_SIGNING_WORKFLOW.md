@@ -7,6 +7,7 @@
 **Status:** DONE - Build artifacts ready
 
 **Current State:**
+
 - Executable built: `build-output/win-unpacked/RinaWarp Terminal Pro.exe` (176MB)
 - Package created: `RinaWarp-Terminal-Pro-v1.0.0-Windows.zip` (111MB)
 - All tests passed: 6/6 basic, 9/9 comprehensive
@@ -17,6 +18,7 @@
 **Location:** Windows VM or Windows machine
 
 ### Step 1: Copy Build Artifacts
+
 ```powershell
 # Copy the entire build-output directory to Windows machine
 # Source: apps/terminal-pro/desktop/build-output/
@@ -24,6 +26,7 @@
 ```
 
 ### Step 2: Setup Windows Environment
+
 ```powershell
 # Install Node.js + npm on Windows machine
 # Download from: https://nodejs.org/
@@ -34,12 +37,14 @@ npm --version
 ```
 
 ### Step 3: Install Dependencies
+
 ```powershell
 cd C:\rinawarp-build\desktop
 npm install
 ```
 
 ### Step 4: Set Code Signing Environment Variables
+
 ```powershell
 # Set certificate path and password
 $env:CSC_LINK="C:\path\to\cert.pfx"
@@ -51,6 +56,7 @@ echo $env:CSC_KEY_PASSWORD
 ```
 
 ### Step 5: Build Signed Installer
+
 ```powershell
 # This will create a properly signed installer
 npx electron-builder --win --publish never
@@ -64,12 +70,14 @@ npx electron-builder --win --publish never
 ## 🎯 Expected Results
 
 ### ✅ Benefits of This Approach
+
 - **SmartScreen Reputation**: Builds proper Microsoft Defender reputation
 - **No Wine Issues**: Uses native Windows tools (rcedit, signtool)
 - **Clean Installer**: Professional NSIS installer with proper metadata
 - **Industry Standard**: This is how all professional Windows software is built
 
 ### 📦 Final Deliverables
+
 - `RinaWarp-Terminal-Pro-Setup-1.0.0-x64.exe` (signed installer)
 - Properly signed executable with valid certificate
 - SmartScreen-compatible package
@@ -78,12 +86,14 @@ npx electron-builder --win --publish never
 ## 🚀 Launch Impact
 
 ### Current Status
+
 - ✅ **Build Ready**: Linux build completed and locked
-- ✅ **Tests Passed**: All validation tests successful  
+- ✅ **Tests Passed**: All validation tests successful
 - ✅ **Package Available**: Unsigned version ready for signing
 - 🔄 **Signing Pending**: Windows signing workflow prepared
 
 ### Next Actions
+
 1. **Transfer to Windows**: Copy build artifacts to Windows environment
 2. **Code Signing**: Execute signing workflow on Windows
 3. **Installer Generation**: Create professional NSIS installer
@@ -92,17 +102,20 @@ npx electron-builder --win --publish never
 ## 📋 Windows Machine Requirements
 
 ### Software
+
 - Windows 10/11
 - Node.js 18+
 - Valid code signing certificate (.pfx file)
 - Administrator privileges
 
 ### Certificate Details
+
 - **Format**: .pfx file with private key
 - **Publisher**: Should match "RinaWarp Technologies, LLC"
 - **Type**: Code signing certificate (OV or EV recommended)
 
 ### Environment Variables
+
 ```powershell
 # Required for electron-builder
 CSC_LINK="C:\path\to\certificate.pfx"
@@ -112,11 +125,13 @@ CSC_KEY_PASSWORD="certificate_password"
 ## 🎯 Quality Gates
 
 ### Pre-Signing Validation
+
 - ✅ All tests pass on Linux build
 - ✅ Executable runs correctly unsigned
 - ✅ Build hash locked and documented
 
 ### Post-Signing Validation
+
 - [ ] SmartScreen shows correct publisher
 - [ ] Installer runs without security warnings
 - [ ] Application launches after installation

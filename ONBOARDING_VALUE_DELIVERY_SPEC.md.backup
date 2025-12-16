@@ -1,0 +1,422 @@
+# Onboarding Value Delivery Implementation Spec
+
+_Technical requirements to justify pricing with immediate value_
+
+## 🎯 CORE PRINCIPLE: Pricing Justification
+
+**The $29 Starter plan is only defensible if users see Rina actively helping them within 5 minutes.**
+
+This document specifies the exact implementation required to deliver that value.
+
+---
+
+## 👻 GHOST TEXT IMPLEMENTATION (Minutes 1-3)
+
+### Requirement: Ghost text MUST appear on first 1-2 real commands
+
+### Implementation Details:
+
+```javascript
+// Ghost Text Trigger Logic
+class GhostTextManager {
+  constructor() {
+    this.commandCount = 0;
+    this.shownGhostText = false;
+    this.freeTierLimit = 10; // Daily limit for Free tier
+  }
+
+  onCommandEntered(command) {
+    this.commandCount++;
+
+    // Skip if not a "real" command
+    if (!this.isRealCommand(command)) return;
+
+    // Show ghost text on first or second real command
+    if (this.commandCount <= 2 && !this.shownGhostText) {
+      this.showGhostText(command);
+    }
+  }
+
+  isRealCommand(command) {
+    const realCommands = [
+      'git',
+      'npm',
+      'ls',
+      'cd',
+      'mkdir',
+      'touch',
+      'cat',
+      'grep',
+      'find',
+      'ps',
+      'kill',
+      'chmod',
+      'docker',
+      'yarn',
+      'node',
+      'python',
+      'java',
+    ];
+
+    return realCommands.some((cmd) => command.startsWith(cmd));
+  }
+
+  showGhostText(command) {
+    const suggestions = this.getSuggestions(command);
+    if (suggestions.length > 0) {
+      this.displayGhostText(suggestions[0]);
+      this.shownGhostText = true;
+      this.trackMetric('ghost_text_shown', 1);
+    }
+  }
+
+  getSuggestions(command) {
+    // Local suggestions first (work offline)
+    if (command.startsWith('git ')) {
+      return ['git status', 'git add .', 'git commit -m ""'];
+    }
+    if (command.startsWith('npm ')) {
+      return ['npm install', 'npm start', 'npm run build'];
+    }
+    // ... more suggestions
+    return [];
+  }
+}
+```
+
+### Key Requirements:
+
+- **Trigger even in Free tier** - This is what makes pricing defensible
+- **Local-first suggestions** - Don't require AI for first value
+- **Tab-to-accept works instantly** - No delays
+- **Track metric:** Ghost text shown in first 3 commands ≥80%
+
+
+---
+
+## 🧠 MEMORY MOMENT IMPLEMENTATION (Minutes 3-5)
+
+### Requirement: "Rina remembers this" moment within 3 minutes
+
+### Implementation Details:
+
+```javascript
+class MemoryManager {
+  constructor() {
+    this.memoryEvents = [];
+    this.shownMemoryMoment = false;
+  }
+
+  recordMemoryEvent(eventType, data) {
+    this.memoryEvents.push({
+      type: eventType,
+      data: data,
+      timestamp: Date.now(),
+    });
+
+    // Show memory moment after first few events
+    if (this.memoryEvents.length >= 2 && !this.shownMemoryMoment) {
+      this.showMemoryMoment(eventType, data);
+    }
+  }
+
+  showMemoryMoment(eventType, data) {
+    let message = '';
+
+    switch (eventType) {
+      case 'project_detected':
+        message = `Rina remembers this project: ${data.projectName}`;
+        break;
+      case 'command_pattern':
+        message = 'Rina remembers your preferred command style';
+        break;
+      case 'directory_context':
+        message = `Rina remembers you're in: ${data.path}`;
+        break;
+    }
+
+    // Show once, then be quiet
+    this.displayNotification(message);
+    this.shownMemoryMoment = true;
+    this.trackMetric('memory_moment_shown', 1);
+  }
+}
+```
+
+### Key Requirements:
+
+- **Show exactly once** - Don't be repetitive
+- **Small, useful memories** - Project names, command patterns, directory context
+- **Then be quiet** - No more memory mentions for rest of session
+- **Track metric:** Memory write occurs ≥40%
+
+
+---
+
+## 🚀 SOFT VALUE EXPANSION (Minutes 5-7)
+
+### Requirement: One helpful suggestion that feels proactive
+
+### Implementation Details:
+
+```javascript
+class ValueExpansion {
+  constructor() {
+    this.suggestionsGiven = 0;
+    this.upsellEligible = false;
+  }
+
+  evaluateProactiveSuggestion() {
+    if (this.suggestionsGiven > 0) return; // Only one
+
+    const userState = this.getUserState();
+
+    // Only suggest if user has:
+    // - Used ghost text
+    // - Has some command history
+    // - No errors recently
+
+    if (this.shouldShowProactiveSuggestion(userState)) {
+      this.showProactiveSuggestion(userState);
+      this.suggestionsGiven = 1;
+    }
+  }
+
+  shouldShowProactiveSuggestion(userState) {
+    return (
+      userState.ghostTextAccepted >= 1 &&
+      userState.commandsExecuted >= 3 &&
+      userState.recentErrors === 0 &&
+      userState.sessionMinutes >= 5
+    );
+  }
+
+  showProactiveSuggestion(userState) {
+    const suggestions = this.getContextualSuggestions(userState);
+
+    if (suggestions.length > 0) {
+      this.displayInlineSuggestion(suggestions[0]);
+    }
+  }
+
+  getContextualSuggestions(userState) {
+    if (userState.hasGitRepo && userState.uncommittedChanges) {
+      return ['Consider committing your changes with git add . && git commit'];
+    }
+
+    if (userState.hasPackageJson && userState.dependenciesOutdated) {
+      return ['You have outdated dependencies: npm update'];
+    }
+
+    // ... more contextual suggestions
+    return [];
+  }
+}
+```
+
+### Key Requirements:
+
+- **Contextual and useful** - Based on actual user state
+- **Feels proactive, not pushy** - Inline, dismissible
+- **No pricing mentions** - Pure value focus
+- **Only once per session** - Don't spam
+
+
+---
+
+## 🎯 UPSELL ELIGIBILITY ASSESSMENT (Minutes 7-10)
+
+### Requirement: Only show upsell when value is proven
+
+### Implementation Details:
+
+```javascript
+class UpsellManager {
+  constructor() {
+    this.upsellShown = false;
+  }
+
+  evaluateUpsellEligibility(userMetrics) {
+    // ALL conditions must be true
+    const canUpsell =
+      userMetrics.plan !== 'agent_pro' &&
+      userMetrics.acceptedSuggestions >= 3 &&
+      userMetrics.sessionMinutes >= 8 &&
+      userMetrics.usedHeuristics === true &&
+      userMetrics.hitAiOnlyFeature === true;
+
+    if (canUpsell && !this.upsellShown) {
+      this.showUpsellInline();
+    }
+  }
+
+  showUpsellInline() {
+    const message =
+      'This is powered by Agent Pro — cloud reasoning layered on top of your local agent.';
+
+    this.displayInlineUpsell(message, {
+      upgrade: () => this.initiateUpgrade(),
+      notNow: () => this.dismissUpsell(),
+    });
+
+    this.upsellShown = true;
+  }
+
+  // NEVER show upsell if:
+  // - First session
+  // - No ghost text acceptance
+  // - No memory usage
+  // - User in error recovery
+  // - User offline
+}
+```
+
+### Key Requirements:
+
+- **Inline, not modal** - Respect user's flow
+- **Educational, not salesy** - Explain what they're getting
+- **Easy dismissal** - "Not now" should work
+- **One-time per session** - Don't be annoying
+
+
+---
+
+## 📊 METRICS TRACKING IMPLEMENTATION
+
+### Required Analytics Events:
+
+```javascript
+class OnboardingMetrics {
+  trackEvent(event, data) {
+    // Send to analytics
+    analytics.track(event, {
+      ...data,
+      timestamp: Date.now(),
+      sessionId: this.sessionId,
+      userId: this.userId,
+    });
+  }
+
+  // Critical metrics for Week 1:
+
+  onGhostTextShown() {
+    this.trackEvent('ghost_text_shown', {
+      commandNumber: this.commandCount,
+      timeFromStart: Date.now() - this.sessionStart,
+    });
+  }
+
+  onGhostTextAccepted() {
+    this.trackEvent('ghost_text_accepted', {
+      suggestionType: this.suggestionType,
+      timeFromShown: Date.now() - this.ghostTextShownTime,
+    });
+  }
+
+  onMemoryMomentShown() {
+    this.trackEvent('memory_moment_shown', {
+      memoryType: this.memoryType,
+      sessionDuration: Date.now() - this.sessionStart,
+    });
+  }
+
+  onUpsellShown() {
+    this.trackEvent('upsell_shown', {
+      trigger: this.upsellTrigger,
+      userState: this.getUserState(),
+    });
+  }
+
+  onUpsellAccepted() {
+    this.trackEvent('upsell_accepted', {
+      timeFromEligibility: Date.now() - this.upsellEligibleTime,
+    });
+  }
+}
+```
+
+### Dashboard Metrics (Daily Review):
+
+- Ghost text shown in first 3 commands: Target ≥80%
+- Ghost text accepted at least once: Target ≥55%
+- Memory write occurs: Target ≥40%
+- Conversion rates by cohort
+
+
+---
+
+## ⚡ PERFORMANCE REQUIREMENTS
+
+### Speed Requirements:
+
+- Ghost text appears within 200ms of command
+- Memory moment displays within 1 second of trigger
+- Upsell evaluation happens every 30 seconds
+- All tracking events batched to avoid UI blocking
+
+
+### Offline Behavior:
+
+- Ghost text works without internet
+- Memory moments work offline
+- Analytics events queue when offline
+- Upsell only shows when online
+
+
+---
+
+## 🧪 TESTING REQUIREMENTS
+
+### Automated Tests:
+
+```javascript
+// Test ghost text triggers on first command
+test('Ghost text shows on first real command', () => {
+  const manager = new GhostTextManager();
+  manager.onCommandEntered('git status');
+  expect(manager.shownGhostText).toBe(true);
+});
+
+// Test memory moment timing
+test('Memory moment shows after 2 memory events', () => {
+  const memory = new MemoryManager();
+  memory.recordMemoryEvent('project_detected', { name: 'test' });
+  memory.recordMemoryEvent('command_pattern', {});
+  expect(memory.shownMemoryMoment).toBe(true);
+});
+```
+
+### Manual Testing Checklist:
+
+- [ ] Ghost text appears on first command (even Free)
+- [ ] Tab-to-accept works instantly
+- [ ] Memory moment shows within 3 minutes
+- [ ] No upsell in first session
+- [ ] All metrics track correctly
+- [ ] Works offline for core features
+
+
+---
+
+## 🚀 DEPLOYMENT CHECKLIST
+
+### Before Launch:
+
+- [ ] Ghost text triggers in <200ms
+- [ ] Memory moment timing verified
+- [ ] Upsell logic tested with edge cases
+- [ ] Analytics events firing correctly
+- [ ] Performance benchmarks met
+- [ ] Offline functionality verified
+
+
+### Week 1 Monitoring:
+
+- [ ] Daily metric reviews
+- [ ] Ghost text acceptance rate tracking
+- [ ] Memory moment effectiveness analysis
+- [ ] Upsell conversion monitoring
+- [ ] Refund reason pattern analysis
+
+
+**This implementation ensures every dollar of pricing is justified by immediate, demonstrable value.**

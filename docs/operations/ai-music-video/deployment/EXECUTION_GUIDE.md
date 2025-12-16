@@ -16,17 +16,20 @@
 6. Type repository name to confirm: `ai-music-video-creator`
 7. Click **"I understand, change repository visibility"**
 
+
 **For RinaWarp Terminal Pro Repository:**
 
 1. Go to: `https://github.com/[your-username]/rinawarp-terminal-pro` (or similar name)
 2. Repeat same steps as above
 3. Type repository name to confirm
 
+
 **Remove Public Forks:**
 
 1. In each repository → **"Insights"** tab
 2. Click **"Forks"** in left sidebar
 3. Delete any public forks by clicking **"Delete"** next to each fork
+
 
 ### 2. **DELETE VERCEL DEPLOYMENT** 🗑️
 
@@ -42,6 +45,7 @@
 8. Click **"Delete"** button
 9. Confirm deletion
 
+
 ### 3. **APPLY PROTECTION TO TERMINAL PRO** 🛡️
 
 #### What I Can Help With Locally
@@ -52,18 +56,88 @@ I can help you prepare the copyright headers and templates, but you'll need to a
 
 ```javascript
 /**
+
  * RinaWarp Terminal Pro
  * © 2025 RinaWarp Technologies, LLC - All Rights Reserved
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * PROPRIETARY SOFTWARE - CONFIDENTIAL
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * This software is proprietary and confidential. All rights reserved.
  * Unauthorized reproduction, distribution, or use is strictly prohibited.
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * For licensing inquiries: legal@rinawarptech.com
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * @author RinaWarp Technologies, LLC
  * @copyright © 2025 RinaWarp Technologies, LLC
+
+
+
+
+
+
+
+
+
+
+
+
+
  */
 ```
 
@@ -93,12 +167,14 @@ After completing each step, check off:
 - [ ] Terminal Pro package.json updated
 - [ ] No public traces remain
 
+
 ## 🆘 EMERGENCY CONTACTS
 
 If you need help:
 
 - **Legal**: <legal@rinawarptech.com>
 - **Technical**: <tech@rinawarptech.com>
+
 
 ---
 

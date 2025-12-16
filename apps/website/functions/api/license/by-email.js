@@ -10,18 +10,17 @@ export const onRequestGet = async (context) => {
     const db = context.env.DB;
 
     if (!email) {
-      return new Response(
-        JSON.stringify({ error: 'Email is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Email is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const cleanEmail = email.trim().toLowerCase();
 
     // Query database for license
-    const result = await db.prepare(
-      'SELECT * FROM licenses WHERE email = ? ORDER BY created_at DESC LIMIT 1'
-    )
+    const result = await db
+      .prepare('SELECT * FROM licenses WHERE email = ? ORDER BY created_at DESC LIMIT 1')
       .bind(cleanEmail)
       .first();
 
@@ -35,14 +34,14 @@ export const onRequestGet = async (context) => {
           expires: result.expires_at,
           features: JSON.parse(result.features || '[]'),
         }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
       );
     } else {
       return new Response(
         JSON.stringify({
           error: 'No license found for this email',
         }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
+        { status: 404, headers: { 'Content-Type': 'application/json' } },
       );
     }
   } catch (error) {
@@ -53,7 +52,7 @@ export const onRequestGet = async (context) => {
         error: 'Failed to lookup license',
         details: error.message,
       }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
     );
   }
 };

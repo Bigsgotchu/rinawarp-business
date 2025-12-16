@@ -13,16 +13,21 @@ console.log('==============================');
 // Configuration
 const config = {
   baseUrl: 'https://rinawarptech.com',
-  testPlans: ['terminal_pro_starter', 'terminal_pro_creator', 'terminal_pro_pro', 'terminal_pro_enterprise']
+  testPlans: [
+    'terminal_pro_starter',
+    'terminal_pro_creator',
+    'terminal_pro_pro',
+    'terminal_pro_enterprise',
+  ],
 };
 
 // Test checkout API
 async function testCheckoutAPI() {
   console.log('\n📡 Testing checkout API endpoints...');
-  
+
   for (const plan of config.testPlans) {
     console.log(`\n🔍 Testing plan: ${plan}`);
-    
+
     try {
       const response = await makeApiRequest('/api/checkout-v2', {
         method: 'POST',
@@ -33,10 +38,10 @@ async function testCheckoutAPI() {
           plan: plan,
           successUrl: `${config.baseUrl}/success.html`,
           cancelUrl: `${config.baseUrl}/cancel.html`,
-          email: 'test@example.com'
-        })
+          email: 'test@example.com',
+        }),
       });
-      
+
       if (response.status === 200) {
         console.log(`  ✅ Plan ${plan}: API working`);
         if (response.data.sessionId) {
@@ -46,7 +51,9 @@ async function testCheckoutAPI() {
         }
       } else if (response.status === 400) {
         console.log(`  ⚠️  Plan ${plan}: Invalid (expected if plan not configured)`);
-        console.log(`     Available plans: ${response.data.availablePlans?.join(', ') || 'unknown'}`);
+        console.log(
+          `     Available plans: ${response.data.availablePlans?.join(', ') || 'unknown'}`,
+        );
       } else {
         console.log(`  ❌ Plan ${plan}: Error ${response.status}`);
         console.log(`     ${response.data.error || 'Unknown error'}`);
@@ -61,25 +68,25 @@ async function testCheckoutAPI() {
 // Test webhook endpoint
 async function testWebhookEndpoint() {
   console.log('\n🔗 Testing webhook endpoint...');
-  
+
   try {
     const response = await makeApiRequest('/api/stripe/webhook', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'stripe-signature': 'test' // This will fail signature verification, but tests endpoint existence
+        'stripe-signature': 'test', // This will fail signature verification, but tests endpoint existence
       },
       body: JSON.stringify({
         type: 'checkout.session.completed',
         data: {
           object: {
             id: 'cs_test_123',
-            customer_email: 'test@example.com'
-          }
-        }
-      })
+            customer_email: 'test@example.com',
+          },
+        },
+      }),
     });
-    
+
     if (response.status === 401) {
       console.log('  ✅ Webhook endpoint exists (signature verification working)');
     } else if (response.status === 400) {
@@ -95,27 +102,27 @@ async function testWebhookEndpoint() {
 // Check pricing page
 async function testPricingPage() {
   console.log('\n💰 Testing pricing page...');
-  
+
   try {
     const response = await makeApiRequest('/pricing.html', {
-      method: 'GET'
+      method: 'GET',
     });
-    
+
     if (response.status === 200) {
       console.log('  ✅ Pricing page accessible');
-      
+
       // Check for required elements
       const content = response.data;
       const hasStripeScript = content.includes('https://js.stripe.com/v3/');
       const hasCheckoutButtons = content.includes('data-checkout-button');
       const hasPlanData = content.includes('data-plan=');
-      
+
       if (hasStripeScript) {
         console.log('  ✅ Stripe.js script included');
       } else {
         console.log('  ❌ Stripe.js script missing');
       }
-      
+
       if (hasCheckoutButtons && hasPlanData) {
         console.log('  ✅ Checkout buttons configured');
       } else {
@@ -132,32 +139,32 @@ async function testPricingPage() {
 // Test checkout script
 async function testCheckoutScript() {
   console.log('\n📜 Testing checkout script...');
-  
+
   try {
     const response = await makeApiRequest('/checkout.js', {
-      method: 'GET'
+      method: 'GET',
     });
-    
+
     if (response.status === 200) {
       console.log('  ✅ Checkout script accessible');
-      
+
       const content = response.data;
       const hasStripeIntegration = content.includes('window.Stripe');
       const hasPlanMapping = content.includes('PLAN_KEYS');
       const hasCheckoutHandler = content.includes('handleCheckoutClick');
-      
+
       if (hasStripeIntegration) {
         console.log('  ✅ Stripe.js integration found');
       } else {
         console.log('  ❌ Stripe.js integration missing');
       }
-      
+
       if (hasPlanMapping) {
         console.log('  ✅ Plan key mapping found');
       } else {
         console.log('  ❌ Plan key mapping missing');
       }
-      
+
       if (hasCheckoutHandler) {
         console.log('  ✅ Checkout click handler found');
       } else {
@@ -175,7 +182,7 @@ async function testCheckoutScript() {
 function makeApiRequest(path, options = {}) {
   return new Promise((resolve, reject) => {
     const url = new URL(path, config.baseUrl);
-    
+
     const requestOptions = {
       hostname: url.hostname,
       port: url.port || 443,
@@ -183,43 +190,43 @@ function makeApiRequest(path, options = {}) {
       method: options.method || 'GET',
       headers: {
         'User-Agent': 'RinaWarp-Checkout-Test/1.0',
-        ...options.headers
-      }
+        ...options.headers,
+      },
     };
-    
+
     const req = https.request(requestOptions, (res) => {
       let data = '';
-      
+
       res.on('data', (chunk) => {
         data += chunk;
       });
-      
+
       res.on('end', () => {
         try {
           const responseData = data ? JSON.parse(data) : {};
           resolve({
             status: res.statusCode,
             headers: res.headers,
-            data: responseData
+            data: responseData,
           });
         } catch (error) {
           resolve({
             status: res.statusCode,
             headers: res.headers,
-            data: data
+            data: data,
           });
         }
       });
     });
-    
+
     req.on('error', (error) => {
       reject(error);
     });
-    
+
     if (options.body) {
       req.write(options.body);
     }
-    
+
     req.end();
   });
 }
@@ -231,7 +238,7 @@ async function runTests() {
     await testWebhookEndpoint();
     await testPricingPage();
     await testCheckoutScript();
-    
+
     console.log('\n📋 Test Summary:');
     console.log('================');
     console.log('✅ API endpoints tested');
@@ -242,7 +249,6 @@ async function runTests() {
     console.log('2. Set up Stripe webhook endpoints');
     console.log('3. Test with real checkout flow');
     console.log('4. Monitor webhook delivery in Stripe Dashboard');
-    
   } catch (error) {
     console.error('\n❌ Test suite failed:', error.message);
     process.exit(1);

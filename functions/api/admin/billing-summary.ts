@@ -13,15 +13,12 @@ function json(data: unknown, status = 200) {
     status,
     headers: {
       'content-type': 'application/json',
-      'access-control-allow-origin': '*'
-    }
+      'access-control-allow-origin': '*',
+    },
   });
 }
 
-async function kvGetJson<T>(
-  kv: KVNamespace,
-  key: string
-): Promise<T | null> {
+async function kvGetJson<T>(kv: KVNamespace, key: string): Promise<T | null> {
   const raw = await kv.get(key);
   if (!raw) return null;
   try {
@@ -47,7 +44,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const list = await env.BILLING_KV.list({
     prefix: 'billing:purchase:',
     cursor,
-    limit
+    limit,
   });
 
   let totalRevenue = 0;
@@ -62,18 +59,15 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   // Fetch basic subscription count
   const activeSubs =
-    (await kvGetJson<string[]>(
-      env.BILLING_KV,
-      'billing:index:subscriptions_active'
-    )) || [];
+    (await kvGetJson<string[]>(env.BILLING_KV, 'billing:index:subscriptions_active')) || [];
 
   return json({
     summary: {
       recentRevenueCents: totalRevenue,
       recentPurchasesCount: purchases.length,
-      activeSubscriptions: activeSubs.length
+      activeSubscriptions: activeSubs.length,
     },
     purchases,
-    listComplete: list.list_complete
+    listComplete: list.list_complete,
   });
 };

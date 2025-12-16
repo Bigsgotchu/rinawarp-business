@@ -1,0 +1,118 @@
+name: Release to Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        description: Release version (e.g. 0.4.0)
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    env:
+      VERSION: ${{ github.event.inputs.version }}
+      PAGES_DOMAIN: ${{ vars.PAGES_DOMAIN }}
+      UPDATES_ORIGIN: https://${{ vars.PAGES_DOMAIN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: 'apps/terminal-pro/desktop/package-lock.json'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: apps/terminal-pro/desktop
+
+      - name: Build Desktop Artifacts
+        run: pnpm build:all
+        working-directory: apps/terminal-pro/desktop
+
+      - name: Stage Pages Tree
+        run: node ./scripts/prepare-updates-tree.js $VERSION
+        working-directory: apps/terminal-pro/desktop
+
+      - name: 🔐 Run Consolidated Verification
+        run: pnpm prepublish:verify
+        working-directory: apps/terminal-pro/desktop
+
+      - name: Deploy to Cloudflare Pages
+        run: |
+          pnpm dlx wrangler@3 pages deploy ./dist/updates \
+            --project-name rinawarp-updates \
+            --branch production
+        working-directory: apps/terminal-pro/desktop
+
+      - name: 🔁 Precise Purge for Feed Cache
+        run: |
+          FEEDS='["/stable/latest.yml","/stable/latest-mac.yml","/stable/SHA256SUMS"]'
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data "{\"files\": ${FEEDS}}"
+
+      - name: Optional Health Check
+        run: pnpm monitor:check
+        working-directory: apps/terminal-pro/desktop
+        continue-on-error: true
+
+      - name: Upload Release Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: terminal-pro-release-${{ github.event.inputs.version }}
+          path: |
+            apps/terminal-pro/desktop/dist/updates/
+            apps/terminal-pro/desktop/dist/
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: success()
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: terminal-pro-v${{ github.event.inputs.version }}
+          name: Terminal Pro v${{ github.event.inputs.version }}
+          body: |
+            ## Release v${{ github.event.inputs.version }}
+
+            ### ✅ Verified
+            - All verification checks passed
+            - Artifacts deployed to Cloudflare Pages
+            - Feed cache purged for immediate client visibility
+
+            ### 📦 Platform Artifacts
+            - **Windows**: NSIS installer + portable ZIP
+            - **macOS**: DMG + ZIP
+            - **Linux**: AppImage
+
+            ### 🔗 Auto-Update Feeds
+            - Stable: https://${{ vars.PAGES_DOMAIN }}/stable/latest.yml
+            - macOS: https://${{ vars.PAGES_DOMAIN }}/stable/latest-mac.yml
+            - Checksums: https://${{ vars.PAGES_DOMAIN }}/stable/SHA256SUMS
+
+            ### 🚀 Next Steps
+            1. Monitor the health check dashboard
+            2. Verify auto-updates are working for existing installations
+            3. Check telemetry for any issues
+          files: |
+            apps/terminal-pro/desktop/dist/updates/stable/*
+          draft: false
+          prerelease: false

@@ -1,0 +1,271 @@
+# Cloudflare Pages CI/CD Pipeline - Production Deployment Guide
+
+## Overview
+
+This guide covers the production-ready CI/CD pipeline for deploying Terminal Pro updates via Cloudflare Pages. The pipeline ensures atomic updates with proper cache management and comprehensive verification.
+
+## 🎯 Key Features
+
+- **Atomic Updates**: Feed files are updated atomically with immediate client visibility
+- **Cache Safety**: Precise cache purging for feed files only, keeping immutable artifacts cached
+- **Verification Stack**: Multi-layered verification before deployment
+- **Rollback Support**: Fast rollback via Git revert or re-deploying previous version
+
+## 📋 Prerequisites
+
+### Required Secrets (GitHub Actions)
+```bash
+CF_ACCOUNT_ID          # Cloudflare account ID
+CF_API_TOKEN           # Pages:Edit + Cache:Purges permissions
+CF_ZONE_ID             # Zone ID for cache purging
+```
+
+### Required Variables (GitHub Repository)
+```bash
+PAGES_DOMAIN           # Your Pages domain (e.g., your-project.pages.dev)
+```
+
+### Local Development Setup
+```bash
+export UPDATES_ORIGIN="https://your-project.pages.dev"
+export CF_API_TOKEN="your-token"
+export CF_ZONE_ID="your-zone-id"
+```
+
+## 🚀 Deployment Process
+
+### 1. Manual Deployment (GitHub Actions)
+
+1. Go to **Actions** → **Release to Pages**
+2. Click **Run workflow**
+3. Enter version (e.g., `0.4.0`)
+4. Monitor the workflow execution
+
+### 2. Automated Deployment (CI Integration)
+
+The pipeline automatically:
+1. **Builds** all desktop artifacts
+2. **Stages** the Pages tree structure
+3. **Verifies** all components (required + optional checks)
+4. **Deploys** to Cloudflare Pages
+5. **Purges** feed cache for immediate visibility
+6. **Creates** GitHub release with artifacts
+
+### 3. Local Development Testing
+
+```bash
+# Test the verification stack locally
+cd apps/terminal-pro/desktop
+export UPDATES_ORIGIN="https://your-project.pages.dev"
+pnpm prepublish:verify
+
+# Test atomic deployment
+pnpm release:atomic
+```
+
+## 🔍 Verification Stack
+
+The pipeline runs comprehensive verification before deployment:
+
+### Required Checks (Block on Failure)
+- ✅ **Artifact Presence + Headers**: Ensure all files exist with proper headers
+- ✅ **SHA-256 Hash Verification**: Validate all checksums
+- ✅ **Feed Schema + Content**: Verify YAML structure and content
+- ✅ **Monotonic Version Check**: Ensure version progression
+- ✅ **Blockmap Sanity Validation**: Check differential update files
+
+### Optional Checks (Warn but Allow)
+- ⚠️ **Platform Signing Checks**: Verify platform-specific signatures
+- ⚠️ **GPG Signature Verification**: Validate detached signatures
+- ⚠️ **SLSA Provenance Validation**: Check supply chain attestations
+
+## 🏗️ Architecture
+
+### Directory Structure
+```
+dist/updates/
+├── stable/                    # Latest release files
+│   ├── latest.yml            # Windows feed
+│   ├── latest-mac.yml        # macOS feed
+│   ├── SHA256SUMS           # Checksums
+│   ├── *.exe                # Windows installer
+│   ├── *.dmg                # macOS installer
+│   └── *.AppImage           # Linux installer
+├── releases/0.4.0/          # Versioned artifacts
+│   └── (same files as stable)
+└── _headers                 # Cloudflare headers
+```
+
+### Cache Strategy
+
+| Path | Cache Policy | Reason |
+|------|-------------|--------|
+| `/stable/latest*.yml` | No-store | Immediate updates |
+| `/stable/SHA256SUMS` | No-store | Immediate updates |
+| `/stable/*.exe/*.dmg/*.AppImage` | 1 year immutable | Long-term caching |
+| `/releases/*` | 1 year immutable | Permanent archives |
+
+## ⚡ Atomic Promotion Model
+
+### Standard Promotion
+1. Build artifacts → `/releases/<version>/`
+2. Verification passes → copy to `/stable/`
+3. Deploy → purge only feed files
+4. Clients see updates immediately
+
+### Fast Rollback
+```bash
+# Option 1: Revert Git commit
+git revert <commit-hash>
+git push origin main
+
+# Option 2: Re-deploy previous version
+pnpm release:atomic 0.3.0  # Previous version
+```
+
+## 🛠️ Scripts Reference
+
+### Package.json Scripts
+```bash
+pnpm build:all              # Build all platform artifacts
+pnpm release:stage          # Stage Pages tree structure
+pnpm prepublish:verify      # Run consolidated verification
+pnpm deploy:pages           # Deploy to Cloudflare Pages
+pnpm cache:purge            # Purge feed cache
+pnpm release:atomic         # Complete atomic release
+```
+
+### Individual Verification Scripts
+```bash
+pnpm prepublish:guard       # Artifact presence check
+pnpm prepublish:hash        # SHA-256 verification
+pnpm prepublish:feeds       # Feed validation
+pnpm prepublish:version     # Version monotonicity
+pnpm prepublish:blockmap    # Blockmap validation
+pnpm prepublish:signing     # Platform signing
+pnpm prepublish:signatures  # GPG signatures
+pnpm prepublish:provenance  # SLSA provenance
+```
+
+## 🔧 Configuration
+
+### wrangler.toml (apps/terminal-pro/desktop/wrangler.toml)
+```toml
+name = "rinawarp-updates"
+account_id = "<your-account-id>"
+pages_build_output_dir = "dist/updates"
+
+# Headers configured for optimal caching and CORS
+[[headers]]
+  for = "/stable/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/stable/latest.yml"
+  [headers.values]
+    Cache-Control = "no-store"
+```
+
+### GitHub Actions Workflow (`.github/workflows/release-to-pages.yml`)
+- **Trigger**: Manual dispatch with version input
+- **Environment**: Production-ready with proper permissions
+- **Cache**: Optimized for pnpm dependency caching
+- **Artifacts**: Uploaded with 30-day retention
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### DNS Resolution Failed
+```bash
+# Solution: Set UPDATES_ORIGIN explicitly
+export UPDATES_ORIGIN="https://your-project.pages.dev"
+pnpm prepublish:verify
+```
+
+#### Cache Not Purged
+```bash
+# Check if CF_API_TOKEN has Cache:Purges permission
+curl -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+  -H "Authorization: Bearer $CF_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{"files":["/stable/latest.yml"]}'
+```
+
+#### Verification Failed
+```bash
+# Run individual verification steps
+pnpm prepublish:verify:individual
+```
+
+### Debug Commands
+```bash
+# Check Pages deployment status
+pnpm dlx wrangler@3 pages deployment list --project-name=rinawarp-updates
+
+# Verify feed accessibility
+curl -I https://your-project.pages.dev/stable/latest.yml
+
+# Check cache headers
+curl -I https://your-project.pages.dev/stable/latest.yml | grep -i cache
+```
+
+## 📊 Monitoring
+
+### Health Checks
+```bash
+# Automated health monitoring
+pnpm monitor:check
+
+# Detailed health status
+pnpm monitor:health
+```
+
+### Success Metrics
+- ✅ All verification steps pass
+- ✅ Feed files purged from cache
+- ✅ GitHub release created
+- ✅ Health check returns green status
+
+## 🔐 Security Considerations
+
+- **Token Scope**: CF_API_TOKEN limited to Pages:Edit + Cache:Purges
+- **Verification**: Multi-layer security verification before deployment
+- **Atomic Updates**: No partial deployments possible
+- **Rollback**: Fast revert capability for security issues
+
+## 📝 Deployment Checklist
+
+Before running production deployment:
+
+- [ ] All tests pass locally
+- [ ] Verification stack tested: `pnpm prepublish:verify`
+- [ ] Cloudflare credentials configured in GitHub
+- [ ] PAGES_DOMAIN variable set
+- [ ] Wrangler.toml account_id updated
+- [ ] Health check script available: `pnpm monitor:check`
+
+## 🎉 Quick Start
+
+1. **Configure GitHub Secrets**:
+   ```
+   CF_ACCOUNT_ID, CF_API_TOKEN, CF_ZONE_ID
+   ```
+
+2. **Set Repository Variables**:
+   ```
+   PAGES_DOMAIN = your-project.pages.dev
+   ```
+
+3. **Test Locally**:
+   ```bash
+   export UPDATES_ORIGIN="https://your-project.pages.dev"
+   pnpm prepublish:verify
+   ```
+
+4. **Deploy**:
+   - Go to Actions → Release to Pages
+   - Enter version → Run workflow
+
+The pipeline is now production-ready with atomic updates and comprehensive verification!

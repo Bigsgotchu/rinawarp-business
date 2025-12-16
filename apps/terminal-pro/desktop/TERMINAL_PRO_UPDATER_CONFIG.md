@@ -1,0 +1,156 @@
+# Terminal Pro Auto-Updater Configuration
+
+## Overview
+
+Terminal Pro's auto-updater has been successfully configured to work with Cloudflare Pages feeds, providing a robust update system for end-users.
+
+## Configuration Details
+
+### Environment Variables
+
+- **`UPDATES_ORIGIN`**: Override the update feed origin (default: `https://updates.rinawarp.dev`)
+  - Use during development/testing: `UPDATES_ORIGIN="https://your-pages.dev" pnpm start`
+  - For production deployments, the default origin will be used
+
+### Auto-Updater Settings
+
+```javascript
+// Feed URL Configuration
+autoUpdater.setFeedURL({
+  provider: 'generic',
+  url: `${ORIGIN}/stable`,
+});
+
+// Safe Defaults
+autoUpdater.autoDownload = true; // Auto-download updates
+autoUpdater.autoInstallOnAppQuit = false; // Install on quit after health window
+```
+
+### Event Handling
+
+The updater includes comprehensive event logging:
+
+- `checking-for-update`: Logs when update check starts
+- `update-available`: Logs when new update is found
+- `update-not-available`: Logs when no update is available
+- `error`: Logs any updater errors
+- `download-progress`: Logs download progress with speed and percentage
+- `update-downloaded`: Schedules installation on app quit
+
+### IPC API
+
+Renderer process can communicate with updater via these IPC handlers:
+
+```javascript
+// Check for updates
+await window.electronAPI.invoke('update:check');
+
+// Install update (restarts app)
+await window.electronAPI.invoke('update:install');
+
+// Get current status
+await window.electronAPI.invoke('update:getStatus');
+```
+
+### Build Configuration
+
+The `electron-builder` is configured to publish to the Pages endpoint:
+
+```json
+{
+  "build": {
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "https://updates.rinawarp.dev/stable"
+      }
+    ]
+  }
+}
+```
+
+## Release Process
+
+### Standard Release Workflow
+
+1. **Build all platforms**:
+
+   ```bash
+   pnpm build:all
+   ```
+
+2. **Prepare update feeds**:
+
+   ```bash
+   pnpm release:stage
+   ```
+
+3. **Verify everything**:
+
+   ```bash
+   pnpm prepublish:verify
+   ```
+
+4. **Deploy to Pages**:
+
+   ```bash
+   pnpm deploy:pages
+   ```
+
+5. **Atomic release** (all steps in one):
+
+   ```bash
+   pnpm release:atomic
+   ```
+
+### Testing with Different Origins
+
+Test updates from a Pages deployment:
+
+```bash
+# Set environment variable for testing
+UPDATES_ORIGIN="https://your-project.pages.dev" pnpm start
+
+# Verify the configuration
+UPDATES_ORIGIN="https://your-project.pages.dev" pnpm prepublish:verify
+```
+
+### Cache Management
+
+Purge update caches to force fresh downloads:
+
+```bash
+pnpm cache:purge
+```
+
+## Security Features
+
+- **HTTPS Only**: All update downloads use secure HTTPS connections
+- **Signature Verification**: Electron Builder automatically verifies signatures
+- **Development Mode**: Updates disabled in development (`NODE_ENV !== 'production'`)
+- **Safe Installation**: Updates install on app quit, preventing data loss
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Updates not downloading**:
+   - Check `UPDATES_ORIGIN` environment variable
+   - Verify Pages deployment is accessible
+   - Check browser network logs for connectivity issues
+
+2. **Build artifacts not found**:
+   - Run `pnpm release:stage` to prepare feeds
+   - Ensure `prepublish:verify` passes before deployment
+
+3. **Signature verification fails**:
+   - Check signing certificates are valid
+   - Ensure artifacts weren't modified after signing
+
+### Debug Logging
+
+Update events are logged to console in production builds. Check the app's console output for detailed update information.
+
+## Integration Complete ✅
+
+The auto-updater is now fully wired to consume Pages feeds, providing a production-ready update system for Terminal Pro users.

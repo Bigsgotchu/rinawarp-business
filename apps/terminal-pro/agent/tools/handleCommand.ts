@@ -19,7 +19,7 @@ export async function handleCommand(request: ToolRequest): Promise<any> {
         return {
           success: true,
           output: stdout,
-          error: stderr
+          error: stderr,
         };
 
       case 'git':
@@ -30,34 +30,33 @@ export async function handleCommand(request: ToolRequest): Promise<any> {
         return {
           success: true,
           output: gitStdout,
-          error: gitStderr
+          error: gitStderr,
         };
 
       case 'fs':
         // File system operations (placeholder)
         return {
           success: true,
-          message: 'File system operations not implemented yet'
+          message: 'File system operations not implemented yet',
         };
 
       case 'system':
         // System information
         return {
           success: true,
-          info: 'System info not implemented yet'
+          info: 'System info not implemented yet',
         };
 
       default:
         return {
           success: false,
-          error: `Unknown tool: ${tool}`
+          error: `Unknown tool: ${tool}`,
         };
     }
-
   } catch (error: any) {
     return {
       success: false,
-      error: error.message
+      error: error.message,
     };
   }
 }

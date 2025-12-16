@@ -85,7 +85,7 @@ fi
 mkdir -p ./config/pricing
 
 # STRIPE SECRET KEY (Essential for checkout function)
-STRIPE_SECRET_KEY="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"
+STRIPE_SECRET_KEY="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"
 
 # Create pricing maps based on the provided Stripe products
 cat > ./config/pricing/price_map.json << 'EOF'

@@ -193,19 +193,19 @@ class ProjectAnalyzer {
 
       // Analyze based on file type
       switch (fileInfo.type) {
-      case 'javascript':
-      case 'typescript':
-        this.analyzeCodeFile(filePath, fileInfo);
-        break;
-      case 'json':
-        this.analyzeJsonFile(filePath, fileInfo);
-        break;
-      case 'markdown':
-        this.analyzeMarkdownFile(filePath, fileInfo);
-        break;
-      case 'configuration':
-        this.analyzeConfigFile(filePath, fileInfo);
-        break;
+        case 'javascript':
+        case 'typescript':
+          this.analyzeCodeFile(filePath, fileInfo);
+          break;
+        case 'json':
+          this.analyzeJsonFile(filePath, fileInfo);
+          break;
+        case 'markdown':
+          this.analyzeMarkdownFile(filePath, fileInfo);
+          break;
+        case 'configuration':
+          this.analyzeConfigFile(filePath, fileInfo);
+          break;
       }
 
       return fileInfo;

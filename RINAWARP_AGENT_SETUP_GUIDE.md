@@ -5,6 +5,7 @@
 ## 🎯 What Was Set Up
 
 ### 📁 New Directories Created
+
 - `./scripts/` - Custom build and deployment scripts
 - `./.vscode/tasks.json` - VS Code tasks for easy command execution
 - `~/.config/KiloCode/mcp.json` - Fixed Kilo MCP configuration
@@ -13,6 +14,7 @@
 ### 🛠️ Available Commands
 
 #### Build Commands
+
 ```bash
 # Build everything at once
 bash scripts/build-all.sh
@@ -31,6 +33,7 @@ bash scripts/build-worker.sh rina-agent    # Build Rina agent worker
 ```
 
 #### Deployment Commands
+
 ```bash
 # Deploy Cloudflare workers
 bash scripts/deploy-worker.sh admin-api staging
@@ -43,6 +46,7 @@ bash scripts/deploy-website.sh production
 ```
 
 #### Development Commands
+
 ```bash
 # Start development servers
 bash scripts/start-dev.sh website          # Start website dev server
@@ -53,6 +57,7 @@ bash scripts/start-dev.sh api-gateway      # Start API gateway
 ```
 
 #### Testing & Health Check
+
 ```bash
 # Run all tests
 bash scripts/test-all.sh
@@ -67,6 +72,7 @@ bash scripts/rinawarp-smoke-test.sh
 ## 💻 VS Code Integration
 
 ### 🔧 Available Tasks
+
 In VS Code: **Terminal → Run Task…** you'll find:
 
 1. **Build All Services** - Builds everything
@@ -82,11 +88,13 @@ In VS Code: **Terminal → Run Task…** you'll find:
 ## 🤖 Continue AI Assistant
 
 ### ✅ Configured Model
+
 - **Name**: "RinaWarp Assistant"
 - **Purpose**: Specialized for your RinaWarp project
 - **Knowledge**: Understands your multi-service architecture
 
 ### 💬 How to Use in Continue Chat
+
 1. Open Continue sidebar in VS Code
 2. Select "RinaWarp Assistant" model
 3. Ask questions like:
@@ -99,6 +107,7 @@ In VS Code: **Terminal → Run Task…** you'll find:
 ## 🚀 Quick Start Examples
 
 ### Example 1: Daily Development Workflow
+
 ```bash
 # 1. Start development
 bash scripts/start-dev.sh website
@@ -114,6 +123,7 @@ bash scripts/build-app.sh website
 ```
 
 ### Example 2: Deploy to Production
+
 ```bash
 # 1. Build everything first
 bash scripts/build-all.sh
@@ -127,6 +137,7 @@ bash scripts/deploy-website.sh production
 ```
 
 ### Example 3: Health Check
+
 ```bash
 # Quick project status
 bash scripts/health-check.sh
@@ -174,6 +185,7 @@ Your RinaWarp project has this structure, and the agent knows about it:
 ## 🔍 Validation Results
 
 ✅ **Setup Validation Passed**:
+
 - ✅ 22 package.json files found across project
 - ✅ 6 Cloudflare worker configurations detected
 - ✅ All required directories exist (apps/, workers/, backend/)
@@ -183,11 +195,13 @@ Your RinaWarp project has this structure, and the agent knows about it:
 ## 🎯 Next Steps
 
 ### Immediate Actions:
+
 1. **Restart VS Code** to load new tasks
 2. **Open Continue** and select "RinaWarp Assistant" model
 3. **Try a command**: `bash scripts/health-check.sh`
 
 ### Try These Agent Commands:
+
 - "Build the website app"
 - "Deploy the rina-agent worker to staging"
 - "Start the admin console development server"
@@ -195,6 +209,7 @@ Your RinaWarp project has this structure, and the agent knows about it:
 - "Check the health of the project"
 
 ### Customization:
+
 - Edit `./.vscode/tasks.json` to add more tasks
 - Modify scripts in `./scripts/` to match your workflow
 - Update `~/.continue/config.yaml` to adjust the AI assistant
@@ -202,6 +217,7 @@ Your RinaWarp project has this structure, and the agent knows about it:
 ## 🆘 Troubleshooting
 
 ### If commands don't work:
+
 ```bash
 # Check permissions
 chmod +x scripts/*.sh
@@ -211,11 +227,13 @@ bash scripts/health-check.sh
 ```
 
 ### If Continue doesn't work:
+
 - Check `~/.continue/config.yaml` exists
 - Restart VS Code
 - Verify "RinaWarp Assistant" model is selected
 
 ### If VS Code tasks don't appear:
+
 - Restart VS Code
 - Check `.vscode/tasks.json` exists
 - Open Terminal → Run Task… to verify

@@ -15,46 +15,46 @@ class EmailService {
   initializeTransporter() {
     try {
       switch (this.provider) {
-      case 'sendgrid':
-        this.transporter = nodemailer.createTransporter({
-          service: 'SendGrid',
-          auth: {
-            user: 'apikey',
-            pass: process.env.SENDGRID_API_KEY,
-          },
-        });
-        break;
+        case 'sendgrid':
+          this.transporter = nodemailer.createTransporter({
+            service: 'SendGrid',
+            auth: {
+              user: 'apikey',
+              pass: process.env.SENDGRID_API_KEY,
+            },
+          });
+          break;
 
-      case 'ses':
-        this.transporter = nodemailer.createTransporter({
-          SES: {
-            region: process.env.AWS_REGION || 'us-east-1',
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          },
-        });
-        break;
+        case 'ses':
+          this.transporter = nodemailer.createTransporter({
+            SES: {
+              region: process.env.AWS_REGION || 'us-east-1',
+              accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+              secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            },
+          });
+          break;
 
-      case 'gmail':
-        this.transporter = nodemailer.createTransporter({
-          service: 'gmail',
-          auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_APP_PASSWORD,
-          },
-        });
-        break;
+        case 'gmail':
+          this.transporter = nodemailer.createTransporter({
+            service: 'gmail',
+            auth: {
+              user: process.env.GMAIL_USER,
+              pass: process.env.GMAIL_APP_PASSWORD,
+            },
+          });
+          break;
 
-      default: // SMTP fallback
-        this.transporter = nodemailer.createTransporter({
-          host: process.env.SMTP_HOST || 'localhost',
-          port: process.env.SMTP_PORT || 587,
-          secure: process.env.SMTP_SECURE === 'true',
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-          },
-        });
+        default: // SMTP fallback
+          this.transporter = nodemailer.createTransporter({
+            host: process.env.SMTP_HOST || 'localhost',
+            port: process.env.SMTP_PORT || 587,
+            secure: process.env.SMTP_SECURE === 'true',
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+            },
+          });
       }
 
       console.log(

@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getToken } from '../../utils/auth';
-import { FaClock, FaUser, FaTerminal, FaCreditCard, FaBrain, FaFilter, FaSearch } from 'react-icons/fa';
+import {
+  FaClock,
+  FaUser,
+  FaTerminal,
+  FaCreditCard,
+  FaBrain,
+  FaFilter,
+  FaSearch,
+} from 'react-icons/fa';
 
 const Activity = ({ teamId }) => {
   const [activities, setActivities] = useState([]);
@@ -20,8 +28,8 @@ const Activity = ({ teamId }) => {
         setLoading(true);
         const response = await fetch(`/api/team/activity?teamId=${teamId}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
+            Authorization: `Bearer ${authToken}`,
+          },
         });
 
         if (!response.ok) {
@@ -44,21 +52,31 @@ const Activity = ({ teamId }) => {
 
   const getActivityIcon = (type) => {
     switch (type) {
-      case 'command': return <FaTerminal className="text-mermid-600" />;
-      case 'session': return <FaTerminal className="text-blue-600" />;
-      case 'billing': return <FaCreditCard className="text-green-600" />;
-      case 'ai_memory': return <FaBrain className="text-purple-600" />;
-      default: return <FaClock className="text-gray-600" />;
+      case 'command':
+        return <FaTerminal className="text-mermid-600" />;
+      case 'session':
+        return <FaTerminal className="text-blue-600" />;
+      case 'billing':
+        return <FaCreditCard className="text-green-600" />;
+      case 'ai_memory':
+        return <FaBrain className="text-purple-600" />;
+      default:
+        return <FaClock className="text-gray-600" />;
     }
   };
 
   const getActivityColor = (type) => {
     switch (type) {
-      case 'command': return 'border-mermid-200 bg-mermid-50';
-      case 'session': return 'border-blue-200 bg-blue-50';
-      case 'billing': return 'border-green-200 bg-green-50';
-      case 'ai_memory': return 'border-purple-200 bg-purple-50';
-      default: return 'border-gray-200 bg-gray-50';
+      case 'command':
+        return 'border-mermid-200 bg-mermid-50';
+      case 'session':
+        return 'border-blue-200 bg-blue-50';
+      case 'billing':
+        return 'border-green-200 bg-green-50';
+      case 'ai_memory':
+        return 'border-purple-200 bg-purple-50';
+      default:
+        return 'border-gray-200 bg-gray-50';
     }
   };
 
@@ -66,7 +84,7 @@ const Activity = ({ teamId }) => {
     return new Date(timestamp).toLocaleString();
   };
 
-  const filteredActivities = activities.filter(activity => {
+  const filteredActivities = activities.filter((activity) => {
     // Filter by time range
     const activityDate = new Date(activity.created_at);
     const now = new Date();
@@ -172,28 +190,28 @@ const Activity = ({ teamId }) => {
           <div className="bg-mermid-50 border border-mermid-200 rounded-lg p-4 text-center">
             <p className="text-sm text-mermid-600 font-medium">Active Members</p>
             <p className="text-2xl font-bold text-mermid-800 mt-1">
-              {activities.length > 0 ? new Set(activities.map(a => a.user_id)).size : 0}
+              {activities.length > 0 ? new Set(activities.map((a) => a.user_id)).size : 0}
             </p>
           </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-sm text-blue-600 font-medium">Commands Run</p>
             <p className="text-2xl font-bold text-blue-800 mt-1">
-              {activities.filter(a => a.type === 'command').length}
+              {activities.filter((a) => a.type === 'command').length}
             </p>
           </div>
 
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
             <p className="text-sm text-green-600 font-medium">Sessions</p>
             <p className="text-2xl font-bold text-green-800 mt-1">
-              {activities.filter(a => a.type === 'session').length}
+              {activities.filter((a) => a.type === 'session').length}
             </p>
           </div>
 
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
             <p className="text-sm text-purple-600 font-medium">AI Memories</p>
             <p className="text-2xl font-bold text-purple-800 mt-1">
-              {activities.filter(a => a.type === 'ai_memory').length}
+              {activities.filter((a) => a.type === 'ai_memory').length}
             </p>
           </div>
         </div>
@@ -207,9 +225,7 @@ const Activity = ({ teamId }) => {
                 className={`border-l-4 ${getActivityColor(activity.type)} pl-4`}
               >
                 <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0">
-                    {getActivityIcon(activity.type)}
-                  </div>
+                  <div className="flex-shrink-0">{getActivityIcon(activity.type)}</div>
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
                       <span className="text-sm text-gray-500">

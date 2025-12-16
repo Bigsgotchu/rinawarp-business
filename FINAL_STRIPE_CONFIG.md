@@ -10,12 +10,12 @@ Retrieved from live Stripe account:
 
 ```json
 {
-  "enterprise-yearly": "price_1SVRVMGZrRdZy3W9094r1F5B",      // $3000/year
-  "founder-lifetime": "price_1SVRVLGZrRdZy3W976aXrw0g",      // $999 one-time  
-  "pioneer-lifetime": "price_1SVRVLGZrRdZy3W9LoPVNyem",      // $700 one-time
-  "pro-monthly": "price_1SVRVKGZrRdZy3W9wFO3QPw6",            // $49.99/month
-  "creator-monthly": "price_1SVRVJGZrRdZy3W9tRX5tsaH",        // $29.99/month
-  "starter-monthly": "price_1SVRVJGZrRdZy3W9q6u9L82y"         // $9.99/month
+  "enterprise-yearly": "price_1SVRVMGZrRdZy3W9094r1F5B", // $3000/year
+  "founder-lifetime": "price_1SVRVLGZrRdZy3W976aXrw0g", // $999 one-time
+  "pioneer-lifetime": "price_1SVRVLGZrRdZy3W9LoPVNyem", // $700 one-time
+  "pro-monthly": "price_1SVRVKGZrRdZy3W9wFO3QPw6", // $49.99/month
+  "creator-monthly": "price_1SVRVJGZrRdZy3W9tRX5tsaH", // $29.99/month
+  "starter-monthly": "price_1SVRVJGZrRdZy3W9q6u9L82y" // $9.99/month
 }
 ```
 
@@ -65,7 +65,7 @@ curl -i https://rinawarptech.com/api/checkout-v2 \
 **Use these EXACT plan codes in frontend:**
 
 - `founder-lifetime` → $999 (Founder Lifetime)
-- `creator-monthly` → $29.99/month (Creator Monthly)  
+- `creator-monthly` → $29.99/month (Creator Monthly)
 - `pro-monthly` → $49.99/month (Pro Monthly)
 - `enterprise-yearly` → $3000/year (Enterprise Yearly)
 - `pioneer-lifetime` → $700 (Pioneer Lifetime)

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+
 const yaml = require('yaml');
 
 const DEFAULTS = {
@@ -8,12 +9,13 @@ const DEFAULTS = {
   policy: {
     confirmRequired: true,
     dryRunByDefault: false,
-    concurrency: 4,              // max parallel steps
-    stepPolicy: [                // optional per-step overrides
+    concurrency: 4, // max parallel steps
+    stepPolicy: [
+      // optional per-step overrides
       // { match: { id: 'build' }, timeoutMs: 300000, maxRetries: 2, retryBackoffMs: 800 }
       // { match: { capability: 'network' }, maxRetries: 3, retryBackoffMs: 1000 }
-    ]
-  }
+    ],
+  },
 };
 
 function loadPolicy(cwd) {
@@ -27,8 +29,10 @@ function loadPolicy(cwd) {
       policy: {
         ...DEFAULTS.policy,
         ...(data.policy || {}),
-        stepPolicy: Array.isArray(data?.policy?.stepPolicy) ? data.policy.stepPolicy : DEFAULTS.policy.stepPolicy
-      }
+        stepPolicy: Array.isArray(data?.policy?.stepPolicy)
+          ? data.policy.stepPolicy
+          : DEFAULTS.policy.stepPolicy,
+      },
     };
     // clamp concurrency
     if (merged.policy.concurrency < 1) merged.policy.concurrency = 1;
@@ -46,7 +50,8 @@ function validatePolicy(cwd) {
     const data = yaml.parse(fs.readFileSync(p, 'utf8'));
     if (!data) return { ok: false, error: 'invalid yaml' };
     // basic checks
-    if (typeof data.capabilities !== 'object') return { ok: false, error: 'capabilities not object' };
+    if (typeof data.capabilities !== 'object')
+      return { ok: false, error: 'capabilities not object' };
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e.message };

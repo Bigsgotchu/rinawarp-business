@@ -59,9 +59,9 @@ export interface NextStepItem {
 }
 
 export type NextStep =
-  | { kind: "none"; reason: string }
-  | { kind: "suggestion"; label: string; detail?: string; acceptText: string; tool?: ToolCall }
-  | { kind: "checklist"; label: string; items: NextStepItem[] };
+  | { kind: 'none'; reason: string }
+  | { kind: 'suggestion'; label: string; detail?: string; acceptText: string; tool?: ToolCall }
+  | { kind: 'checklist'; label: string; items: NextStepItem[] };
 
 export interface RuleResult {
   score: number;

@@ -1,4 +1,4 @@
-import rateLimit from "express-rate-limit";
+import rateLimit from 'express-rate-limit';
 
 export function makeRateLimiter() {
   // why: env-driven caps for quick ops tuning
@@ -9,6 +9,6 @@ export function makeRateLimiter() {
     limit,
     standardHeaders: true,
     legacyHeaders: false,
-    validate: { xForwardedForHeader: false }
+    validate: { xForwardedForHeader: false },
   });
 }

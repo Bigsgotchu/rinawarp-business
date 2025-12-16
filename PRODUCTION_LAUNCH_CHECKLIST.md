@@ -9,6 +9,7 @@ This checklist ensures every "completed" feature is actually working in producti
 ## 🔐 Critical Security Validations (Must Pass 100%)
 
 ### ✅ Stripe Webhook Security
+
 - [ ] **Raw body signature verification** - Uses `express.raw()` middleware correctly
 - [ ] **Tampered payload rejection** - Invalid signatures return 400
 - [ ] **Idempotency implementation** - Duplicate events are detected and skipped
@@ -17,11 +18,13 @@ This checklist ensures every "completed" feature is actually working in producti
 - [ ] **Production webhook secret** - `STRIPE_WEBHOOK_SECRET` is set and correct
 
 **Validation Command:**
+
 ```bash
 node test/stripe-webhook-audit.js
 ```
 
 ### ✅ License System Security
+
 - [ ] **Device-bound licenses** - Cannot be shared between devices
 - [ ] **Signature verification** - Prevents license tampering
 - [ ] **Offline validity window** - Subscriptions expire after 3 days offline
@@ -30,11 +33,13 @@ node test/stripe-webhook-audit.js
 - [ ] **Rate limiting** - License activation is abuse-protected
 
 **Validation Command:**
+
 ```bash
 node test/license-entitlements-test.js
 ```
 
 ### ✅ Feature Gating Matrix
+
 - [ ] **Free tier** - Only basic features accessible
 - [ ] **Terminal Pro Lifetime** - Ghost text, memory, advanced planning
 - [ ] **Agent Pro Active** - AI loop, tools, crash supervision
@@ -43,11 +48,13 @@ node test/license-entitlements-test.js
 - [ ] **Downgrades** - Expired subscriptions properly restricted
 
 **Validation Command:**
+
 ```bash
 node test/tier-gating-matrix.js
 ```
 
 ### ✅ AI Safety Compliance
+
 - [ ] **No autonomous writes** - User approval required for all operations
 - [ ] **Deterministic fallback** - Heuristics always work when AI fails
 - [ ] **Risk guardrails** - Dangerous commands require approval
@@ -55,6 +62,7 @@ node test/tier-gating-matrix.js
 - [ ] **Stop conditions** - AI stops when success signal detected
 
 **Validation Command:**
+
 ```bash
 node test/ai-safety-validation.js
 ```
@@ -64,6 +72,7 @@ node test/ai-safety-validation.js
 ## 🏗️ Infrastructure Requirements
 
 ### ✅ Webhook Endpoints
+
 - [ ] **Endpoint configured** in Stripe dashboard
 - [ ] **HTTPS endpoint** with valid SSL certificate
 - [ ] **Raw body handling** - No middleware consumes body before signature verification
@@ -71,6 +80,7 @@ node test/ai-safety-validation.js
 - [ ] **Logging** - All webhook events are logged with sufficient detail
 
 ### ✅ Database & Storage
+
 - [ ] **Idempotency table** - `processed_events` with unique constraint on `event_id`
 - [ ] **License table** - Secure storage with encrypted license keys
 - [ ] **User entitlements** - Real-time tier/feature mapping
@@ -78,6 +88,7 @@ node test/ai-safety-validation.js
 - [ ] **Migration scripts** - All schema changes are versioned and tested
 
 ### ✅ Environment Configuration
+
 - [ ] **Production Stripe keys** - `sk_live_*` (not test keys)
 - [ ] **Webhook secret** - `STRIPE_WEBHOOK_SECRET` from Stripe dashboard
 - [ ] **License encryption** - `LICENSE_ENCRYPTION_SECRET` is secure and rotated
@@ -89,6 +100,7 @@ node test/ai-safety-validation.js
 ## 🧪 End-to-End Testing
 
 ### ✅ Checkout Flow
+
 - [ ] **Terminal Pro purchase** - Creates lifetime license correctly
 - [ ] **Agent Pro subscription** - Sets up recurring billing
 - [ ] **Payment failures** - Grace period and retry logic works
@@ -96,6 +108,7 @@ node test/ai-safety-validation.js
 - [ ] **License activation** - Keys activate features immediately
 
 ### ✅ License Activation
+
 - [ ] **Valid license key** - Activates correct tier and features
 - [ ] **Invalid license key** - Rejected with appropriate error
 - [ ] **Device binding** - Same license fails on different device
@@ -103,6 +116,7 @@ node test/ai-safety-validation.js
 - [ ] **Rate limiting** - Prevents brute force attacks
 
 ### ✅ Feature Gating
+
 - [ ] **Free user experience** - Cannot access premium features
 - [ ] **Terminal Pro features** - Ghost text and memory work
 - [ ] **Agent Pro features** - AI reasoning loop and tools work
@@ -110,6 +124,7 @@ node test/ai-safety-validation.js
 - [ ] **Graceful degradation** - Expired subscriptions show downgrade
 
 ### ✅ Webhook Processing
+
 - [ ] **Checkout completion** - Creates license immediately
 - [ ] **Subscription renewals** - Maintains active status
 - [ ] **Payment failures** - Moves to past_due status
@@ -121,6 +136,7 @@ node test/ai-safety-validation.js
 ## 📊 Monitoring & Observability
 
 ### ✅ Application Monitoring
+
 - [ ] **Webhook delivery rate** - >99% success rate
 - [ ] **Duplicate event rate** - <1% (indicates idempotency issues)
 - [ ] **License activation success** - Track activation failures
@@ -128,6 +144,7 @@ node test/ai-safety-validation.js
 - [ ] **API error rates** - All endpoints monitored
 
 ### ✅ Business Metrics
+
 - [ ] **Conversion funnel** - Checkout start to completion
 - [ ] **License activation rate** - Keys activated vs issued
 - [ ] **Feature usage by tier** - Validate pricing model
@@ -135,6 +152,7 @@ node test/ai-safety-validation.js
 - [ ] **Revenue tracking** - Real-time billing updates
 
 ### ✅ Alerting
+
 - [ ] **Webhook failures** - Immediate alerts for delivery issues
 - [ ] **High error rates** - Application errors >1%
 - [ ] **Suspicious activity** - Brute force or license abuse
@@ -146,6 +164,7 @@ node test/ai-safety-validation.js
 ## 🚨 Risk Mitigation
 
 ### ✅ Security Incidents
+
 - [ ] **License key compromise** - Revocation and reissue process
 - [ ] **Webhook endpoint attack** - Rate limiting and DDoS protection
 - [ ] **Database breach** - Encrypted data at rest and in transit
@@ -153,6 +172,7 @@ node test/ai-safety-validation.js
 - [ ] **Payment fraud** - Stripe Radar and manual review
 
 ### ✅ Operational Risks
+
 - [ ] **Database failure** - Automated failover and recovery
 - [ ] **Webhook delivery failures** - Retry logic and dead letter queues
 - [ ] **License system downtime** - Grace period for offline usage
@@ -160,6 +180,7 @@ node test/ai-safety-validation.js
 - [ ] **Scalability bottlenecks** - Load testing and auto-scaling
 
 ### ✅ Business Risks
+
 - [ ] **Pricing model validation** - A/B test different price points
 - [ ] **Feature adoption** - Track usage of premium features
 - [ ] **Customer support** - Help desk integration for billing issues
@@ -171,6 +192,7 @@ node test/ai-safety-validation.js
 ## 🔄 Launch Procedures
 
 ### ✅ Pre-Launch (T-1 Day)
+
 - [ ] **Run full validation suite** - `./scripts/production-validate.sh --full`
 - [ ] **Deploy to staging** - Complete end-to-end testing
 - [ ] **Load testing** - Verify system handles expected load
@@ -178,6 +200,7 @@ node test/ai-safety-validation.js
 - [ ] **Team notification** - Alert all stakeholders of launch timeline
 
 ### ✅ Launch Day (T-0)
+
 - [ ] **Deploy to production** - Blue-green deployment strategy
 - [ ] **Monitor key metrics** - Real-time dashboard monitoring
 - [ ] **Test critical paths** - Manual verification of checkout flow
@@ -185,6 +208,7 @@ node test/ai-safety-validation.js
 - [ ] **Customer support ready** - Support team briefed and ready
 
 ### ✅ Post-Launch (T+1 to T+7)
+
 - [ ] **Daily metrics review** - Conversion rates and error rates
 - [ ] **Customer feedback monitoring** - Support tickets and reviews
 - [ ] **Performance optimization** - Address any bottlenecks
@@ -196,18 +220,21 @@ node test/ai-safety-validation.js
 ## 📋 Validation Commands
 
 ### Quick Validation (5 minutes)
+
 ```bash
 # Run only critical security validations
 ./scripts/production-validate.sh --quick
 ```
 
 ### Full Validation (15 minutes)
+
 ```bash
 # Run complete validation suite
 ./scripts/production-validate.sh --full
 ```
 
 ### Individual Component Tests
+
 ```bash
 # Test specific components
 node test/stripe-webhook-audit.js          # Webhook security
@@ -221,6 +248,7 @@ node test/ai-safety-validation.js          # AI safety
 ## 🎯 Success Criteria
 
 ### Must Pass (Launch Blockers)
+
 - ✅ All security validations pass (100%)
 - ✅ All webhook tests pass (100%)
 - ✅ All license system tests pass (100%)
@@ -228,6 +256,7 @@ node test/ai-safety-validation.js          # AI safety
 - ✅ All AI safety tests pass (100%)
 
 ### Should Pass (Quality Gates)
+
 - ✅ Zero critical security vulnerabilities
 - ✅ <1% webhook delivery failure rate
 - ✅ <0.1% license activation failure rate
@@ -235,6 +264,7 @@ node test/ai-safety-validation.js          # AI safety
 - ✅ All monitoring alerts configured
 
 ### Nice to Have (Enhancements)
+
 - ✅ Load testing completed
 - ✅ Performance benchmarks established
 - ✅ Customer support documentation complete
@@ -245,6 +275,7 @@ node test/ai-safety-validation.js          # AI safety
 ## 🆘 Emergency Procedures
 
 ### Rollback Plan
+
 1. **Identify issue** - Determine scope and impact
 2. **Activate rollback** - Switch to previous stable version
 3. **Notify stakeholders** - Alert team and customers
@@ -253,6 +284,7 @@ node test/ai-safety-validation.js          # AI safety
 6. **Post-mortem** - Document lessons learned
 
 ### Emergency Contacts
+
 - **Technical Lead**: [Your contact info]
 - **Product Manager**: [Your contact info]
 - **Customer Support**: [Your contact info]
@@ -263,12 +295,14 @@ node test/ai-safety-validation.js          # AI safety
 ## 📞 Support Resources
 
 ### Documentation
+
 - [Stripe Webhook Documentation](https://stripe.com/docs/webhooks)
 - [License System Architecture](./backend/stripe-secure/README.md)
 - [Feature Gating Guide](./apps/terminal-pro/agent/featureGating.ts)
 - [AI Safety Guidelines](./apps/terminal-pro/agent/aiReasoningLoop.ts)
 
 ### Tools
+
 - **Stripe CLI**: `stripe listen --forward-to localhost:3000/webhook`
 - **Validation Suite**: `./scripts/production-validate.sh`
 - **Monitoring Dashboard**: [Your monitoring URL]

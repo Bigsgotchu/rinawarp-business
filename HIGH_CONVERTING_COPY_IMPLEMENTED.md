@@ -3,13 +3,16 @@
 ## 🎯 HERO COPY (HIGH-CONVERTING, DEV-NATIVE)
 
 ### ✅ PRIMARY HERO (Homepage)
-**Headline**: 
+
+**Headline**:
+
 ```
 RinaWarp Terminal Pro
 A modern terminal that runs locally — with AI when you want it.
 ```
 
-**Subheadline**: 
+**Subheadline**:
+
 ```
 No cloud lock-in. No data scraping.
 Your shell, enhanced — not replaced.
@@ -18,18 +21,22 @@ Your shell, enhanced — not replaced.
 **Primary CTA**: ⬇ Download for Windows
 **Secondary CTA**: 💳 Buy Lifetime License
 
-**Trust Line**: 
+**Trust Line**:
+
 ```
 Runs 100% on your machine • Works offline • Stripe-secured checkout
 ```
 
 ### ✅ OPTIONAL VARIANT (Terminal Pro Page)
-**Headline**: 
+
+**Headline**:
+
 ```
 The terminal you already know — without the friction.
 ```
 
-**Subheadline**: 
+**Subheadline**:
+
 ```
 Local-first. Private by default. AI only when it helps.
 ```
@@ -37,12 +44,14 @@ Local-first. Private by default. AI only when it helps.
 ## 💰 PRICING - REALISTIC VALUE ($149)
 
 ### ✅ FREE TIER (No Trial)
+
 - **Price**: $0 — Free (Forever)
 - **Includes**: Core terminal, local shell, offline usage, basic UI
 - **Restrictions**: AI features locked, agent features locked, advanced workflows locked
 - **Copy**: "Free is unlimited time. No expiration or countdowns."
 
 ### ✅ PRO LICENSE (Primary Sale)
+
 - **Price**: $149 — One-time lifetime
 - **Includes**: All Free features + AI intelligence + Voice commands + Advanced workflows + Auto-updates + Priority support
 - **Positioning**: "Recommended" badge, serious developer software pricing
@@ -53,26 +62,44 @@ Local-first. Private by default. AI only when it helps.
 
 **Page Title**: Your RinaWarp Terminal Pro License
 
-**Success Message**: 
+**Success Message**:
+
 ```
 ✅ Payment successful
 Thanks for supporting local-first software.
 ```
 
-**License Reveal Box**: 
+**License Reveal Box**:
+
 - Large, centered display of license key
 - Copy-to-clipboard functionality
 - Format: RWTP-ABCD-EFGH-IJKL-MNOP
 
 **Activation Instructions**:
+
 ```
+
 1. Open RinaWarp Terminal Pro
 2. Click "Enter License"
 3. Paste your key
 4. Done — no restart required
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
-**Safety Copy**: 
+**Safety Copy**:
+
 ```
 Your license key is shown only once.
 Please save it somewhere safe.
@@ -83,11 +110,13 @@ Please save it somewhere safe.
 ## 🛡️ TRUST SIGNALS IMPLEMENTED
 
 ### ✅ Primary Trust Line
+
 ```
 Runs 100% on your machine • Works offline • Stripe-secured checkout
 ```
 
 ### ✅ Secondary Trust Signals
+
 - "Signed Windows installer • No background services • Uninstall anytime"
 - "Privacy by default, not as an option"
 - "Local-first developer software, not an experiment"
@@ -95,23 +124,26 @@ Runs 100% on your machine • Works offline • Stripe-secured checkout
 ## 🎯 CONVERSION FLOW OPTIMIZATION
 
 ### ✅ Above-the-Fold (3 Choices)
+
 1. **Start Free** - Safe entry point
-2. **Buy Pro — $149** - Fast conversion  
+2. **Buy Pro — $149** - Fast conversion
 3. **Enter License** - Returning customers
 
 ### ✅ Free Tier Limits (Important)
+
 - Free must feel useful, not broken
 - Core terminal fully functional
 - AI features as natural upgrade path
 - No expiration or countdown timers
 
 ### ✅ Why Local-First Explainer
+
 ```
-Most developer tools today require accounts, internet access, 
+Most developer tools today require accounts, internet access,
 and cloud dependencies. RinaWarp is different.
 
 Your terminal runs locally
-Your shell stays yours  
+Your shell stays yours
 Your data never leaves your machine
 AI is optional — not required
 Works offline by default
@@ -129,13 +161,15 @@ Works offline by default
 ## 🚀 EXPECTED IMPACT
 
 ### ✅ Why This Works
+
 - **"Runs locally"** kills fear immediately
-- **"AI when you want it"** avoids hype fatigue  
+- **"AI when you want it"** avoids hype fatigue
 - **No buzzwords**, no promises you can't verify
 - **$149 pricing** positions as serious developer software
 - **Local-first messaging** removes privacy concerns
 
 ### ✅ Conversion Optimization Results
+
 - **OS-specific CTAs**: 15-35% higher conversion
 - **Trust signals**: 10-20% increase in conversion
 - **Clear pricing**: Reduces purchase friction
@@ -145,16 +179,18 @@ Works offline by default
 ## 📋 STRIPE INTEGRATION READY
 
 ### ✅ Checkout Session Code
+
 ```javascript
 const session = await stripe.checkout.sessions.create({
-  mode: "payment",
-  line_items: [{ price: "price_XXXX", quantity: 1 }],
-  success_url: "https://rinawarptech.com/license-success?session_id={CHECKOUT_SESSION_ID}",
-  cancel_url: "https://rinawarptech.com/pricing",
+  mode: 'payment',
+  line_items: [{ price: 'price_XXXX', quantity: 1 }],
+  success_url: 'https://rinawarptech.com/license-success?session_id={CHECKOUT_SESSION_ID}',
+  cancel_url: 'https://rinawarptech.com/pricing',
 });
 ```
 
 ### ✅ Next Steps for Implementation
+
 1. **Update Stripe products** via CLI with $149 pricing
 2. **Test checkout flow** end-to-end
 3. **Implement license generation** backend
@@ -162,6 +198,7 @@ const session = await stripe.checkout.sessions.create({
 5. **Deploy and measure** conversion rates
 
 ---
+
 **Status**: High-converting copy implemented and ready for sales
 **Positioning**: Serious developer software, not an experiment
 **Pricing**: $149 lifetime license (appropriate for value delivered)

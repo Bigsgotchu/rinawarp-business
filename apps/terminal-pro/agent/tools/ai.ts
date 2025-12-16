@@ -1,14 +1,14 @@
 export async function runAI({ prompt }: any) {
   try {
     const endpoint = process.env.RINA_AI_ENDPOINT;
-    
+
     if (!endpoint) {
-      throw new Error("RINA_AI_ENDPOINT environment variable not set");
+      throw new Error('RINA_AI_ENDPOINT environment variable not set');
     }
 
     const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt }),
     });
 
@@ -19,12 +19,12 @@ export async function runAI({ prompt }: any) {
     const data = await res.json();
 
     process.send?.({
-      type: "ai:result",
+      type: 'ai:result',
       data,
     });
   } catch (error) {
     process.send?.({
-      type: "ai:error",
+      type: 'ai:error',
       error: String(error),
     });
   }

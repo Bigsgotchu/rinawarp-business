@@ -9,7 +9,9 @@ This report identifies multiple duplicate files, conflicting configurations, and
 ## 🔴 Critical Issues
 
 ### 1. Security Vulnerability
+
 **File:** `./apps/website/wrangler.toml`
+
 - **Issue:** Hardcoded Stripe publishable key in plain text
 - **Line 9:** `STRIPE_PUBLISHABLE_KEY = "pk_live_51SH4C2GZrRdZy3W9fn1FQOulxqlAIrZ7wbqqOEyg6dMBsMrqbxM8sbItQ3lrpLuslBdOYZuHEUcfTbUdhjmk0xvC004XaWWoX8"`
 - **Impact:** API key exposed in version control
@@ -18,22 +20,28 @@ This report identifies multiple duplicate files, conflicting configurations, and
 ## 🟡 Structural Conflicts
 
 ### 2. Incorrect Package.json Path
+
 **File:** `./audit/~/Documents/RinaWarp-Terminal-Pro/package.json`
+
 - **Issue:** Tilde (~) character in directory path suggests backup copy error
 - **Impact:** Confusing file organization, potential build issues
 - **Recommendation:** Remove or relocate to appropriate backup directory
 
 ### 3. Nested Documentation Structure
+
 **Directories:**
+
 - `./docs/internal/internal/internal/package.json`
-- `./docs/internal/internal/package.json` 
+- `./docs/internal/internal/package.json`
 - `./docs/internal/package.json`
 - **Issue:** Excessive nesting creates confusion
 - **Impact:** Harder to maintain, unclear documentation structure
 - **Recommendation:** Consolidate into single docs structure
 
 ### 4. Multiple Wrangler Configurations
+
 **Files Found:**
+
 - `./wrangler.toml`
 - `./apps/website/wrangler.toml`
 - `./workers/rina-agent/wrangler.toml`
@@ -42,6 +50,7 @@ This report identifies multiple duplicate files, conflicting configurations, and
 - `./live-session-worker/wrangler.toml`
 
 **Potential Conflicts:**
+
 - Root `./wrangler.toml` has `name = "rinawarptech"` but apps/website has `name = "rinawarp-website"`
 - Different compatibility dates across configurations
 - **Recommendation:** Ensure unique worker names and consistent compatibility dates
@@ -51,11 +60,13 @@ This report identifies multiple duplicate files, conflicting configurations, and
 ### 5. Package.json Dependency Conflicts
 
 **Multiple @cloudflare/workers-types versions:**
+
 - Root: `"@cloudflare/workers-types": "^4.20251209.0"`
 - Website: `"@cloudflare/workers-types": "^4.20240222.0"`
 - Admin Console: `"@cloudflare/workers-types": "^4.20251209.0"`
 
 **Multiple Stripe versions:**
+
 - Root: `"stripe": "^20.0.0"`
 - Website: `"stripe": "^16.12.0"`
 - Terminal Agent: Not specified
@@ -63,7 +74,9 @@ This report identifies multiple duplicate files, conflicting configurations, and
 **Recommendation:** Standardize versions across all packages
 
 ### 6. Multiple .env Files
+
 **Found 12 .env files across project:**
+
 ```
 ./apps/terminal-pro/desktop/.env
 ./apps/terminal-pro/.env
@@ -85,7 +98,9 @@ This report identifies multiple duplicate files, conflicting configurations, and
 ## 📁 Backup File Issues
 
 ### 7. Excessive Backup Files
+
 **Found 15+ backup files including:**
+
 - `./apps/terminal-pro/desktop/package.json.backup`
 - `./apps/website/functions/api/checkout-v2.js.backup`
 - `./apps/admin-console/vite.config.ts.backup.20251211_103313`
@@ -97,6 +112,7 @@ This report identifies multiple duplicate files, conflicting configurations, and
 ## 🔍 Common Filename Duplicates
 
 **Most Common Duplicate Filenames:**
+
 - 15 instances of `index.js`
 - 13 instances of `server.js`
 - 7 instances of `registry.js`
@@ -108,9 +124,10 @@ This report identifies multiple duplicate files, conflicting configurations, and
 ## 📊 Package.json Distribution
 
 **22 package.json files found:**
+
 - `./package.json` (root)
 - `./apps/` directory (4 packages)
-- `./backend/` directory (5 packages)  
+- `./backend/` directory (5 packages)
 - `./docs/` directory (3 nested packages)
 - `./domain/` directory (3 packages)
 - Workers and services (6 packages)
@@ -118,18 +135,21 @@ This report identifies multiple duplicate files, conflicting configurations, and
 ## 🛠️ Recommendations
 
 ### Immediate Actions Required:
+
 1. **Fix security issue:** Remove hardcoded Stripe key from wrangler.toml
 2. **Clean up incorrect paths:** Fix `~/Documents/RinaWarp-Terminal-Pro` path
 3. **Consolidate documentation:** Reduce nested docs structure
 4. **Clean up backups:** Remove or relocate old backup files
 
 ### Medium-term Improvements:
+
 1. **Standardize dependencies:** Align @cloudflare/workers-types and other common dependencies
 2. **Centralize env management:** Consider using a centralized config approach
 3. **Document worker naming:** Ensure all Cloudflare workers have unique names
 4. **Create cleanup script:** Regular maintenance for backup files
 
 ### Long-term Structure:
+
 1. **Monorepo organization:** Consider using tools like Lerna or Nx for better monorepo management
 2. **Shared configurations:** Extract common configurations to shared packages
 3. **Dependency management:** Use workspace dependencies for better version control

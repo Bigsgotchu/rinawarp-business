@@ -23,8 +23,8 @@ async function testWebhook() {
         tier: 'pro-monthly',
         licenseKey: 'test-license-123',
         success_url: 'http://localhost:3000/success',
-        cancel_url: 'http://localhost:3000/cancel'
-      })
+        cancel_url: 'http://localhost:3000/cancel',
+      }),
     });
 
     const data = await response.json();

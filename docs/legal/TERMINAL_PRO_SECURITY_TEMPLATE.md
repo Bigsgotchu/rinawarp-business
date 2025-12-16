@@ -40,18 +40,88 @@ For licensing inquiries: legal@rinawarptech.com
 
 ```javascript
 /**
+
  * RinaWarp Terminal Pro
  * © 2025 RinaWarp Technologies, LLC - All Rights Reserved
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * PROPRIETARY SOFTWARE - CONFIDENTIAL
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * This software is proprietary and confidential. All rights reserved.
  * Unauthorized reproduction, distribution, or use is strictly prohibited.
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * For licensing inquiries: legal@rinawarptech.com
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * @author RinaWarp Technologies, LLC
  * @copyright © 2025 RinaWarp Technologies, LLC
+
+
+
+
+
+
+
+
+
+
+
+
+
  */
 ```
 
@@ -79,6 +149,7 @@ For licensing inquiries: legal@rinawarptech.com
    - Document all intellectual property
    - Create licensing agreements
 
+
 ### Files to Create
 
 - `COPYRIGHT_NOTICE.md`
@@ -86,12 +157,14 @@ For licensing inquiries: legal@rinawarptech.com
 - `SECURITY.md`
 - `LEGAL.md`
 
+
 ### Files to Update
 
 - All `.js`, `.ts`, `.tsx`, `.jsx` files with copyright headers
 - All `package.json` files
 - All `README.md` files
 - All documentation files
+
 
 ---
 

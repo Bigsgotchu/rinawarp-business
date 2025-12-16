@@ -19,8 +19,8 @@ const Sessions = ({ teamId }) => {
         setLoading(true);
         const response = await fetch(`/api/team/list-sessions?teamId=${teamId}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
+            Authorization: `Bearer ${authToken}`,
+          },
         });
 
         if (!response.ok) {
@@ -41,9 +41,10 @@ const Sessions = ({ teamId }) => {
     fetchSessions();
   }, [teamId, authToken]);
 
-  const filteredSessions = sessions.filter(session =>
-    session.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    session.host.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredSessions = sessions.filter(
+    (session) =>
+      session.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      session.host.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const formatTime = (timestamp) => {
@@ -94,12 +95,24 @@ const Sessions = ({ teamId }) => {
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Session</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Host</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Started</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participants</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Session
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Host
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Started
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Participants
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -125,11 +138,13 @@ const Sessions = ({ teamId }) => {
                       </div>
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        session.status === 'active'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          session.status === 'active'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-800'
+                        }`}
+                      >
                         {session.status}
                       </span>
                     </td>
@@ -145,15 +160,23 @@ const Sessions = ({ teamId }) => {
                           setSelectedSession(session);
                           // Fetch detailed session data
                           try {
-                            const response = await fetch(`/api/team/session-details?sessionId=${session.id}`, {
-                              headers: {
-                                'Authorization': `Bearer ${authToken}`
-                              }
-                            });
-  
+                            const response = await fetch(
+                              `/api/team/session-details?sessionId=${session.id}`,
+                              {
+                                headers: {
+                                  Authorization: `Bearer ${authToken}`,
+                                },
+                              },
+                            );
+
                             if (response.ok) {
                               const data = await response.json();
-                              setSelectedSession({ ...session, ...data.session, participants: data.participants, events: data.events });
+                              setSelectedSession({
+                                ...session,
+                                ...data.session,
+                                participants: data.participants,
+                                events: data.events,
+                              });
                             }
                           } catch (err) {
                             console.error('Error fetching session details:', err);
@@ -205,7 +228,9 @@ const Sessions = ({ teamId }) => {
                 <FaUser className="text-mermid-600 text-lg" />
                 <div>
                   <p className="text-sm text-gray-500">Host</p>
-                  <p className="font-medium text-gray-900">{selectedSession.host_name || 'Unknown'}</p>
+                  <p className="font-medium text-gray-900">
+                    {selectedSession.host_name || 'Unknown'}
+                  </p>
                 </div>
               </div>
 
@@ -223,7 +248,9 @@ const Sessions = ({ teamId }) => {
                 <FaUsers className="text-mermid-600 text-lg" />
                 <div>
                   <p className="text-sm text-gray-500">Participants</p>
-                  <p className="font-medium text-gray-900">{selectedSession.participants_count || 0}</p>
+                  <p className="font-medium text-gray-900">
+                    {selectedSession.participants_count || 0}
+                  </p>
                 </div>
               </div>
 
@@ -236,9 +263,7 @@ const Sessions = ({ teamId }) => {
                         <div className="w-2 h-2 bg-mermid-600 rounded-full mt-1"></div>
                         <div>
                           <p className="text-sm text-gray-600">{event.description}</p>
-                          <p className="text-xs text-gray-500">
-                            {formatTime(event.created_at)}
-                          </p>
+                          <p className="text-xs text-gray-500">{formatTime(event.created_at)}</p>
                         </div>
                       </div>
                     ))
@@ -246,7 +271,9 @@ const Sessions = ({ teamId }) => {
                     <div className="flex items-start space-x-3">
                       <div className="w-2 h-2 bg-mermid-600 rounded-full mt-1"></div>
                       <div>
-                        <p className="text-sm text-gray-600">Session started by {selectedSession.host_name}</p>
+                        <p className="text-sm text-gray-600">
+                          Session started by {selectedSession.host_name}
+                        </p>
                         <p className="text-xs text-gray-500">
                           {formatTime(selectedSession.created_at)}
                         </p>

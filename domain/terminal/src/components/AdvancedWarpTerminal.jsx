@@ -244,45 +244,45 @@ export function AdvancedWarpTerminal({
 
   const getStatusIcon = (status) => {
     switch (status) {
-    case 'running':
-      return '⏳';
-    case 'completed':
-      return '✅';
-    case 'error':
-      return '❌';
-    default:
-      return '⏳';
+      case 'running':
+        return '⏳';
+      case 'completed':
+        return '✅';
+      case 'error':
+        return '❌';
+      default:
+        return '⏳';
     }
   };
 
   const getCategoryIcon = (category) => {
     switch (category) {
-    case 'git':
-      return '📝';
-    case 'code':
-      return '💻';
-    case 'project':
-      return '📁';
-    case 'debug':
-      return '🐛';
-    case 'performance':
-      return '⚡';
-    case 'deploy':
-      return '🚀';
-    case 'ai':
-      return '🤖';
-    case 'system':
-      return '📊';
-    case 'terminal':
-      return '💻';
-    case 'filesystem':
-      return '📂';
-    case 'node':
-      return '🟢';
-    case 'docker':
-      return '🐳';
-    default:
-      return '⚡';
+      case 'git':
+        return '📝';
+      case 'code':
+        return '💻';
+      case 'project':
+        return '📁';
+      case 'debug':
+        return '🐛';
+      case 'performance':
+        return '⚡';
+      case 'deploy':
+        return '🚀';
+      case 'ai':
+        return '🤖';
+      case 'system':
+        return '📊';
+      case 'terminal':
+        return '💻';
+      case 'filesystem':
+        return '📂';
+      case 'node':
+        return '🟢';
+      case 'docker':
+        return '🐳';
+      default:
+        return '⚡';
     }
   };
 

@@ -187,7 +187,9 @@ const CommunityHub = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={'group bg-gray-800/30 backdrop-blur-sm p-8 rounded-xl border border-gray-700 hover:border-gray-600 transition-all hover:-translate-y-1'}
+              className={
+                'group bg-gray-800/30 backdrop-blur-sm p-8 rounded-xl border border-gray-700 hover:border-gray-600 transition-all hover:-translate-y-1'
+              }
             >
               <feature.icon
                 className={`w-12 h-12 mb-4 text-gray-400 group-hover:text-blue-400 transition-colors ${feature.color}`}

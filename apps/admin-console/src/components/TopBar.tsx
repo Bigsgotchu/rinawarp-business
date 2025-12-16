@@ -1,4 +1,4 @@
-import { useAdmin } from "../lib/adminContext";
+import { useAdmin } from '../lib/adminContext';
 
 export function TopBar() {
   const { apiToken } = useAdmin();
@@ -11,14 +11,14 @@ export function TopBar() {
         </p>
       </div>
       <div className="text-xs text-neutral-400">
-        API Token:{" "}
+        API Token:{' '}
         <span
           className={
-            "inline-flex items-center px-2 py-1 rounded-full border " +
-            (apiToken ? "border-emerald-500 text-emerald-400" : "border-red-500 text-red-400")
+            'inline-flex items-center px-2 py-1 rounded-full border ' +
+            (apiToken ? 'border-emerald-500 text-emerald-400' : 'border-red-500 text-red-400')
           }
         >
-          {apiToken ? "Configured" : "Not set"}
+          {apiToken ? 'Configured' : 'Not set'}
         </span>
       </div>
     </header>

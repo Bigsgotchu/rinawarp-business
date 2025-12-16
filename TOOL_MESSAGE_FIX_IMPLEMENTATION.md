@@ -12,14 +12,13 @@ referencing tool call IDs that were never issued by the model.
 #### Changes Made
 
 1. **Updated ChatMessage Interface** (Line 16)
-
    - Added `tool_call_id?: string;` field to support tool call references
    - Maintains backward compatibility
 
 2. **Added Message Sanitizer Function** (Lines 24-43)
 
    ```typescript
-   function sanitizeMessagesForNonToolModel(messages: ChatMessage[]): ChatMessage[]
+   function sanitizeMessagesForNonToolModel(messages: ChatMessage[]): ChatMessage[];
    ```
 
    - Converts stray tool/function messages to assistant notes
@@ -27,7 +26,6 @@ referencing tool call IDs that were never issued by the model.
    - Applied to both `/v1/chat/completions` and `/chat` endpoints
 
 3. **Applied Sanitizer in Endpoints**
-
    - **Before validation** to ensure clean data flow
    - **Both streaming and non-streaming** chat completions
    - **Both OpenAI-compatible and simple chat** endpoints
@@ -51,7 +49,9 @@ referencing tool call IDs that were never issued by the model.
 ### Root Cause
 
 - Minimax and other providers require every `role:"tool"` message to reference a
+
   prior assistant `tool_calls[].id`
+
 - Local rina-agent doesn't emit OpenAI-style tool calls
 - Stray tool messages break provider validation → "2013 tool id not found"
 
@@ -60,7 +60,9 @@ referencing tool call IDs that were never issued by the model.
 1. **Server-side sanitization**: Handles any tool messages that get through
 2. **Client-side disabling**: Prevents the issue at the source
 3. **Traceability preserved**: Converted tool messages show as
+
    `[tool:name id=call_id] content`
+
 4. **Backward compatible**: Doesn't break existing functionality
 5. **Zero-downtime**: Works with current deployment
 
@@ -69,7 +71,7 @@ referencing tool call IDs that were never issued by the model.
 ✅ TypeScript compilation successful  
 ✅ No breaking changes to existing API  
 ✅ All endpoints properly sanitized  
-✅ Client configurations created  
+✅ Client configurations created
 
 ## Files Created/Modified
 

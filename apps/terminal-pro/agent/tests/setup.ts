@@ -7,5 +7,5 @@ global.jest = {
   },
   fn: () => {
     return () => {};
-  }
+  },
 } as any;

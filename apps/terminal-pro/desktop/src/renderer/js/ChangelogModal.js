@@ -27,8 +27,8 @@ export class ChangelogModal {
       const releaseNotes = await window.electronAPI.getReleaseNotes();
       this.show(version, releaseNotes);
     } catch (error) {
-      console.error("Failed to show changelog:", error);
-      this.show("Latest Version", "Failed to load release notes.");
+      console.error('Failed to show changelog:', error);
+      this.show('Latest Version', 'Failed to load release notes.');
     }
   }
 }

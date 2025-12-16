@@ -35,7 +35,7 @@ class CrashTelemetry {
     this.lastCrashTime = new Date().toISOString();
 
     const cohortStats = getCanaryStats();
-    
+
     const crashEvent = {
       event: 'app.crash',
       type: type,
@@ -43,7 +43,7 @@ class CrashTelemetry {
       cohort: cohortStats.cohort,
       version: app.getVersion(),
       timestamp: this.lastCrashTime,
-      crashCount: this.crashCount
+      crashCount: this.crashCount,
     };
 
     // Send to telemetry
@@ -71,10 +71,10 @@ class CrashTelemetry {
             agent: { status: 'online', crashEvent: true },
             license: { tier: 'unknown' },
             updateCohort: crashEvent.cohort,
-            customEvent: crashEvent
-          })
+            customEvent: crashEvent,
+          }),
         });
-        
+
         if (!response.ok) {
           console.error('Failed to send crash telemetry:', response.status);
         }
@@ -88,8 +88,9 @@ class CrashTelemetry {
     return {
       crashCount: this.crashCount,
       lastCrashTime: this.lastCrashTime,
-      hasRecentCrash: this.lastCrashTime ? 
-        (Date.now() - new Date(this.lastCrashTime).getTime()) < 60000 : false // Last minute
+      hasRecentCrash: this.lastCrashTime
+        ? Date.now() - new Date(this.lastCrashTime).getTime() < 60000
+        : false, // Last minute
     };
   }
 

@@ -30,7 +30,7 @@ class AdvancedAIManager {
         return `⚠️ ${data.error}`;
       }
 
-      return data.response || '🤖 Rina didn\'t respond.';
+      return data.response || "🤖 Rina didn't respond.";
     } catch (error) {
       console.error('AI Query Error:', error);
       return '⚠️ Could not reach backend AI service.';

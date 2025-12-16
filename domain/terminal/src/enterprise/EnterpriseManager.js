@@ -260,18 +260,18 @@ export class EnterpriseManager {
     }
 
     switch (action.type) {
-    case 'disable_user':
-      this.disableUser(action.userId);
-      break;
-    case 'reset_user_data':
-      this.resetUserData(action.userId);
-      break;
-    case 'export_user_data':
-      this.exportUserData(action.userId);
-      break;
-    case 'update_system_settings':
-      this.updateSystemSettings(action.settings);
-      break;
+      case 'disable_user':
+        this.disableUser(action.userId);
+        break;
+      case 'reset_user_data':
+        this.resetUserData(action.userId);
+        break;
+      case 'export_user_data':
+        this.exportUserData(action.userId);
+        break;
+      case 'update_system_settings':
+        this.updateSystemSettings(action.settings);
+        break;
     }
   }
 

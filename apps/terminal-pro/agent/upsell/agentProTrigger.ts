@@ -6,15 +6,15 @@
  */
 
 export type PlanKey =
-  | "free"
-  | "basic"
-  | "starter"
-  | "creator"
-  | "pro"
-  | "lifetime_founder"
-  | "lifetime_pioneer"
-  | "lifetime_evergreen"
-  | "agent_pro"; // if you model it separately
+  | 'free'
+  | 'basic'
+  | 'starter'
+  | 'creator'
+  | 'pro'
+  | 'lifetime_founder'
+  | 'lifetime_pioneer'
+  | 'lifetime_evergreen'
+  | 'agent_pro'; // if you model it separately
 
 export type UpsellContext = {
   nowMs: number;
@@ -40,13 +40,13 @@ export type UpsellContext = {
 export type UpsellDecision = {
   shouldShow: boolean;
   reason:
-    | "ineligible_plan"
-    | "too_early"
-    | "no_value_moment"
-    | "cooldown_active"
-    | "capped_frequency"
-    | "eligible_soft_nudge"
-    | "eligible_after_ai_click";
+    | 'ineligible_plan'
+    | 'too_early'
+    | 'no_value_moment'
+    | 'cooldown_active'
+    | 'capped_frequency'
+    | 'eligible_soft_nudge'
+    | 'eligible_after_ai_click';
   debug: {
     sessionMinutes: number;
     acceptedGhostSuggestions: number;
@@ -65,27 +65,23 @@ export type UpsellDecision = {
 export function decideAgentProUpsell(ctx: UpsellContext): UpsellDecision {
   const sessionMinutes = (ctx.nowMs - ctx.sessionStartMs) / 60000;
 
-  const ineligible =
-    ctx.plan === "agent_pro" ||
-    ctx.plan.startsWith("lifetime_"); // lifetime buyers should not be nagged
+  const ineligible = ctx.plan === 'agent_pro' || ctx.plan.startsWith('lifetime_'); // lifetime buyers should not be nagged
 
   if (ineligible) {
-    return base(false, "ineligible_plan");
+    return base(false, 'ineligible_plan');
   }
 
   // HARD STOP: do not upsell in the first few minutes
   if (sessionMinutes < 6) {
-    return base(false, "too_early");
+    return base(false, 'too_early');
   }
 
   // Require proof the product helped (prevents "greedy" feel)
   const hasValueMoment =
-    ctx.acceptedGhostSuggestions >= 2 ||
-    ctx.memoryWrites >= 1 ||
-    ctx.hadErrorFixMoment;
+    ctx.acceptedGhostSuggestions >= 2 || ctx.memoryWrites >= 1 || ctx.hadErrorFixMoment;
 
   if (!hasValueMoment) {
-    return base(false, "no_value_moment");
+    return base(false, 'no_value_moment');
   }
 
   // Cooldowns
@@ -93,26 +89,23 @@ export function decideAgentProUpsell(ctx: UpsellContext): UpsellDecision {
   const COOLDOWN_DISMISS_MS = 1000 * 60 * 60 * 24 * 7; // 7 days after dismiss
 
   if (ctx.lastUpsellShownMs && ctx.nowMs - ctx.lastUpsellShownMs < COOLDOWN_SHOW_MS) {
-    return base(false, "cooldown_active");
+    return base(false, 'cooldown_active');
   }
 
-  if (
-    ctx.lastUpsellDismissedMs &&
-    ctx.nowMs - ctx.lastUpsellDismissedMs < COOLDOWN_DISMISS_MS
-  ) {
-    return base(false, "cooldown_active");
+  if (ctx.lastUpsellDismissedMs && ctx.nowMs - ctx.lastUpsellDismissedMs < COOLDOWN_DISMISS_MS) {
+    return base(false, 'cooldown_active');
   }
 
   // Cap frequency (local, privacy-first)
   if ((ctx.upsellShownCount7d ?? 0) >= 2) {
-    return base(false, "capped_frequency");
+    return base(false, 'capped_frequency');
   }
 
   // Two "eligible" paths:
 
   // Path A: user explicitly touched an AI-only feature
   if (ctx.hitAiOnlyFeature) {
-    return base(true, "eligible_after_ai_click");
+    return base(true, 'eligible_after_ai_click');
   }
 
   // Path B: soft nudge after repeated accept + engagement
@@ -122,12 +115,12 @@ export function decideAgentProUpsell(ctx: UpsellContext): UpsellDecision {
     (ctx.sawGhostSuggestion || ctx.memoryWrites >= 1);
 
   if (engaged) {
-    return base(true, "eligible_soft_nudge");
+    return base(true, 'eligible_soft_nudge');
   }
 
-  return base(false, "no_value_moment");
+  return base(false, 'no_value_moment');
 
-  function base(shouldShow: boolean, reason: UpsellDecision["reason"]): UpsellDecision {
+  function base(shouldShow: boolean, reason: UpsellDecision['reason']): UpsellDecision {
     return {
       shouldShow,
       reason,

@@ -1,21 +1,19 @@
 // backend/ai-service/server.js
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import { exec } from "child_process";
-import OpenAI from "openai";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import fetch from "node-fetch";
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { exec } from 'child_process';
+import OpenAI from 'openai';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
 
 dotenv.config();
 
-const LICENSE_API_BASE =
-  process.env.LICENSE_API_BASE || "http://localhost:3000"; // gateway
+const LICENSE_API_BASE = process.env.LICENSE_API_BASE || 'http://localhost:3000'; // gateway
 
-const AUTH_API_BASE =
-  process.env.AUTH_API_BASE || "http://localhost:3001"; // direct to auth service for now
+const AUTH_API_BASE = process.env.AUTH_API_BASE || 'http://localhost:3001'; // direct to auth service for now
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,28 +21,28 @@ const __dirname = path.dirname(__filename);
 // Load Rina persona
 let rinaPersona = null;
 try {
-  const personaPath = path.join(__dirname, "personas", "rina.json");
-  const raw = fs.readFileSync(personaPath, "utf8");
+  const personaPath = path.join(__dirname, 'personas', 'rina.json');
+  const raw = fs.readFileSync(personaPath, 'utf8');
   rinaPersona = JSON.parse(raw);
-  console.log("🎀 Rina persona loaded for AI service");
+  console.log('🎀 Rina persona loaded for AI service');
 } catch (err) {
-  console.warn("⚠ Could not load Rina persona:", err.message);
+  console.warn('⚠ Could not load Rina persona:', err.message);
 }
 
 async function checkLicense({ licenseKey, authToken }) {
   if (!licenseKey) {
     return {
-      status: "missing",
-      plan: "free",
+      status: 'missing',
+      plan: 'free',
       features: {
         premiumMode: false,
-        maxDailyMessages: 10
-      }
+        maxDailyMessages: 10,
+      },
     };
   }
 
   const headers = {
-    "Content-Type": "application/json"
+    'Content-Type': 'application/json',
   };
   if (authToken) {
     headers.Authorization = `Bearer ${authToken}`;
@@ -52,62 +50,62 @@ async function checkLicense({ licenseKey, authToken }) {
 
   try {
     const resp = await fetch(`${LICENSE_API_BASE}/license/check`, {
-      method: "POST",
+      method: 'POST',
       headers,
-      body: JSON.stringify({ licenseKey })
+      body: JSON.stringify({ licenseKey }),
     });
 
     if (!resp.ok) {
       return {
-        status: "error",
+        status: 'error',
         plan: null,
         features: {
           premiumMode: false,
-          maxDailyMessages: 0
+          maxDailyMessages: 0,
         },
-        httpStatus: resp.status
+        httpStatus: resp.status,
       };
     }
 
     const json = await resp.json();
 
     return {
-      status: json.status || "unknown",
+      status: json.status || 'unknown',
       plan: json.plan || null,
       features: json.features || {
         premiumMode: false,
-        maxDailyMessages: 0
-      }
+        maxDailyMessages: 0,
+      },
     };
   } catch (error) {
-    console.error("License check failed:", error.message);
+    console.error('License check failed:', error.message);
     return {
-      status: "error",
+      status: 'error',
       plan: null,
       features: {
         premiumMode: false,
-        maxDailyMessages: 0
+        maxDailyMessages: 0,
       },
-      error: error.message
+      error: error.message,
     };
   }
 }
 
 async function verifyAuth(authHeader) {
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return { valid: false, user: null };
   }
 
-  const token = authHeader.replace(/^Bearer\s+/i, "").trim();
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
 
   try {
     const resp = await fetch(`${AUTH_API_BASE}/auth/verify`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({})
+      body: JSON.stringify({}),
     });
 
     if (!resp.ok) {
@@ -117,14 +115,14 @@ async function verifyAuth(authHeader) {
     const data = await resp.json();
     return {
       valid: !!data.valid,
-      user: data.user || null
+      user: data.user || null,
     };
   } catch (error) {
-    console.error("Auth verification failed:", error.message);
+    console.error('Auth verification failed:', error.message);
     return {
       valid: false,
       user: null,
-      error: error.message
+      error: error.message,
     };
   }
 }
@@ -169,7 +167,7 @@ function enforceUsage(req, licenseInfo, authInfo) {
       allowed: false,
       remaining: 0,
       max,
-      resetAt: bucket.resetAt
+      resetAt: bucket.resetAt,
     };
   }
 
@@ -180,7 +178,7 @@ function enforceUsage(req, licenseInfo, authInfo) {
     allowed: true,
     remaining: max - bucket.count,
     max,
-    resetAt: bucket.resetAt
+    resetAt: bucket.resetAt,
   };
 }
 
@@ -189,14 +187,14 @@ const openai = new OpenAI({
 });
 
 // 🔹 Health check
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", service: "ai-service" });
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', service: 'ai-service' });
 });
 
 // 🔹 Simple chat endpoint
-app.post("/chat", async (req, res) => {
+app.post('/chat', async (req, res) => {
   try {
-    const { prompt, mode = "default", context = {}, licenseKey } = req.body || {};
+    const { prompt, mode = 'default', context = {}, licenseKey } = req.body || {};
     const authHeader = req.headers.authorization || null;
 
     if (!prompt) {
@@ -209,16 +207,16 @@ app.post("/chat", async (req, res) => {
     // 2) Check license (your existing checkLicense function)
     const licenseInfo = await checkLicense({
       licenseKey,
-      authToken: authHeader ? authHeader.replace(/^Bearer\s+/i, "") : null
+      authToken: authHeader ? authHeader.replace(/^Bearer\s+/i, '') : null,
     });
 
     // Simple gating example: if explicitly invalid, block
-    if (licenseInfo.status === "invalid") {
+    if (licenseInfo.status === 'invalid') {
       return res.status(403).json({
-        error: "License invalid",
+        error: 'License invalid',
         license: licenseInfo,
         message:
-          "Your license key appears invalid or expired. Please update your license in RinaWarp Terminal Pro."
+          'Your license key appears invalid or expired. Please update your license in RinaWarp Terminal Pro.',
       });
     }
 
@@ -227,26 +225,26 @@ app.post("/chat", async (req, res) => {
 
     if (!usage.allowed) {
       return res.status(429).json({
-        error: "usage_limit",
+        error: 'usage_limit',
         message: "You've hit your daily Rina usage limit for your plan.",
         usage,
-        upgrade: licenseInfo.plan === "free" ? "basic" : "pro"
+        upgrade: licenseInfo.plan === 'free' ? 'basic' : 'pro',
       });
     }
 
     // 🟣 DEV MODE: Skip OpenAI call entirely
-    if (process.env.NODE_ENV === "dev") {
+    if (process.env.NODE_ENV === 'dev') {
       // Build system context for plan-based behavior
       const systemContext = {
         userPlan: licenseInfo.plan,
         hasPremium: licenseInfo.features.premiumMode,
         dailyLimitRemaining: usage.remaining,
-        maxDaily: usage.max
+        maxDaily: usage.max,
       };
 
       // Plan-based behavior
-      let planBehavior = "";
-      if (licenseInfo.plan === "free") {
+      let planBehavior = '';
+      if (licenseInfo.plan === 'free') {
         planBehavior = `
           IMPORTANT: User is on FREE PLAN.
           - Keep responses helpful but shorter.
@@ -254,7 +252,7 @@ app.post("/chat", async (req, res) => {
           - Mention limits if user is approaching them.
           - Do not reveal premium features directly.
         `;
-      } else if (licenseInfo.plan === "lifetime") {
+      } else if (licenseInfo.plan === 'lifetime') {
         planBehavior = `
           IMPORTANT: User is LIFETIME VIP.
           - Be more expressive, warm, and engaged.
@@ -274,35 +272,36 @@ app.post("/chat", async (req, res) => {
       let responseText = `[MOCKED RINA RESPONSE]: Hey babe, I'm in dev mode 💖 All systems are running smooth!`;
       const nearingLimit = usage.remaining <= 3;
 
-      if (nearingLimit && licenseInfo.plan === "free") {
-        responseText += "\n\n⚠️ You're almost out of free messages for today. Upgrade anytime to unlock unlimited Rina 💖";
+      if (nearingLimit && licenseInfo.plan === 'free') {
+        responseText +=
+          "\n\n⚠️ You're almost out of free messages for today. Upgrade anytime to unlock unlimited Rina 💖";
       }
 
       return res.json({
         text: responseText,
         mode,
-        persona: mode === "rina" ? (rinaPersona?.name || "Rina") : "generic",
+        persona: mode === 'rina' ? rinaPersona?.name || 'Rina' : 'generic',
         license: licenseInfo,
         auth: {
           valid: authInfo.valid,
-          user: authInfo.user
+          user: authInfo.user,
         },
-        usage
+        usage,
       });
     }
 
     if (!process.env.OPENAI_API_KEY) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY not set on ai-service",
+        error: 'OPENAI_API_KEY not set on ai-service',
       });
     }
 
     let input;
 
-    if (mode === "rina" && rinaPersona?.system_prompt) {
+    if (mode === 'rina' && rinaPersona?.system_prompt) {
       // Build a messages array using her persona
       const systemContext = {
-        userPlan: licenseInfo.plan || "unknown",
+        userPlan: licenseInfo.plan || 'unknown',
         hasPremium: !!licenseInfo.features?.premiumMode,
         dailyLimitRemaining: usage.remaining,
         maxDaily: usage.max,
@@ -310,12 +309,12 @@ app.post("/chat", async (req, res) => {
         userEmail: authInfo.user?.email || null,
         moodHint: context.moodHint || null,
         userSkillLevel: context.userSkillLevel || null,
-        projectType: context.projectType || null
+        projectType: context.projectType || null,
       };
 
       // Plan-based behavior for system prompt
-      let planBehavior = "";
-      if (licenseInfo.plan === "free") {
+      let planBehavior = '';
+      if (licenseInfo.plan === 'free') {
         planBehavior = `
           IMPORTANT: User is on FREE PLAN.
           - Keep responses helpful but shorter.
@@ -323,7 +322,7 @@ app.post("/chat", async (req, res) => {
           - Mention limits if user is approaching them.
           - Do not reveal premium features directly.
         `;
-      } else if (licenseInfo.plan === "lifetime") {
+      } else if (licenseInfo.plan === 'lifetime') {
         planBehavior = `
           IMPORTANT: User is LIFETIME VIP.
           - Be more expressive, warm, and engaged.
@@ -342,18 +341,18 @@ app.post("/chat", async (req, res) => {
       const systemContent = [
         ...rinaPersona.system_prompt,
         `Current user + license context: ${JSON.stringify(systemContext)}`,
-        planBehavior
-      ].join(" ");
+        planBehavior,
+      ].join(' ');
 
       input = [
         {
-          role: "system",
-          content: systemContent
+          role: 'system',
+          content: systemContent,
         },
         {
-          role: "user",
-          content: prompt
-        }
+          role: 'user',
+          content: prompt,
+        },
       ];
     } else {
       // Generic mode
@@ -364,45 +363,46 @@ app.post("/chat", async (req, res) => {
 
     try {
       const response = await openai.responses.create({
-        model: "gpt-5", // or your chosen model
-        input
+        model: 'gpt-5', // or your chosen model
+        input,
       });
       text = response.output_text || null;
     } catch (err) {
-      console.error("🔴 OpenAI call failed:", err.message);
-      text = "Oops! My brain got disconnected for a sec 😅 Try again soon!";
+      console.error('🔴 OpenAI call failed:', err.message);
+      text = 'Oops! My brain got disconnected for a sec 😅 Try again soon!';
     }
 
     // Upsell messaging for free users in production mode
     const nearingLimit = usage.remaining <= 3;
     let finalText = text;
 
-    if (nearingLimit && licenseInfo.plan === "free") {
-      finalText += "\n\n⚠️ You're almost out of free messages for today. Upgrade anytime to unlock unlimited Rina 💖";
+    if (nearingLimit && licenseInfo.plan === 'free') {
+      finalText +=
+        "\n\n⚠️ You're almost out of free messages for today. Upgrade anytime to unlock unlimited Rina 💖";
     }
 
     res.json({
       text: finalText,
       mode,
-      persona: mode === "rina" ? rinaPersona?.name || "Rina" : "generic",
+      persona: mode === 'rina' ? rinaPersona?.name || 'Rina' : 'generic',
       license: licenseInfo,
       auth: {
         valid: authInfo.valid,
-        user: authInfo.user
+        user: authInfo.user,
       },
-      usage
+      usage,
     });
   } catch (err) {
-    console.error("AI /chat error:", err);
+    console.error('AI /chat error:', err);
     res.status(500).json({
-      error: "AI chat failed",
+      error: 'AI chat failed',
       message: err.message,
     });
   }
 });
 
 // 🔹 Command execution endpoint (basic sandbox)
-app.post("/command", async (req, res) => {
+app.post('/command', async (req, res) => {
   const { command, args = [] } = req.body || {};
 
   if (!command) {
@@ -411,7 +411,7 @@ app.post("/command", async (req, res) => {
 
   // ⚠️ VERY IMPORTANT:
   // In production, restrict allowed commands.
-  const full = [command, ...args].join(" ");
+  const full = [command, ...args].join(' ');
 
   exec(full, { timeout: 8000 }, (error, stdout, stderr) => {
     res.json({

@@ -1,10 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import App from './App'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import './index.css';
 
-class ErrorBoundary extends React.Component<{children: React.ReactNode}> {
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }> {
   state = { hasError: false, error: null as Error | null };
 
   static getDerivedStateFromError(error: Error) {
@@ -12,7 +12,7 @@ class ErrorBoundary extends React.Component<{children: React.ReactNode}> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Error caught by boundary:", error, errorInfo);
+    console.error('Error caught by boundary:', error, errorInfo);
     // You can also log the error to an error reporting service
   }
 
@@ -46,4 +46,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </BrowserRouter>
     </ErrorBoundary>
   </React.StrictMode>,
-)
+);

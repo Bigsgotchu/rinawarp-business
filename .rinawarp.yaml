@@ -3,20 +3,33 @@ capabilities:
   git: true
   npm: true
   network: false
+  csharp: true
 
 limits:
   timeoutMs: 120000
   maxBytes: 2000000
+  execTimeoutSec: 60
+  maxOutputBytes: 2097152
 
 policy:
   confirmRequired: true
   dryRunByDefault: false
   concurrency: 3
+  allowlist:
+    - dotnet
+    - git
+    - npm
+  denylist:
+    - 'rm -rf /'
+    - ':(){ :|:& };:'
   stepPolicy:
     - match: { capability: network }
       timeoutMs: 180000
       maxRetries: 3
       retryBackoffMs: 800
+    - match: { capability: csharp }
+      timeoutMs: 60000
+      maxRetries: 1
     - match: { id: build }
       timeoutMs: 300000
       maxRetries: 1

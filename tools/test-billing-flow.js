@@ -17,10 +17,10 @@ const mockEvents = {
         id: 'cs_test_123',
         metadata: {
           tier: 'lifetime-evergreen',
-          licenseKey: 'test-license-123'
-        }
-      }
-    }
+          licenseKey: 'test-license-123',
+        },
+      },
+    },
   },
   subscriptionCreated: {
     id: 'evt_test_subscription_created',
@@ -29,11 +29,11 @@ const mockEvents = {
       object: {
         id: 'sub_test_123',
         metadata: {
-          licenseKey: 'test-license-456'
+          licenseKey: 'test-license-456',
         },
-        current_period_end: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60
-      }
-    }
+        current_period_end: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
+      },
+    },
   },
   subscriptionCancelled: {
     id: 'evt_test_subscription_cancelled',
@@ -42,11 +42,11 @@ const mockEvents = {
       object: {
         id: 'sub_test_123',
         metadata: {
-          licenseKey: 'test-license-456'
-        }
-      }
-    }
-  }
+          licenseKey: 'test-license-456',
+        },
+      },
+    },
+  },
 };
 
 async function testBillingFlow() {

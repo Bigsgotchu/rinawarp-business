@@ -3,6 +3,7 @@
 ## 📋 Pre-Deployment Checklist
 
 ### ✅ **Already Implemented:**
+
 - [x] SEO meta tags and OpenGraph cards
 - [x] Canonical URL structure
 - [x] Privacy-friendly analytics
@@ -19,6 +20,7 @@
 **Required for:** Maximum security, SEO ranking boost
 
 **Cloudflare Pages Configuration:**
+
 1. Go to Cloudflare Dashboard → Pages → Your Project → Settings → Custom Domains
 2. Click "Configure" on your custom domain
 3. Go to SSL/TLS → Edge Certificates
@@ -26,6 +28,7 @@
 5. Enable "HSTS" with max-age=63072000 (2 years)
 
 **Cloudflare API Configuration:**
+
 ```bash
 curl -X PUT "https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/settings/always_use_https" \
      -H "Authorization: Bearer {API_TOKEN}" \
@@ -38,6 +41,7 @@ curl -X PUT "https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/settings/alway
 **Required for:** XSS protection, security compliance
 
 **Cloudflare Pages Configuration:**
+
 1. Pages → Your Project → Settings → Functions
 2. Add to `_headers` file in your project root:
 
@@ -55,21 +59,23 @@ curl -X PUT "https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/settings/alway
 **Current Status:** Framework ready, needs service integration
 
 **Option A: Sentry Integration**
+
 1. Create account at [sentry.io](https://sentry.io)
 2. Get DSN key
 3. Update error-monitoring.js:
 
 ```javascript
 // Replace the fetch call in error-monitoring.js with:
-import * as Sentry from "@sentry/browser";
+import * as Sentry from '@sentry/browser';
 
 Sentry.init({
-  dsn: "YOUR_SENTRY_DSN_HERE",
-  environment: "production"
+  dsn: 'YOUR_SENTRY_DSN_HERE',
+  environment: 'production',
 });
 ```
 
 **Option B: Self-hosted Error Tracking**
+
 1. Create `/api/errors` endpoint
 2. Store errors in database
 3. Create monitoring dashboard
@@ -77,12 +83,14 @@ Sentry.init({
 ## 🔧 **4. LIGHTHOUSE AUDIT PREPARATION**
 
 **Create OG Image Asset:**
+
 ```bash
 # Create /assets/og-image.png (1200x630px)
 # Should show RinaWarp Terminal Pro logo and tagline
 ```
 
 **Lighthouse Testing Commands:**
+
 ```bash
 # After deployment, run:
 npx lighthouse https://rinawarptech.com --view
@@ -90,11 +98,12 @@ npx lighthouse https://rinawarptech.com --view
 # Mobile audit
 npx lighthouse https://rinawarptech.com --form-factor=mobile --view
 
-# Desktop audit  
+# Desktop audit
 npx lighthouse https://rinawarptech.com --form-factor=desktop --view
 ```
 
 **Expected Scores:**
+
 - Performance: 90+
 - Accessibility: 95+
 - Best Practices: 95+
@@ -103,23 +112,25 @@ npx lighthouse https://rinawarptech.com --form-factor=desktop --view
 ## 🔧 **5. ADDITIONAL SECURITY HARDENING**
 
 **Add to `_headers` file in project root:**
+
 ```
 /*
   # Remove server signature
   Server = ""
-  
+
   # Additional security headers
   X-XSS-Protection = "1; mode=block"
   X-Download-Options = "noopen"
-  
+
   # Feature policy
   Feature-Policy = "geolocation 'none'; microphone 'none'; camera 'none'"
-  
+
   # Cache control for static assets
   Cache-Control: public, max-age=31536000, immutable
 ```
 
 **DNS Configuration:**
+
 1. Ensure CNAME records point to Cloudflare Pages
 2. Enable DNSSEC if available
 3. Set appropriate TTL values
@@ -127,15 +138,18 @@ npx lighthouse https://rinawarptech.com --form-factor=desktop --view
 ## 🔧 **6. PERFORMANCE OPTIMIZATIONS**
 
 **Image Optimization:**
+
 - Compress all images in `/assets/`
 - Use WebP format where supported
 - Add responsive images with srcset
 
 **Cache Headers (configured in `_headers`):**
+
 - Assets: 1 year cache with immutable flag
 - HTML: No cache (always fresh)
 
 **Cloudflare CDN Configuration:**
+
 - Cloudflare CDN is automatically enabled for Pages
 - Ensure asset versioning for cache busting
 - Enable Brotli compression in Cloudflare dashboard
@@ -143,17 +157,20 @@ npx lighthouse https://rinawarptech.com --form-factor=desktop --view
 ## 🔧 **7. MONITORING & ANALYTICS SETUP**
 
 **Privacy-Friendly Analytics Already Implemented:**
+
 - Custom analytics.js tracks pageviews and clicks
 - No personal data collection
 - GDPR compliant
 
 **Optional: Plausible Analytics (Privacy-First Alternative)**
+
 ```html
 <!-- Add to <head> if switching to Plausible -->
 <script defer data-domain="rinawarptech.com" src="https://plausible.io/js/script.js"></script>
 ```
 
 **Error Monitoring Already Implemented:**
+
 - error-monitoring.js captures JavaScript errors
 - Performance monitoring included
 - Privacy-first approach
@@ -161,6 +178,7 @@ npx lighthouse https://rinawarptech.com --form-factor=desktop --view
 ## 📊 **DEPLOYMENT COMMANDS**
 
 **Cloudflare Pages CLI Deployment:**
+
 ```bash
 # Install Wrangler CLI
 npm install -g wrangler
@@ -176,6 +194,7 @@ wrangler pages deployment list
 ```
 
 **Manual Upload:**
+
 1. Zip the `rinawarp-website/public/` directory
 2. Upload to Cloudflare Pages dashboard
 3. Configure custom domain
@@ -183,6 +202,7 @@ wrangler pages deployment list
 ## 🔍 **POST-DEPLOYMENT TESTING**
 
 **1. Functionality Tests:**
+
 - [ ] HTTPS redirect works (http → https)
 - [ ] WWW redirect works (www → non-www)
 - [ ] All pages load correctly
@@ -191,18 +211,21 @@ wrangler pages deployment list
 - [ ] Error monitoring captures issues
 
 **2. Security Tests:**
+
 - [ ] Security headers present (check with securityheaders.com)
 - [ ] CSP doesn't break functionality
 - [ ] HSTS enabled and working
 - [ ] No mixed content warnings
 
 **3. Performance Tests:**
+
 - [ ] Run Lighthouse audits
 - [ ] Check Core Web Vitals
 - [ ] Test mobile performance
 - [ ] Verify caching headers
 
 **4. SEO Tests:**
+
 - [ ] Test structured data (validator.schema.org)
 - [ ] Check meta tags
 - [ ] Verify sitemap accessibility
@@ -211,6 +234,7 @@ wrangler pages deployment list
 ## 📈 **EXPECTED RESULTS**
 
 **After Deployment:**
+
 - ✅ HTTPS/SEO optimization complete
 - ✅ Security headers implemented
 - ✅ Privacy compliance achieved
@@ -219,6 +243,7 @@ wrangler pages deployment list
 - ✅ Performance monitoring ready
 
 **Lighthouse Score Targets:**
+
 - Performance: 90+
 - Accessibility: 95+
 - Best Practices: 95+

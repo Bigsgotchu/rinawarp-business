@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Fast, changed-only checks for pre-commit
+echo "🔍 Pre-commit checks (changed files only)..."
+pnpm -s format:changed
+pnpm -s lint:changed
+pnpm -s spell:changed || true
+pnpm -s lint:css:changed || true
+
+echo "✅ Pre-commit checks passed!"

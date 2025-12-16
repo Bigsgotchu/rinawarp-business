@@ -3,7 +3,7 @@
 **Document Type:** Critical Security Remediation  
 **Date:** December 2, 2025  
 **Severity:** HIGH - Immediate Action Required  
-**Status:** URGENT - Implementation Required  
+**Status:** URGENT - Implementation Required
 
 ## 🚨 Executive Summary
 
@@ -75,7 +75,7 @@ STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), (req, res) => {
+app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
@@ -98,7 +98,7 @@ app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), (req, r
       console.log(`Unhandled event type ${event.type}`);
   }
 
-  res.json({received: true});
+  res.json({ received: true });
 });
 ```
 
@@ -121,19 +121,17 @@ app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), (req, r
 
 ```javascript
 // File: src/shared/packages/platform/platform-config/unified-config.js
-const requiredEnvVars = [
-  'STRIPE_SECRET_KEY',
-  'STRIPE_PUBLISHABLE_KEY', 
-  'STRIPE_WEBHOOK_SECRET'
-];
+const requiredEnvVars = ['STRIPE_SECRET_KEY', 'STRIPE_PUBLISHABLE_KEY', 'STRIPE_WEBHOOK_SECRET'];
 
 // Validate required environment variables
-requiredEnvVars.forEach(envVar => {
+requiredEnvVars.forEach((envVar) => {
   if (!process.env[envVar]) {
     throw new Error(`Missing required environment variable: ${envVar}`);
   }
-  if (process.env[envVar].includes('replace_with_actual') || 
-      process.env[envVar].includes('placeholder')) {
+  if (
+    process.env[envVar].includes('replace_with_actual') ||
+    process.env[envVar].includes('placeholder')
+  ) {
     throw new Error(`Placeholder value detected for ${envVar}`);
   }
 });
@@ -150,14 +148,13 @@ class StripeManager {
       if (!apiKey || !apiKey.startsWith('sk_')) {
         throw new Error('Invalid Stripe API key format');
       }
-      
+
       // Test the key with minimal operation
       const stripe = new Stripe(apiKey);
       await stripe.balance.retrieve();
-      
+
       // Store securely
       await this.storeApiKeySecurely(apiKey);
-      
     } catch (error) {
       logger.error('Stripe authentication failed:', error);
       throw new Error('Failed to authenticate with Stripe. Please check your API key.');
@@ -181,17 +178,18 @@ STRIPE_WEBHOOK_SECRET=whsec_actual_webhook_secret_here
 
 ```javascript
 // File: .env.template (SAFE FOR VERSION CONTROL)
-STRIPE_SECRET_KEY=sk_live_your_secret_key_here
-STRIPE_PUBLISHABLE_KEY=pk_live_your_publishable_key_here
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+STRIPE_SECRET_KEY = sk_live_your_secret_key_here;
+STRIPE_PUBLISHABLE_KEY = pk_live_your_publishable_key_here;
+STRIPE_WEBHOOK_SECRET = whsec_your_webhook_secret_here;
 ```
 
 ### 3. Deployment Configuration
 
 ```javascript
 // File: netlify.toml (ONLY PUBLIC KEYS)
-[build.environment]
-  STRIPE_PUBLISHABLE_KEY = "pk_live_51RaxSiG2ToGP7ChngJgspX14GB9EWuOlE733KV9euRr6KcsxM2bBe95mjNdAVPcmD9vcDLwMdwMIseGrU999vqUS009PcSmqcm"
+[build.environment];
+STRIPE_PUBLISHABLE_KEY =
+  'pk_live_51RaxSiG2ToGP7ChngJgspX14GB9EWuOlE733KV9euRr6KcsxM2bBe95mjNdAVPcmD9vcDLwMdwMIseGrU999vqUS009PcSmqcm';
 ```
 
 ## 📋 Implementation Checklist
@@ -204,7 +202,7 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
 - [ ] **Verify key rotation in Stripe dashboard**
 - [ ] **Test payment processing with new keys**
 
-### Short-term Fixes (24-48 hours)  
+### Short-term Fixes (24-48 hours)
 
 - [ ] **Implement actual webhook handler**
 - [ ] **Add webhook signature verification**
@@ -270,19 +268,19 @@ console.log('Configuration validation passed');
 // File: src/cli/lib/commands/revenue/health.js
 async checkSecurityHealth() {
   const issues = [];
-  
+
   // Check for exposed keys
   const exposedKeys = await this.scanForExposedKeys();
   if (exposedKeys.length > 0) {
     issues.push('SECURITY: Potential exposed API keys detected');
   }
-  
+
   // Check webhook configuration
   const webhookStatus = await this.validateWebhookConfig();
   if (!webhookStatus.valid) {
     issues.push(`WEBHOOK: ${webhookStatus.error}`);
   }
-  
+
   return { secure: issues.length === 0, issues };
 }
 ```
@@ -297,7 +295,7 @@ async checkSecurityHealth() {
 4. **Within 4 hours:** Implement enhanced monitoring
 5. **Within 24 hours:** Conduct full security audit
 
-### If Webhook is Compromised  
+### If Webhook is Compromised
 
 1. **Immediate:** Disable webhook endpoint temporarily
 2. **Immediate:** Generate new webhook secret

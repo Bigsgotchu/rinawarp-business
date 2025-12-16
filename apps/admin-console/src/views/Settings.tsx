@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useAdmin } from "../lib/adminContext";
+import React, { useState } from 'react';
+import { useAdmin } from '../lib/adminContext';
 
 export const Settings: React.FC = () => {
   const { apiToken, setApiToken } = useAdmin();
-  const [localToken, setLocalToken] = useState(apiToken ?? "");
+  const [localToken, setLocalToken] = useState(apiToken ?? '');
 
   return (
     <div className="max-w-xl">
@@ -12,10 +12,9 @@ export const Settings: React.FC = () => {
       <section className="mb-6">
         <h3 className="text-sm font-semibold mb-2">Admin API Token</h3>
         <p className="text-xs text-neutral-400 mb-3">
-          This token is sent as <code className="font-mono">x-admin-secret</code> to
-          locked admin functions. It must match{" "}
-          <code className="font-mono">ADMIN_PASSWORD</code> configured in Cloudflare
-          Pages for this console project.
+          This token is sent as <code className="font-mono">x-admin-secret</code> to locked admin
+          functions. It must match <code className="font-mono">ADMIN_PASSWORD</code> configured in
+          Cloudflare Pages for this console project.
         </p>
         <input
           type="password"
@@ -35,7 +34,7 @@ export const Settings: React.FC = () => {
             <button
               className="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700"
               onClick={() => {
-                setLocalToken("");
+                setLocalToken('');
                 setApiToken(null);
               }}
             >
@@ -48,9 +47,9 @@ export const Settings: React.FC = () => {
       <section>
         <h3 className="text-sm font-semibold mb-2">Environment</h3>
         <p className="text-xs text-neutral-400">
-          This console is intended for internal use only and should be protected
-          with Cloudflare Zero Trust (Access policies) to restrict access to your
-          personal identity (e.g. email, SSO, passkey).
+          This console is intended for internal use only and should be protected with Cloudflare
+          Zero Trust (Access policies) to restrict access to your personal identity (e.g. email,
+          SSO, passkey).
         </p>
       </section>
     </div>

@@ -1,10 +1,4 @@
-export type RepoKind =
-  | "node"
-  | "python"
-  | "go"
-  | "rust"
-  | "docker"
-  | "unknown";
+export type RepoKind = 'node' | 'python' | 'go' | 'rust' | 'docker' | 'unknown';
 
 export type RepoProfile = {
   root: string;

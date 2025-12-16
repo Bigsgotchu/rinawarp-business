@@ -12,7 +12,7 @@ export function generateLicenseKey(email, plan = 'professional') {
   let hash = 0;
   for (let i = 0; i < baseString.length; i++) {
     const char = baseString.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32bit integer
   }
 

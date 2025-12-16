@@ -252,11 +252,11 @@ export class ConversionFunnels {
     // Personalize messages based on user behavior
     this.personalizedMessages = {
       heavy_ai_user:
-        'You\'ve used AI queries 50+ times this month. Upgrade for unlimited access!',
+        "You've used AI queries 50+ times this month. Upgrade for unlimited access!",
       theme_lover:
         'You love customizing themes. Get access to 20+ premium themes!',
       workflow_user:
-        'You\'re creating workflows. Upgrade for advanced automation!',
+        "You're creating workflows. Upgrade for advanced automation!",
       team_user: 'Working with a team? Get team collaboration features!',
     };
   }

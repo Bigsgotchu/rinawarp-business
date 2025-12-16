@@ -7,6 +7,7 @@
 ## Locked Features (Shipping in v1.0.0)
 
 ### ✅ Terminal Core
+
 - Local-first terminal application
 - PowerShell and Command Prompt support
 - Windows Terminal integration
@@ -14,6 +15,7 @@
 - Git, Node.js, Python integration
 
 ### ✅ Rina Agent (Local)
+
 - Persistent memory (SQLite)
 - Deterministic next-step planning
 - Inline ghost text suggestions
@@ -21,20 +23,23 @@
 - Command history with semantic search
 
 ### ✅ Feature Gating
+
 - AI features locked without Agent Pro subscription
 - Non-intrusive upgrade prompts
 - Graceful degradation when AI unavailable
 - Clear value proposition messaging
 
 ### ✅ Licensing System
+
 - Terminal Pro activation
 - Offline license validation
 - Grace period for network issues
 - Device binding support
 
 ### ❌ NOT INCLUDED (Locked Out)
+
 - ~~More AI tools~~ - Will be post-launch feature
-- ~~More agent autonomy~~ - Will be post-launch feature  
+- ~~More agent autonomy~~ - Will be post-launch feature
 - ~~More pricing tiers~~ - Will be post-launch feature
 - ~~More UI polish~~ - Will be post-launch feature
 

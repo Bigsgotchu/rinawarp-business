@@ -3,12 +3,14 @@
 ## Day 0 (TODAY - Launch Day)
 
 ### 🎯 Primary Launch Actions
+
 - [ ] **Show HN post** (9:00 AM PST)
 - [ ] **Website live** with Stripe checkout
 - [ ] **Windows ZIP download** available
 - [ ] **Stripe live checkout** tested for all tiers
 
 ### 📝 Show HN Post Template
+
 ```
 Title: Show HN: RinaWarp Terminal Pro – Local-first terminal with deterministic AI agent
 
@@ -26,10 +28,24 @@ Free tier: Basic terminal
 Paid tiers: $9.99-$99/month or $699-$999 lifetime
 
 What makes this different from AI coding tools:
+
 1. Everything runs locally
 2. Deterministic planning (no guessing)
 3. Persistent memory across sessions
 4. No data leaves your machine
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Comments and feedback welcome!
 
@@ -38,6 +54,7 @@ Download: https://rinawarptech.com/download-terminal-pro
 ```
 
 ### 🔗 Essential Links for Launch Day
+
 - Website: https://rinawarptech.com
 - Download: https://rinawarptech.com/download-terminal-pro
 - Pricing: https://rinawarptech.com/pricing.html
@@ -48,7 +65,9 @@ Download: https://rinawarptech.com/download-terminal-pro
 ## Day 1 (Tomorrow)
 
 ### 🐦 X Thread (9:00 AM PST)
+
 **Post 1/8:**
+
 ```
 🧵 Thread: I just launched RinaWarp Terminal Pro after 6 months of development.
 
@@ -58,6 +77,7 @@ Here's what makes it different... 👇
 ```
 
 **Post 2/8:**
+
 ```
 Most AI coding tools are cloud-based and "guess" their way through problems.
 
@@ -71,6 +91,7 @@ Your code never leaves your machine.
 ```
 
 **Post 3/8:**
+
 ```
 Demo: Watch the agent transform this messy workflow:
 
@@ -78,6 +99,7 @@ Demo: Watch the agent transform this messy workflow:
 ```
 
 **Post 4/8:**
+
 ```
 The agent can:
 • Debug issues systematically
@@ -90,6 +112,7 @@ All offline. All private.
 ```
 
 **Post 5/8:**
+
 ```
 Pricing:
 🆓 Free: Basic terminal
@@ -103,16 +126,18 @@ No subscription required.
 ```
 
 **Post 6/8:**
+
 ```
 Lifetime tiers are limited:
 • Founder: $699 (200 spots)
-• Pioneer: $800 (500 spots)  
+• Pioneer: $800 (500 spots)
 • Evergreen: $999 (unlimited)
 
 Early supporters get priority support.
 ```
 
 **Post 7/8:**
+
 ```
 Why deterministic planning matters:
 
@@ -123,6 +148,7 @@ No guesswork. Just results.
 ```
 
 **Post 8/8:**
+
 ```
 Ready to try it?
 
@@ -132,6 +158,7 @@ What questions do you have? 🤔
 ```
 
 ### 📧 Email to Early Subscribers (if any)
+
 - Thank you for early support
 - Launch day announcement
 - Direct link to download
@@ -141,10 +168,12 @@ What questions do you have? 🤔
 ## Day 3 (3 Days After Launch)
 
 ### 📝 Blog Post: "Why Rina Agent is deterministic, not hype AI"
+
 **Target Length:** 1,500-2,000 words
 **Publish Time:** 10:00 AM PST
 
 **Outline:**
+
 1. The problem with current AI tools
 2. What "deterministic" actually means
 3. How RinaWarp achieves reliability
@@ -153,6 +182,7 @@ What questions do you have? 🤔
 6. Why this matters for developers
 
 **Distribution:**
+
 - Company blog
 - Hacker News discussion link
 - X thread linking to blog
@@ -163,7 +193,9 @@ What questions do you have? 🤔
 ## Day 7 (1 Week After Launch)
 
 ### 📊 Scarcity Update
+
 **Post to all channels:**
+
 ```
 🎯 1 Week Update: RinaWarp Terminal Pro
 
@@ -176,7 +208,7 @@ Remaining lifetime spots:
 • Founder: [X]/200 left
 • Pioneer: [X]/500 left
 
-Thank you to everyone who's tried it! 
+Thank you to everyone who's tried it!
 
 The deterministic agent approach is resonating with developers who value privacy and reliability.
 
@@ -184,6 +216,7 @@ Download: https://rinawarptech.com/download-terminal-pro
 ```
 
 ### 📈 Collect and Share Metrics
+
 - Total downloads
 - Conversion rate by tier
 - User feedback themes
@@ -195,17 +228,20 @@ Download: https://rinawarptech.com/download-terminal-pro
 ## Content Assets Needed
 
 ### 📹 Videos
+
 - [ ] 2-minute demo video
 - [ ] 30-second GIF for social media
 - [ ] Installation walkthrough
 
 ### 🖼️ Graphics
+
 - [ ] Pricing comparison chart
 - [ ] Feature comparison matrix
 - [ ] Lifetime tier scarcity counter
 - [ ] Security/privacy badges
 
 ### 📄 Documentation
+
 - [ ] SmartScreen bypass guide
 - [ ] Installation troubleshooting
 - [ ] Feature comparison table
@@ -216,6 +252,7 @@ Download: https://rinawarptech.com/download-terminal-pro
 ## Success Metrics
 
 ### Week 1 Goals
+
 - [ ] 500+ downloads
 - [ ] 10+ lifetime tier sales
 - [ ] 25+ Show HN upvotes
@@ -223,6 +260,7 @@ Download: https://rinawarptech.com/download-terminal-pro
 - [ ] <5% refund rate
 
 ### Content Performance Targets
+
 - [ ] Show HN: Top 50 of the day
 - [ ] X thread: 100+ engagements
 - [ ] Blog post: 1,000+ views
@@ -233,12 +271,14 @@ Download: https://rinawarptech.com/download-terminal-pro
 ## Emergency Protocols
 
 ### If Launch Goes Wrong
+
 1. **Technical issues:** Pause marketing, fix issues first
 2. **Negative feedback:** Respond professionally, address concerns
 3. **Low traction:** Adjust pricing or add incentives
 4. **High refund rate:** Review onboarding experience
 
 ### If Launch Goes Right
+
 1. **Scale marketing:** Increase ad spend
 2. **Gather testimonials:** Reach out to happy users
 3. **Plan v1.1:** Collect feature requests
@@ -249,6 +289,7 @@ Download: https://rinawarptech.com/download-terminal-pro
 ## LOCKED STATUS ✅
 
 This content calendar is locked and should not be modified without careful consideration of:
+
 - Brand consistency
 - Message alignment
 - Timing strategy

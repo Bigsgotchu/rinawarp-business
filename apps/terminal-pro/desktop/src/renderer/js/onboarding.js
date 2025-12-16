@@ -8,36 +8,36 @@ const Onboarding = (() => {
   function buildSteps() {
     steps = [
       {
-        id: "welcome",
-        title: "Welcome to RinaWarp Terminal Pro",
+        id: 'welcome',
+        title: 'Welcome to RinaWarp Terminal Pro',
         body: "I'll walk you through the most powerful parts of this app in under 60 seconds.",
       },
       {
-        id: "terminal",
-        title: "Warp Terminal",
-        body: "This is your AI-enhanced terminal. Every command is tracked, understood, and available for AI help.",
-        highlightSelector: "#terminal-shell",
+        id: 'terminal',
+        title: 'Warp Terminal',
+        body: 'This is your AI-enhanced terminal. Every command is tracked, understood, and available for AI help.',
+        highlightSelector: '#terminal-shell',
       },
       {
-        id: "palette",
-        title: "Command Palette (Ctrl+Shift+P)",
-        body: "Hit Ctrl+Shift+P anytime to open the command palette. You can launch features, run commands, or trigger AI actions.",
-        highlightSelector: "#command-palette",
+        id: 'palette',
+        title: 'Command Palette (Ctrl+Shift+P)',
+        body: 'Hit Ctrl+Shift+P anytime to open the command palette. You can launch features, run commands, or trigger AI actions.',
+        highlightSelector: '#command-palette',
       },
       {
-        id: "rina",
-        title: "Rina Agent",
-        body: "Use the Rina panel to ask for explanations, generate commands, or debug problems in plain English.",
-        highlightSelector: "#rina-panel",
+        id: 'rina',
+        title: 'Rina Agent',
+        body: 'Use the Rina panel to ask for explanations, generate commands, or debug problems in plain English.',
+        highlightSelector: '#rina-panel',
       },
       {
-        id: "voice",
-        title: "Voice Mode",
-        body: "Tap the mic to talk to Rina hands-free. Say things like \"fix that error\" or \"run npm test\".",
-        highlightSelector: "#voice-hud",
+        id: 'voice',
+        title: 'Voice Mode',
+        body: 'Tap the mic to talk to Rina hands-free. Say things like "fix that error" or "run npm test".',
+        highlightSelector: '#voice-hud',
       },
       {
-        id: "done",
+        id: 'done',
         title: "You're Ready",
         body: "You're all set. Use the command palette or Rina Agent anytime you get stuck.",
       },
@@ -45,8 +45,8 @@ const Onboarding = (() => {
   }
 
   function createRoot() {
-    rootEl = document.createElement("div");
-    rootEl.id = "onboarding-overlay";
+    rootEl = document.createElement('div');
+    rootEl.id = 'onboarding-overlay';
     rootEl.innerHTML = `
       <div class="onboarding-backdrop"></div>
       <div class="onboarding-tooltip">
@@ -60,25 +60,25 @@ const Onboarding = (() => {
     `;
     document.body.appendChild(rootEl);
 
-    rootEl.querySelector(".onboarding-skip").addEventListener("click", end);
-    rootEl.querySelector(".onboarding-next").addEventListener("click", next);
+    rootEl.querySelector('.onboarding-skip').addEventListener('click', end);
+    rootEl.querySelector('.onboarding-next').addEventListener('click', next);
   }
 
   function applyStep() {
     const step = steps[currentStep];
     if (!step) return end();
 
-    const titleEl = rootEl.querySelector(".onboarding-title");
-    const bodyEl = rootEl.querySelector(".onboarding-body");
-    const nextBtn = rootEl.querySelector(".onboarding-next");
+    const titleEl = rootEl.querySelector('.onboarding-title');
+    const bodyEl = rootEl.querySelector('.onboarding-body');
+    const nextBtn = rootEl.querySelector('.onboarding-next');
 
     titleEl.textContent = step.title;
     bodyEl.textContent = step.body;
-    nextBtn.textContent = currentStep === steps.length - 1 ? "Finish" : "Next";
+    nextBtn.textContent = currentStep === steps.length - 1 ? 'Finish' : 'Next';
 
-    const tooltip = rootEl.querySelector(".onboarding-tooltip");
-    tooltip.style.removeProperty("left");
-    tooltip.style.removeProperty("top");
+    const tooltip = rootEl.querySelector('.onboarding-tooltip');
+    tooltip.style.removeProperty('left');
+    tooltip.style.removeProperty('top');
 
     if (step.highlightSelector) {
       const target = document.querySelector(step.highlightSelector);
@@ -88,9 +88,9 @@ const Onboarding = (() => {
         tooltip.style.left = `${rect.left + window.scrollX + 16}px`;
       }
     } else {
-      tooltip.style.top = "50%";
-      tooltip.style.left = "50%";
-      tooltip.style.transform = "translate(-50%, -50%)";
+      tooltip.style.top = '50%';
+      tooltip.style.left = '50%';
+      tooltip.style.transform = 'translate(-50%, -50%)';
     }
   }
 

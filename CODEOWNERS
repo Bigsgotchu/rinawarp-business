@@ -1,0 +1,7 @@
+# Global ownership
+* @karina
+
+# App-specific ownership
+apps/** @karina
+scripts/** @karina
+.github/** @karina

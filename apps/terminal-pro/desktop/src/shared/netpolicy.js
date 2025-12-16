@@ -20,7 +20,9 @@ export function shouldRetry(step, code, stderr) {
   if (code === 0) return false;
   if (step.capability !== 'network') return false;
   const s = (stderr || '').toLowerCase();
-  return /timeout|timed out|econnreset|etimedout|network\s+unreachable|temporary|service\s+unavailable|503|502|429/.test(s);
+  return /timeout|timed out|econnreset|etimedout|network\s+unreachable|temporary|service\s+unavailable|503|502|429/.test(
+    s,
+  );
 }
 
 // exponential backoff with cap; can be overridden per-step

@@ -1,7 +1,9 @@
 // src/renderer/js/terminal-optimized.js
 import { Terminal } from 'xterm';
+
 import 'xterm/css/xterm.css';
 import { askRinaChat } from './ai.js';
+
 import './live-session.js';
 import { maybeShowRepoPanel } from '../../../../agent/repo/panel/maybeShowRepoPanel';
 
@@ -9,19 +11,19 @@ const terminals = new Map();
 let activeTerminalId = null;
 
 // store last chunk for AI context
-let lastTerminalChunk = "";
-let lastCommand = "";
+let lastTerminalChunk = '';
+let lastCommand = '';
 let firstCommandExecuted = false;
 
 // Initialize terminal state tracking
 window.RinaTerminalState = window.RinaTerminalState || {};
 window.RinaTerminalState.env = {}; // later we'll auto-parse PATH, PWD, etc.
 window.RinaTerminalState.isError = false;
-window.RinaTerminalState.lastCommand = "";
-window.RinaTerminalState.lastOutput = "";
+window.RinaTerminalState.lastCommand = '';
+window.RinaTerminalState.lastOutput = '';
 window.RinaTerminalState.history = [];
-window.RinaTerminalState.cwd = "";
-window.RinaTerminalState.shell = "";
+window.RinaTerminalState.cwd = '';
+window.RinaTerminalState.shell = '';
 
 // --- Live Session Integration ---
 const LiveSession = window.RinaLiveSession; // Provided by preload + live-session.js
@@ -65,7 +67,13 @@ function createXtermInstance(container) {
   return term;
 }
 
-async function createTerminalTab({ shell, cwd, liveHost = false, liveGuest = false, sessionId = null } = {}) {
+async function createTerminalTab({
+  shell,
+  cwd,
+  liveHost = false,
+  liveGuest = false,
+  sessionId = null,
+} = {}) {
   const tabBar = document.getElementById('terminal-tabs');
   const container = document.getElementById('terminal-container');
   if (!tabBar || !container) return null;
@@ -75,7 +83,7 @@ async function createTerminalTab({ shell, cwd, liveHost = false, liveGuest = fal
   tabEl.className = 'rw-tab rw-tab-active';
   tabEl.textContent = `Terminal ${tabBar.children.length + 1}`;
 
-  [...tabBar.children].forEach(btn => btn.classList.remove('rw-tab-active'));
+  [...tabBar.children].forEach((btn) => btn.classList.remove('rw-tab-active'));
   tabBar.appendChild(tabEl);
 
   container.innerHTML = '';
@@ -88,7 +96,7 @@ async function createTerminalTab({ shell, cwd, liveHost = false, liveGuest = fal
       shell,
       cwd,
       cols: 120,
-      rows: 30
+      rows: 30,
     });
     ptyId = res.id;
   }
@@ -117,12 +125,12 @@ async function createTerminalTab({ shell, cwd, liveHost = false, liveGuest = fal
   });
 
   // --- AI Autocomplete (unchanged) ---
-  term.onKey(async ({ key, domEvent }) => {
+  term.onKey(async ({ domEvent }) => {
     if (domEvent.key === 'Tab') {
       const state = window.RinaTerminalState;
       const suggestion = await askRinaChat({
         prompt: `Predict the next part of the command:\n"${state.lastCommand}"`,
-        context: state
+        context: state,
       });
 
       if (suggestion && suggestion.length < 80) {
@@ -138,15 +146,15 @@ async function createTerminalTab({ shell, cwd, liveHost = false, liveGuest = fal
       sessionId,
       tabId,
       userId: window.RinaUser?.id,
-      teamId: window.RinaUser?.teamId
+      teamId: window.RinaUser?.teamId,
     });
 
-    CURRENT_SESSION.on("input", (msg) => {
+    CURRENT_SESSION.on('input', (msg) => {
       // Guests typing → goes into host PTY
       if (ptyId) window.RinaTerminal.write(ptyId, msg.data);
     });
 
-    CURRENT_SESSION.on("ptyOut", (msg) => {
+    CURRENT_SESSION.on('ptyOut', (msg) => {
       term.write(msg.data);
     });
   }
@@ -157,11 +165,11 @@ async function createTerminalTab({ shell, cwd, liveHost = false, liveGuest = fal
       sessionId,
       tabId,
       userId: window.RinaUser?.id,
-      teamId: window.RinaUser?.teamId
+      teamId: window.RinaUser?.teamId,
     });
 
     // Guest receives output from host
-    CURRENT_SESSION.on("ptyOut", (msg) => {
+    CURRENT_SESSION.on('ptyOut', (msg) => {
       term.write(msg.data);
     });
 
@@ -172,27 +180,6 @@ async function createTerminalTab({ shell, cwd, liveHost = false, liveGuest = fal
   }
 
   return tabId;
-}
-
-function switchToTab(id) {
-  const container = document.getElementById('terminal-container');
-  if (!container) return;
-
-  const info = terminals.get(id);
-  if (!info) return;
-
-  // Re-render this terminal into the container
-  container.innerHTML = '';
-  info.term.open(container);
-  info.term.focus();
-
-  // Update active tab visuals
-  for (const { tabEl } of terminals.values()) {
-    tabEl.classList.remove('rw-tab-active');
-  }
-  info.tabEl.classList.add('rw-tab-active');
-
-  activeTerminalId = id;
 }
 
 function setupGlobalTerminalEvents() {
@@ -207,8 +194,8 @@ function setupGlobalTerminalEvents() {
       lastTerminalChunk = data;
 
       // detect last command entered
-      if (data.includes("\r")) {
-        const cleaned = data.replace(/\r/g, "");
+      if (data.includes('\r')) {
+        const cleaned = data.replace(/\r/g, '');
         if (cleaned.trim().length > 0) {
           lastCommand = cleaned;
 
@@ -220,7 +207,7 @@ function setupGlobalTerminalEvents() {
               window.repoPanel.checkAndShowPanel();
             }
             maybeShowRepoPanel(window.RinaTerminalState.cwd, (text) => {
-              window.RinaTerminalUI.showAIPanel("Rina noticed this project", text);
+              window.RinaTerminalUI.showAIPanel('Rina noticed this project', text);
             });
           }
         }
@@ -230,21 +217,21 @@ function setupGlobalTerminalEvents() {
       window.RinaTerminalState.lastOutput = data;
       window.RinaTerminalState.lastCommand = lastCommand;
 
-          // Hook error detection:
-          if (/error|not found|failed|exception/i.test(data)) {
-            window.RinaTerminalState.isError = true;
-    
-            // Check for repo panel on error (user intent)
-            if (window.repoPanel && !window.repoPanel.userIntentDetected) {
-              window.repoPanel.userIntentDetected = true;
-              window.repoPanel.checkAndShowPanel();
-            }
-          }
-    
-          // 🔹 NEW: if we are hosting a live session, broadcast this PTY output
-          if (window.RinaLiveSession?.isLiveHost()) {
-            window.RinaLiveSession.sendPTYOutputFromHost(data);
-          }
+      // Hook error detection:
+      if (/error|not found|failed|exception/i.test(data)) {
+        window.RinaTerminalState.isError = true;
+
+        // Check for repo panel on error (user intent)
+        if (window.repoPanel && !window.repoPanel.userIntentDetected) {
+          window.repoPanel.userIntentDetected = true;
+          window.repoPanel.checkAndShowPanel();
+        }
+      }
+
+      // 🔹 NEW: if we are hosting a live session, broadcast this PTY output
+      if (window.RinaLiveSession?.isLiveHost()) {
+        window.RinaLiveSession.sendPTYOutputFromHost(data);
+      }
     }
   });
 
@@ -313,13 +300,13 @@ window.RinaTerminalUI = {
     t.textContent = title;
     b.textContent = content;
 
-    panel.classList.remove("hidden");
+    panel.classList.remove('hidden');
   },
   // Demo mode helpers
   appendDemoMessage(text) {
-    const demoBanner = document.querySelector(".rina-demo-banner");
+    const demoBanner = document.querySelector('.rina-demo-banner');
     if (demoBanner) {
-      const p = document.createElement("p");
+      const p = document.createElement('p');
       p.textContent = text;
       demoBanner.appendChild(p);
     }
@@ -327,18 +314,18 @@ window.RinaTerminalUI = {
   runDemoCommand(cmd) {
     const active = terminals.get(activeTerminalId);
     if (active && active.term) {
-      active.term.write(cmd + "\r");
+      active.term.write(cmd + '\r');
     }
   },
   runAIDemoCommand(prompt) {
     window.RinaAI?.runDemo?.(prompt);
   },
   showVoiceHint(text) {
-    const el = document.querySelector(".rina-voice-hint");
+    const el = document.querySelector('.rina-voice-hint');
     if (el) {
       el.textContent = text;
-      el.classList.add("visible");
-      setTimeout(() => el.classList.remove("visible"), 3000);
+      el.classList.add('visible');
+      setTimeout(() => el.classList.remove('visible'), 3000);
     }
   },
 
@@ -351,8 +338,41 @@ window.RinaTerminalUI = {
   },
 };
 
+// Cross-origin isolation sanity check
+function verifyCrossOriginIsolation() {
+  try {
+    const isIsolated = self.crossOriginIsolated;
+    console.log('[COI] crossOriginIsolated:', isIsolated);
+
+    if (!isIsolated) {
+      console.error('[COI] WARNING: Cross-origin isolation not enabled!');
+      console.error('[COI] This may affect SharedArrayBuffer and performance APIs');
+
+      // Test crypto.subtle as additional check
+      crypto.subtle
+        .digest('SHA-256', new TextEncoder().encode('test'))
+        .then(() => console.log('[COI] crypto.subtle works despite COI flag'))
+        .catch((e) => console.error('[COI] crypto.subtle failed:', e.message));
+
+      return false;
+    }
+
+    // Test crypto.subtle works
+    crypto.subtle
+      .digest('SHA-256', new TextEncoder().encode('ok'))
+      .then(() => console.log('[COI] Cross-origin isolation verified'))
+      .catch((e) => console.error('[COI] crypto.subtle test failed:', e.message));
+
+    return true;
+  } catch (e) {
+    console.error('[COI] Verification failed:', e);
+    return false;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  initTerminal().catch((err) =>
-    console.error('Failed to init terminal', err)
-  );
+  // Verify cross-origin isolation first
+  verifyCrossOriginIsolation();
+
+  initTerminal().catch((err) => console.error('Failed to init terminal', err));
 });

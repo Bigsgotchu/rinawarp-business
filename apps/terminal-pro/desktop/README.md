@@ -7,9 +7,11 @@
 # RinaWarp Terminal Pro (Electron)
 
 ## What You Are Building (Plain English)
+
 A terminal-first desktop app with an agent that understands **intent** and safely executes real steps. Local-first, guardrails on by default.
 
 ## Run
+
 ```bash
 npm install
 npm run dev
@@ -33,5 +35,6 @@ Denied patterns: rm -rf /, fork bombs, shutdown/reboot, destructive dd
 Execute requires confirmation.
 
 
-**a.** Want a packaged build via `electron-builder` (dmg/exe/AppImage) next?  
+**a.** Want a packaged build via `electron-builder` (dmg/exe/AppImage) next?
 **b.** Add a pluggable LLM planner (off by default) behind `RINA_LLM=1`?
+```

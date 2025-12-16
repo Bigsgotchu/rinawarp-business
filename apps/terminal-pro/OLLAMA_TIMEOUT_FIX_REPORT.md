@@ -14,6 +14,7 @@ The timeout issue was caused by **memory-constrained system resources**:
 ## ✅ Solution Implemented
 
 ### 1. Robust Multi-Fallback System
+
 - **Primary**: `qwen2.5-coder:1.5b-base` (986MB - much smaller)
 - **Optimized Parameters**:
   - `num_ctx: 1024` (minimal context window)
@@ -22,11 +23,13 @@ The timeout issue was caused by **memory-constrained system resources**:
   - `top_p: 0.8` (quality control)
 
 ### 2. Timeout Management
+
 - **30-second timeout** per model attempt
 - **AbortController** for clean request cancellation
 - **Progressive fallback** through model configurations
 
 ### 3. Graceful Degradation
+
 - **Mock response system** when all models fail
 - **User-friendly messages** indicating AI availability
 - **No application crashes** - always provides response
@@ -40,16 +43,18 @@ The timeout issue was caused by **memory-constrained system resources**:
 ## 🎯 Key Improvements
 
 ### Before (Problematic)
+
 ```javascript
 // No timeout, large model, single point of failure
 body: JSON.stringify({
-  model: "rina:latest",  // 4.4GB - too large!
+  model: 'rina:latest', // 4.4GB - too large!
   prompt,
-  stream: false
-})
+  stream: false,
+});
 ```
 
 ### After (Robust)
+
 ```javascript
 // Multiple fallbacks, timeout management, graceful degradation
 const MODEL_CONFIG = [
@@ -65,6 +70,7 @@ const MODEL_CONFIG = [
 ## 🚀 Expected Behavior Now
 
 ### Best Case (Ollama Working)
+
 ```
 Attempting Ollama request with qwen2.5-coder:1.5b-base...
 ✅ Ollama success with qwen2.5-coder:1.5b-base
@@ -72,6 +78,7 @@ Attempting Ollama request with qwen2.5-coder:1.5b-base...
 ```
 
 ### Fallback Case (Ollama Unavailable)
+
 ```
 ❌ Ollama failed with qwen2.5-coder:1.5b-base: timeout...
 🔄 All Ollama models failed, using mock response
@@ -81,17 +88,21 @@ Attempting Ollama request with qwen2.5-coder:1.5b-base...
 ## 🛠️ Next Steps for Optimal Performance
 
 ### Option 1: System Resource Upgrade
+
 - **Add more RAM** (16GB+ recommended for larger models)
 - **Use SSD** instead of HDD for swap
 - **Close unnecessary applications** to free memory
 
 ### Option 2: Model Optimization
+
 - **Stick with current solution** - it's production-ready
 - **Monitor memory usage** with `free -h`
 - **Consider GPU** if available for larger models
 
 ### Option 3: Alternative Models (Future)
+
 If system resources improve, you can add more models to `MODEL_CONFIG`:
+
 ```javascript
 const MODEL_CONFIG = [
   { name: "qwen2.5-coder:1.5b-base", params: {...} },    // Current - most reliable
@@ -110,21 +121,23 @@ const MODEL_CONFIG = [
 
 ## 📊 Performance Comparison
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Response Time | 10+ seconds (timeout) | 1-3 seconds (success) or instant (fallback) |
-| Reliability | 0% (always timeout) | 95%+ (with fallback) |
-| Memory Usage | 4.4GB model | 986MB model |
-| User Experience | Frustrating | Smooth with clear feedback |
+| Metric          | Before                | After                                       |
+| --------------- | --------------------- | ------------------------------------------- |
+| Response Time   | 10+ seconds (timeout) | 1-3 seconds (success) or instant (fallback) |
+| Reliability     | 0% (always timeout)   | 95%+ (with fallback)                        |
+| Memory Usage    | 4.4GB model           | 986MB model                                 |
+| User Experience | Frustrating           | Smooth with clear feedback                  |
 
 ## 🔧 Testing
 
 Run the fallback test to verify the system works:
+
 ```bash
 cd apps/terminal-pro/agent && node test-fallback.js
 ```
 
 The agent server should now be responsive with either:
+
 - **Fast AI responses** when Ollama works
 - **Helpful fallback messages** when Ollama is unavailable
 

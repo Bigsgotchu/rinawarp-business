@@ -18,5 +18,8 @@ build/
 coverage/
 
 # Netlify / tooling cache
+
+# ESLint & tool caches
+.cache/
 .netlify/
 .cache/

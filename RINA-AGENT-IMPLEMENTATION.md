@@ -7,6 +7,7 @@ The RINA AGENT workflow mode has been successfully implemented across Kilo, Code
 ### 🚀 CONFIGURATION FILES UPDATED
 
 #### 1. Kilo Configuration (`.kilo/config.json`)
+
 - ✅ Full RINA AGENT system prompt
 - ✅ Autonomous execution mode
 - ✅ Multi-step workflow automation
@@ -14,12 +15,14 @@ The RINA AGENT workflow mode has been successfully implemented across Kilo, Code
 - ✅ Production-critical engineering approach
 
 #### 2. Continue Configuration (`.continue/config.json`)
+
 - ✅ RINA AGENT workflow mode
 - ✅ Experimental auto-execution flags
 - ✅ Autonomous execution features
 - ✅ Surgical precision settings
 
 #### 3. VSCode Settings (`.vscode/settings.json`)
+
 - ✅ Continue experimental flags
 - ✅ MCP server configuration (filesystem, shell)
 - ✅ Auto-apply edits enabled
@@ -44,6 +47,7 @@ Located in `.continue/slash-commands/`:
 ### 🔧 SYSTEM AWARENESS
 
 RINA AGENT now operates with full awareness of:
+
 - **Website**: apps/website/ (Cloudflare Pages)
 - **Desktop**: apps/terminal-pro/ (Electron)
 - **Workers**: live-session-worker/ (Cloudflare Worker)
@@ -57,6 +61,7 @@ RINA AGENT now operates with full awareness of:
 ### 🎯 AUTONOMOUS BEHAVIOR
 
 **RINA AGENT will now:**
+
 - ✅ Complete tasks end-to-end without waiting
 - ✅ Apply file edits automatically
 - ✅ Run shell commands when needed
@@ -68,19 +73,22 @@ RINA AGENT now operates with full awareness of:
 ### 🛡️ ERROR RECOVERY PROTOCOLS
 
 **If issues occur:**
+
 - **Stripe errors** → Fix API keys, webhooks, or headers
-- **Cloudflare errors** → Fix _headers, routing, wrangler config
+- **Cloudflare errors** → Fix \_headers, routing, wrangler config
 - **Website broken** → Rebuild and redeploy
 - **Installer broken** → Rebuild electron builder pipeline
 
 ### 📋 USAGE
 
 Simply start using RINA AGENT in any of the three systems:
+
 - **Kilo**: Autonomous engineering assistant
 - **Continue**: VS Code extension with workflow mode
 - **Codex**: Via MCP configuration
 
 The system will automatically:
+
 1. Analyze requests for authorization keywords
 2. Break tasks into executable steps
 3. Apply fixes and run commands

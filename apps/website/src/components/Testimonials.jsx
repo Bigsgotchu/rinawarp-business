@@ -30,7 +30,7 @@ const Testimonials = () => {
       company: 'StartupXYZ',
       avatar: 'EW',
       content:
-        'As someone who types all day, the voice commands have been a lifesaver for my wrists. Plus, the AI understands context better than any other tool I\'ve tried.',
+        "As someone who types all day, the voice commands have been a lifesaver for my wrists. Plus, the AI understands context better than any other tool I've tried.",
       rating: 5,
       metrics: { health_impact: 'Reduced strain', accuracy: '95%' },
     },
@@ -40,7 +40,7 @@ const Testimonials = () => {
       company: 'DataFlow Solutions',
       avatar: 'DK',
       content:
-        'My team\'s productivity has increased dramatically since adopting RinaWarp. The multi-tab interface and advanced search make complex projects manageable.',
+        "My team's productivity has increased dramatically since adopting RinaWarp. The multi-tab interface and advanced search make complex projects manageable.",
       rating: 5,
       metrics: { team_productivity: '+60%', project_speed: '+40%' },
     },
@@ -50,7 +50,7 @@ const Testimonials = () => {
       company: 'DesignStudio Pro',
       avatar: 'LT',
       content:
-        'The customization options are incredible. I\'ve created the perfect development environment that matches my workflow perfectly. Highly recommended!',
+        "The customization options are incredible. I've created the perfect development environment that matches my workflow perfectly. Highly recommended!",
       rating: 5,
       metrics: { customization: 'Perfect fit', ease_of_use: '10/10' },
     },
@@ -60,7 +60,7 @@ const Testimonials = () => {
       company: 'APIFirst Corp',
       avatar: 'AT',
       content:
-        'The Git integration and intelligent conflict resolution have saved me countless hours. It\'s like having a senior developer as your coding partner.',
+        "The Git integration and intelligent conflict resolution have saved me countless hours. It's like having a senior developer as your coding partner.",
       rating: 5,
       metrics: { git_conflicts: '-80%', code_quality: '+45%' },
     },

@@ -1,23 +1,45 @@
 {
   "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.19.6 <21",
+    "pnpm": ">=9 <10"
+  },
   "scripts": {
     "prepare": "husky install",
+    "ship": "node scripts/ship.mjs",
+    "version": "changeset version && pnpm i --no-frozen-lockfile",
+    "release:tag": "changeset tag",
+    "release:changelog": "changeset status --verbose",
     "test": "vitest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:ci": "eslint . --max-warnings=0 --cache --cache-location .cache/eslint",
+    "lint": "node scripts/batch-runner.mjs --bin eslint --ext .ts,.tsx,.js,.jsx --args \"--cache --cache-location .cache/eslint\"",
+    "lint:fix": "node scripts/batch-runner.mjs --bin eslint --ext .ts,.tsx,.js,.jsx --args \"--fix --cache --cache-location .cache/eslint\"",
+    "lint:ci": "node scripts/batch-runner.mjs --bin eslint --ext .ts,.tsx,.js,.jsx --batch 150 --args \"--max-warnings=0 --cache --cache-location .cache/eslint --report-unused-disable-directives\"",
     "lint:staged": "lint-staged",
-    "lint:css": "stylelint \"**/*.{css,scss,less}\" --cache --cache-location .cache/stylelint",
+    "lint:css": "node scripts/batch-runner.mjs --bin stylelint --ext .css,.scss,.less --args \"--cache --cache-location .cache/stylelint\"",
     "lint:css:fix": "stylelint \"**/*.{css,scss,less}\" --fix --cache --cache-location .cache/stylelint",
-    "format": "prettier -w .",
-    "format:check": "prettier --check .",
-    "spell": "cspell lint --no-progress --gitignore --cache \"**/*\"",
+    "format": "node scripts/batch-runner.mjs --bin prettier --ext .ts,.tsx,.js,.jsx,.json,.md,.mdx,.css,.scss,.html,.yml,.yaml --args \"--write --ignore-unknown\"",
+    "format:check": "node scripts/batch-runner.mjs --bin prettier --ext .ts,.tsx,.js,.jsx,.json,.md,.mdx,.css,.scss,.html,.yml,.yaml --batch 200 --args \"--check --ignore-unknown\"",
+    "format:fix": "node scripts/batch-runner.mjs --bin prettier --ext .ts,.tsx,.js,.jsx,.json,.md,.mdx,.css,.scss,.html,.yml,.yaml --args \"--write --ignore-unknown\"",
+    "format:changed": "node scripts/batch-runner.mjs --bin prettier --ext .ts,.tsx,.js,.jsx,.json,.md,.mdx,.css,.scss,.html,.yml,.yaml --changed --args \"--write --ignore-unknown\"",
+    "smoke:preload": "node scripts/preload-smoke.mjs",
+    "smoke:preload:packaged": "node scripts/preload-smoke-packaged.mjs",
+    "repo:cleanup": "node scripts/repo-cleanup.mjs",
+    "spell": "node scripts/batch-runner.mjs --bin cspell --ext .ts,.tsx,.js,.jsx,.md,.mdx --args \"--no-progress --gitignore --cache\"",
     "spell:fix": "cspell lint --no-progress --gitignore --cache --fix \"**/*\"",
+    "lint:css:ci": "node scripts/batch-runner.mjs --bin stylelint --ext .css,.scss,.less --batch 200 --args \"--cache --cache-location .cache/stylelint\"",
+    "spell:ci": "node scripts/batch-runner.mjs --bin cspell --ext .ts,.tsx,.js,.jsx,.md,.mdx --batch 300 --args \"--no-progress --gitignore --cache\"",
+    "lint:changed": "node scripts/batch-runner.mjs --bin eslint --ext .ts,.tsx,.js,.jsx --changed --args \"--cache --cache-location .cache/eslint\"",
+    "lint:report": "mkdir -p .debug && node scripts/batch-runner.mjs --bin eslint --ext .ts,.tsx,.js,.jsx --args \"-f json -o .debug/eslint.json\" && node scripts/eslint-top.mjs .debug/eslint.json",
+    "lint:css:changed": "node scripts/batch-runner.mjs --bin stylelint --ext .css,.scss,.less --changed --args \"--cache --cache-location .cache/stylelint\"",
+    "spell:changed": "node scripts/batch-runner.mjs --bin cspell --ext .ts,.tsx,.js,.jsx,.md,.mdx --changed --args \"--no-progress --gitignore --cache\"",
     "audit": "pnpm audit --prod",
     "sbom": "pnpm dlx syft dir:. -o json > sbom.json",
     "deps:check": "pnpm dlx knip && pnpm dlx syncpack lint",
     "release:version": "changeset version",
     "release:publish": "pnpm -r --filter ./packages/** publish --access restricted",
+    "sentry:check": "node -e \"if(!process.env.SENTRY_DSN) {console.log('Sentry disabled'); process.exit(0);} console.log('Sentry DSN configured')\"",
+    "sentry:ping": "node scripts/sentry-ping.mjs",
+    "release:prepare": "changeset && pnpm release:changelog",
     "release": "pnpm release:version && pnpm install --lockfile-only && git add pnpm-lock.yaml && git commit -m \"chore: update lockfile\" || true && pnpm release:publish",
     "env:doctor": "tsx tools/env-doctor.ts",
     "env:doctor:local": "ENV_DOCTOR_TARGET=local tsx tools/env-doctor.ts",
@@ -38,15 +60,35 @@
     "fix:enhanced:verbose": "node scripts/fix-all-enhanced.mjs --verbose",
     "fix:staged": "node scripts/fix-staged.js",
     "fix:staged:quick": "bash scripts/fix-staged.sh",
-    "quality:check": "bash scripts/good-state-check.sh",
-    "quality:status": "node scripts/quality-status.js",
+    "quality:check": "pnpm run -s typecheck && pnpm run -s lint:ci && pnpm run -s format:check && pnpm run -s spell && pnpm run -s lint:css",
+    "quality:status": "echo \"# TypeScript\" && pnpm -s typecheck || true && echo \"\\n# ESLint (summary)\" && eslint . -f stylish || true && echo \"\\n# Prettier\" && pnpm -s format:check || true && echo \"\\n# Spelling\" && pnpm -s spell || true && echo \"\\n# Stylelint\" && pnpm -s lint:css || true",
+    "lint:config": "mkdir -p .debug && eslint --print-config src/index.ts > .debug/eslint.print.json",
+    "lint:config:tests": "mkdir -p .debug && eslint --print-config tests/example.test.ts > .debug/eslint.print.tests.json",
     "good:state": "pnpm quality:check && pnpm fix:staged && pnpm test",
     "verify:quick": "pnpm fix:enhanced && pnpm -r run typecheck",
     "verify:strict": "pnpm fix:enhanced && pnpm -r run typecheck && pnpm -r test",
     "verify:changed": "node -e \"const cp=require('child_process');const base=cp.execSync('git merge-base origin/main HEAD').toString().trim();const list=cp.execSync(`git diff --name-only ${base}`).toString().split('\\\\n').filter(Boolean);if(!list.length){process.exit(0)}const js=list.filter(f=>/\\\\.(c?m?js|ts|tsx)$/.test(f)).join(' ');if(js) cp.execSync(`pnpm exec eslint --cache --cache-location .cache/eslint ${js}`,{stdio:'inherit'});const md=list.filter(f=>/\\\\.md$/.test(f)).join(' ');if(md) cp.execSync(`pnpm fix:md --paths ${md}`,{stdio:'inherit'});\"",
     "precommit": "pnpm fix:staged",
     "commit:fix": "pnpm fix:staged && git commit --amend --no-edit && git push -f",
-    "release:guard": "pnpm fix:enhanced && pnpm -r test && pnpm -r run typecheck",
+    "release:guard": "node scripts/release-guard.mjs",
+    "sitemap:gen": "node scripts/generate-sitemap.mjs",
+    "pages:deploy:preview": "node scripts/pages-deploy.mjs --env preview",
+    "pages:deploy:prod": "node scripts/pages-deploy.mjs --env production",
+    "pages:wait": "node scripts/pages-wait.mjs",
+    "pages:ping": "node scripts/pages-ping.mjs",
+    "pages:slack": "node scripts/pages-slack.mjs",
+    "pages:pr:comment": "node scripts/pages-pr-comment.mjs",
+    "pages:promote": "node scripts/pages-promote.mjs",
+    "pages:rollback": "node scripts/pages-rollback.mjs",
+    "size:scan": "node scripts/size-scan.mjs",
+    "size:gate": "node scripts/size-gate.mjs",
+    "size:diff": "node scripts/size-diff.mjs",
+    "size:baseline:fetch": "node scripts/size-baseline-fetch.mjs",
+    "lighthouse:run": "lhci autorun",
+    "lighthouse:assert": "lhci assert --config=.lighthouserc.json",
+    "lighthouse:summary": "node scripts/lhci-summary.mjs",
+    "ship:pages:preview": "pnpm -s repo:cleanup && pnpm -s quality:check && pnpm -s release:guard --env staging && pnpm -s sitemap:gen && pnpm -s pages:deploy:preview && pnpm -s pages:wait && pnpm -s pages:ping && pnpm -s size:scan && pnpm -s size:baseline:fetch && pnpm -s size:gate && pnpm -s lighthouse:run && pnpm -s lighthouse:assert && pnpm -s pages:pr:comment && pnpm -s pages:slack",
+    "ship:pages:prod": "pnpm -s repo:cleanup && pnpm -s quality:check && pnpm -s release:guard --env production && pnpm -s sitemap:gen && pnpm -s pages:deploy:prod && pnpm -s pages:wait && pnpm -s pages:ping && pnpm -s size:scan && pnpm -s lighthouse:run && pnpm -s lighthouse:assert && pnpm -s pages:slack",
     "release:dry": "pnpm verify:strict && pnpm prepublish:verify:prod || (echo '❌ release checks failed' && exit 1)",
     "prepublishOnly": "pnpm release:guard",
     "prepublish:verify:prod": "bash scripts/ops/prepublish-verify.sh",
@@ -54,8 +96,15 @@
     "ops:hook:health": "bash scripts/ops/hook-health.sh",
     "ops:release:guard": "bash scripts/ops/release-guard.sh",
     "ops:format:freeze": "bash scripts/ops/format-freeze.sh",
-    "ship:linux": "REQUIRED_PLATFORMS=linux pnpm -w --filter ./apps/terminal-pro/desktop build:linux && pnpm -w --filter ./apps/terminal-pro/desktop feeds:gen && pnpm -w --filter ./apps/terminal-pro/desktop r2:sync && pnpm -w --filter ./apps/terminal-pro/desktop worker:deploy && pnpm -w --filter ./apps/website pages:deploy && pnpm -w --filter ./apps/terminal-pro/desktop cache:purge && pnpm -w --filter ./apps/terminal-pro/desktop prepublish:verify:prod",
-    "changelog:gen": "pnpm dlx conventional-changelog -p angular -i CHANGELOG.md -s"
+    "ship:linux": "REQUIRED_PLATFORMS=linux pnpm -w --filter ./apps/terminal-pro/desktop build:linux && pnpm -w --filter ./apps/terminal-pro/desktop feeds:gen && pnpm -w --filter ./apps/terminal-pro/desktop r2:sync && pnpm -w --filter ./apps/terminal-pro/desktop worker:deploy && pnpm -w --filter ./apps/terminal-pro/desktop pages:deploy && pnpm -w --filter ./apps/terminal-pro/desktop cache:purge && pnpm -w --filter ./apps/terminal-pro/desktop prepublish:verify:prod",
+    "changelog:gen": "pnpm dlx conventional-changelog -p angular -i CHANGELOG.md -s",
+    "eslint:fix:max": "cross-env NODE_OPTIONS=--max-old-space-size=8192 pnpm -w exec eslint . --fix --fix-type=problem,suggestion,layout --cache --cache-location .cache/eslint --no-error-on-unmatched-pattern",
+    "doctor": "node -e \"console.log(process.versions)\" && npx envinfo --system --npmPackages --binaries",
+    "healthcheck": "node scripts/healthcheck.mjs",
+    "healthcheck:ci": "node scripts/healthcheck.mjs --ci",
+    "bug:new": "node scripts/file-bug.mjs",
+    "build:check": "pnpm run -s typecheck && pnpm run -s lint",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "pnpm": {
     "overrides": {
@@ -74,6 +123,51 @@
       "typescript": "5.9.3"
     }
   },
+  "build": {
+    "appId": "com.rinawarp.business",
+    "productName": "Rinawarp Business",
+    "files": [
+      "dist/**",
+      "node_modules/**",
+      "package.json",
+      "**/electron/**/preload.*",
+      "**/electron/main/preload.*",
+      "**/preload.*"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "identity": null,
+      "hardenedRuntime": true,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "publisherName": "RinaWarp, Inc."
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "zip"
+      ]
+    },
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ]
+  },
   "lint-staged": {
     "*.{ts,tsx,js,cjs,mjs,json}": [
       "eslint --fix --max-warnings=0",
@@ -91,14 +185,20 @@
     "zod": "^4.2.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "@sentry/electron": "^4.26.0",
     "@cloudflare/workers-types": "^4.20251213.0",
     "@cspell/cspell-bundled-dicts": "^9.4.0",
     "@eslint/js": "^9.39.2",
+    "@lhci/cli": "^0.14.0",
     "@types/node": "^25.0.2",
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@typescript-eslint/parser": "^8.49.0",
+    "@vitest/eslint-plugin": "^1.5.2",
+    "asar": "^3.2.0",
     "body-parser": "^2.2.1",
     "conventional-changelog": "^5.1.0",
+    "cross-env": "^7.0.3",
     "cspell": "^9.4.0",
     "electron-builder": "^26.0.12",
     "eslint": "^9.39.2",

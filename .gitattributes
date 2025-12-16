@@ -1,3 +1,67 @@
-# Treat secrets as binary and exclude from diff tools
-secrets/* -diff
+# Normalize line endings and prevent EOL churn for binaries
+*.png  -text
+*.jpg  -text
+*.jpeg -text
+*.gif  -text
+*.ico  -text
+*.svg  -text
+*.webp -text
 
+# Archive files
+*.zip  -text
+*.tar  -text
+*.gz   -text
+*.bz2  -text
+*.xz   -text
+*.7z   -text
+*.rar  -text
+
+# Executables
+*.exe  -text
+*.dll  -text
+*.so   -text
+*.dylib -text
+*.AppImage -text
+*.deb  -text
+*.rpm  -text
+
+# Binary documentation
+*.pdf  -text
+*.doc  -text
+*.docx -text
+*.xls  -text
+*.xlsx -text
+*.ppt  -text
+*.pptx -text
+
+# Media files
+*.mp3  -text
+*.mp4  -text
+*.avi  -text
+*.mov  -text
+*.wmv  -text
+*.flv  -text
+*.webm -text
+*.wav  -text
+*.ogg  -text
+
+# Other binaries
+*.ttf  -text
+*.otf  -text
+*.woff -text
+*.woff2 -text
+*.eot  -text
+
+# Keep source files with proper line endings
+*.ts text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.xml text eol=lf

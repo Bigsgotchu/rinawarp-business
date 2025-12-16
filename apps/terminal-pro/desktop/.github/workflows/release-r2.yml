@@ -1,0 +1,100 @@
+name: Release to R2 + Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 0.5.0)'
+        required: true
+
+jobs:
+  build-matrix:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+
+      # heal/rebuild native deps where applicable
+      - name: Rebuild native (Linux & Windows)
+        if: runner.os != 'macOS'
+        run: |
+          cd apps/terminal-pro/desktop
+          pnpm rebuild || true
+
+      - name: Build artifacts
+        run: |
+          cd apps/terminal-pro/desktop
+          if [ "${{ runner.os }}" = "Linux" ]; then pnpm build:linux; fi
+          if [ "${{ runner.os }}" = "Windows" ]; then pnpm build:win; fi
+          if [ "${{ runner.os }}" = "macOS" ]; then pnpm build:mac; fi
+
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ runner.os }}
+          path: apps/terminal-pro/desktop/dist/**
+
+  publish:
+    needs: build-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+
+      - name: Set environment variables
+        run: |
+          echo "FEEDS_ORIGIN=${{ vars.PAGES_DOMAIN || 'https://<your-pages>.pages.dev' }}" >> $GITHUB_ENV
+          echo "ARTIFACTS_ORIGIN=${{ vars.ARTIFACTS_ORIGIN || 'https://<your-worker>.workers.dev' }}" >> $GITHUB_ENV
+          echo "CLOUDFLARE_API_TOKEN=${{ secrets.CF_API_TOKEN }}" >> $GITHUB_ENV
+          echo "CLOUDFLARE_ACCOUNT_ID=${{ secrets.CF_ACCOUNT_ID }}" >> $GITHUB_ENV
+
+      - name: Download all dists
+        uses: actions/download-artifact@v4
+        with:
+          path: collected-dist
+
+      - name: Merge dists
+        run: |
+          mkdir -p apps/terminal-pro/desktop/dist
+          cp -r collected-dist/*/* apps/terminal-pro/desktop/dist/ || true
+          ls -la apps/terminal-pro/desktop/dist
+
+      - name: Wrangler auth
+        run: npx -y wrangler whoami
+
+      - name: Publish artifacts to R2
+        run: |
+          cd apps/terminal-pro/desktop
+          node ./scripts/r2-sync.cjs
+
+      - name: Generate feeds (Pages)
+        run: |
+          cd apps/terminal-pro/desktop
+          node ./scripts/generate-feeds.cjs
+
+      - name: Prepublish verification (all platforms)
+        run: |
+          cd apps/terminal-pro/desktop
+          REQUIRED_PLATFORMS=linux,win,mac pnpm prepublish:verify
+
+      # Deploy feeds to Pages (using your existing Pages project)
+      - name: Deploy feeds to Pages
+        run: |
+          cd apps/terminal-pro/desktop
+          npx -y wrangler pages deploy dist/updates --project-name rinawarp-updates
+
+      - name: Purge feed cache only
+        run: |
+          cd apps/terminal-pro/desktop
+          pnpm cache:purge

@@ -17,8 +17,8 @@ const TeamOverview = ({ teamData }) => {
         setLoading(true);
         const response = await fetch(`/api/team/seats?teamId=${teamData.id}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
+            Authorization: `Bearer ${authToken}`,
+          },
         });
 
         if (!response.ok) {
@@ -144,9 +144,10 @@ const TeamOverview = ({ teamData }) => {
               <div
                 className="bg-mermid-600 h-2.5 rounded-full"
                 style={{
-                  width: seatsData?.maxSeats > 0
-                    ? `${(seatsData.usedSeats / seatsData.maxSeats) * 100}%`
-                    : '0%'
+                  width:
+                    seatsData?.maxSeats > 0
+                      ? `${(seatsData.usedSeats / seatsData.maxSeats) * 100}%`
+                      : '0%',
                 }}
               ></div>
             </div>

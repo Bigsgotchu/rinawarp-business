@@ -3,12 +3,15 @@
  * Uses offline license validation with signed blobs for fast checking
  */
 
-import { offlineValidator, validateLicenseBlob } from '../../../audit/functions/lib/license-service.js';
+import {
+  offlineValidator,
+  validateLicenseBlob,
+} from '../../../audit/functions/lib/license-service.js';
 
 export enum Tier {
   FREE = 'free',
-  TERMINAL_PRO = 'terminal-pro', 
-  AGENT_PRO = 'agent-pro'
+  TERMINAL_PRO = 'terminal-pro',
+  AGENT_PRO = 'agent-pro',
 }
 
 export interface Feature {
@@ -42,67 +45,67 @@ export const FEATURES: Record<string, Feature> = {
   TERMINAL_BASIC: {
     name: 'Terminal Basic',
     tier: Tier.FREE,
-    description: 'Basic terminal functionality'
+    description: 'Basic terminal functionality',
   },
   SHELL_EXECUTION: {
     name: 'Shell Execution',
     tier: Tier.FREE,
-    description: 'Run shell commands'
+    description: 'Run shell commands',
   },
   GIT_STATUS: {
     name: 'Git Status',
     tier: Tier.FREE,
-    description: 'View git repository status'
+    description: 'View git repository status',
   },
   PLAN_NEXT_STEP_BASIC: {
     name: 'Basic Planning',
     tier: Tier.FREE,
-    description: 'Basic next step heuristics (limited context)'
+    description: 'Basic next step heuristics (limited context)',
   },
 
   // Terminal Pro Features
   PLAN_NEXT_STEP_ADVANCED: {
     name: 'Advanced Planning',
     tier: Tier.TERMINAL_PRO,
-    description: 'Enhanced heuristics with full context awareness'
+    description: 'Enhanced heuristics with full context awareness',
   },
   GHOST_TEXT_SUGGESTIONS: {
     name: 'Ghost Text Suggestions',
     tier: Tier.TERMINAL_PRO,
-    description: 'Inline command suggestions with Tab-accept'
+    description: 'Inline command suggestions with Tab-accept',
   },
   MEMORY_PERSISTENCE: {
     name: 'Memory Persistence',
     tier: Tier.TERMINAL_PRO,
-    description: 'Remember preferences and sessions locally'
+    description: 'Remember preferences and sessions locally',
   },
 
   // Agent Pro Features
   TOOL_REGISTRY: {
     name: 'Tool Registry',
     tier: Tier.AGENT_PRO,
-    description: 'Permission-based tool access (fs, process, network)'
+    description: 'Permission-based tool access (fs, process, network)',
   },
   MULTI_STEP_PLANNING: {
     name: 'Multi-Step Planning',
     tier: Tier.AGENT_PRO,
-    description: 'Complex workflow planning and execution'
+    description: 'Complex workflow planning and execution',
   },
   CRASH_SUPERVISION: {
     name: 'Crash Supervision',
     tier: Tier.AGENT_PRO,
-    description: 'Agent health monitoring and recovery'
+    description: 'Agent health monitoring and recovery',
   },
   ENHANCED_MEMORY: {
     name: 'Enhanced Memory',
     tier: Tier.AGENT_PRO,
-    description: 'Advanced memory patterns and learning'
+    description: 'Advanced memory patterns and learning',
   },
   FUTURE_AI_LOOP: {
     name: 'AI Reasoning Loop',
     tier: Tier.AGENT_PRO,
-    description: 'Future AI-powered reasoning capabilities'
-  }
+    description: 'Future AI-powered reasoning capabilities',
+  },
 };
 
 export class FeatureGate {
@@ -146,10 +149,10 @@ export class FeatureGate {
       if (this.entitlements.terminal_pro_lifetime) {
         return { hasAccess: true };
       }
-      return { 
-        hasAccess: false, 
+      return {
+        hasAccess: false,
         upgradeTier: Tier.TERMINAL_PRO,
-        reason: 'Requires Terminal Pro lifetime license'
+        reason: 'Requires Terminal Pro lifetime license',
       };
     }
 
@@ -159,28 +162,31 @@ export class FeatureGate {
       if (this.entitlements.agent_pro_status === 'active') {
         return { hasAccess: true };
       }
-      
+
       // Check grace period
-      if (this.entitlements.agent_pro_status === 'grace' && this.entitlements.grace_period_ends_at) {
+      if (
+        this.entitlements.agent_pro_status === 'grace' &&
+        this.entitlements.grace_period_ends_at
+      ) {
         const now = Date.now();
         if (now < this.entitlements.grace_period_ends_at) {
-          return { 
+          return {
             hasAccess: true,
-            reason: 'Available during grace period'
+            reason: 'Available during grace period',
           };
         } else {
           return {
             hasAccess: false,
             upgradeTier: Tier.AGENT_PRO,
-            reason: 'Grace period expired'
+            reason: 'Grace period expired',
           };
         }
       }
-      
-      return { 
-        hasAccess: false, 
+
+      return {
+        hasAccess: false,
         upgradeTier: Tier.AGENT_PRO,
-        reason: `Requires Agent Pro subscription (current status: ${this.entitlements.agent_pro_status})`
+        reason: `Requires Agent Pro subscription (current status: ${this.entitlements.agent_pro_status})`,
       };
     }
 
@@ -194,11 +200,11 @@ export class FeatureGate {
     if (this.entitlements.agent_pro_status === 'active') {
       return Tier.AGENT_PRO;
     }
-    
+
     if (this.entitlements.terminal_pro_lifetime) {
       return Tier.TERMINAL_PRO;
     }
-    
+
     return Tier.FREE;
   }
 
@@ -206,21 +212,19 @@ export class FeatureGate {
    * Get features available to current tier
    */
   getAvailableFeatures(): Feature[] {
-    return Object.values(FEATURES).filter(feature => 
-      this.isFeatureAccessible(feature).hasAccess
-    );
+    return Object.values(FEATURES).filter((feature) => this.isFeatureAccessible(feature).hasAccess);
   }
 
   /**
    * Get features gated behind current tier
    */
   getGatedFeatures(): { features: Feature[]; upgradeTier: Tier }[] {
-    const terminalGated = Object.values(FEATURES).filter(feature => 
-      feature.tier === Tier.TERMINAL_PRO && !this.hasFeature(feature.name)
+    const terminalGated = Object.values(FEATURES).filter(
+      (feature) => feature.tier === Tier.TERMINAL_PRO && !this.hasFeature(feature.name),
     );
-    
-    const agentGated = Object.values(FEATURES).filter(feature => 
-      feature.tier === Tier.AGENT_PRO && !this.hasFeature(feature.name)
+
+    const agentGated = Object.values(FEATURES).filter(
+      (feature) => feature.tier === Tier.AGENT_PRO && !this.hasFeature(feature.name),
     );
 
     const result = [];
@@ -230,7 +234,7 @@ export class FeatureGate {
     if (agentGated.length > 0) {
       result.push({ features: agentGated, upgradeTier: Tier.AGENT_PRO });
     }
-    
+
     return result;
   }
 
@@ -262,15 +266,15 @@ export class FeatureGate {
     if (this.entitlements.agent_pro_status === 'active') {
       return false;
     }
-    
+
     if (this.entitlements.grace_period_ends_at) {
       return Date.now() > this.entitlements.grace_period_ends_at;
     }
-    
+
     if (this.entitlements.agent_pro_ends_at) {
       return Date.now() > this.entitlements.agent_pro_ends_at;
     }
-    
+
     return false;
   }
 
@@ -281,24 +285,24 @@ export class FeatureGate {
     if (this.entitlements.agent_pro_status === 'active' && this.entitlements.agent_pro_ends_at) {
       const remaining = this.entitlements.agent_pro_ends_at - Date.now();
       if (remaining <= 0) return 'Expired';
-      
+
       const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
       const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      
+
       if (days > 0) return `${days}d ${hours}h`;
       return `${hours}h`;
     }
-    
+
     if (this.entitlements.grace_period_ends_at) {
       const remaining = this.entitlements.grace_period_ends_at - Date.now();
       if (remaining <= 0) return 'Grace period ended';
-      
+
       const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
       const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      
+
       return `Grace: ${days}d ${hours}h`;
     }
-    
+
     return 'Unlimited';
   }
 
@@ -306,9 +310,11 @@ export class FeatureGate {
    * Check if we're in a grace period
    */
   isInGracePeriod(): boolean {
-    return this.entitlements.agent_pro_status === 'grace' && 
-           this.entitlements.grace_period_ends_at &&
-           Date.now() < this.entitlements.grace_period_ends_at;
+    return (
+      this.entitlements.agent_pro_status === 'grace' &&
+      this.entitlements.grace_period_ends_at &&
+      Date.now() < this.entitlements.grace_period_ends_at
+    );
   }
 }
 
@@ -319,7 +325,7 @@ export const DEFAULT_ENTITLEMENTS: UserEntitlements = {
   agent_memory: false,
   ghost_text: false,
   tool_registry_level: 'basic',
-  ai_cloud: false
+  ai_cloud: false,
 };
 
 /**
@@ -334,7 +340,7 @@ export async function loadEntitlementsFromCache(): Promise<UserEntitlements> {
   } catch (error) {
     console.warn('[FeatureGate] Failed to load cached entitlements:', error);
   }
-  
+
   return DEFAULT_ENTITLEMENTS;
 }
 
@@ -352,7 +358,7 @@ export async function loadEntitlementsFromServer(licenseBlob: string): Promise<U
   } catch (error) {
     console.error('[FeatureGate] Failed to validate license blob:', error);
   }
-  
+
   return DEFAULT_ENTITLEMENTS;
 }
 
@@ -364,29 +370,29 @@ export function createFeatureGate(entitlements: UserEntitlements): FeatureGate {
 }
 
 /**
- * Middleware for feature-g */
-export function requireated API endpoints
-Feature(featureName: string) {
+ * Middleware for feature-gated API endpoints
+ */
+export function requireFeature(featureName: string) {
   return async (req: any, res: any, next: any) => {
     try {
       // Get entitlements from request (should be set by auth middleware)
       const entitlements = req.user?.entitlements || DEFAULT_ENTITLEMENTS;
       const gate = new FeatureGate(entitlements);
-      
+
       const check = gate.checkFeature(featureName);
       if (!check.hasAccess) {
         const feature = FEATURES[featureName];
-        
+
         return res.status(402).json({
           error: 'Feature requires upgrade',
           feature: feature?.name || featureName,
           requiredTier: feature?.tier,
           upgradeTo: check.upgradeTier,
           reason: check.reason,
-          message: check.reason || `This feature requires ${feature?.tier} tier`
+          message: check.reason || `This feature requires ${feature?.tier} tier`,
         });
       }
-      
+
       next();
     } catch (error) {
       console.error('[FeatureGate] Middleware error:', error);
@@ -418,22 +424,22 @@ export class ClientFeatureGate {
   getGatedFeaturesMessage(): string {
     const gate = new FeatureGate(this.entitlements);
     const gated = gate.getGatedFeatures();
-    
+
     if (gated.length === 0) return '';
-    
-    const terminalGated = gated.find(g => g.upgradeTier === Tier.TERMINAL_PRO);
-    const agentGated = gated.find(g => g.upgradeTier === Tier.AGENT_PRO);
-    
+
+    const terminalGated = gated.find((g) => g.upgradeTier === Tier.TERMINAL_PRO);
+    const agentGated = gated.find((g) => g.upgradeTier === Tier.AGENT_PRO);
+
     let message = 'Upgrade to access: ';
     const parts = [];
-    
+
     if (terminalGated) {
-      parts.push(`Terminal Pro (${terminalGated.features.map(f => f.name).join(', ')})`);
+      parts.push(`Terminal Pro (${terminalGated.features.map((f) => f.name).join(', ')})`);
     }
     if (agentGated) {
-      parts.push(`Agent Pro (${agentGated.features.map(f => f.name).join(', ')})`);
+      parts.push(`Agent Pro (${agentGated.features.map((f) => f.name).join(', ')})`);
     }
-    
+
     message += parts.join(' and ');
     return message;
   }

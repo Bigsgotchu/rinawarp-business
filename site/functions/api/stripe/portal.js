@@ -9,17 +9,22 @@ export const onRequestPost = async ({ request, env }) => {
     let customer = (body.customer || '').trim();
 
     if (!customer) {
-      const email = String(body.email || '').toLowerCase().trim();
-      if (!email) return json({ ok:false, error:'email or customer required' }, { status:400 });
-      customer = await env.KV_STRIPE.get(`cust:${email}`) || '';
-      if (!customer) return json({ ok:false, error:'no customer found for email' }, { status:404 });
+      const email = String(body.email || '')
+        .toLowerCase()
+        .trim();
+      if (!email) return json({ ok: false, error: 'email or customer required' }, { status: 400 });
+      customer = (await env.KV_STRIPE.get(`cust:${email}`)) || '';
+      if (!customer)
+        return json({ ok: false, error: 'no customer found for email' }, { status: 404 });
     }
 
     const p = formBody({ customer, return_url: `${origin}/pricing` });
-    const res = await okOrThrow(stripeFetch(env, '/v1/billing_portal/sessions', { method: 'POST', body: p }));
+    const res = await okOrThrow(
+      stripeFetch(env, '/v1/billing_portal/sessions', { method: 'POST', body: p }),
+    );
     const data = await res.json();
-    return json({ ok:true, url: data.url });
+    return json({ ok: true, url: data.url });
   } catch (e) {
-    return json({ ok:false, error: e.message || 'portal error' }, { status:500 });
+    return json({ ok: false, error: e.message || 'portal error' }, { status: 500 });
   }
 };

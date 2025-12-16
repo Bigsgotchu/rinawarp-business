@@ -1,8 +1,7 @@
-#!/usr/bin/env node
-
 const { spawn } = require('child_process');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+
 const { program } = require('commander');
 
 // Parse command line arguments
@@ -44,7 +43,7 @@ if (options.testType === 'basic' || options.testType === 'all') {
   testScripts.push({
     name: 'Basic Tests',
     script: 'test-basic.js',
-    description: 'Basic application functionality tests'
+    description: 'Basic application functionality tests',
   });
 }
 
@@ -52,7 +51,7 @@ if (options.testType === 'comprehensive' || options.testType === 'all') {
   testScripts.push({
     name: 'Comprehensive Tests',
     script: 'test-comprehensive.js',
-    description: 'Comprehensive functionality tests'
+    description: 'Comprehensive functionality tests',
   });
 }
 
@@ -105,7 +104,7 @@ function runTestScript(scriptName, env) {
     const testProcess = spawn('node', [scriptName], {
       stdio: 'inherit',
       env: env,
-      cwd: __dirname
+      cwd: __dirname,
     });
 
     testProcess.on('close', (code) => {
@@ -129,7 +128,7 @@ function runTestScript(scriptName, env) {
 }
 
 // Start the test runner
-runTests().catch(error => {
+runTests().catch((error) => {
   console.error('❌ Test runner failed:', error);
   process.exit(1);
 });

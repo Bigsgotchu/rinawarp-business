@@ -17,7 +17,7 @@ class FeedbackSystem {
       const feedbackData = {
         message,
         timestamp: new Date().toISOString(),
-        version: '1.0.0-soft-launch'
+        version: '1.0.0-soft-launch',
       };
 
       // Get existing feedback or create new array

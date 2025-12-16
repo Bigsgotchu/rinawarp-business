@@ -40,60 +40,81 @@
           </div>
 
           <!-- TRUST SIGNALS -->
-          <div style="background: rgba(0,255,217,0.1); padding: 1.5rem; border-radius: 12px; margin: 2rem 0; text-align: center;">
-            <h3 style="margin-top: 0; color: #00ffd5;">🔒 Your data stays private</h3>
-            <p style="margin: 0.5rem 0; font-size: 1.1rem;">
+          <div
+            style="
+              background: rgba(0, 255, 217, 0.1);
+              padding: 1.5rem;
+              border-radius: 12px;
+              margin: 2rem 0;
+              text-align: center;
+            "
+          >
+            <h3 style="margin-top: 0; color: #00ffd5">🔒 Your data stays private</h3>
+            <p style="margin: 0.5rem 0; font-size: 1.1rem">
               Runs entirely on your machine • No command data sent to servers
             </p>
-            <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">
+            <p style="margin: 0; font-size: 0.9rem; opacity: 0.8">
               Signed Windows installer • No background services • Uninstall anytime
             </p>
           </div>
 
           <!-- MAIN DOWNLOAD SECTION -->
-          <div class="download-card" style="max-width: 600px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 2rem;">
-              <h2 style="margin-top: 0; color: #00ffd5;">⬇ Windows Installer Ready</h2>
-              <p class="lead" style="margin-top: 0.5rem;">
+          <div class="download-card" style="max-width: 600px; margin: 0 auto">
+            <div style="text-align: center; margin-bottom: 2rem">
+              <h2 style="margin-top: 0; color: #00ffd5">⬇ Windows Installer Ready</h2>
+              <p class="lead" style="margin-top: 0.5rem">
                 <strong>RinaWarp-Terminal-Pro-Setup-1.0.0.exe</strong> (176 MB)
               </p>
-              
+
               <!-- AUTO-DOWNLOAD BUTTON -->
-              <div style="margin: 2rem 0;">
-                <a href="/downloads/RinaWarp-Terminal-Pro-Setup-1.0.0.exe" 
-                   class="rw-button" 
-                   style="font-size: 1.2rem; padding: 1.2rem 2.5rem;"
-                   id="download-btn"
-                   download>
+              <div style="margin: 2rem 0">
+                <a
+                  href="/downloads/RinaWarp-Terminal-Pro-Setup-1.0.0.exe"
+                  class="rw-button"
+                  style="font-size: 1.2rem; padding: 1.2rem 2.5rem"
+                  id="download-btn"
+                  download
+                >
                   Download Now
                 </a>
-                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7">
                   Download will start automatically
                 </p>
               </div>
             </div>
 
             <!-- INSTALLATION INSTRUCTIONS -->
-            <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px;">
-              <h3 style="margin-top: 0;">📋 Installation Guide</h3>
-              <ol style="line-height: 1.8;">
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 8px">
+              <h3 style="margin-top: 0">📋 Installation Guide</h3>
+              <ol style="line-height: 1.8">
                 <li><strong>Download installer</strong> - Click the button above</li>
-                <li><strong>Run setup</strong> - Accept the installer (signed by RinaWarp Technologies)</li>
+                <li>
+                  <strong>Run setup</strong> - Accept the installer (signed by RinaWarp
+                  Technologies)
+                </li>
                 <li><strong>Launch Terminal Pro</strong> - Find it in your Start menu</li>
                 <li><strong>Start coding</strong> - Terminal opens ready to use</li>
               </ol>
-              
-              <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(0,255,217,0.1); border-radius: 6px;">
-                <p style="margin: 0; font-size: 0.95rem;">
-                  <strong>💡 Pro tip:</strong> The app works fully offline. No internet required after installation.
+
+              <div
+                style="
+                  margin-top: 1.5rem;
+                  padding: 1rem;
+                  background: rgba(0, 255, 217, 0.1);
+                  border-radius: 6px;
+                "
+              >
+                <p style="margin: 0; font-size: 0.95rem">
+                  <strong>💡 Pro tip:</strong> The app works fully offline. No internet required
+                  after installation.
                 </p>
               </div>
             </div>
 
             <!-- SYSTEM REQUIREMENTS -->
-            <div style="margin-top: 2rem;">
+            <div style="margin-top: 2rem">
               <h3>System Requirements</h3>
-              <ul style="line-height: 1.6;">
+              <ul style="line-height: 1.6">
                 <li>Windows 10 or newer (64-bit)</li>
                 <li>4 GB RAM minimum, 8 GB recommended</li>
                 <li>500 MB free disk space</li>
@@ -103,17 +124,15 @@
           </div>
 
           <!-- ALTERNATIVE OPTIONS -->
-          <section style="margin-top: 3rem;">
+          <section style="margin-top: 3rem">
             <div class="section-header">
               <h2 class="section-title">Already have a license?</h2>
             </div>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap">
               <a href="/api/checkout-v2?product=terminal-pro" class="rw-button">
                 Buy Lifetime License
               </a>
-              <a href="/pricing.html" class="rw-button-outline">
-                View Pricing Details
-              </a>
+              <a href="/pricing.html" class="rw-button-outline"> View Pricing Details </a>
             </div>
           </section>
         </section>
@@ -132,8 +151,8 @@
 
     <script>
       // Auto-start download when page loads
-      window.addEventListener('load', function() {
-        setTimeout(function() {
+      window.addEventListener('load', function () {
+        setTimeout(function () {
           const downloadBtn = document.getElementById('download-btn');
           if (downloadBtn) {
             // Simulate click to start download

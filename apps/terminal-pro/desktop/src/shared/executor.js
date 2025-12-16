@@ -13,15 +13,33 @@ const STATE_FILE = path.join(STATE_DIR, 'state.json');
 const LAST_RUN_FILE = path.join(STATE_DIR, 'last_run.json');
 const EXPORTS_DIR = path.join(STATE_DIR, 'exports');
 
-function readState() { try { return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')); } catch { return { done: {} }; } }
-function writeState(s) { if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true }); fs.writeFileSync(STATE_FILE, JSON.stringify(s, null, 2)); }
-function writeLastRun(obj) { if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true }); fs.writeFileSync(LAST_RUN_FILE, JSON.stringify(obj, null, 2)); }
-function readLastRun() { try { return JSON.parse(fs.readFileSync(LAST_RUN_FILE, 'utf8')); } catch { return null; } }
+function readState() {
+  try {
+    return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+  } catch {
+    return { done: {} };
+  }
+}
+function writeState(s) {
+  if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true });
+  fs.writeFileSync(STATE_FILE, JSON.stringify(s, null, 2));
+}
+function writeLastRun(obj) {
+  if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true });
+  fs.writeFileSync(LAST_RUN_FILE, JSON.stringify(obj, null, 2));
+}
+function readLastRun() {
+  try {
+    return JSON.parse(fs.readFileSync(LAST_RUN_FILE, 'utf8'));
+  } catch {
+    return null;
+  }
+}
 
 function buildGraph(steps) {
-  const nodes = new Map(steps.map(s => [s.id, s]));
-  const indeg = new Map(steps.map(s => [s.id, 0]));
-  const edges = new Map(steps.map(s => [s.id, []]));
+  const nodes = new Map(steps.map((s) => [s.id, s]));
+  const indeg = new Map(steps.map((s) => [s.id, 0]));
+  const edges = new Map(steps.map((s) => [s.id, []]));
   for (const s of steps) {
     for (const dep of s.requires || []) {
       if (!nodes.has(dep)) throw new Error(`Unknown dependency: ${dep} for ${s.id}`);
@@ -42,7 +60,7 @@ function matchStepPolicy(step, policy) {
   return {};
 }
 
-export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFailed=false }) {
+async function execGraph({ steps, cwd, dry = false, confirm = false, resetFailed = false }) {
   const policy = loadPolicy(cwd);
   const caps = policy.capabilities;
   const { timeoutMs: defaultTimeout, maxBytes } = policy.limits;
@@ -52,7 +70,7 @@ export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFai
   const toolCheck = precheckTools(cwd, steps);
   if (toolCheck.missing.length) {
     const msg = `missing required tools: ${toolCheck.missing.join(', ')}`;
-    return Object.fromEntries(steps.map(s => [s.id, { code: 127, stdout: '', stderr: msg }]));
+    return Object.fromEntries(steps.map((s) => [s.id, { code: 127, stdout: '', stderr: msg }]));
   }
 
   const state = readState();
@@ -76,7 +94,11 @@ export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFai
     // Compute per-step policy
     const rule = matchStepPolicy(step, policy.policy);
     const stepTimeout = Number.isFinite(rule.timeoutMs) ? rule.timeoutMs : defaultTimeout;
-    const maxRetries = Number.isFinite(rule.maxRetries) ? rule.maxRetries : (step.capability === 'network' ? 3 : 0);
+    const maxRetries = Number.isFinite(rule.maxRetries)
+      ? rule.maxRetries
+      : step.capability === 'network'
+        ? 3
+        : 0;
     const baseBackoff = Number.isFinite(rule.retryBackoffMs) ? rule.retryBackoffMs : 500;
 
     // Block explicit network ops when not allowed
@@ -91,7 +113,7 @@ export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFai
     while (attempt <= maxRetries) {
       last = await runOnce(step, env, stepTimeout);
       if (!shouldRetry(step, last.code, last.stderr)) break;
-      await new Promise(r => setTimeout(r, backoff(attempt, baseBackoff)));
+      await new Promise((r) => setTimeout(r, backoff(attempt, baseBackoff)));
       attempt += 1;
     }
     return last;
@@ -102,20 +124,30 @@ export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFai
     const doneKey = `${cwd}:${step.idempotenceKey}`;
     const failKey = `${cwd}:fail:${step.id}`;
 
-    if (state.done[doneKey]) { results[id] = { code: 0, stdout: `[skip] ${step.description}`, stderr: '' }; return; }
+    if (state.done[doneKey]) {
+      results[id] = { code: 0, stdout: `[skip] ${step.description}`, stderr: '' };
+      return;
+    }
 
     const needed = step.capability || capabilityNeededFor(step.command);
     if (!isCapabilityAllowed(caps, needed)) {
       results[id] = { code: 1, stdout: '', stderr: `[blocked] missing capability: ${needed}` };
-      state.done[failKey] = Date.now(); writeState(state); return;
+      state.done[failKey] = Date.now();
+      writeState(state);
+      return;
     }
 
     if (/[^\w]rm\s+-rf\s+\/\b/i.test(step.command)) {
       results[id] = { code: 1, stdout: '', stderr: '[blocked] dangerous command' };
-      state.done[failKey] = Date.now(); writeState(state); return;
+      state.done[failKey] = Date.now();
+      writeState(state);
+      return;
     }
 
-    if (dry || !confirm) { results[id] = { code: 0, stdout: `[dryrun] ${step.command}`, stderr: '' }; return; }
+    if (dry || !confirm) {
+      results[id] = { code: 0, stdout: `[dryrun] ${step.command}`, stderr: '' };
+      return;
+    }
 
     const res = await runWithPolicy(step);
     const redOut = redact(res.stdout);
@@ -144,7 +176,7 @@ export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFai
         running.delete(id);
         // If failed, stop scheduling descendants
         if (results[id]?.code !== 0) return;
-        for (const n of (edges.get(id) || [])) {
+        for (const n of edges.get(id) || []) {
           indeg.set(n, indeg.get(n) - 1);
           if (indeg.get(n) === 0) inQueue.push(n);
         }
@@ -152,7 +184,7 @@ export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFai
       });
     }
     if (running.size === 0 && inQueue.length === 0) return;
-    await new Promise(r => setTimeout(r, 10));
+    await new Promise((r) => setTimeout(r, 10));
     return pump();
   }
 
@@ -162,7 +194,7 @@ export async function execGraph({ steps, cwd, dry=false, confirm=false, resetFai
   return results;
 }
 
-export async function rollbackLastRun() {
+async function rollbackLastRun() {
   const last = readLastRun();
   if (!last || !Array.isArray(last.successOrder) || last.successOrder.length === 0) {
     return { status: 'error', message: 'nothing to rollback', stdout: '', stderr: '' };
@@ -170,13 +202,16 @@ export async function rollbackLastRun() {
   const logs = [];
   for (const s of [...last.successOrder].reverse()) {
     if (!s.revertCommand) continue;
-    const { code, stdout, stderr } = await runCommand(s.revertCommand, s.cwd, { timeoutMs: 60000, maxBytes: 1_000_000 });
+    const { code, stdout, stderr } = await runCommand(s.revertCommand, s.cwd, {
+      timeoutMs: 60000,
+      maxBytes: 1_000_000,
+    });
     logs.push(`[revert ${s.id}] code=${code}\n${redact(stdout)}\n${redact(stderr)}`);
   }
   return { status: 'ok', message: 'rollback attempted', stdout: logs.join('\n'), stderr: '' };
 }
 
-export function exportReportBundle({ cwd, plan, execDetail, diagnostics }) {
+function exportReportBundle({ cwd, plan, execDetail, diagnostics }) {
   if (!fs.existsSync(EXPORTS_DIR)) fs.mkdirSync(EXPORTS_DIR, { recursive: true });
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
   const file = path.join(EXPORTS_DIR, `report-${stamp}.json`);
@@ -186,7 +221,7 @@ export function exportReportBundle({ cwd, plan, execDetail, diagnostics }) {
     plan,
     execDetail,
     diagnostics,
-    redaction: 'applied'
+    redaction: 'applied',
   };
   fs.writeFileSync(file, JSON.stringify(payload, null, 2));
   return file;
@@ -195,11 +230,21 @@ export function exportReportBundle({ cwd, plan, execDetail, diagnostics }) {
 function runCommand(command, cwd, { timeoutMs, maxBytes, env }) {
   return new Promise((resolve) => {
     const child = spawn(command, { shell: true, cwd, env });
-    let out = '', err = '';
-    const timer = setTimeout(() => { child.kill('SIGKILL'); }, timeoutMs);
-    child.stdout.on('data', (d) => { if (out.length < maxBytes) out += d.toString(); });
-    child.stderr.on('data', (d) => { if (err.length < maxBytes) err += d.toString(); });
-    child.on('close', (code) => { clearTimeout(timer); resolve({ code, stdout: out.trim(), stderr: err.trim() }); });
+    let out = '',
+      err = '';
+    const timer = setTimeout(() => {
+      child.kill('SIGKILL');
+    }, timeoutMs);
+    child.stdout.on('data', (d) => {
+      if (out.length < maxBytes) out += d.toString();
+    });
+    child.stderr.on('data', (d) => {
+      if (err.length < maxBytes) err += d.toString();
+    });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      resolve({ code, stdout: out.trim(), stderr: err.trim() });
+    });
   });
 }
 

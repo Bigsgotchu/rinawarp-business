@@ -1,0 +1,232 @@
+# Cloudflare Pages Headers Configuration
+
+This file mirrors the current `_headers` configuration for easy reference and future diffs.
+
+## Current \_headers Configuration (as of 2025-12-15)
+
+```txt
+# Release artifacts - explicit MIME types for binary files
+/releases/*.exe
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=31536000, immutable
+
+/releases/*.msi
+  Content-Type: application/x-msi
+  Cache-Control: public, max-age=31536000, immutable
+
+/releases/*.dmg
+  Content-Type: application/x-apple-diskimage
+  Cache-Control: public, max-age=31536000, immutable
+
+/releases/*.zip
+  Content-Type: application/zip
+  Cache-Control: public, max-age=31536000, immutable
+
+/releases/*.AppImage
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=31536000, immutable
+
+/releases/*.appimage
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=31536000, immutable
+
+/releases/*.blockmap
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=31536000, immutable
+
+/releases/*.spdx.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=31536000, immutable
+
+# Stable channel - YAML feeds with no-cache, binaries with long cache
+/stable/*.yml
+  Content-Type: text/yaml; charset=utf-8
+  Cache-Control: no-store
+  Access-Control-Allow-Origin: *
+
+/stable/*.yaml
+  Content-Type: text/yaml; charset=utf-8
+  Cache-Control: no-store
+  Access-Control-Allow-Origin: *
+
+# General file types
+/*.css
+  Content-Type: text/css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Content-Type: application/javascript
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.js
+  Content-Type: application/javascript
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.css
+  Content-Type: text/css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.html
+  Content-Type: text/html
+  Cache-Control: public, max-age=300
+
+/*.woff2
+  Content-Type: font/woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/**/*.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Content-Type: image/png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.svg
+  Content-Type: image/svg+xml
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.AppImage
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=3600
+
+/*.appimage
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=3600
+
+/*.deb
+  Content-Type: application/vnd.debian.binary-package
+  Cache-Control: public, max-age=3600
+
+/*.rpm
+  Content-Type: application/x-rpm
+  Cache-Control: public, max-age=3600
+
+/*.dmg
+  Content-Type: application/x-apple-diskimage
+  Cache-Control: public, max-age=3600
+
+/*.exe
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=3600
+
+/*.msi
+  Content-Type: application/x-msi
+  Cache-Control: public, max-age=3600
+
+/*.zip
+  Content-Type: application/zip
+  Cache-Control: public, max-age=3600
+
+/*.blockmap
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=3600
+
+/*.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600
+
+/*.yml
+  Content-Type: text/yaml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/*.yaml
+  Content-Type: text/yaml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' https://www.google-analytics.com data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:
+```
+
+## Usage
+
+When making changes to `_headers`:
+
+1. Update both the actual `_headers` file and this snapshot
+2. Compare this file to track changes over time
+3. Use this for code review reference
+
+
+## Critical Rules
+
+- **Binary files must NOT return `text/html`** (prevents SPA fallback hijacking)
+- **YAML feeds must use `no-store`** (ensures clients get fresh updates)
+- **Release artifacts use `immutable`** (efficient caching of permanent releases)
+- **Order matters**: specific rules first, then general catch-all rules
+
+
+## File Types Covered
+
+### Release Artifacts
+
+- `.exe` - Windows executables
+- `.msi` - Windows Installer packages
+- `.dmg` - macOS disk images
+- `.zip` - Compressed archives
+- `.7z` - 7-Zip archives
+- `.tar.gz` - Gzipped tar archives
+- `.AppImage` / `.appimage` - Linux AppImage packages
+- `.blockmap` - Electron update metadata (explicitly application/octet-stream)
+- `.spdx.json` - Software Bill of Materials
+
+
+### Package Formats
+
+- `.deb` - Debian packages
+- `.rpm` - Red Hat packages
+
+
+### Web Assets
+
+- `.css` / `.js` - Stylesheets and scripts
+- `.html` - Web pages
+- `.woff2` - Web fonts
+- `.wasm` - WebAssembly modules
+- `.png` / `.jpg` / `.svg` - Images
+
+
+### Data Files
+
+- `.json` - JSON data
+- `.yml` / `.yaml` - YAML configuration/data
+
+
+## CI Safeguards
+
+The pre-publish guard includes automated checks to ensure:
+
+1. Binary files don't return `text/html` Content-Type (prevents SPA fallback hijacking)
+2. Binary files are not compressed (Content-Encoding check for raw serving)
+3. `.blockmap` files explicitly use `application/octet-stream` (prevents client parsing errors)
+4. YAML feeds have `no-store` cache policy with proper charset
+5. All expected artifacts are present and accessible
+6. Headers match expected patterns for each file type
+
+
+## Final Verification Commands
+
+After deployment, verify with:
+
+```bash
+# Binary probe (should show non-HTML content-types)
+ORIGIN="https://386edda1.rinawarptech.pages.dev"
+VER="0.4.0"
+for f in "RinaWarpTerminalPro-$VER.exe" \
+         "RinaWarpTerminalPro-$VER.exe.blockmap" \
+         "RinaWarp Terminal Pro-$VER.zip" \
+         "RinaWarp-Terminal-Pro-$VER.AppImage"; do
+  curl -fsSIL "$ORIGIN/releases/$VER/${f// /%20}" | egrep -i 'HTTP/|content-type'
+done
+
+# Feed cache policy (should show no-store)
+for feed in latest.yml latest-mac.yml; do
+  curl -fsSIL "$ORIGIN/stable/$feed" | egrep -i 'content-type|cache-control|access-control-allow-origin'
+done
+
+# One-command verification
+UPDATES_ORIGIN="$ORIGIN" pnpm -w --filter ./apps/terminal-pro/desktop prepublish:verify
+```

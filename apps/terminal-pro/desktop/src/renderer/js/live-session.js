@@ -1,19 +1,17 @@
 // live-session-safe.js
 // RinaWarp Terminal Pro – Live Session Client (Host + Guest) - Safe API Version
 
-const API_ROOT =
-  window.RINA_API_ROOT ||
-  "https://api.rinawarptech.com"; // this should point at the worker domain
+const API_ROOT = window.RINA_API_ROOT || 'https://api.rinawarptech.com'; // this should point at the worker domain
 
 const LiveSessionState = {
   sessionId: null,
-  role: null,          // "host" | "guest"
+  role: null, // "host" | "guest"
   ws: null,
   connected: false,
   connecting: false,
   lastError: null,
   hostTerminalId: null,
-  onGuestInput: null,  // callback(data) used by host to write into PTY
+  onGuestInput: null, // callback(data) used by host to write into PTY
 };
 
 // Safe API call wrapper that prevents error spam
@@ -21,7 +19,7 @@ async function safeApiCall(apiFunction, fallbackValue = null) {
   try {
     return await apiFunction();
   } catch (error) {
-    console.debug("Live Session API unavailable (expected in dev):", error?.message || error);
+    console.debug('Live Session API unavailable (expected in dev):', error?.message || error);
     return fallbackValue;
   }
 }
@@ -32,25 +30,25 @@ async function getAuthToken() {
       return await window.RinaAuth.getToken();
     }
   } catch (err) {
-    console.debug("Auth token unavailable:", err.message);
+    console.debug('Auth token unavailable:', err.message);
   }
   return null;
 }
 
-function setStatusUI(text, colorClass = "") {
-  const el = document.getElementById("live-session-status");
+function setStatusUI(text, colorClass = '') {
+  const el = document.getElementById('live-session-status');
   if (!el) return;
 
   el.textContent = text;
-  el.className = "live-session-status"; // reset
+  el.className = 'live-session-status'; // reset
   if (colorClass) el.classList.add(colorClass);
 }
 
 function appendLog(line) {
-  const log = document.getElementById("live-session-log");
+  const log = document.getElementById('live-session-log');
   if (!log) return;
-  const div = document.createElement("div");
-  div.className = "live-session-log-line";
+  const div = document.createElement('div');
+  div.className = 'live-session-log-line';
   div.textContent = line;
   log.appendChild(div);
   log.scrollTop = log.scrollHeight;
@@ -69,35 +67,30 @@ function attachWebSocket(wsUrl) {
   LiveSessionState.connecting = true;
   LiveSessionState.lastError = null;
 
-  setStatusUI("Connecting…", "status-connecting");
+  setStatusUI('Connecting…', 'status-connecting');
   appendLog(`[ws] Connecting to ${wsUrl}`);
 
-  ws.addEventListener("open", () => {
+  ws.addEventListener('open', () => {
     LiveSessionState.connected = true;
     LiveSessionState.connecting = false;
-    setStatusUI(
-      `Live: ${LiveSessionState.role === "host" ? "Hosting" : "Guest"}`,
-      "status-live"
-    );
-    appendLog("[ws] Connected");
+    setStatusUI(`Live: ${LiveSessionState.role === 'host' ? 'Hosting' : 'Guest'}`, 'status-live');
+    appendLog('[ws] Connected');
   });
 
-  ws.addEventListener("close", (ev) => {
+  ws.addEventListener('close', (ev) => {
     LiveSessionState.connected = false;
     LiveSessionState.connecting = false;
-    setStatusUI("Offline", "status-offline");
-    appendLog(
-      `[ws] Closed (code=${ev.code}, reason=${ev.reason || "none"})`
-    );
+    setStatusUI('Offline', 'status-offline');
+    appendLog(`[ws] Closed (code=${ev.code}, reason=${ev.reason || 'none'})`);
   });
 
-  ws.addEventListener("error", (err) => {
+  ws.addEventListener('error', (err) => {
     LiveSessionState.lastError = String(err);
-    setStatusUI("Error", "status-error");
+    setStatusUI('Error', 'status-error');
     appendLog(`[ws] Error: ${err}`);
   });
 
-  ws.addEventListener("message", (ev) => {
+  ws.addEventListener('message', (ev) => {
     try {
       const msg = JSON.parse(ev.data);
       handleIncomingMessage(msg);
@@ -109,7 +102,7 @@ function attachWebSocket(wsUrl) {
 
 function safeSend(msg) {
   if (!LiveSessionState.ws || LiveSessionState.ws.readyState !== WebSocket.OPEN) {
-    appendLog("[ws] Tried to send but socket not open");
+    appendLog('[ws] Tried to send but socket not open');
     return;
   }
   LiveSessionState.ws.send(JSON.stringify(msg));
@@ -118,41 +111,35 @@ function safeSend(msg) {
 function handleIncomingMessage(msg) {
   const { type } = msg;
 
-  if (type === "hello") {
-    appendLog(
-      `[ws] hello – role=${msg.role} session=${msg.sessionId} ts=${msg.ts}`
-    );
+  if (type === 'hello') {
+    appendLog(`[ws] hello – role=${msg.role} session=${msg.sessionId} ts=${msg.ts}`);
     return;
   }
 
-  if (type === "error") {
+  if (type === 'error') {
     appendLog(`[ws] error: ${msg.message}`);
-    setStatusUI("Error", "status-error");
+    setStatusUI('Error', 'status-error');
     return;
   }
 
-  if (type === "pty_output" && LiveSessionState.role === "guest") {
-    appendLog("[ws] pty_output (guest) – forwarding to terminal");
+  if (type === 'pty_output' && LiveSessionState.role === 'guest') {
+    appendLog('[ws] pty_output (guest) – forwarding to terminal');
     if (window.RinaTerminalUI?.writeToActiveTerminal) {
-      window.RinaTerminalUI.writeToActiveTerminal(msg.data || "");
+      window.RinaTerminalUI.writeToActiveTerminal(msg.data || '');
     }
     return;
   }
 
-  if (type === "pty_input" && LiveSessionState.role === "host") {
-    appendLog(
-      `[ws] pty_input from guest ${msg.fromUserName || msg.fromUserId || "?"}`
-    );
-    if (typeof LiveSessionState.onGuestInput === "function") {
-      LiveSessionState.onGuestInput(msg.data || "");
+  if (type === 'pty_input' && LiveSessionState.role === 'host') {
+    appendLog(`[ws] pty_input from guest ${msg.fromUserName || msg.fromUserId || '?'}`);
+    if (typeof LiveSessionState.onGuestInput === 'function') {
+      LiveSessionState.onGuestInput(msg.data || '');
     }
     return;
   }
 
-  if (type === "meta") {
-    appendLog(
-      `[ws] meta from ${msg.from}: ${JSON.stringify(msg.payload).slice(0, 120)}`
-    );
+  if (type === 'meta') {
+    appendLog(`[ws] meta from ${msg.from}: ${JSON.stringify(msg.payload).slice(0, 120)}`);
     return;
   }
 
@@ -165,22 +152,22 @@ function handleIncomingMessage(msg) {
 
 async function safeStartHostSession(meta = {}) {
   if (LiveSessionState.connecting || LiveSessionState.connected) {
-    appendLog("[live] Already connected; ignoring startHostSession");
+    appendLog('[live] Already connected; ignoring startHostSession');
     return LiveSessionState;
   }
 
   const token = await getAuthToken();
   if (!token) {
-    appendLog("[live] No auth token; cannot host live session");
-    setStatusUI("Auth required", "status-error");
+    appendLog('[live] No auth token; cannot host live session');
+    setStatusUI('Auth required', 'status-error');
     return LiveSessionState;
   }
 
   const result = await safeApiCall(async () => {
     const res = await fetch(`${API_ROOT}/api/live-session/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(meta),
@@ -192,11 +179,9 @@ async function safeStartHostSession(meta = {}) {
     }
 
     LiveSessionState.sessionId = json.sessionId;
-    LiveSessionState.role = json.role || "host";
+    LiveSessionState.role = json.role || 'host';
 
-    appendLog(
-      `[live] Hosting session ${json.sessionId}, role=${LiveSessionState.role}`
-    );
+    appendLog(`[live] Hosting session ${json.sessionId}, role=${LiveSessionState.role}`);
 
     if (json.wsUrl) {
       attachWebSocket(json.wsUrl);
@@ -207,7 +192,7 @@ async function safeStartHostSession(meta = {}) {
 
   if (result === LiveSessionState) {
     // Safe call failed, show status
-    setStatusUI("Service unavailable", "status-error");
+    setStatusUI('Service unavailable', 'status-error');
   }
 
   return result;
@@ -218,16 +203,16 @@ async function safeJoinSession(sessionId) {
 
   const token = await getAuthToken();
   if (!token) {
-    appendLog("[live] No auth token; cannot join live session");
-    setStatusUI("Auth required", "status-error");
+    appendLog('[live] No auth token; cannot join live session');
+    setStatusUI('Auth required', 'status-error');
     return LiveSessionState;
   }
 
   const result = await safeApiCall(async () => {
     const res = await fetch(`${API_ROOT}/api/live-session/join`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ sessionId }),
@@ -239,11 +224,9 @@ async function safeJoinSession(sessionId) {
     }
 
     LiveSessionState.sessionId = json.sessionId;
-    LiveSessionState.role = json.role || "guest";
+    LiveSessionState.role = json.role || 'guest';
 
-    appendLog(
-      `[live] Joined session ${json.sessionId}, role=${LiveSessionState.role}`
-    );
+    appendLog(`[live] Joined session ${json.sessionId}, role=${LiveSessionState.role}`);
 
     if (json.wsUrl) {
       attachWebSocket(json.wsUrl);
@@ -253,7 +236,7 @@ async function safeJoinSession(sessionId) {
   }, LiveSessionState);
 
   if (result === LiveSessionState) {
-    setStatusUI("Service unavailable", "status-error");
+    setStatusUI('Service unavailable', 'status-error');
   }
 
   return result;
@@ -269,31 +252,23 @@ async function joinSession(sessionId) {
 }
 
 function sendPTYOutputFromHost(data) {
-  if (
-    LiveSessionState.role !== "host" ||
-    !LiveSessionState.connected ||
-    !data
-  ) {
+  if (LiveSessionState.role !== 'host' || !LiveSessionState.connected || !data) {
     return;
   }
 
   safeSend({
-    type: "pty_output",
+    type: 'pty_output',
     data,
   });
 }
 
 function sendPTYInputFromGuest(data) {
-  if (
-    LiveSessionState.role !== "guest" ||
-    !LiveSessionState.connected ||
-    !data
-  ) {
+  if (LiveSessionState.role !== 'guest' || !LiveSessionState.connected || !data) {
     return;
   }
 
   safeSend({
-    type: "pty_input",
+    type: 'pty_input',
     data,
   });
 }
@@ -303,11 +278,11 @@ function registerOnGuestInput(callback) {
 }
 
 function isLiveHost() {
-  return LiveSessionState.connected && LiveSessionState.role === "host";
+  return LiveSessionState.connected && LiveSessionState.role === 'host';
 }
 
 function isLiveGuest() {
-  return LiveSessionState.connected && LiveSessionState.role === "guest";
+  return LiveSessionState.connected && LiveSessionState.role === 'guest';
 }
 
 /* ──────────────────────────────────────────────
@@ -315,28 +290,28 @@ function isLiveGuest() {
  * ─────────────────────────────────────────── */
 
 function initLiveSessionUI() {
-  const hostBtn = document.getElementById("live-session-host-btn");
-  const joinBtn = document.getElementById("live-session-join-btn");
-  const joinInput = document.getElementById("live-session-join-input");
+  const hostBtn = document.getElementById('live-session-host-btn');
+  const joinBtn = document.getElementById('live-session-join-btn');
+  const joinInput = document.getElementById('live-session-join-input');
 
   if (hostBtn) {
-    hostBtn.addEventListener("click", async () => {
+    hostBtn.addEventListener('click', async () => {
       await startHostSession({
-        title: "RinaWarp Live Terminal",
-        description: "Shared Terminal Pro session",
+        title: 'RinaWarp Live Terminal',
+        description: 'Shared Terminal Pro session',
       });
     });
   }
 
   if (joinBtn && joinInput) {
-    joinBtn.addEventListener("click", async () => {
+    joinBtn.addEventListener('click', async () => {
       const val = joinInput.value.trim();
       if (!val) return;
       await joinSession(val);
     });
   }
 
-  setStatusUI("Offline", "status-offline");
+  setStatusUI('Offline', 'status-offline');
 }
 
 /* ──────────────────────────────────────────────
@@ -356,6 +331,6 @@ window.RinaLiveSession = {
   safeJoinSession,
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   initLiveSessionUI();
 });

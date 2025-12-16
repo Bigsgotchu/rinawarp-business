@@ -1,0 +1,30 @@
+# Why: prevent Prettier from parsing artifacts, huge scans, binaries
+node_modules/
+.pnpm/
+.pnpm-store/
+.cache/
+coverage/
+dist/
+build/
+out/
+release/
+.debug/
+*.asar
+*.map
+
+# Generated/release payloads
+apps/**/dist/
+apps/**/release/
+domain/**/release/
+
+# Security/audit drops & large text dumps
+audit/**
+domain/terminal/release/**
+
+# Vendor bundles in repo (if any)
+**/vendor/**
+**/third_party/**
+
+# Compiled/minified blobs
+**/*.min.js
+**/*.min.css

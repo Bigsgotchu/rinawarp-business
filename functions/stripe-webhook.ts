@@ -65,10 +65,7 @@ type BillingSubscription = {
   latestPaymentIntentId?: string | null;
 };
 
-async function kvGetJson<T>(
-  kv: KVNamespace,
-  key: string
-): Promise<T | null> {
+async function kvGetJson<T>(kv: KVNamespace, key: string): Promise<T | null> {
   const raw = await kv.get(key);
   if (!raw) return null;
   try {
@@ -78,11 +75,7 @@ async function kvGetJson<T>(
   }
 }
 
-async function kvPutJson(
-  kv: KVNamespace,
-  key: string,
-  value: unknown
-): Promise<void> {
+async function kvPutJson(kv: KVNamespace, key: string, value: unknown): Promise<void> {
   await kv.put(key, JSON.stringify(value));
 }
 
@@ -101,24 +94,22 @@ async function upsertCustomer(
   email: string | null,
   name?: string | null,
   amountDeltaCents = 0,
-  flagsDelta?: Partial<BillingCustomer['flags']>
+  flagsDelta?: Partial<BillingCustomer['flags']>,
 ): Promise<BillingCustomer> {
   const key = `billing:customer:${stripeCustomerId}`;
-  const existing =
-    (await kvGetJson<BillingCustomer>(env.BILLING_KV, key)) || null;
+  const existing = (await kvGetJson<BillingCustomer>(env.BILLING_KV, key)) || null;
 
   const now = nowIso();
-  const base: BillingCustomer =
-    existing || {
-      stripeCustomerId,
-      email,
-      name,
-      createdAt: now,
-      updatedAt: now,
-      ltvCents: 0,
-      lastSeenAt: now,
-      flags: {}
-    };
+  const base: BillingCustomer = existing || {
+    stripeCustomerId,
+    email,
+    name,
+    createdAt: now,
+    updatedAt: now,
+    ltvCents: 0,
+    lastSeenAt: now,
+    flags: {},
+  };
 
   const updated: BillingCustomer = {
     ...base,
@@ -129,34 +120,28 @@ async function upsertCustomer(
     lastSeenAt: now,
     flags: {
       ...base.flags,
-      ...(flagsDelta || {})
-    }
+      ...(flagsDelta || {}),
+    },
   };
 
   await kvPutJson(env.BILLING_KV, key, updated);
 
   const emailKeyEmail = lowerEmail(updated.email || '');
   if (emailKeyEmail) {
-    await kvPutJson(
-      env.BILLING_KV,
-      `billing:index:customer_by_email:${emailKeyEmail}`,
-      { stripeCustomerId }
-    );
+    await kvPutJson(env.BILLING_KV, `billing:index:customer_by_email:${emailKeyEmail}`, {
+      stripeCustomerId,
+    });
   }
 
   return updated;
 }
 
-async function recordPurchase(
-  env: Env,
-  purchase: BillingPurchase
-): Promise<void> {
+async function recordPurchase(env: Env, purchase: BillingPurchase): Promise<void> {
   const purchaseKey = `billing:purchase:${purchase.id}`;
   await kvPutJson(env.BILLING_KV, purchaseKey, purchase);
 
   const listKey = `billing:index:purchases_by_customer:${purchase.stripeCustomerId}`;
-  const existingList =
-    (await kvGetJson<string[]>(env.BILLING_KV, listKey)) || [];
+  const existingList = (await kvGetJson<string[]>(env.BILLING_KV, listKey)) || [];
   if (!existingList.includes(purchase.id)) {
     existingList.unshift(purchase.id);
     if (existingList.length > 200) existingList.length = 200;
@@ -164,17 +149,13 @@ async function recordPurchase(
   }
 }
 
-async function upsertSubscription(
-  env: Env,
-  sub: BillingSubscription
-): Promise<void> {
+async function upsertSubscription(env: Env, sub: BillingSubscription): Promise<void> {
   const key = `billing:subscription:${sub.id}`;
   await kvPutJson(env.BILLING_KV, key, sub);
 
   // Keep a simple list of active subscriptions
   const activeKey = `billing:index:subscriptions_active`;
-  const activeList =
-    (await kvGetJson<string[]>(env.BILLING_KV, activeKey)) || [];
+  const activeList = (await kvGetJson<string[]>(env.BILLING_KV, activeKey)) || [];
 
   const idx = activeList.indexOf(sub.id);
   if (sub.status === 'active' || sub.status === 'trialing') {
@@ -198,14 +179,9 @@ function productFlagsForMetadata(meta: Record<string, any> | null | undefined) {
 }
 
 function detectProductType(
-  meta: Record<string, any> | null | undefined
+  meta: Record<string, any> | null | undefined,
 ): BillingPurchase['productType'] {
-  const type =
-    (meta?.product_type ||
-      meta?.productType ||
-      meta?.plan ||
-      meta?.product ||
-      '') + '';
+  const type = (meta?.product_type || meta?.productType || meta?.plan || meta?.product || '') + '';
   const lower = type.toLowerCase();
 
   if (lower.includes('terminal')) return 'terminal';
@@ -220,7 +196,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   let stripe: StripeType;
   try {
     stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-      apiVersion: '2023-10-16' as any
+      apiVersion: '2023-10-16' as any,
     });
   } catch (err) {
     console.error('Stripe init error', err);
@@ -274,20 +250,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 async function handleCheckoutSessionCompleted(
   env: Env,
   event: StripeType.Event,
-  stripe: StripeType
+  stripe: StripeType,
 ) {
   const session = event.data.object as StripeType.Checkout.Session;
 
   const customerId =
     (session.customer as string) ||
-    (typeof session.customer === 'object'
-      ? (session.customer as any).id
-      : null);
+    (typeof session.customer === 'object' ? (session.customer as any).id : null);
 
   if (!customerId) return;
 
-  const email =
-    session.customer_details?.email || session.customer_email || null;
+  const email = session.customer_details?.email || session.customer_email || null;
   const name = session.customer_details?.name || null;
 
   const amountTotal = session.amount_total ?? 0;
@@ -297,19 +270,10 @@ async function handleCheckoutSessionCompleted(
   const productType = detectProductType(meta);
   const flags = productFlagsForMetadata(meta);
 
-  await upsertCustomer(
-    env,
-    customerId,
-    email,
-    name,
-    amountTotal,
-    flags
-  );
+  await upsertCustomer(env, customerId, email, name, amountTotal, flags);
 
   const purchase: BillingPurchase = {
-    id: session.payment_intent?.toString() ||
-      session.id ||
-      `cs_${event.id}`,
+    id: session.payment_intent?.toString() || session.id || `cs_${event.id}`,
     stripeCustomerId: customerId,
     email,
     amountTotalCents: amountTotal,
@@ -322,17 +286,13 @@ async function handleCheckoutSessionCompleted(
     stripeInvoiceId: null,
     stripePaymentIntentId: session.payment_intent?.toString(),
     createdAt: nowIso(),
-    metadata: meta
+    metadata: meta,
   };
 
   await recordPurchase(env, purchase);
 }
 
-async function handleInvoicePaid(
-  env: Env,
-  event: StripeType.Event,
-  stripe: StripeType
-) {
+async function handleInvoicePaid(env: Env, event: StripeType.Event, stripe: StripeType) {
   const invoice = event.data.object as StripeType.Invoice;
 
   const customerId = invoice.customer as string | null;
@@ -341,9 +301,7 @@ async function handleInvoicePaid(
   const amountTotal = invoice.amount_paid ?? invoice.amount_due ?? 0;
   const currency = invoice.currency || 'usd';
   const email =
-    (invoice.customer_email as string | null) ||
-    (invoice.customer as any)?.email ||
-    null;
+    (invoice.customer_email as string | null) || (invoice.customer as any)?.email || null;
 
   let kind: BillingPurchaseKind = 'subscription_renewal';
   if (invoice.billing_reason === 'subscription_create') {
@@ -370,37 +328,24 @@ async function handleInvoicePaid(
     quantity: firstLine?.quantity ?? 1,
     kind,
     stripeInvoiceId: invoice.id,
-    stripePaymentIntentId:
-      ((invoice as any).payment_intent as string | null) || null,
+    stripePaymentIntentId: ((invoice as any).payment_intent as string | null) || null,
     createdAt: nowIso(),
-    metadata: meta
+    metadata: meta,
   };
 
   const flags = productFlagsForMetadata(meta);
 
-  await upsertCustomer(
-    env,
-    customerId,
-    email,
-    undefined,
-    amountTotal,
-    flags
-  );
+  await upsertCustomer(env, customerId, email, undefined, amountTotal, flags);
   await recordPurchase(env, purchase);
 }
 
-async function handleSubscriptionEvent(
-  env: Env,
-  event: StripeType.Event,
-  stripe: StripeType
-) {
+async function handleSubscriptionEvent(env: Env, event: StripeType.Event, stripe: StripeType) {
   const sub = event.data.object as StripeType.Subscription;
 
   const customerId = sub.customer as string | null;
   if (!customerId) return;
 
-  const email =
-    (sub.metadata?.customer_email as string | undefined) || null;
+  const email = (sub.metadata?.customer_email as string | undefined) || null;
 
   const items = sub.items.data;
   const firstItem = items[0];
@@ -420,30 +365,25 @@ async function handleSubscriptionEvent(
     canceledAt: sub.canceled_at || null,
     startedAt: sub.start_date || null,
     latestInvoiceId: sub.latest_invoice as string | null,
-    latestPaymentIntentId: null
+    latestPaymentIntentId: null,
   };
 
   await upsertSubscription(env, billingSub);
   await upsertCustomer(env, customerId, email, undefined, 0, {
     hasTerminal: detectProductType(sub.metadata) === 'terminal',
     hasAmvc: detectProductType(sub.metadata) === 'ai_mvc',
-    hasBundle: detectProductType(sub.metadata) === 'bundle'
+    hasBundle: detectProductType(sub.metadata) === 'bundle',
   });
 }
 
-async function handleChargeRefunded(
-  env: Env,
-  event: StripeType.Event,
-  stripe: StripeType
-) {
+async function handleChargeRefunded(env: Env, event: StripeType.Event, stripe: StripeType) {
   const charge = event.data.object as StripeType.Charge;
   const customerId = charge.customer as string | null;
   if (!customerId) return;
 
   const amount = charge.amount_refunded ?? 0;
   const currency = charge.currency || 'usd';
-  const email =
-    (charge.billing_details?.email as string | null) || null;
+  const email = (charge.billing_details?.email as string | null) || null;
 
   const meta = (charge.metadata || {}) as Record<string, any>;
   const productType = detectProductType(meta);
@@ -462,18 +402,14 @@ async function handleChargeRefunded(
     stripeInvoiceId: (charge as any).invoice as string | null,
     stripePaymentIntentId: charge.payment_intent as string | null,
     createdAt: nowIso(),
-    metadata: meta
+    metadata: meta,
   };
 
   await upsertCustomer(env, customerId, email, undefined, -amount);
   await recordPurchase(env, purchase);
 }
 
-async function handleInvoicePaymentFailed(
-  env: Env,
-  event: StripeType.Event,
-  stripe: StripeType
-) {
+async function handleInvoicePaymentFailed(env: Env, event: StripeType.Event, stripe: StripeType) {
   const invoice = event.data.object as StripeType.Invoice;
   const customerId = invoice.customer as string | null;
   if (!customerId) return;

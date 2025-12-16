@@ -85,8 +85,8 @@
 
 ```markdown
 | User | Installed | Free Account | Upgraded Pro | Went Lifetime | Daily Messages | Terminal Usage |
-|------|-----------|--------------|--------------|---------------|----------------|----------------|
-| 1    | ✅         | ✅            | ❌            | ❌             | 15             | High           |
+| ---- | --------- | ------------ | ------------ | ------------- | -------------- | -------------- |
+| 1    | ✅        | ✅           | ❌           | ❌            | 15             | High           |
 ```
 
 ### 🛠 Debug / Support
@@ -144,4 +144,4 @@
 4. Monitor metrics and gather feedback
 5. Iterate based on real user data
 
-🚀 **Soft launch ready - proceed with confidence
+🚀 \*\*Soft launch ready - proceed with confidence

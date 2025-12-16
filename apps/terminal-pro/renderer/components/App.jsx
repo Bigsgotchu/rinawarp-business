@@ -1,5 +1,5 @@
-import React from "react";
-import TerminalShell from "./Layout/TerminalShell";
+import React from 'react';
+import TerminalShell from './Layout/TerminalShell';
 
 // This is a wrapper component that will contain the existing terminal functionality
 const TerminalView = () => {

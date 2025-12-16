@@ -1,0 +1,14 @@
+# Binaries
+v20.19.6
+11.6.2
+9.0.0
+# OS
+Linux karina 6.16.8+kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.16.8-1kali1 (2025-09-24) x86_64 GNU/Linux
+# package.json (name, engines, packageManager)
+{
+  "engines": {
+    "node": ">=18.18 <=22.x",
+    "npm": ">=9"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

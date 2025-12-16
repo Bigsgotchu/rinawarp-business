@@ -11,7 +11,7 @@ class SmartTaskSplitter {
       codeChanges: /(edit|change|update|refactor|fix).*code/i,
       systemCommands: /(run|execute|install|build|compile)/i,
       validationChecks: /(verify|validate|check|confirm)/i,
-      researchTasks: /(find|search|locate|identify|analyze)/i
+      researchTasks: /(find|search|locate|identify|analyze)/i,
     };
   }
 
@@ -39,7 +39,7 @@ class SmartTaskSplitter {
           steps.push({
             description: step,
             complexity: stepComplexity,
-            component: component.name
+            component: component.name,
           });
           currentComplexity = stepComplexity;
         } else {
@@ -51,7 +51,7 @@ class SmartTaskSplitter {
             steps.push({
               description: step,
               complexity: stepComplexity,
-              component: component.name
+              component: component.name,
             });
           }
           currentComplexity += stepComplexity;
@@ -73,7 +73,7 @@ class SmartTaskSplitter {
 
     let currentComponent = {
       name: `Component ${components.length + 1}`,
-      sentences: []
+      sentences: [],
     };
 
     for (const sentence of sentences) {
@@ -84,7 +84,7 @@ class SmartTaskSplitter {
         }
         currentComponent = {
           name: `Component ${components.length + 1}`,
-          sentences: [sentence]
+          sentences: [sentence],
         };
       } else {
         currentComponent.sentences.push(sentence);
@@ -168,7 +168,7 @@ class SmartTaskSplitter {
           description: step.description,
           complexity: complexity,
           isAtomic: true,
-          requiresConfirmation: true
+          requiresConfirmation: true,
         });
       }
     }
@@ -178,7 +178,7 @@ class SmartTaskSplitter {
 
   // Helper methods
   _splitIntoSentences(text) {
-    return text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    return text.split(/[.!?]+/).filter((s) => s.trim().length > 0);
   }
 
   _isComponentBoundary(sentence) {
@@ -189,10 +189,10 @@ class SmartTaskSplitter {
       /then /i,
       /finally/i,
       /in addition/i,
-      /moreover/i
+      /moreover/i,
     ];
 
-    return boundaryPatterns.some(pattern => pattern.test(sentence));
+    return boundaryPatterns.some((pattern) => pattern.test(sentence));
   }
 
   _containsCompoundOperations(sentence) {
@@ -202,7 +202,7 @@ class SmartTaskSplitter {
   }
 
   _splitCompoundOperations(sentence) {
-    return sentence.split(/ and | then /i).map(s => s.trim());
+    return sentence.split(/ and | then /i).map((s) => s.trim());
   }
 
   _countOperations(sentence) {
@@ -216,7 +216,7 @@ class SmartTaskSplitter {
       description: part.trim(),
       complexity: this._calculateStepComplexity(part.trim()),
       isAtomic: true,
-      requiresConfirmation: true
+      requiresConfirmation: true,
     }));
   }
 }

@@ -1,5 +1,12 @@
-name = "rinawarptech"
-pages_build_output_dir = "rinawarp-website/public"
+name = "rinawarp-business"
+account_id = "${CF_ACCOUNT_ID}"
+compatibility_date = "2025-01-01"
 
+[pages]
+project_name = "${CF_PAGES_PROJECT}"
+# Static build output directory (must match your app build)
+build_dir = "apps/website/dist-website"
+
+# Example envs (optional)
 [vars]
-COMMIT_DIRTY = "true"
+NODE_ENV = "production"

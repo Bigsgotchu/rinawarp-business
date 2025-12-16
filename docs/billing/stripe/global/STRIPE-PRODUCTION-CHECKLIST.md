@@ -228,9 +228,23 @@ cancel_url: 'https://rinawarptech.com/pricing'; // ✅ CORRECT
 https://dashboard.stripe.com/settings/tax
 
 # 2. Configure tax settings:
+
 - Enable automatic tax calculation
 - Set your business location
 - Configure tax registration numbers
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 3. Update checkout code:
 ```
@@ -333,51 +347,121 @@ public/refund.html      ← Define refund policy
 ### Phase 1: Stripe Dashboard Setup (30 minutes)
 
 ```bash
+
 1. Create all products in live mode
 2. Copy all price IDs
 3. Set up webhook endpoint
 4. Configure business settings
 5. Enable tax collection
 6. Customize email templates
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### Phase 2: Code Updates (1 hour)
 
 ```bash
+
 1. Update all price IDs in code
 2. Fix success/cancel URLs
 3. Add automatic tax
 4. Implement license delivery
 5. Update frontend checkout pages
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### Phase 3: Deployment (30 minutes)
 
 ```bash
+
 1. Set environment variables on server
 2. Deploy updated code
 3. Verify webhook is receiving events
 4. Test checkout flow end-to-end
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### Phase 4: Testing (1 hour)
 
 ```bash
+
 1. Test with Stripe test cards
 2. Verify license delivery
 3. Check email notifications
 4. Test refund process
 5. Monitor Stripe dashboard
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### Phase 5: Go Live (15 minutes)
 
 ```bash
+
 1. Switch to live mode
 2. Make small test purchase
 3. Verify everything works
 4. Monitor for 24 hours
 5. Announce launch!
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ---

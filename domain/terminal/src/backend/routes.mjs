@@ -426,18 +426,18 @@ async function executeIntent(intentAnalysis, context) {
   const { category, action, parameters } = intentAnalysis;
 
   switch (category) {
-  case 'code':
-    return await executeCodeAction(action, parameters, context);
-  case 'deploy':
-    return await executeDeployAction(action, parameters, context);
-  case 'analyze':
-    return await executeAnalyzeAction(action, parameters, context);
-  case 'search':
-    return await executeSearchAction(action, parameters, context);
-  case 'system':
-    return await executeSystemAction(action, parameters, context);
-  default:
-    return await executeGeneralAction(action, parameters, context);
+    case 'code':
+      return await executeCodeAction(action, parameters, context);
+    case 'deploy':
+      return await executeDeployAction(action, parameters, context);
+    case 'analyze':
+      return await executeAnalyzeAction(action, parameters, context);
+    case 'search':
+      return await executeSearchAction(action, parameters, context);
+    case 'system':
+      return await executeSystemAction(action, parameters, context);
+    default:
+      return await executeGeneralAction(action, parameters, context);
   }
 }
 

@@ -14,8 +14,8 @@ class ModeToggleSystem {
           stepByStep: true,
           requireConfirmation: true,
           autoExecute: false,
-          maxStepsPerResponse: 1
-        }
+          maxStepsPerResponse: 1,
+        },
       },
       one_shot: {
         name: 'One-Shot Mode',
@@ -24,8 +24,8 @@ class ModeToggleSystem {
           stepByStep: false,
           requireConfirmation: false,
           autoExecute: true,
-          maxStepsPerResponse: Infinity
-        }
+          maxStepsPerResponse: Infinity,
+        },
       },
       safe: {
         name: 'Safe Mode',
@@ -36,9 +36,9 @@ class ModeToggleSystem {
           autoExecute: false,
           maxStepsPerResponse: 1,
           extraValidations: true,
-          fileOperationWarnings: true
-        }
-      }
+          fileOperationWarnings: true,
+        },
+      },
     };
   }
 
@@ -144,7 +144,7 @@ class ModeToggleSystem {
     const result = {
       success: false,
       message: '',
-      newMode: this.currentMode
+      newMode: this.currentMode,
     };
 
     const normalizedCommand = command.toLowerCase().trim();
@@ -154,20 +154,20 @@ class ModeToggleSystem {
       result.success = true;
       result.message = 'Atomic mode enabled';
       result.newMode = 'atomic';
-    }
-    else if (normalizedCommand === 'one-shot mode on' || normalizedCommand === 'enable one-shot mode') {
+    } else if (
+      normalizedCommand === 'one-shot mode on' ||
+      normalizedCommand === 'enable one-shot mode'
+    ) {
       this.enableOneShotMode();
       result.success = true;
       result.message = 'One-shot mode enabled';
       result.newMode = 'one_shot';
-    }
-    else if (normalizedCommand === 'safe mode on' || normalizedCommand === 'enable safe mode') {
+    } else if (normalizedCommand === 'safe mode on' || normalizedCommand === 'enable safe mode') {
       this.enableSafeMode();
       result.success = true;
       result.message = 'Safe mode enabled';
       result.newMode = 'safe';
-    }
-    else {
+    } else {
       result.message = `Unknown mode command: ${command}`;
     }
 

@@ -5,34 +5,35 @@
 
 class TelemetryClient {
   constructor() {
-    this.apiUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://api.rinawarptech.com'
-      : 'http://localhost:3000';
-    
+    this.apiUrl =
+      process.env.NODE_ENV === 'production'
+        ? 'https://api.rinawarptech.com'
+        : 'http://localhost:3000';
+
     this.endpoint = `${this.apiUrl}/api/telemetry`;
     this.enabled = process.env.TELEMETRY_ENABLED !== 'false'; // Default enabled
     this.buffer = [];
     this.lastSent = 0;
     this.minInterval = 10 * 60 * 1000; // 10 minutes
     this.maxBufferSize = 5;
-    
+
     console.log('📊 Telemetry client initialized:', {
       enabled: this.enabled,
       endpoint: this.endpoint,
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development',
     });
   }
 
   // Get current app telemetry data
   getCurrentTelemetry() {
     const platform = this.getPlatform();
-    
+
     return {
       appVersion: this.getAppVersion(),
       os: platform,
       agent: this.getAgentStatus(),
       license: this.getLicenseStatus(),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 
@@ -64,19 +65,19 @@ class TelemetryClient {
       if (window.agentStatus && typeof window.agentStatus.status === 'string') {
         const status = window.agentStatus.status;
         const pingMs = window.agentStatus.lastPingMs || null;
-        
+
         return {
           status: status === 'online' ? 'online' : 'offline',
-          pingMs: typeof pingMs === 'number' ? pingMs : null
+          pingMs: typeof pingMs === 'number' ? pingMs : null,
         };
       }
     } catch (error) {
       console.debug('Agent status unavailable:', error.message);
     }
-    
+
     return {
       status: 'offline',
-      pingMs: null
+      pingMs: null,
     };
   }
 
@@ -86,19 +87,19 @@ class TelemetryClient {
         const license = window.licenseManager.licenseInfo;
         const tier = license.tier || 'free';
         const offline = !navigator.onLine;
-        
+
         return {
           tier: ['free', 'pro', 'enterprise'].includes(tier) ? tier : 'free',
-          offline: Boolean(offline)
+          offline: Boolean(offline),
         };
       }
     } catch (error) {
       console.debug('License status unavailable:', error.message);
     }
-    
+
     return {
       tier: 'free',
-      offline: !navigator.onLine
+      offline: !navigator.onLine,
     };
   }
 
@@ -120,7 +121,7 @@ class TelemetryClient {
     }
 
     const telemetryData = data || this.getCurrentTelemetry();
-    
+
     // Check rate limiting
     const now = Date.now();
     if (now - this.lastSent < this.minInterval) {
@@ -134,7 +135,7 @@ class TelemetryClient {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(telemetryData)
+        body: JSON.stringify(telemetryData),
       });
 
       if (!response.ok) {
@@ -143,7 +144,7 @@ class TelemetryClient {
 
       const responseData = await response.json();
       this.lastSent = now;
-      
+
       console.log('✅ Telemetry sent successfully');
       return responseData;
     }, null);
@@ -155,29 +156,29 @@ class TelemetryClient {
   bufferTelemetry(data = null) {
     const telemetryData = data || this.getCurrentTelemetry();
     this.buffer.push(telemetryData);
-    
+
     console.debug('📦 Telemetry buffered:', this.buffer.length);
-    
+
     // Send if buffer is full
     if (this.buffer.length >= this.maxBufferSize) {
       return this.sendBufferedTelemetry();
     }
-    
+
     return false;
   }
 
   // Send all buffered telemetry
   async sendBufferedTelemetry() {
     if (this.buffer.length === 0) return false;
-    
-    const batchData = this.buffer.map(item => ({
+
+    const batchData = this.buffer.map((item) => ({
       ...item,
       batchId: Date.now(),
-      batchSize: this.buffer.length
+      batchSize: this.buffer.length,
     }));
-    
+
     this.buffer = []; // Clear buffer
-    
+
     return await this.sendTelemetry(batchData[0]); // Send representative sample
   }
 
@@ -207,14 +208,14 @@ class TelemetryClient {
   // Periodic telemetry (every 30 minutes as backup)
   startPeriodicTelemetry() {
     if (!this.enabled) return;
-    
+
     const interval = 30 * 60 * 1000; // 30 minutes
-    
+
     setInterval(() => {
       console.log('⏰ Periodic telemetry check');
       this.sendTelemetry();
     }, interval);
-    
+
     console.log(`📅 Periodic telemetry started (${interval / 60000}min interval)`);
   }
 
@@ -231,7 +232,7 @@ class TelemetryClient {
       endpoint: this.endpoint,
       bufferSize: this.buffer.length,
       lastSent: new Date(this.lastSent).toISOString(),
-      timeUntilNextSend: Math.max(0, this.minInterval - (Date.now() - this.lastSent))
+      timeUntilNextSend: Math.max(0, this.minInterval - (Date.now() - this.lastSent)),
     };
   }
 }

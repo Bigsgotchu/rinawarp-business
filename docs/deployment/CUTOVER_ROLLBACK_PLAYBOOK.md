@@ -1,0 +1,277 @@
+# Cutover/Rollback Playbook - Cloudflare Pages Deployment
+
+## 🚀 Cutover Procedure
+
+### Pre-Cutover Checklist (10 minutes)
+
+```bash
+# 1. Set environment
+export ORIGIN="${UPDATES_ORIGIN:-https://your-project.pages.dev}"
+export VER="0.4.0"
+
+# 2. Run comprehensive smoke test
+cd apps/terminal-pro/desktop
+pnpm smoke:test
+
+# 3. Verify all tests pass before proceeding
+echo "✅ Ready for cutover if all tests passed"
+```
+
+### Cutover Execution (5 minutes)
+
+```bash
+# Option A: GitHub Actions (Recommended)
+# 1. Go to GitHub → Actions → "Release to Pages"
+# 2. Click "Run workflow"
+# 3. Enter version: 0.4.0
+# 4. Monitor execution
+
+# Option B: Manual atomic release
+cd apps/terminal-pro/desktop
+export VERSION="0.4.0"
+
+# Execute complete atomic release
+pnpm build:all &&
+pnpm release:stage &&
+pnpm prepublish:verify &&
+pnpm deploy:pages &&
+pnpm cache:purge &&
+pnpm monitor:check
+```
+
+### Post-Cutover Verification (2 minutes)
+
+```bash
+# 1. Verify feeds show new ETag (cache purged)
+curl -fsSIL "$ORIGIN/stable/latest.yml" | grep -i etag
+
+# 2. Confirm version in feeds
+curl -fsSL "$ORIGIN/stable/latest.yml" | grep "version: $VER"
+
+# 3. Test artifact accessibility
+curl -fsSIL "$ORIGIN/releases/$VER/RinaWarpTerminalPro-$VER.exe" | head -1
+
+# 4. Run health check
+pnpm monitor:check
+```
+
+### Client Testing (5 minutes)
+
+```bash
+# 1. Install previous version locally
+# 2. Launch application
+# 3. Verify auto-update detection
+# 4. Confirm update prompt appears
+```
+
+---
+
+## 🔄 Fast Rollback Procedures
+
+### Rollback Option A: Git Revert (Fastest - 2 minutes)
+
+**When to use:** Immediate rollback needed, commit history is clean
+
+```bash
+# 1. Identify problematic commit
+git log --oneline -10
+
+# 2. Revert the deployment commit
+git revert <commit-hash>
+
+# 3. Push the revert
+git push origin main
+
+# 4. GitHub Actions will automatically redeploy
+#    OR manually trigger if needed:
+#    Go to Actions → "Release to Pages" → Run workflow
+```
+
+**Advantages:**
+
+- ✅ Fastest rollback (< 2 minutes)
+- ✅ Maintains clean Git history
+- ✅ Preserves immutable `/releases/*` artifacts
+
+**Disadvantages:**
+
+- ❌ Requires the problematic commit to be revertable
+- ❌ Leaves rollback commit in history
+
+### Rollback Option B: Re-deploy Previous Version (3 minutes)
+
+**When to use:** Need to roll back to specific previous version
+
+```bash
+cd apps/terminal-pro/desktop
+
+# 1. Set previous version
+export VERSION="0.3.0"  # Previous stable version
+
+# 2. Build and stage previous version
+pnpm build:all
+node ./scripts/prepare-updates-tree.js $VERSION
+
+# 3. Verify previous version feeds
+export UPDATES_ORIGIN="https://your-project.pages.dev"
+pnpm prepublish:verify
+
+# 4. Deploy previous version
+pnpm deploy:pages
+pnpm cache:purge
+
+# 5. Verify rollback
+curl -fsSL "$ORIGIN/stable/latest.yml" | grep "version: $VERSION"
+```
+
+**Advantages:**
+
+- ✅ Surgical rollback to exact version
+- ✅ No Git history pollution
+- ✅ Works with any previous version
+
+**Disadvantages:**
+
+- ❌ Requires previous version artifacts to exist
+- ❌ Slightly more complex process
+
+---
+
+## 🆘 Emergency Rollback (30 seconds)
+
+**Critical situation - immediate rollback required**
+
+```bash
+# Option 1: Quick Git revert
+git revert --no-commit HEAD
+git commit -m "Emergency rollback: revert to previous stable"
+git push origin main
+
+# Option 2: Manual cache manipulation (extreme emergency)
+# Note: Only use if GitHub Actions is down
+curl -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+  -H "Authorization: Bearer $CF_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{"files":["/stable/latest.yml","/stable/latest-mac.yml","/stable/SHA256SUMS"]}'
+```
+
+---
+
+## 📊 Decision Matrix
+
+| Scenario                     | Recommended Rollback            | Time    | Risk   |
+| ---------------------------- | ------------------------------- | ------- | ------ |
+| **Immediate issue detected** | Git revert                      | < 2 min | Low    |
+| **Version-specific problem** | Re-deploy previous version      | 3 min   | Low    |
+| **GitHub Actions down**      | Manual cache purge              | 30 sec  | High   |
+| **Partial deployment**       | Wait for CI completion + revert | 2-5 min | Medium |
+| **Security vulnerability**   | Git revert + security audit     | < 2 min | Low    |
+
+---
+
+## 🔍 Post-Rollback Validation
+
+### Immediate Checks (1 minute)
+
+```bash
+# 1. Verify feeds point to previous version
+curl -fsSL "$ORIGIN/stable/latest.yml" | grep "version:"
+curl -fsSIL "$ORIGIN/stable/latest.yml" | grep -i etag
+
+# 2. Test artifact accessibility
+curl -fsSIL "$ORIGIN/releases/0.3.0/RinaWarpTerminalPro-0.3.0.exe" | head -1
+
+# 3. Check health status
+pnpm monitor:check
+```
+
+### Extended Monitoring (10 minutes)
+
+```bash
+# 1. Monitor client connections
+# 2. Check error logs
+# 3. Verify no new installations affected
+# 4. Confirm auto-update behavior restored
+```
+
+---
+
+## 📋 Communication Template
+
+### Internal Notification
+
+```
+🚨 ROLLBACK INITIATED
+
+Version: 0.4.0 → 0.3.0
+Method: Git revert
+Time: $(date)
+Duration: ~2 minutes
+
+Reason: [Brief description]
+Impact: Minimal - previous version restored
+Next Steps: [Action items]
+```
+
+### Customer Communication (if needed)
+
+```
+⚠️ Service Update
+
+We've temporarily reverted to a previous stable version
+while we address an issue. Your Terminal Pro will continue
+to function normally.
+
+We expect to have the update available within [timeframe].
+
+Thank you for your patience.
+```
+
+---
+
+## 🛠️ Tools and Commands Reference
+
+### Essential Commands
+
+```bash
+# Pre-cutover validation
+pnpm smoke:test                    # Comprehensive smoke test
+pnpm prepublish:verify            # Verification stack check
+
+# Cutover execution
+pnpm release:atomic               # Complete atomic release
+pnpm cache:purge                  # Purge feed cache
+
+# Rollback procedures
+git revert <commit-hash>          # Git-based rollback
+pnpm deploy:pages                 # Manual deployment
+pnpm monitor:check               # Health verification
+
+# Monitoring and validation
+curl -fsSIL "$ORIGIN/stable/latest.yml" | grep etag    # Check ETag
+curl -fsSL "$ORIGIN/stable/latest.yml" | grep version # Check version
+```
+
+### Environment Variables
+
+```bash
+# Required for all operations
+export UPDATES_ORIGIN="https://your-project.pages.dev"
+export VERSION="0.4.0"
+
+# Required for cache operations
+export CF_API_TOKEN="your-token"
+export CF_ZONE_ID="your-zone-id"
+```
+
+---
+
+## 📞 Escalation Contacts
+
+- **Rollback Authority**: [Your contact]
+- **Technical Lead**: [Your contact]
+- **DevOps Support**: [Your contact]
+
+---
+
+**Remember**: The atomic promotion model ensures that `/releases/*` artifacts remain immutable, making rollback safe and reliable. Always test rollback procedures in staging before production cutover.

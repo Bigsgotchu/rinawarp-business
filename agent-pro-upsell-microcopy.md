@@ -1,5 +1,6 @@
 # Agent Pro Upsell Microcopy
-*In-app, high-conversion, low-pressure messaging for RinaWarp Terminal Pro*
+
+_In-app, high-conversion, low-pressure messaging for RinaWarp Terminal Pro_
 
 ---
 
@@ -8,14 +9,17 @@
 ### Title: Unlock Rina Agent Pro
 
 ### Body:
+
 You're using Rina locally — memory, heuristics, and ghost text are active.
 
 Agent Pro adds AI reasoning, multi-step planning, and deeper analysis when you want it.
 
 ### CTA:
+
 **Upgrade to Agent Pro**
 
-### Secondary: 
+### Secondary:
+
 **Continue with local agent**
 
 ---
@@ -25,12 +29,15 @@ Agent Pro adds AI reasoning, multi-step planning, and deeper analysis when you w
 ### Title: Want deeper reasoning?
 
 ### Body:
+
 Agent Pro can explain why this works and plan next steps automatically.
 
 ### CTA:
+
 **Try Agent Pro**
 
-### Secondary: 
+### Secondary:
+
 **Maybe later**
 
 ---
@@ -40,14 +47,17 @@ Agent Pro can explain why this works and plan next steps automatically.
 ### Title: Agent Pro is temporarily paused.
 
 ### Body:
+
 Your local Rina Agent is still running normally.
 
 No rush — your workflow continues uninterrupted.
 
 ### CTA:
+
 **Restore Agent Pro**
 
-### Secondary: 
+### Secondary:
+
 **Keep using local agent**
 
 ---
@@ -57,18 +67,21 @@ No rush — your workflow continues uninterrupted.
 ### Title: Agent Pro
 
 ### Body:
+
 **$19/month**
 
 • Cloud AI reasoning  
 • Multi-step planning  
-• Cancel anytime  
+• Cancel anytime
 
 **Local agent always stays available.**
 
 ### CTA:
+
 **Start Agent Pro**
 
-### Secondary: 
+### Secondary:
+
 **Learn more**
 
 ---
@@ -76,18 +89,21 @@ No rush — your workflow continues uninterrupted.
 ## Implementation Notes
 
 ### Timing Strategy:
+
 - **Soft Lock**: Trigger on feature access attempt
 - **Contextual Nudge**: After 2-3 heuristic suggestions used
 - **Grace State**: When subscription lapses but grace period active
 - **Pricing Clarity**: On-demand or marketing touchpoints
 
 ### Design Principles:
+
 - **Non-blocking**: Local agent always works
 - **Value-first**: Show what's missing, not what's locked
 - **Honest pricing**: No hidden fees or trial traps
 - **Graceful degradation**: User experience doesn't break
 
 ### Copy Guidelines:
+
 - Use "you" language for direct connection
 - Focus on benefits, not features
 - Maintain professional but approachable tone
@@ -99,13 +115,14 @@ No rush — your workflow continues uninterrupted.
 ## Technical Integration
 
 ### Trigger Conditions:
+
 ```javascript
 // Soft lock trigger
 if (featureRequiresAI && !user.hasAgentPro) {
   showUpsellModal('soft-lock', featureContext);
 }
 
-// Contextual nudge trigger  
+// Contextual nudge trigger
 if (heuristicSuggestionsUsed >= 2 && !user.hasAgentPro) {
   showUpsellNudge('contextual');
 }
@@ -117,12 +134,14 @@ if (subscriptionStatus === 'past_due' && gracePeriodActive) {
 ```
 
 ### Analytics Tracking:
+
 - Modal impressions by type
 - CTA click-through rates
 - Conversion by upsell type
 - Feature usage before/after upgrade
 
 ### A/B Testing Variants:
+
 - **Urgency levels**: Different time pressures
 - **Benefit emphasis**: Focus on different value props
 - **CTA wording**: Action vs benefit-focused

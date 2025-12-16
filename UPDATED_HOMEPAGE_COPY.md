@@ -3,9 +3,11 @@
 ## Hero Section - Revised
 
 ### Headline
+
 **Your terminal now has a local agent that thinks ahead.**
 
 ### Subhead
+
 Fast. Private. Context-aware. Rina Agent runs alongside Terminal Pro to remember your workflow, suggest the next command, and safely execute tools like shell, git, and system checks—without breaking your flow.
 
 ### Value Proposition Bullets
@@ -26,39 +28,49 @@ Agent analyzes command failures, git status, and build errors to suggest fixes a
 Core terminal works completely offline. Agent features enhance the experience but aren't required.
 
 ### Primary CTA
+
 **[Download Terminal Pro](https://rinawarp.com/download)** - Free
 
 ### Secondary CTA
+
 **[See Rina Agent in action](https://rinawarp.com/demo)** - Watch demo
 
 ### Trust Line
-*No cloud dependency: everything works offline. Agent features are additive, not required.*
+
+_No cloud dependency: everything works offline. Agent features are additive, not required._
 
 ---
 
 ## Feature Section - Agent Capabilities
 
 ### Header
+
 **Rina Agent: Your Terminal's Execution-Aware Assistant**
 
 ### Three Core Capabilities
 
 #### Capability 1: Context-Aware Suggestions
+
 **🎯 Smart Command Recommendations**
+
 - Analyzes your project structure, git status, and recent terminal history
 - Suggests the next logical step with 95% accuracy
 - Tab to accept suggestions, Esc to dismiss
 - Local heuristics engine - no external AI required
 
 #### Capability 2: Persistent Development Memory
+
 **🧠 Remembers Your Workflow**
+
 - Tracks your development environment preferences
 - Learns project-specific patterns over time
 - SQLite-based storage, fully local
 - Syncs context across Terminal Pro sessions
 
 #### Capability 3: Safe Tool Execution
+
 **🛡️ Permission-Controlled Operations**
+
 - Explicit tool registry like VS Code extensions
 - You control what Agent can access and execute
 - Shell, git, filesystem, network, system monitoring
@@ -79,12 +91,14 @@ Core terminal works completely offline. Agent features enhance the experience bu
 ## Tier Comparison - Clear Value Prop
 
 ### Free Tier
+
 - Terminal with shell execution
 - Basic git integration
 - Manual command entry
 - Local-only operation
 
 ### Terminal Pro ($149 lifetime)
+
 - ✅ Ghost-text command suggestions
 - ✅ Persistent local memory
 - ✅ Advanced planning heuristics
@@ -92,6 +106,7 @@ Core terminal works completely offline. Agent features enhance the experience bu
 - ✅ Error analysis and fixes
 
 ### Agent Pro ($19/month or $190/year)
+
 - ✅ Complete tool registry (fs, process, network)
 - ✅ Multi-step workflow planning
 - ✅ Crash supervision and recovery
@@ -103,18 +118,23 @@ Core terminal works completely offline. Agent features enhance the experience bu
 ## Objection Handling - Agent-Focused
 
 ### "Is this another AI chatbot?"
+
 No. Rina Agent is a local execution assistant, not a conversational AI. It analyzes your actual terminal context and suggests commands, not conversations.
 
 ### "Do I need internet connection?"
+
 No. Core functionality works 100% offline. Agent features run locally using deterministic heuristics.
 
 ### "What if Agent suggests wrong commands?"
+
 You always review before accepting. Tab accepts, Esc dismisses. Nothing runs automatically without your explicit approval.
 
 ### "How is this different from VS Code's IntelliSense?"
+
 Rina Agent works at the terminal level, suggesting shell commands, git operations, and system actions based on your actual project state and recent terminal history.
 
 ### "Will this slow down my terminal?"
+
 No. Agent runs in background with minimal footprint. Suggestions appear only when relevant.
 
 ---
@@ -139,13 +159,15 @@ No. Agent runs in background with minimal footprint. Suggestions appear only whe
 ## Marketing Copy Updates
 
 ### Replace "AI" with:
+
 - "Local agent"
-- "Execution-aware assistant" 
+- "Execution-aware assistant"
 - "Contextual terminal agent"
 - "Tool-driven reasoning"
 - "Smart terminal companion"
 
 ### Avoid:
+
 - "Artificial intelligence"
 - "Machine learning"
 - "ChatGPT competitor"
@@ -153,6 +175,7 @@ No. Agent runs in background with minimal footprint. Suggestions appear only whe
 - "Natural language processing"
 
 ### Focus on:
+
 - Local processing
 - Deterministic suggestions
 - Tool execution
@@ -179,15 +202,18 @@ Your differentiation is the local agent that understands terminal context and su
 ## Call-to-Action Messaging
 
 ### Primary CTAs
+
 - "Download Terminal Pro" (Free)
 - "Start coding with Agent" (Post-download)
 
-### Secondary CTAs  
+### Secondary CTAs
+
 - "See Agent in action" (Demo)
 - "Compare tiers" (Pricing)
 - "View capabilities" (Features)
 
 ### Urgency/Value CTAs
+
 - "Remember your workflow forever" (Memory feature)
 - "Never forget a command again" (Suggestions)
 - "Code faster with smart suggestions" (Productivity)
@@ -196,13 +222,16 @@ Your differentiation is the local agent that understands terminal context and su
 
 ## Testimonial Copy (Future)
 
-*"Finally, a terminal that actually thinks about what I'm trying to do"*
+_"Finally, a terminal that actually thinks about what I'm trying to do"_
+
 - Senior Developer
 
-*"The suggestions feel like having a senior developer looking over my shoulder"*
+_"The suggestions feel like having a senior developer looking over my shoulder"_
+
 - Tech Lead
 
-*"It's like autocomplete for the entire terminal"*
+_"It's like autocomplete for the entire terminal"_
+
 - Full Stack Developer
 
 ---
@@ -210,20 +239,25 @@ Your differentiation is the local agent that understands terminal context and su
 ## Final Hero Copy (Production Ready)
 
 ### Headline
+
 **Your terminal now has a local agent that thinks ahead.**
 
-### Subhead  
+### Subhead
+
 Fast. Private. Context-aware. Rina Agent runs alongside Terminal Pro to remember your workflow, suggest the next command, and safely execute tools like shell, git, and system checks—without breaking your flow.
 
 ### Value Props
+
 🧠 **Persistent Memory** - Remembers your setup locally  
 🛡️ **Tool Registry** - Permission-based access control  
 💡 **Smart Suggestions** - Tab to accept, Esc to dismiss  
-🎯 **Error Analysis** - Fixes problems before they happen  
+🎯 **Error Analysis** - Fixes problems before they happen
 
 ### CTAs
+
 **[Download Terminal Pro](https://rinawarp.com/download)** - Free  
-**[See Agent in action](https://rinawarp.com/demo)** - Demo  
+**[See Agent in action](https://rinawarp.com/demo)** - Demo
 
 ### Trust
-*No cloud required. Everything works offline.*
+
+_No cloud required. Everything works offline._

@@ -12,6 +12,9 @@ import EmailCapture from './components/EmailCapture';
 import Login from './components/Login';
 import Register from './components/Register';
 import Portal from './pages/Portal';
+import TerminalPro from './pages/TerminalPro';
+import MusicVideoCreator from './pages/MusicVideoCreator';
+import PricingPage from './pages/PricingPage';
 import { getUser, clearAuthData } from './utils/auth';
 
 function App() {
@@ -95,6 +98,9 @@ function App() {
               </motion.main>
             }
           />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/terminal-pro" element={<TerminalPro />} />
+          <Route path="/music-video-creator" element={<MusicVideoCreator />} />
           <Route
             path="/login"
             element={
@@ -121,16 +127,7 @@ function App() {
               )
             }
           />
-          <Route
-            path="/portal"
-            element={
-              user ? (
-                <Portal />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
+          <Route path="/portal" element={user ? <Portal /> : <Navigate to="/login" />} />
         </Routes>
 
         {/* Email Capture Modal for Lead Generation */}

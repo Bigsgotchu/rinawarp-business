@@ -4,8 +4,8 @@
  */
 
 // Import components
-import { rememberProject, resetMemorySession } from '../../agent/src/memory-enhanced.js';
 import { setAgentProEligibility } from '../../agent/src/agentProEligibility.js';
+import { rememberProject, resetMemorySession } from '../../agent/src/memory-enhanced.js';
 
 // Global state
 let sessionStarted = false;
@@ -13,10 +13,10 @@ let sessionStarted = false;
 // Initialize MVR components
 export function initializeMVR() {
   if (sessionStarted) return;
-  
+
   // Reset memory session
   resetMemorySession();
-  
+
   // Start session state if not already started
   if (!window.sessionState) {
     window.sessionState = {
@@ -26,14 +26,14 @@ export function initializeMVR() {
       commandsExecuted: 0,
     };
   }
-  
+
   // Initialize user state
   if (!window.userState) {
     window.userState = {
       isEligibleForAgentPro: false,
     };
   }
-  
+
   sessionStarted = true;
   console.log('MVR Phase-1 components initialized');
 }
@@ -44,22 +44,22 @@ export function handleCommandExecution(command, cwd) {
   if (!sessionStarted) {
     initializeMVR();
   }
-  
+
   // Update session state
   if (window.sessionState) {
     window.sessionState.commandsExecuted++;
   }
-  
+
   // Trigger memory moment on first few commands
   if (window.sessionState && window.sessionState.commandsExecuted <= 3) {
     rememberProject(cwd, command);
   }
-  
+
   // Check Agent Pro eligibility
   if (window.sessionState && window.userState) {
     setAgentProEligibility(window.sessionState, window.userState);
   }
-  
+
   // Log for debugging
   console.log('MVR Session State:', window.sessionState);
   console.log('Agent Pro Eligible:', window.userState.isEligibleForAgentPro);
@@ -70,7 +70,7 @@ export function handleGhostTextAcceptance() {
   if (window.sessionState) {
     window.sessionState.acceptedSuggestions++;
   }
-  
+
   // Check eligibility after acceptance
   if (window.sessionState && window.userState) {
     setAgentProEligibility(window.sessionState, window.userState);

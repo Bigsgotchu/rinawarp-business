@@ -1,0 +1,100 @@
+{
+  "timestamp": "2025-12-16T14:53:14.562Z",
+  "duration_ms": 3669,
+  "ok": true,
+  "sections": [
+    {
+      "section": "versions",
+      "items": [
+        {
+          "name": "node",
+          "ok": true,
+          "status": 0,
+          "stdout": "v20.19.6",
+          "stderr": ""
+        },
+        {
+          "name": "npm",
+          "ok": true,
+          "status": 0,
+          "stdout": "11.6.2",
+          "stderr": "npm warn Unknown env config \"reporter\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"electron-cache\". This will stop working in the next major version of npm.\nnpm warn Unknown project config \"electron_cache\". This will stop working in the next major version of npm."
+        },
+        {
+          "name": "pnpm -v",
+          "ok": true,
+          "status": 0,
+          "stdout": "9.0.0",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "section": "doctor",
+      "items": [
+        {
+          "name": "doctor",
+          "ok": true,
+          "status": 0,
+          "stdout": "",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "section": "tools",
+      "items": [
+        {
+          "name": "prettier -v",
+          "ok": true,
+          "status": 0,
+          "stdout": "3.7.4",
+          "stderr": ""
+        },
+        {
+          "name": "eslint -v",
+          "ok": true,
+          "status": 0,
+          "stdout": "v9.39.2",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "section": "smoke",
+      "items": [
+        {
+          "name": "smoke:preload",
+          "ok": true,
+          "status": 0,
+          "stdout": "[smoke] preload OK: /home/karina/Documents/rinawarp-business/apps/terminal-pro/electron/main/preload.ts",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "section": "packaged",
+      "items": [
+        {
+          "name": "smoke:preload:packaged",
+          "ok": false,
+          "status": 1,
+          "stdout": "",
+          "stderr": "[smoke:packaged] Preload not found in any app.asar.\nHint: ensure preload is included in electron-builder \"files\"."
+        }
+      ]
+    },
+    {
+      "section": "sentry",
+      "items": [
+        {
+          "name": "sentry:ping",
+          "ok": true,
+          "status": 0,
+          "stdout": "Sentry disabled (no DSN)",
+          "stderr": ""
+        }
+      ]
+    }
+  ]
+}

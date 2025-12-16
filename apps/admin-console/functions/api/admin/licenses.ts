@@ -52,10 +52,7 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
 
   const backendUrl = env.LICENSING_SERVICE_URL?.replace(/\/+$/, '');
   if (!backendUrl) {
-    return jsonResponse(
-      { error: 'LICENSING_SERVICE_URL not configured' },
-      500,
-    );
+    return jsonResponse({ error: 'LICENSING_SERVICE_URL not configured' }, 500);
   }
 
   try {
@@ -96,14 +93,9 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
 
       case 'POST': {
         // Create license
-        const body = (await request.json().catch(() => null)) as
-          | LicensePayload
-          | null;
+        const body = (await request.json().catch(() => null)) as LicensePayload | null;
         if (!body?.email || !body.product) {
-          return jsonResponse(
-            { error: 'email and product are required' },
-            400,
-          );
+          return jsonResponse({ error: 'email and product are required' }, 400);
         }
 
         const target = `${backendUrl}/admin/licenses`;
@@ -128,16 +120,12 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
 
       case 'PATCH': {
         // Extend/modify license
-        const body = (await request.json().catch(() => null)) as
-          | LicensePayload
-          | null;
+        const body = (await request.json().catch(() => null)) as LicensePayload | null;
         if (!body?.licenseKey) {
           return jsonResponse({ error: 'licenseKey is required' }, 400);
         }
 
-        const target = `${backendUrl}/admin/licenses/${encodeURIComponent(
-          body.licenseKey,
-        )}`;
+        const target = `${backendUrl}/admin/licenses/${encodeURIComponent(body.licenseKey)}`;
 
         const res = await fetch(target, {
           method: 'PATCH',
@@ -161,21 +149,14 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
 
       case 'DELETE': {
         // Revoke license
-        const body = (await request.json().catch(() => null)) as
-          | LicensePayload
-          | null;
-        const licenseKey =
-          body?.licenseKey ||
-          url.searchParams.get('licenseKey') ||
-          undefined;
+        const body = (await request.json().catch(() => null)) as LicensePayload | null;
+        const licenseKey = body?.licenseKey || url.searchParams.get('licenseKey') || undefined;
 
         if (!licenseKey) {
           return jsonResponse({ error: 'licenseKey is required' }, 400);
         }
 
-        const target = `${backendUrl}/admin/licenses/${encodeURIComponent(
-          licenseKey,
-        )}`;
+        const target = `${backendUrl}/admin/licenses/${encodeURIComponent(licenseKey)}`;
 
         const res = await fetch(target, {
           method: 'DELETE',

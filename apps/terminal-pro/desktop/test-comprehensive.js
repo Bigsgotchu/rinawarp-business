@@ -13,9 +13,9 @@
  * - Agent status indicator
  */
 
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 console.log('🧪 Starting RinaWarp Terminal Pro Comprehensive Tests');
 console.log('====================================================');
@@ -25,7 +25,7 @@ const TEST_CONFIG = {
   headless: true,
   showDevTools: false,
   testTimeout: 30000,
-  debug: false
+  debug: false,
 };
 
 // Test results tracking
@@ -33,7 +33,7 @@ let testResults = {
   passed: 0,
   failed: 0,
   tests: [],
-  startTime: Date.now()
+  startTime: Date.now(),
 };
 
 // Test suite functions
@@ -88,13 +88,10 @@ class TerminalProTester {
       }
 
       // Test 3: Verify renderer files exist
-      const rendererFiles = [
-        'src/renderer/index.html',
-        'src/renderer/js/main.js'
-      ];
+      const rendererFiles = ['src/renderer/index.html', 'src/renderer/js/main.js'];
 
       let allRendererFilesExist = true;
-      rendererFiles.forEach(file => {
+      rendererFiles.forEach((file) => {
         const filePath = path.join(__dirname, file);
         if (!fs.existsSync(filePath)) {
           allRendererFilesExist = false;
@@ -105,7 +102,11 @@ class TerminalProTester {
         throw new Error('Required renderer files missing');
       }
 
-      this.recordTestResult('Main Application Functionality', true, 'All main application tests passed');
+      this.recordTestResult(
+        'Main Application Functionality',
+        true,
+        'All main application tests passed',
+      );
     } catch (error) {
       this.recordTestResult('Main Application Functionality', false, error.message);
     }
@@ -126,11 +127,21 @@ class TerminalProTester {
       const hasTerminalKill = mainAppContent.includes('terminal:kill');
       const hasPtyImport = mainAppContent.includes('node-pty');
 
-      if (!hasTerminalCreation || !hasTerminalWrite || !hasTerminalResize || !hasTerminalKill || !hasPtyImport) {
+      if (
+        !hasTerminalCreation ||
+        !hasTerminalWrite ||
+        !hasTerminalResize ||
+        !hasTerminalKill ||
+        !hasPtyImport
+      ) {
         throw new Error('Terminal management functionality incomplete');
       }
 
-      this.recordTestResult('Terminal Creation and Management', true, 'All terminal management tests passed');
+      this.recordTestResult(
+        'Terminal Creation and Management',
+        true,
+        'All terminal management tests passed',
+      );
     } catch (error) {
       this.recordTestResult('Terminal Creation and Management', false, error.message);
     }
@@ -211,11 +222,11 @@ class TerminalProTester {
       const agentFiles = [
         'src/renderer/js/agent-status.js',
         'src/renderer/js/agent-debug.js',
-        'src/renderer/js/ai-router.js'
+        'src/renderer/js/ai-router.js',
       ];
 
       let allAgentFilesExist = true;
-      agentFiles.forEach(file => {
+      agentFiles.forEach((file) => {
         const filePath = path.join(__dirname, file);
         if (!fs.existsSync(filePath)) {
           allAgentFilesExist = false;
@@ -339,7 +350,11 @@ class TerminalProTester {
         throw new Error('Agent status functionality incomplete');
       }
 
-      this.recordTestResult('Agent Status Indicator', true, 'All agent status indicator tests passed');
+      this.recordTestResult(
+        'Agent Status Indicator',
+        true,
+        'All agent status indicator tests passed',
+      );
     } catch (error) {
       this.recordTestResult('Agent Status Indicator', false, error.message);
     }
@@ -355,7 +370,7 @@ class TerminalProTester {
       test: testName,
       passed,
       message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     testResults.tests.push(result);
@@ -380,11 +395,13 @@ class TerminalProTester {
     console.log(`Passed: ${testResults.passed}`);
     console.log(`Failed: ${testResults.failed}`);
     console.log(`Duration: ${duration} seconds`);
-    console.log(`Success Rate: ${((testResults.passed / testResults.tests.length) * 100).toFixed(1)}%`);
+    console.log(
+      `Success Rate: ${((testResults.passed / testResults.tests.length) * 100).toFixed(1)}%`,
+    );
 
     // Generate detailed report
     console.log('\n📋 Detailed Test Results:');
-    testResults.tests.forEach(test => {
+    testResults.tests.forEach((test) => {
       const status = test.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${test.test}: ${test.message}`);
     });
@@ -408,7 +425,7 @@ class TerminalProTester {
 // Run the tests
 if (require.main === module) {
   const tester = new TerminalProTester();
-  tester.runAllTests().catch(error => {
+  tester.runAllTests().catch((error) => {
     console.error('❌ Test suite failed:', error);
     process.exit(1);
   });
@@ -417,5 +434,5 @@ if (require.main === module) {
 // Export for programmatic use
 module.exports = {
   TerminalProTester,
-  testResults
+  testResults,
 };

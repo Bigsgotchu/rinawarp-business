@@ -46,7 +46,7 @@ async function sanityCheckEnvironment() {
 
   // Check key format
   if (!KEY.startsWith('sk_test_') && !KEY.startsWith('sk_live_')) {
-    console.error('❌ Invalid key format. Key must start with \'sk_test_\' or \'sk_live_\'');
+    console.error("❌ Invalid key format. Key must start with 'sk_test_' or 'sk_live_'");
     process.exit(1);
   }
 
@@ -56,7 +56,7 @@ async function sanityCheckEnvironment() {
     console.log('   ✅ Stripe connection successful');
   } catch (error) {
     console.error('❌ Stripe connection failed:', error.message);
-    console.error('   Check your key format and ensure it\'s not truncated.');
+    console.error("   Check your key format and ensure it's not truncated.");
     process.exit(1);
   }
 }

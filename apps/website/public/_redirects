@@ -1,0 +1,12 @@
+# API webhooks - direct routing
+/api/webhooks/*    /api/webhooks/:splat   200
+
+# Static files that exist should be served directly
+/pricing.html      /pricing.html          200
+/terminal-pro.html /terminal-pro.html     200
+/music-video-creator.html /music-video-creator.html 200
+/downloads.html    /downloads.html        200
+/index.html        /index.html            200
+
+# SPA fallback - everything else goes to index.html for client-side routing
+/*                 /index.html            200

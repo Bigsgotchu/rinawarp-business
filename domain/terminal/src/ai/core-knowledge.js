@@ -9,7 +9,7 @@ export const CORE_TECHNICAL_KNOWLEDGE = {
         problem: 'Multiple deployment scripts (62+ scripts found)',
         solution:
           'Consolidate to 3 essential scripts: dev-start.sh, prod-deploy.sh, setup-environment.sh',
-        autoFix: 'find . -name \'*deploy*.sh\' -exec mv {} backup/ \\;',
+        autoFix: "find . -name '*deploy*.sh' -exec mv {} backup/ \\;",
         prevention: 'Always check existing scripts before creating new ones',
       },
       {
@@ -17,13 +17,13 @@ export const CORE_TECHNICAL_KNOWLEDGE = {
           'node_modules in wrong directories (server/, src/, deployment/)',
         solution: 'Only install in project root directories',
         autoFix:
-          'find . -name node_modules -not -path \'./node_modules\' -exec rm -rf {} \\;',
+          "find . -name node_modules -not -path './node_modules' -exec rm -rf {} \\;",
         prevention: 'Always run npm install from correct package.json location',
       },
       {
         problem: 'Too many files (42,744 files causing confusion)',
         solution: 'Organize into clear structure with essential files only',
-        autoFix: 'find . -name \'*.bak\' -o -name \'*.tmp\' -o -name \'*~\' -delete',
+        autoFix: "find . -name '*.bak' -o -name '*.tmp' -o -name '*~' -delete",
         prevention: 'Use .gitignore and regular cleanup',
       },
     ],
@@ -35,14 +35,14 @@ export const CORE_TECHNICAL_KNOWLEDGE = {
       {
         problem: 'Hardcoded localhost URLs in production code',
         solution: 'Use environment variables and configuration files',
-        autoFix: 'sed -i \'s/rinawarptech.com/${API_URL}/g\' *.js',
+        autoFix: "sed -i 's/rinawarptech.com/${API_URL}/g' *.js",
         prevention: 'Never hardcode URLs, always use config variables',
       },
       {
         problem: 'Deprecated meta tags causing browser warnings',
         solution: 'Update to current standards',
         autoFix:
-          'sed -i \'s/apple-mobile-web-app-capable/mobile-web-app-capable/g\' *.html',
+          "sed -i 's/apple-mobile-web-app-capable/mobile-web-app-capable/g' *.html",
         prevention: 'Regularly audit HTML for deprecated tags',
       },
       {
@@ -85,7 +85,7 @@ export const CORE_TECHNICAL_KNOWLEDGE = {
       {
         problem: 'Development URLs in production (rinawarptech.com)',
         solution: 'Configure all URLs to use production domain',
-        autoFix: 'sed -i \'s/rinawarptech.com/rinawarptech.com/g\' *.js',
+        autoFix: "sed -i 's/rinawarptech.com/rinawarptech.com/g' *.js",
         prevention: 'Always use environment-based configuration',
       },
       {
@@ -170,14 +170,14 @@ export const AUTO_DETECTION_RULES = {
 // Auto-Fix Commands
 export const AUTO_FIX_COMMANDS = {
   cleanup: [
-    'find . -name \'*.bak\' -o -name \'*.tmp\' -o -name \'*~\' -delete',
+    "find . -name '*.bak' -o -name '*.tmp' -o -name '*~' -delete",
     'find . -type d -empty -delete',
-    'find . -name \'*.log\' -mtime +7 -delete',
+    "find . -name '*.log' -mtime +7 -delete",
   ],
 
   consolidate: [
-    'find . -name \'*deploy*.sh\' -exec mv {} backup/ \\;',
-    'find . -name \'*setup*.sh\' -exec mv {} backup/ \\;',
+    "find . -name '*deploy*.sh' -exec mv {} backup/ \\;",
+    "find . -name '*setup*.sh' -exec mv {} backup/ \\;",
     'touch dev-start.sh prod-deploy.sh setup-environment.sh',
   ],
 
@@ -188,14 +188,14 @@ export const AUTO_FIX_COMMANDS = {
   ],
 
   configuration: [
-    'sed -i \'s/rinawarptech.com/${API_URL}/g\' *.js',
-    'sed -i \'s/apple-mobile-web-app-capable/mobile-web-app-capable/g\' *.html',
+    "sed -i 's/rinawarptech.com/${API_URL}/g' *.js",
+    "sed -i 's/apple-mobile-web-app-capable/mobile-web-app-capable/g' *.html",
     'export NODE_ENV=production',
   ],
 
   business: [
     'export STRIPE_PUBLISHABLE_KEY=pk_live_...',
-    'sed -i \'s/rinawarptech.com/rinawarptech.com/g\' *.js',
+    "sed -i 's/rinawarptech.com/rinawarptech.com/g' *.js",
     'pm2 start ecosystem.config.cjs',
   ],
 };

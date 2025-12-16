@@ -11,7 +11,9 @@ console.log('===========================================\n');
 console.log('🔍 Step 1: Verifying Stripe Webhook Configuration...');
 try {
   const webhookFile = fs.readFileSync('apps/website/functions/stripe-webhook.ts', 'utf8');
-  if (webhookFile.includes('whsec_8dd90aa311dce345172987b5c121d74d633985cb55c96d00f5d490037bae8353')) {
+  if (
+    webhookFile.includes('whsec_8dd90aa311dce345172987b5c121d74d633985cb55c96d00f5d490037bae8353')
+  ) {
     console.log('✅ Stripe webhook secret is correctly configured');
   } else {
     console.log('❌ Stripe webhook secret is missing or incorrect');
@@ -62,11 +64,11 @@ try {
     '/legal/terms-of-service.html',
     '/legal/privacy-policy.html',
     '/legal/refund-policy.html',
-    '/legal/cookie-policy.html'
+    '/legal/cookie-policy.html',
   ];
 
   let legalUrlCount = 0;
-  legalUrls.forEach(url => {
+  legalUrls.forEach((url) => {
     const filePath = `apps/website/public${url}`;
     if (fs.existsSync(filePath)) {
       legalUrlCount++;

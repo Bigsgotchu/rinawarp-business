@@ -78,12 +78,10 @@ function AppOptimized() {
     // Lazy load AI components after initial render
     const loadAIComponents = async () => {
       try {
-        const { default: CommandPredictor } = await import(
-          './ai/commandPredictor'
-        );
-        const { default: CommandExplainer } = await import(
-          './ai/commandExplainer'
-        );
+        const { default: CommandPredictor } =
+          await import('./ai/commandPredictor');
+        const { default: CommandExplainer } =
+          await import('./ai/commandExplainer');
 
         const predictor = new CommandPredictor();
         const explainer = new CommandExplainer();
@@ -145,54 +143,54 @@ function AppOptimized() {
       const specialCommand = command.slice(1).toLowerCase();
 
       switch (specialCommand) {
-      case 'help':
-        setLogs((prev) => [
-          ...prev,
-          '📋 Available commands:',
-          '!help - Show this help',
-          '!clear - Clear terminal',
-          '!stats - Show system stats',
-          '!theme <name> - Change theme',
-          '!voice - Toggle voice',
-          '!ai <provider> - Switch AI provider',
-        ]);
-        break;
-      case 'clear':
-        setLogs([]);
-        break;
-      case 'stats':
-        setLogs((prev) => [
-          ...prev,
-          `💻 CPU: ${stats.cpu.toFixed(1)}%`,
-          `🧠 RAM: ${stats.ram.toFixed(1)}%`,
-          `🌐 Network: ${stats.net} bytes/s`,
-        ]);
-        break;
-      case 'voice':
-        setVoiceEnabled(!voiceEnabled);
-        setLogs((prev) => [
-          ...prev,
-          `🎤 Voice ${!voiceEnabled ? 'enabled' : 'disabled'}`,
-        ]);
-        break;
-      default:
-        if (specialCommand.startsWith('theme ')) {
-          const themeName = specialCommand.split(' ')[1];
-          setCurrentTheme(themeName);
-          setLogs((prev) => [...prev, `🎨 Theme changed to ${themeName}`]);
-        } else if (specialCommand.startsWith('ai ')) {
-          const provider = specialCommand.split(' ')[1];
-          setAiProvider(provider);
+        case 'help':
           setLogs((prev) => [
             ...prev,
-            `🤖 AI provider changed to ${provider}`,
+            '📋 Available commands:',
+            '!help - Show this help',
+            '!clear - Clear terminal',
+            '!stats - Show system stats',
+            '!theme <name> - Change theme',
+            '!voice - Toggle voice',
+            '!ai <provider> - Switch AI provider',
           ]);
-        } else {
+          break;
+        case 'clear':
+          setLogs([]);
+          break;
+        case 'stats':
           setLogs((prev) => [
             ...prev,
-            `❓ Unknown command: ${specialCommand}`,
+            `💻 CPU: ${stats.cpu.toFixed(1)}%`,
+            `🧠 RAM: ${stats.ram.toFixed(1)}%`,
+            `🌐 Network: ${stats.net} bytes/s`,
           ]);
-        }
+          break;
+        case 'voice':
+          setVoiceEnabled(!voiceEnabled);
+          setLogs((prev) => [
+            ...prev,
+            `🎤 Voice ${!voiceEnabled ? 'enabled' : 'disabled'}`,
+          ]);
+          break;
+        default:
+          if (specialCommand.startsWith('theme ')) {
+            const themeName = specialCommand.split(' ')[1];
+            setCurrentTheme(themeName);
+            setLogs((prev) => [...prev, `🎨 Theme changed to ${themeName}`]);
+          } else if (specialCommand.startsWith('ai ')) {
+            const provider = specialCommand.split(' ')[1];
+            setAiProvider(provider);
+            setLogs((prev) => [
+              ...prev,
+              `🤖 AI provider changed to ${provider}`,
+            ]);
+          } else {
+            setLogs((prev) => [
+              ...prev,
+              `❓ Unknown command: ${specialCommand}`,
+            ]);
+          }
       }
       return;
     }
@@ -213,7 +211,7 @@ function AppOptimized() {
     // Simulate AI response
     const responses = [
       '🤖 I understand you want to run that command!',
-      '🧜‍♀️ That\'s an interesting command you\'re trying to execute.',
+      "🧜‍♀️ That's an interesting command you're trying to execute.",
       '⚡ Let me help you with that command execution.',
       '🌊 I can assist you with terminal operations!',
       '💫 Command processed successfully!',

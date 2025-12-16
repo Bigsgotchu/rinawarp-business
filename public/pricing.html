@@ -43,7 +43,9 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YGX1R0MEB6"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag() {
+        dataLayer.push(arguments);
+      }
       gtag('js', new Date());
       gtag('config', 'G-YGX1R0MEB6');
 
@@ -51,7 +53,7 @@
         if (typeof gtag === 'function') {
           gtag('event', 'begin_checkout', {
             currency: 'USD',
-            items: [{ item_id: product }]
+            items: [{ item_id: product }],
           });
         }
       }
@@ -59,7 +61,6 @@
   </head>
   <body class="mermaid">
     <div class="main-shell">
-
       <header class="rw-nav">
         <div class="rw-nav-left">
           <a href="/" class="rw-nav-logo">
@@ -78,10 +79,11 @@
       <main>
         <section class="section">
           <h1 class="section-title">Simple, Transparent Pricing</h1>
-          <p class="section-subtitle">No subscriptions unless you want them. Buy once, use forever.</p>
+          <p class="section-subtitle">
+            No subscriptions unless you want them. Buy once, use forever.
+          </p>
 
           <div class="pricing-grid">
-
             <!-- FREE TIER -->
             <article class="pricing-card">
               <div class="pricing-label">Free Tier</div>
@@ -111,7 +113,11 @@
               </ul>
 
               <!-- Stripe Checkout Integration -->
-              <form action="/api/checkout-v2" method="POST" onsubmit="trackCheckout('terminal-pro')">
+              <form
+                action="/api/checkout-v2"
+                method="POST"
+                onsubmit="trackCheckout('terminal-pro')"
+              >
                 <input type="hidden" name="product" value="terminal-pro" />
                 <button class="rw-button" type="submit">Buy License</button>
               </form>
@@ -135,7 +141,6 @@
                 <button class="rw-button-outline" type="submit">Join Monthly</button>
               </form>
             </article>
-
           </div>
         </section>
       </main>
@@ -149,7 +154,6 @@
           <a href="/contact.html">Contact</a>
         </div>
       </footer>
-
     </div>
   </body>
 </html>

@@ -3,6 +3,7 @@
 ## 🔧 HSTS Configuration (HTTP Strict Transport Security)
 
 ### Method 1: Cloudflare Dashboard
+
 1. **Log into Cloudflare Dashboard**
    - Go to https://dash.cloudflare.com
    - Select your account: `Rinawarptechnologies25@gmail.com's Account`
@@ -18,6 +19,7 @@
    - **Preload**: ✅ Enable (optional, requires careful consideration)
 
 ### Method 2: Cloudflare API
+
 ```bash
 # Enable Always Use HTTPS
 curl -X PUT "https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/settings/always_use_https" \
@@ -35,6 +37,7 @@ curl -X PUT "https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/settings/secur
 ## 🌐 Custom Domain Configuration
 
 ### Step 1: Add Custom Domain to Cloudflare Pages
+
 1. **Navigate to Pages Project**
    - Go to Cloudflare Dashboard → Pages → `rinawarptech`
    - Click on your project → Settings → Custom domains
@@ -45,13 +48,16 @@ curl -X PUT "https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/settings/secur
    - Click "Continue"
 
 ### Step 2: Configure DNS Records
+
 Cloudflare will automatically create the necessary DNS records:
+
 - **Type**: CNAME
 - **Name**: rinawarptech.com
 - **Content**: rinawarptech.pages.dev
 - **Proxy status**: Proxied (orange cloud)
 
 ### Step 3: SSL Certificate Provisioning
+
 - Cloudflare automatically provisions SSL certificates
 - This may take 5-15 minutes
 - Status will change from "Pending" to "Valid"
@@ -59,6 +65,7 @@ Cloudflare will automatically create the necessary DNS records:
 ## 🔍 Security Headers Verification
 
 ### Test Current Security Headers
+
 ```bash
 # Check security headers
 curl -I https://109e1370.rinawarptech.pages.dev
@@ -72,6 +79,7 @@ curl -I https://109e1370.rinawarptech.pages.dev
 ```
 
 ### Third-party Security Testing
+
 - **Security Headers Test**: https://securityheaders.com
 - **SSL Labs Test**: https://www.ssllabs.com/ssltest/
 - **Mozilla Observatory**: https://observatory.mozilla.org
@@ -79,19 +87,23 @@ curl -I https://109e1370.rinawarptech.pages.dev
 ## 📊 Performance Monitoring
 
 ### Lighthouse Scores (Current)
+
 - **Lighthouse Report**: Generated at `lighthouse-report.html`
 - **File Size**: 726KB (comprehensive report)
 - **Performance**: Check report for detailed metrics
 
 ### Core Web Vitals
+
 Monitor these key metrics:
+
 - **LCP (Largest Contentful Paint)**: < 2.5s
-- **FID (First Input Delay)**: < 100ms  
+- **FID (First Input Delay)**: < 100ms
 - **CLS (Cumulative Layout Shift)**: < 0.1
 
 ## 🚀 Deployment Status
 
 ### Current Deployment
+
 - **Deployment ID**: `109e1370-e497-46c5-b28f-da3cc3de915a`
 - **Status**: ✅ Successful
 - **Timestamp**: 51 seconds ago
@@ -99,6 +111,7 @@ Monitor these key metrics:
 - **URL**: https://109e1370.rinawarptech.pages.dev
 
 ### Previous Deployments
+
 - 19 minutes ago: Preview deployment (main branch)
 - 22 minutes ago: Production deployment (master branch)
 - Multiple daily deployments tracked
@@ -106,19 +119,22 @@ Monitor these key metrics:
 ## ✅ Checklist for Production Ready
 
 ### Security
+
 - [ ] HSTS enabled with 2-year max-age
 - [ ] Always Use HTTPS enabled
 - [ ] Security headers configured
 - [ ] Content Security Policy tested
 - [ ] SSL certificate valid
 
-### Performance  
+### Performance
+
 - [ ] Lighthouse audit completed
 - [ ] Core Web Vitals within thresholds
 - [ ] Image optimization verified
 - [ ] CDN caching headers configured
 
 ### SEO
+
 - [ ] Custom domain configured
 - [ ] Canonical URLs set
 - [ ] Sitemap accessible
@@ -126,6 +142,7 @@ Monitor these key metrics:
 - [ ] Open Graph tags configured
 
 ### Monitoring
+
 - [ ] Analytics tracking active
 - [ ] Error monitoring configured
 - [ ] Deployment monitoring set up
@@ -134,20 +151,24 @@ Monitor these key metrics:
 ## 🔧 Additional Configuration
 
 ### Cloudflare Workers (Future Enhancement)
+
 For advanced features like A/B testing, custom routing, or API endpoints:
 
 1. **Create Worker**
+
    ```bash
    wrangler init rinawarp-worker
    cd rinawarp-worker
    ```
 
 2. **Deploy Worker**
+
    ```bash
    wrangler publish
    ```
 
 ### Analytics Integration
+
 - **Current**: Custom analytics.js implemented
 - **Alternative**: Consider Plausible Analytics for enhanced privacy
 - **Enterprise**: Google Analytics 4 for detailed tracking

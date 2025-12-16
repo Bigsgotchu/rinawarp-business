@@ -1,16 +1,16 @@
-import type { Config } from "jest";
+import type { Config } from 'jest';
 
 const config: Config = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  testMatch: ["**/tests/**/*.test.ts"],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testMatch: ['**/tests/**/*.test.ts'],
   verbose: false,
   forceExit: true,
   detectOpenHandles: true,
   maxWorkers: 1,
-  setupFilesAfterEnv: ["<rootDir>/tests/setup.ts"],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   moduleNameMapping: {
-    "^(\\.{1,2}/.*)\\.js$": "$1",
+    '^(\\.{1,2}/.*)\\.js$': '$1',
   },
 };
 

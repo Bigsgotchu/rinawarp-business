@@ -44,7 +44,7 @@ class RinaAIIntegration {
       generateResponse: (situation, userMessage, context) => {
         return {
           message:
-            'Hi! I\'m Rina, your AI assistant. How can I help you today? 😊',
+            "Hi! I'm Rina, your AI assistant. How can I help you today? 😊",
           mood: 'cheerful',
           energy: 8,
           emoji: '😊',
@@ -80,7 +80,7 @@ class RinaAIIntegration {
       console.error('Rina Chat Error:', error);
       return {
         message:
-          'Oops! I\'m having a technical moment! 😅 Give me a second to get back on track!',
+          "Oops! I'm having a technical moment! 😅 Give me a second to get back on track!",
         mood: 'apologetic',
         energy: 6,
         emoji: '😅',

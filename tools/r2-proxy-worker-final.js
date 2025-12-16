@@ -13,8 +13,8 @@ export default {
     const r2Response = await fetch(r2Url, {
       method: request.method,
       headers: {
-        'Origin': request.headers.get('Origin') || '',
-      }
+        Origin: request.headers.get('Origin') || '',
+      },
     });
 
     // If not found or forbidden
@@ -23,8 +23,7 @@ export default {
     }
 
     // Cache headers
-    const cacheControl =
-      path.endsWith('.json') ? 'public, max-age=3600' : 'public, max-age=300';
+    const cacheControl = path.endsWith('.json') ? 'public, max-age=3600' : 'public, max-age=300';
 
     // Build response with CORS and security headers
     const headers = new Headers(r2Response.headers);

@@ -159,8 +159,8 @@ class PerformanceMonitor {
       errorRate:
         this.metrics.requests > 0
           ? Math.round(
-            (this.metrics.errors / this.metrics.requests) * 100 * 100
-          ) / 100
+              (this.metrics.errors / this.metrics.requests) * 100 * 100
+            ) / 100
           : 0,
     };
   }

@@ -21,10 +21,10 @@ export const onRequestPost = async (context) => {
     const { plan, successUrl, cancelUrl, email } = requestBody;
 
     if (!plan) {
-      return new Response(
-        JSON.stringify({ error: 'Plan is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Plan is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Load pricing.json as single source of truth
@@ -37,10 +37,10 @@ export const onRequestPost = async (context) => {
       pricing = await pricingResponse.json();
     } catch (error) {
       console.error('Failed to load pricing.json:', error);
-      return new Response(
-        JSON.stringify({ error: 'Failed to load pricing configuration' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Failed to load pricing configuration' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Find the plan in pricing.json
@@ -52,9 +52,9 @@ export const onRequestPost = async (context) => {
         JSON.stringify({
           error: 'Invalid plan selected',
           availablePlans: Object.keys(pricing.plans),
-          receivedPlan: plan
+          receivedPlan: plan,
         }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
@@ -63,9 +63,9 @@ export const onRequestPost = async (context) => {
         JSON.stringify({
           error: 'Plan configuration incomplete',
           plan: planKey,
-          message: 'Missing stripe_price_id in pricing.json'
+          message: 'Missing stripe_price_id in pricing.json',
         }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        { status: 500, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
@@ -78,7 +78,7 @@ export const onRequestPost = async (context) => {
     // Determine checkout mode based on plan interval
     const isLifetimePlan = planData.interval === 'one_time';
     const mode = isLifetimePlan ? 'payment' : 'subscription';
-    
+
     // Create Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -102,13 +102,15 @@ export const onRequestPost = async (context) => {
       },
     });
 
-    console.log(`✅ Created ${mode} session for ${planKey} (${planData.name}) - $${planData.price}`);
+    console.log(
+      `✅ Created ${mode} session for ${planKey} (${planData.name}) - $${planData.price}`,
+    );
 
     // Return session ID for Stripe.js redirect
-    return new Response(
-      JSON.stringify({ sessionId: session.id }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ sessionId: session.id }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('Error creating checkout session:', error);
 
@@ -117,7 +119,7 @@ export const onRequestPost = async (context) => {
         error: 'Failed to create checkout session',
         details: error.message,
       }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
     );
   }
 };

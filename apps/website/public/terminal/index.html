@@ -1,243 +1,277 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="page-terminal">
-<head>
-  <meta charset="UTF-8" />
-  <title>RinaWarp Terminal Pro — Mermaid Terminal for Power Users</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="RinaWarp Terminal Pro — a mermaid-themed, hot pink, coral, teal and baby blue terminal experience for serious builders."
-  />
-  <link rel="stylesheet" href="/css/brand.css" />
-</head>
-<body class="page-terminal">
-  <div class="main-shell">
-    <!-- NAV -->
-    <header class="nav">
-      <div class="nav-left">
-        <div class="nav-logo"></div>
-        <div class="nav-title">
-          RinaWarp Terminal Pro
-          <span>Mermaid Shell for Builders</span>
-        </div>
-      </div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="/legal/terminal-pro-eula.html">EULA</a>
-        <button class="nav-cta" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">
-          Download
-          <span class="icon">⬇️</span>
-        </button>
-      </nav>
-    </header>
-
-    <!-- HERO -->
-    <main>
-      <section class="hero">
-        <div>
-          <div class="hero-left-eyebrow">
-            <span class="hero-badge-pill" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.45); color: #bfdbfe;">
-              Desktop app
-            </span>
-            <span>Mermaid color system • License-backed</span>
-          </div>
-          <h1 class="hero-title">
-            A terminal that looks <span class="highlight">as sharp as you ship</span>.
-          </h1>
-          <p class="hero-subtitle">
-            Hot pink, coral, teal and baby blue on deep black —
-            tuned for clarity, contrast and long sessions. RinaWarp Terminal Pro is
-            your daily driver shell, not a toy demo.
-          </p>
-
-          <div class="hero-ctas">
-            <button class="btn-primary" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">
-              <span class="icon">⬇️</span>
-              Download for desktop
-            </button>
-            <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
-              View features
-              <span class="icon">→</span>
-            </button>
-          </div>
-          <div class="hero-footnote">
-            One-time license. No dark patterns. Your terminal, your machine.
-          </div>
-
-          <div class="card-row">
-            <div class="card">
-              <div class="card-title">Mermaid color engine</div>
-              <div class="card-body">
-                Carefully balanced hot pink, coral, teal, and baby blue on deep blacks —
-                UI tuned for high legibility with just enough attitude.
-              </div>
-              <div class="card-pill-row">
-                <span class="card-pill">High contrast</span>
-                <span class="card-pill">Readable logs</span>
-                <span class="card-pill">Eye-friendly</span>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-title">Built for serious work</div>
-              <div class="card-body">
-                This isn't a toy theme. Terminal Pro hooks into your real workflow: shell,
-                editor, repos, and cloud tooling — with a secure license system under the hood.
-              </div>
-              <div class="card-pill-row">
-                <span class="card-pill">Stripe + Cloudflare</span>
-                <span class="card-pill">License verification</span>
-                <span class="card-pill">Offline friendly</span>
-              </div>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>RinaWarp Terminal Pro — Mermaid Terminal for Power Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="RinaWarp Terminal Pro — a mermaid-themed, hot pink, coral, teal and baby blue terminal experience for serious builders."
+    />
+    <link rel="stylesheet" href="/css/brand.css" />
+  </head>
+  <body class="page-terminal">
+    <div class="main-shell">
+      <!-- NAV -->
+      <header class="nav">
+        <div class="nav-left">
+          <div class="nav-logo"></div>
+          <div class="nav-title">
+            RinaWarp Terminal Pro
+            <span>Mermaid Shell for Builders</span>
           </div>
         </div>
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="/legal/terminal-pro-eula.html">EULA</a>
+          <button
+            class="nav-cta"
+            onclick="document.getElementById('download').scrollIntoView({ behavior: 'smooth' })"
+          >
+            Download
+            <span class="icon">⬇️</span>
+          </button>
+        </nav>
+      </header>
 
-        <!-- right side "glow" card -->
-        <aside>
-          <div class="pricing-card">
-            <div class="badge-pill" style="margin-bottom: 10px;">
-              <span>💾</span> Desktop download — Windows / macOS
-            </div>
-            <div class="pricing-line" style="margin-bottom: 8px;">
-              Your purchase is handled through Stripe, secured by Cloudflare,
-              and wired into our licensing service.
-            </div>
-            <ul class="pricing-list">
-              <li>License key delivered instantly after purchase</li>
-              <li>Secure verification against RinaWarp license service</li>
-              <li>Backed by clear EULA & Legal Hub</li>
-            </ul>
-            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">
-              Go to download section
-            </button>
-          </div>
-        </aside>
-      </section>
-
-      <!-- FEATURES -->
-      <section class="section" id="features">
-        <div class="section-header">
+      <!-- HERO -->
+      <main>
+        <section class="hero">
           <div>
-            <div class="section-title">Designed for people who live in a terminal</div>
-            <div class="section-subtitle">
-              RinaWarp Terminal Pro focuses on clarity, feedback, and flow.
+            <div class="hero-left-eyebrow">
+              <span
+                class="hero-badge-pill"
+                style="
+                  background: rgba(59, 130, 246, 0.15);
+                  border-color: rgba(59, 130, 246, 0.45);
+                  color: #bfdbfe;
+                "
+              >
+                Desktop app
+              </span>
+              <span>Mermaid color system • License-backed</span>
+            </div>
+            <h1 class="hero-title">
+              A terminal that looks <span class="highlight">as sharp as you ship</span>.
+            </h1>
+            <p class="hero-subtitle">
+              Hot pink, coral, teal and baby blue on deep black — tuned for clarity, contrast and
+              long sessions. RinaWarp Terminal Pro is your daily driver shell, not a toy demo.
+            </p>
+
+            <div class="hero-ctas">
+              <button
+                class="btn-primary"
+                onclick="document.getElementById('download').scrollIntoView({ behavior: 'smooth' })"
+              >
+                <span class="icon">⬇️</span>
+                Download for desktop
+              </button>
+              <button
+                class="btn-outline"
+                onclick="document.getElementById('features').scrollIntoView({ behavior: 'smooth' })"
+              >
+                View features
+                <span class="icon">→</span>
+              </button>
+            </div>
+            <div class="hero-footnote">
+              One-time license. No dark patterns. Your terminal, your machine.
+            </div>
+
+            <div class="card-row">
+              <div class="card">
+                <div class="card-title">Mermaid color engine</div>
+                <div class="card-body">
+                  Carefully balanced hot pink, coral, teal, and baby blue on deep blacks — UI tuned
+                  for high legibility with just enough attitude.
+                </div>
+                <div class="card-pill-row">
+                  <span class="card-pill">High contrast</span>
+                  <span class="card-pill">Readable logs</span>
+                  <span class="card-pill">Eye-friendly</span>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-title">Built for serious work</div>
+                <div class="card-body">
+                  This isn't a toy theme. Terminal Pro hooks into your real workflow: shell, editor,
+                  repos, and cloud tooling — with a secure license system under the hood.
+                </div>
+                <div class="card-pill-row">
+                  <span class="card-pill">Stripe + Cloudflare</span>
+                  <span class="card-pill">License verification</span>
+                  <span class="card-pill">Offline friendly</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="feature-grid">
-          <article class="feature-item">
-            <h3>Mermaid palette tuned for focus</h3>
-            <p>
-              We took hot pink, coral, teal, and baby blue and tuned them against deep slate backgrounds
-              until logs, prompts and errors are instantly scannable.
-            </p>
-          </article>
-          <article class="feature-item">
-            <h3>Licensing without the drama</h3>
-            <p>
-              Stripe billing, Cloudflare Workers, and a dedicated license service.
-              No weird launchers, no hidden installers. One key. One app.
-            </p>
-          </article>
-          <article class="feature-item">
-            <h3>Production-ready integrations</h3>
-            <p>
-              The stack under Terminal Pro already runs in production: Cloudflare Pages, Workers,
-              KV, Stripe, and hardened routing. You're not the beta tester.
-            </p>
-          </article>
-          <article class="feature-item">
-            <h3>Future-proof 1.x track</h3>
-            <p>
-              Your license covers the 1.x line with improvements, polish passes and integrations
-              that make your terminal fit your workflow even tighter.
-            </p>
-          </article>
-        </div>
-      </section>
+          <!-- right side "glow" card -->
+          <aside>
+            <div class="pricing-card">
+              <div class="badge-pill" style="margin-bottom: 10px">
+                <span>💾</span> Desktop download — Windows / macOS
+              </div>
+              <div class="pricing-line" style="margin-bottom: 8px">
+                Your purchase is handled through Stripe, secured by Cloudflare, and wired into our
+                licensing service.
+              </div>
+              <ul class="pricing-list">
+                <li>License key delivered instantly after purchase</li>
+                <li>Secure verification against RinaWarp license service</li>
+                <li>Backed by clear EULA & Legal Hub</li>
+              </ul>
+              <button
+                class="btn-primary"
+                style="width: 100%; justify-content: center"
+                onclick="document.getElementById('download').scrollIntoView({ behavior: 'smooth' })"
+              >
+                Go to download section
+              </button>
+            </div>
+          </aside>
+        </section>
 
-      <!-- DOWNLOAD / PRICING -->
-      <section class="section" id="download">
-        <div class="section-header">
-          <div>
-            <div class="section-title">Download Terminal Pro</div>
-            <div class="section-subtitle">
-              One-time license. Own your terminal experience.
+        <!-- FEATURES -->
+        <section class="section" id="features">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Designed for people who live in a terminal</div>
+              <div class="section-subtitle">
+                RinaWarp Terminal Pro focuses on clarity, feedback, and flow.
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="pricing-row">
-          <div class="pricing-card" id="pricing">
-            <div class="badge-pill" style="margin-bottom: 8px;">
-              <span>⚡</span> Terminal Pro License
+          <div class="feature-grid">
+            <article class="feature-item">
+              <h3>Mermaid palette tuned for focus</h3>
+              <p>
+                We took hot pink, coral, teal, and baby blue and tuned them against deep slate
+                backgrounds until logs, prompts and errors are instantly scannable.
+              </p>
+            </article>
+            <article class="feature-item">
+              <h3>Licensing without the drama</h3>
+              <p>
+                Stripe billing, Cloudflare Workers, and a dedicated license service. No weird
+                launchers, no hidden installers. One key. One app.
+              </p>
+            </article>
+            <article class="feature-item">
+              <h3>Production-ready integrations</h3>
+              <p>
+                The stack under Terminal Pro already runs in production: Cloudflare Pages, Workers,
+                KV, Stripe, and hardened routing. You're not the beta tester.
+              </p>
+            </article>
+            <article class="feature-item">
+              <h3>Future-proof 1.x track</h3>
+              <p>
+                Your license covers the 1.x line with improvements, polish passes and integrations
+                that make your terminal fit your workflow even tighter.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- DOWNLOAD / PRICING -->
+        <section class="section" id="download">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Download Terminal Pro</div>
+              <div class="section-subtitle">One-time license. Own your terminal experience.</div>
             </div>
-            <div class="pricing-price">
-              $<span id="tp-price">49</span> <span>USD • one-time</span>
+          </div>
+
+          <div class="pricing-row">
+            <div class="pricing-card" id="pricing">
+              <div class="badge-pill" style="margin-bottom: 8px">
+                <span>⚡</span> Terminal Pro License
+              </div>
+              <div class="pricing-price">
+                $<span id="tp-price">49</span> <span>USD • one-time</span>
+              </div>
+              <div class="pricing-line">
+                Includes Windows and macOS builds. License activation via secure online check.
+              </div>
+              <ul class="pricing-list">
+                <li>Mermaid theme with hot pink, coral, teal, baby blue</li>
+                <li>Optimized for long work sessions and teams</li>
+                <li>Secure updates for the 1.x product line</li>
+              </ul>
+              <a
+                href="/api/checkout?product=terminal-pro"
+                class="btn-primary"
+                style="width: 100%; justify-content: center"
+              >
+                Go to secure checkout
+              </a>
+              <div style="margin-top: 8px; font-size: 11px; color: #9ca3af">
+                Payments processed by Stripe. See
+                <a href="/legal/terms-of-service.html">Terms</a> and
+                <a href="/legal/privacy-policy.html">Privacy</a>.
+              </div>
             </div>
-            <div class="pricing-line">
-              Includes Windows and macOS builds. License activation via secure online check.
-            </div>
-            <ul class="pricing-list">
-              <li>Mermaid theme with hot pink, coral, teal, baby blue</li>
-              <li>Optimized for long work sessions and teams</li>
-              <li>Secure updates for the 1.x product line</li>
-            </ul>
-            <a
-              href="/api/checkout?product=terminal-pro"
-              class="btn-primary"
-              style="width: 100%; justify-content: center;"
+
+            <div
+              class="pricing-card"
+              style="
+                background: radial-gradient(
+                  circle at top left,
+                  rgba(34, 197, 235, 0.35),
+                  rgba(15, 23, 42, 0.98)
+                );
+              "
             >
-              Go to secure checkout
-            </a>
-            <div style="margin-top: 8px; font-size: 11px; color: #9ca3af;">
-              Payments processed by Stripe. See
-              <a href="/legal/terms-of-service.html">Terms</a> and
-              <a href="/legal/privacy-policy.html">Privacy</a>.
+              <div class="badge-pill" style="margin-bottom: 8px">
+                <span>🎬</span> Want visuals too?
+              </div>
+              <div class="pricing-line">
+                Pair Terminal Pro with AI Music Video Creator for a full RinaWarp studio experience
+                — code by day, videos by night.
+              </div>
+              <ul class="pricing-list">
+                <li>Turn tracks into AI-powered music videos</li>
+                <li>Credit system for predictable spend</li>
+                <li>Creator-friendly subscription tiers</li>
+              </ul>
+              <a
+                href="/api/checkout?product=bundle"
+                class="btn-primary"
+                style="width: 100%; justify-content: center; margin-bottom: 8px"
+              >
+                Get the Bundle (Best Deal)
+              </a>
+              <button
+                class="btn-outline"
+                style="width: 100%; justify-content: center"
+                onclick="window.location.href = '/ai-music-video/'"
+              >
+                Explore AI Music Video Creator
+              </button>
             </div>
           </div>
+        </section>
+      </main>
 
-          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(34, 197, 235, 0.35), rgba(15, 23, 42, 0.98));">
-            <div class="badge-pill" style="margin-bottom: 8px;">
-              <span>🎬</span> Want visuals too?
-            </div>
-            <div class="pricing-line">
-              Pair Terminal Pro with AI Music Video Creator for a full RinaWarp studio experience —
-              code by day, videos by night.
-            </div>
-            <ul class="pricing-list">
-              <li>Turn tracks into AI-powered music videos</li>
-              <li>Credit system for predictable spend</li>
-              <li>Creator-friendly subscription tiers</li>
-            </ul>
-            <a href="/api/checkout?product=bundle" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 8px;">
-              Get the Bundle (Best Deal)
-            </a>
-            <button class="btn-outline" style="width: 100%; justify-content: center;" onclick="window.location.href='/ai-music-video/'">
-              Explore AI Music Video Creator
-            </button>
-          </div>
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div>© <span id="year"></span> RinaWarp Technologies LLC • Terminal Pro</div>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
+          <a href="/legal/terms-of-service.html">Terms</a>
+          <a href="/legal/privacy-policy.html">Privacy</a>
         </div>
-      </section>
-    </main>
+      </footer>
+    </div>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div>© <span id="year"></span> RinaWarp Technologies LLC • Terminal Pro</div>
-      <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
-        <a href="/legal/terms-of-service.html">Terms</a>
-        <a href="/legal/privacy-policy.html">Privacy</a>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

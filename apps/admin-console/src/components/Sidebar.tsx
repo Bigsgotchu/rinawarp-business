@@ -1,15 +1,23 @@
-import { NavLink } from "react-router-dom";
-import { LayoutDashboard, CreditCard, Key, Users, LineChart, FileText, Settings } from "lucide-react";
-import { BrandLogo } from "./BrandLogo";
+import { NavLink } from 'react-router-dom';
+import {
+  LayoutDashboard,
+  CreditCard,
+  Key,
+  Users,
+  LineChart,
+  FileText,
+  Settings,
+} from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
 
 const navItems = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/licenses", label: "Licenses", icon: Key },
-  { to: "/customers", label: "Customers", icon: Users },
-  { to: "/billing", label: "Billing", icon: CreditCard },
-  { to: "/analytics", label: "Analytics", icon: LineChart },
-  { to: "/logs", label: "Logs", icon: FileText },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/licenses', label: 'Licenses', icon: Key },
+  { to: '/customers', label: 'Customers', icon: Users },
+  { to: '/billing', label: 'Billing', icon: CreditCard },
+  { to: '/analytics', label: 'Analytics', icon: LineChart },
+  { to: '/logs', label: 'Logs', icon: FileText },
+  { to: '/settings', label: 'Settings', icon: Settings },
 ];
 
 export function Sidebar() {
@@ -28,14 +36,14 @@ export function Sidebar() {
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.to === "/"}
+              end={item.to === '/'}
               className={({ isActive }) =>
                 [
-                  "flex items-center px-3 py-2 rounded-lg text-sm transition-colors",
+                  'flex items-center px-3 py-2 rounded-lg text-sm transition-colors',
                   isActive
-                    ? "bg-neutral-800 text-white"
-                    : "text-neutral-400 hover:text-white hover:bg-neutral-900",
-                ].join(" ")
+                    ? 'bg-neutral-800 text-white'
+                    : 'text-neutral-400 hover:text-white hover:bg-neutral-900',
+                ].join(' ')
               }
             >
               <Icon className="w-4 h-4 mr-2" />

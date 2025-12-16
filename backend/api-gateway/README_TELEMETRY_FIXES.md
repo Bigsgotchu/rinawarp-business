@@ -3,6 +3,7 @@
 ## Quick Start
 
 ### 1. Start the Server
+
 ```bash
 cd backend/api-gateway
 npm install
@@ -10,15 +11,17 @@ npm start
 ```
 
 ### 2. Run Automated Tests
+
 ```bash
 # In another terminal
-cd backend/api-gateway  
+cd backend/api-gateway
 node test-hardened-telemetry.js
 ```
 
 ### 3. Manual Testing
 
 **Test Valid Telemetry:**
+
 ```bash
 curl -X POST http://localhost:3000/api/telemetry \
   -H "Content-Type: application/json" \
@@ -32,6 +35,7 @@ curl -X POST http://localhost:3000/api/telemetry \
 ```
 
 **Test Schema Validation (should fail):**
+
 ```bash
 curl -X POST http://localhost:3000/api/telemetry \
   -H "Content-Type: application/json" \
@@ -39,11 +43,13 @@ curl -X POST http://localhost:3000/api/telemetry \
 ```
 
 **Test Dashboard Auth (should fail with 401):**
+
 ```bash
 curl http://localhost:3000/api/telemetry/summary
 ```
 
 **Test Dashboard Auth (should work with token):**
+
 ```bash
 curl http://localhost:3000/api/telemetry/summary \
   -H "X-Dashboard-Token: test-dashboard-token-12345"
@@ -52,6 +58,7 @@ curl http://localhost:3000/api/telemetry/summary \
 ## Environment Variables
 
 Copy `.env.example` to `.env` and configure:
+
 - `DASHBOARD_TOKEN`: Secret for dashboard access
 - `SLACK_WEBHOOK_URL`: For monitoring alerts
 - `RETENTION_DAYS`: Data retention policy (default: 30)

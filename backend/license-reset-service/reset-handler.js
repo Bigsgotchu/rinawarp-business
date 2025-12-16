@@ -27,7 +27,7 @@ function generateResetToken() {
  */
 export async function createResetToken(licenseKey, deviceId, email = null) {
   const licenseKeyHash = hashData(licenseKey);
-  
+
   // Check if license exists and is quarantined
   const licenseStatus = getLicenseStatus(licenseKey);
   if (!licenseStatus.quarantined && licenseStatus.abuseScore < 5) {
@@ -37,14 +37,14 @@ export async function createResetToken(licenseKey, deviceId, email = null) {
   // Generate token
   const token = generateResetToken();
   const expiresAt = new Date(Date.now() + TOKEN_TTL_MINUTES * 60 * 1000);
-  
+
   // Store token
   resetTokens.set(token, {
     licenseKeyHash,
     deviceHash: hashData(deviceId),
     email: email ? hashData(email) : null,
     expiresAt: expiresAt.toISOString(),
-    used: false
+    used: false,
   });
 
   // Send Slack notification
@@ -53,7 +53,7 @@ export async function createResetToken(licenseKey, deviceId, email = null) {
   return {
     token,
     expiresAt: expiresAt.toISOString(),
-    ttlMinutes: TOKEN_TTL_MINUTES
+    ttlMinutes: TOKEN_TTL_MINUTES,
   };
 }
 
@@ -62,7 +62,7 @@ export async function createResetToken(licenseKey, deviceId, email = null) {
  */
 export async function confirmReset(resetToken, deviceId) {
   const tokenData = resetTokens.get(resetToken);
-  
+
   if (!tokenData) {
     throw new Error('Invalid or expired reset token');
   }
@@ -88,19 +88,19 @@ export async function confirmReset(resetToken, deviceId) {
     // Mark token as used
     tokenData.used = true;
     tokenData.usedAt = new Date().toISOString();
-    
+
     // Execute license reset
     // In a real implementation, you would:
     // 1. Clear device bindings for this license
     // 2. Reset abuse score
     // 3. Remove from quarantine
-    
+
     // For now, we'll simulate by creating a "reset" event and clearing state
     await processLicenseEvent(
       'RESET-LICENSE-' + tokenData.licenseKeyHash, // Special marker
       deviceId,
       '127.0.0.1', // Reset source
-      'valid'
+      'valid',
     );
 
     // Send Slack notification
@@ -112,9 +112,8 @@ export async function confirmReset(resetToken, deviceId) {
     return {
       success: true,
       message: 'License reset completed successfully',
-      licenseKeyHash: tokenData.licenseKeyHash
+      licenseKeyHash: tokenData.licenseKeyHash,
     };
-
   } catch (error) {
     console.error('License reset failed:', error);
     throw new Error('Failed to execute license reset');
@@ -146,9 +145,8 @@ async function sendSlackNotification(type, licenseKeyHash, emailHash) {
     await fetch(SLACK_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: message })
+      body: JSON.stringify({ text: message }),
     });
-
   } catch (error) {
     console.error('Failed to send Slack notification:', error);
   }

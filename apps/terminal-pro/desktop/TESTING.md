@@ -55,6 +55,7 @@ node run-tests.js [options]
 ```
 
 **Options:**
+
 - `-t, --test-type <type>` - Type of test (basic, comprehensive, all)
 - `-d, --debug` - Run in debug mode
 - `-c, --coverage` - Generate coverage report
@@ -64,11 +65,13 @@ node run-tests.js [options]
 ### Examples
 
 Run all tests:
+
 ```bash
 node run-tests.js -t all
 ```
 
 Run comprehensive tests with debug:
+
 ```bash
 node run-tests.js -t comprehensive -d
 ```
@@ -95,7 +98,7 @@ module.exports = {
     headless: true,
     showDevTools: false,
     timeout: 30000,
-    debug: false
+    debug: false,
   },
   // ... other configuration options
 };
@@ -106,12 +109,14 @@ module.exports = {
 The test suite covers the following areas:
 
 ### 1. Main Application Functionality
+
 - Application initialization
 - UI element presence
 - Configuration accessibility
 - Error handling
 
 ### 2. Terminal Creation and Management
+
 - Terminal creation with different shells
 - Terminal list management
 - Terminal switching
@@ -119,12 +124,14 @@ The test suite covers the following areas:
 - Terminal closing
 
 ### 3. License Gate Functionality
+
 - License gate display logic
 - License verification API
 - License storage and retrieval
 - License expiration handling
 
 ### 4. Auto-Updater Functionality
+
 - Update checking
 - Update event handling
 - Update banner display
@@ -132,6 +139,7 @@ The test suite covers the following areas:
 - Update installation
 
 ### 5. AI Agent Integration
+
 - Agent initialization
 - Agent health checking
 - AI request routing
@@ -139,6 +147,7 @@ The test suite covers the following areas:
 - Debug logging
 
 ### 6. Voice Functionality
+
 - Voice controller initialization
 - Voice UI elements
 - Voice event handling
@@ -146,18 +155,21 @@ The test suite covers the following areas:
 - Text-to-speech response
 
 ### 7. Command Palette
+
 - Command palette initialization
 - Command search functionality
 - Command execution
 - Keyboard shortcuts
 
 ### 8. Update Banner
+
 - Banner initialization
 - Banner display logic
 - Banner dismissal
 - Changelog display
 
 ### 9. Agent Status Indicator
+
 - Status indicator presence
 - Status update functionality
 - Auto-ping mechanism
@@ -201,6 +213,7 @@ node run-tests.js -t comprehensive -d
 ### Debug Output
 
 Debug mode provides:
+
 - Detailed console logging
 - Extended timeouts
 - Additional error information
@@ -219,16 +232,19 @@ Debug mode provides:
 ### Common Issues
 
 **Tests fail to start:**
+
 - Ensure all dependencies are installed (`npm install`)
 - Check Electron is properly installed
 - Verify test configuration is correct
 
 **Tests timeout:**
+
 - Increase timeout in `test-config.js`
 - Run in debug mode for more detailed output
 - Check for slow system resources
 
 **UI elements not found:**
+
 - Ensure application is fully loaded before testing
 - Check element selectors are correct
 - Verify application is in expected state
@@ -245,6 +261,7 @@ node run-tests.js -t all --reporter json --output test-results
 ## 🔄 Test Maintenance
 
 Regularly update tests to:
+
 - Cover new features
 - Adapt to UI changes
 - Improve test reliability

@@ -19,11 +19,14 @@ const AIMemory = ({ teamId }) => {
     const fetchMemories = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/team/search-memory?teamId=${teamId}&query=${encodeURIComponent(searchQuery)}&type=${memoryTypeFilter}`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        });
+        const response = await fetch(
+          `/api/team/search-memory?teamId=${teamId}&query=${encodeURIComponent(searchQuery)}&type=${memoryTypeFilter}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          },
+        );
 
         if (!response.ok) {
           throw new Error('Failed to fetch AI memories');
@@ -45,11 +48,11 @@ const AIMemory = ({ teamId }) => {
     return () => clearTimeout(timer);
   }, [teamId, searchQuery, memoryTypeFilter, authToken]);
 
-  const filteredMemories = memories.filter(memory =>
-    memory.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (memory.tags && memory.tags.some(tag =>
-      tag.toLowerCase().includes(searchQuery.toLowerCase())
-    ))
+  const filteredMemories = memories.filter(
+    (memory) =>
+      memory.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (memory.tags &&
+        memory.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))),
   );
 
   const formatDate = (timestamp) => {
@@ -136,24 +139,30 @@ const AIMemory = ({ teamId }) => {
                   <div className="flex items-center space-x-2">
                     <FaBrain className="text-mermid-600" />
                     <span className="font-medium text-gray-900">
-                      {memory.content.split('\n')[0].substring(0, 50)}{memory.content.length > 50 ? '...' : ''}
+                      {memory.content.split('\n')[0].substring(0, 50)}
+                      {memory.content.length > 50 ? '...' : ''}
                     </span>
                   </div>
-                  <span className="text-xs text-gray-500">
-                    {formatDate(memory.created_at)}
-                  </span>
+                  <span className="text-xs text-gray-500">{formatDate(memory.created_at)}</span>
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-2">
-                  {memory.tags && memory.tags.map((tag, index) => (
-                    <span key={index} className="px-2 py-1 bg-mermid-100 text-mermid-800 text-xs rounded-full">
-                      {tag}
-                    </span>
-                  ))}
+                  {memory.tags &&
+                    memory.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 bg-mermid-100 text-mermid-800 text-xs rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                 </div>
 
                 <div className="text-sm text-gray-600">
-                  <p>{memory.content.substring(0, 100)}{memory.content.length > 100 ? '...' : ''}</p>
+                  <p>
+                    {memory.content.substring(0, 100)}
+                    {memory.content.length > 100 ? '...' : ''}
+                  </p>
                 </div>
               </div>
             ))
@@ -205,11 +214,15 @@ const AIMemory = ({ teamId }) => {
                 <div>
                   <p className="text-sm text-gray-500">Tags</p>
                   <div className="flex flex-wrap gap-2">
-                    {selectedMemory.tags && selectedMemory.tags.map((tag, index) => (
-                      <span key={index} className="px-2 py-1 bg-mermid-100 text-mermid-800 text-xs rounded-full">
-                        {tag}
-                      </span>
-                    ))}
+                    {selectedMemory.tags &&
+                      selectedMemory.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-mermid-100 text-mermid-800 text-xs rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                   </div>
                 </div>
               </div>

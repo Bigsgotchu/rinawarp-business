@@ -12,33 +12,25 @@ export async function onRequestPost(context) {
     .prepare(
       `INSERT INTO shared_sessions
        (id, team_id, host_user_id, created_at, status, title)
-       VALUES (?, ?, ?, ?, 'active', ?)`
+       VALUES (?, ?, ?, ?, 'active', ?)`,
     )
-    .bind(
-      sessionId,
-      teamId || null,
-      userId || null,
-      now,
-      body.title || "Live Shell Session"
-    )
+    .bind(sessionId, teamId || null, userId || null, now, body.title || 'Live Shell Session')
     .run()
     .catch(() => {});
 
-  const wsBase =
-    env.RINAWARP_LIVE_WS_URL ||
-    "wss://api.rinawarptech.com/ws/shared-terminal";
+  const wsBase = env.RINAWARP_LIVE_WS_URL || 'wss://api.rinawarptech.com/ws/shared-terminal';
 
   return new Response(
     JSON.stringify({
       ok: true,
       sessionId,
       wsUrl: `${wsBase}/${sessionId}`,
-      role: "host",
+      role: 'host',
       meta: { tabId, shell, cwd },
     }),
     {
       status: 200,
-      headers: { "Content-Type": "application/json" },
-    }
+      headers: { 'Content-Type': 'application/json' },
+    },
   );
 }

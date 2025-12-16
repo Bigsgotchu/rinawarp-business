@@ -101,7 +101,7 @@ class SilentAIIntegration {
 
     if (command.includes('rm -rf') && command.includes('node_modules')) {
       this.showWarning(
-        'Be careful with node_modules deletion - ensure you\'re in the right directory'
+        "Be careful with node_modules deletion - ensure you're in the right directory"
       );
     }
   }
@@ -206,18 +206,18 @@ class SilentAIIntegration {
 
     issues.forEach((issue) => {
       switch (issue.type) {
-      case 'fileCount':
-        fixes.push(...this.autoFixCommands.cleanup);
-        break;
-      case 'deployScripts':
-        fixes.push(...this.autoFixCommands.consolidate);
-        break;
-      case 'localhostRefs':
-        fixes.push(...this.autoFixCommands.configuration);
-        break;
-      case 'nodeModules':
-        fixes.push(...this.autoFixCommands.dependencies);
-        break;
+        case 'fileCount':
+          fixes.push(...this.autoFixCommands.cleanup);
+          break;
+        case 'deployScripts':
+          fixes.push(...this.autoFixCommands.consolidate);
+          break;
+        case 'localhostRefs':
+          fixes.push(...this.autoFixCommands.configuration);
+          break;
+        case 'nodeModules':
+          fixes.push(...this.autoFixCommands.dependencies);
+          break;
       }
     });
 

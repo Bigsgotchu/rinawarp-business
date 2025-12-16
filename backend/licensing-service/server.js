@@ -34,10 +34,10 @@ const authenticateToken = (req, res, next) => {
 
 // Optional auth middleware for license check
 function optionalAuth(req, res, next) {
-  const auth = req.headers.authorization || "";
-  if (!auth.startsWith("Bearer ")) return next(); // allow anonymous for now
+  const auth = req.headers.authorization || '';
+  if (!auth.startsWith('Bearer ')) return next(); // allow anonymous for now
 
-  const token = auth.slice("Bearer ".length);
+  const token = auth.slice('Bearer '.length);
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret');
     req.user = decoded;
@@ -111,7 +111,7 @@ app.get('/health', (req, res) => {
 });
 
 // License check endpoint
-app.post("/license/check", optionalAuth, express.json(), (req, res) => {
+app.post('/license/check', optionalAuth, express.json(), (req, res) => {
   const { licenseKey } = req.body || {};
 
   if (!licenseKey) {
@@ -120,61 +120,61 @@ app.post("/license/check", optionalAuth, express.json(), (req, res) => {
 
   // 🔐 TODO: replace this stub with real DB / Supabase lookup
   // For now, simple pattern-based logic:
-  let status = "invalid";
+  let status = 'invalid';
   let plan = null;
   let features = {
     premiumMode: false,
-    maxDailyMessages: 0
+    maxDailyMessages: 0,
   };
 
-  if (licenseKey.startsWith("DEV-LIFETIME")) {
-    status = "valid";
-    plan = "lifetime";
+  if (licenseKey.startsWith('DEV-LIFETIME')) {
+    status = 'valid';
+    plan = 'lifetime';
     features = {
       premiumMode: true,
-      maxDailyMessages: 2000
+      maxDailyMessages: 2000,
     };
-  } else if (licenseKey.startsWith("DEV-PRO")) {
-    status = "valid";
-    plan = "pro";
+  } else if (licenseKey.startsWith('DEV-PRO')) {
+    status = 'valid';
+    plan = 'pro';
     features = {
       premiumMode: true,
-      maxDailyMessages: 999
+      maxDailyMessages: 999,
     };
-  } else if (licenseKey.startsWith("DEV-CREATOR")) {
-    status = "valid";
-    plan = "creator";
+  } else if (licenseKey.startsWith('DEV-CREATOR')) {
+    status = 'valid';
+    plan = 'creator';
     features = {
       premiumMode: true,
-      maxDailyMessages: 500
+      maxDailyMessages: 500,
     };
-  } else if (licenseKey.startsWith("DEV-STARTER")) {
-    status = "valid";
-    plan = "starter";
+  } else if (licenseKey.startsWith('DEV-STARTER')) {
+    status = 'valid';
+    plan = 'starter';
     features = {
       premiumMode: true,
-      maxDailyMessages: 150
+      maxDailyMessages: 150,
     };
-  } else if (licenseKey.startsWith("DEV-BASIC")) {
-    status = "valid";
-    plan = "basic";
+  } else if (licenseKey.startsWith('DEV-BASIC')) {
+    status = 'valid';
+    plan = 'basic';
     features = {
       premiumMode: false,
-      maxDailyMessages: 50
+      maxDailyMessages: 50,
     };
-  } else if (licenseKey.startsWith("DEV-FREE")) {
-    status = "valid";
-    plan = "free";
+  } else if (licenseKey.startsWith('DEV-FREE')) {
+    status = 'valid';
+    plan = 'free';
     features = {
       premiumMode: false,
-      maxDailyMessages: 20
+      maxDailyMessages: 20,
     };
   }
 
   return res.json({
     status,
     plan,
-    features
+    features,
   });
 });
 

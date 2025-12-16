@@ -14,28 +14,27 @@ This document outlines the fixes implemented for the Stripe checkout flow based 
 ### 1. Frontend Checkout (`apps/website/public/checkout.js`)
 
 **Changes Made:**
+
 - Replaced hardcoded price IDs with proper plan key mapping
 - Implemented Stripe.js integration with `redirectToCheckout`
 - Added proper error handling and loading states
 - Used data attributes (`data-checkout-button`, `data-plan`) for buttons
 
 **Plan Key Mapping:**
+
 ```javascript
 const PLAN_KEYS = {
-  student: "terminal_pro_starter",
-  professional: "terminal_pro_creator", 
-  pro: "terminal_pro_pro",
-  enterprise: "terminal_pro_enterprise"
+  student: 'terminal_pro_starter',
+  professional: 'terminal_pro_creator',
+  pro: 'terminal_pro_pro',
+  enterprise: 'terminal_pro_enterprise',
 };
 ```
 
 **Button Configuration:**
+
 ```html
-<button 
-  class="btn btn-primary" 
-  data-checkout-button
-  data-plan="student"
->
+<button class="btn btn-primary" data-checkout-button data-plan="student">
   Get Starter Plan — $39
 </button>
 ```
@@ -43,12 +42,14 @@ const PLAN_KEYS = {
 ### 2. Backend Checkout API (`apps/website/functions/api/checkout-v2.js`)
 
 **Changes Made:**
+
 - Now uses `RINA_PRICE_MAP` environment variable instead of hardcoded prices
 - Added fallback price mapping if env var is not set
 - Returns `sessionId` instead of `url` for Stripe.js compatibility
 - Enhanced error messages to show available plans
 
 **API Response:**
+
 ```javascript
 // Returns session ID for Stripe.js
 { "sessionId": "cs_xxx" }
@@ -57,16 +58,18 @@ const PLAN_KEYS = {
 ### 3. Pricing Page (`apps/website/public/pricing.html`)
 
 **Changes Made:**
+
 - Added proper Stripe.js script inclusion
 - Configured publishable key via global variable
 - Created proper pricing cards with checkout buttons
 - Added FAQ section
 
 **Stripe Configuration:**
+
 ```html
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  window.RINA_STRIPE_PUBLISHABLE_KEY = "pk_live_REPLACE_WITH_YOUR_PUBLISHABLE_KEY";
+  window.RINA_STRIPE_PUBLISHABLE_KEY = 'pk_live_REPLACE_WITH_YOUR_PUBLISHABLE_KEY';
 </script>
 <script src="/checkout.js" defer></script>
 ```
@@ -74,6 +77,7 @@ const PLAN_KEYS = {
 ### 4. Analytics Configuration (`apps/website/public/analytics-config.js`)
 
 **Changes Made:**
+
 - Fixed Google Analytics 4 implementation
 - Removed any references to problematic `/qzje/` script
 - Uses proper GA4 CDN URL
@@ -89,10 +93,11 @@ In Cloudflare Pages → Settings → Variables & Secrets, set:
    - Your Stripe secret key (starts with `sk_live_` or `sk_test_`)
 
 2. **RINA_PRICE_MAP**
+
    ```json
    {
      "terminal_pro_starter": "price_xxx",
-     "terminal_pro_creator": "price_yyy", 
+     "terminal_pro_creator": "price_yyy",
      "terminal_pro_pro": "price_zzz",
      "terminal_pro_enterprise": "price_aaa"
    }
@@ -114,10 +119,12 @@ In Cloudflare Pages → Settings → Variables & Secrets, set:
 ### 1. Update Webhook Endpoints
 
 **Remove these old endpoints:**
+
 - `https://api.rinawarptech.com/api/stripe/webhook`
 - `https://yourdomain.com/webhook/stripe`
 
 **Add this production endpoint:**
+
 - **URL:** `https://rinawarptech.com/api/stripe/webhook`
 - **Events:** `checkout.session.completed`, `invoice.paid`, `customer.subscription.deleted`
 
@@ -128,6 +135,7 @@ After adding the endpoint, Stripe will show a signing secret (starts with `whsec
 ## Deployment Steps
 
 1. **Update Environment Variables in Cloudflare Pages:**
+
    ```bash
    # Set these in Cloudflare Pages Dashboard → Settings → Variables & Secrets
    STRIPE_SECRET_KEY=sk_live_xxx
@@ -140,6 +148,7 @@ After adding the endpoint, Stripe will show a signing secret (starts with `whsec
    - Replace `pk_live_REPLACE_WITH_YOUR_PUBLISHABLE_KEY` in `pricing.html` with your actual publishable key
 
 3. **Deploy to Cloudflare Pages:**
+
    ```bash
    cd apps/website
    npm run build

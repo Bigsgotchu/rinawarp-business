@@ -1,25 +1,22 @@
-import React from "react";
+import React from 'react';
 
-type BrandVariant = "terminal" | "aimvc" | "main";
+type BrandVariant = 'terminal' | 'aimvc' | 'main';
 
 interface BrandLogoProps {
   variant?: BrandVariant;
   className?: string;
 }
 
-export const BrandLogo: React.FC<BrandLogoProps> = ({
-  variant = "main",
-  className = "",
-}) => {
-  let src = "/branding/Lumina Flow brand.png";
-  let alt = "RinaWarp Technologies";
+export const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'main', className = '' }) => {
+  let src = '/branding/Lumina Flow brand.png';
+  let alt = 'RinaWarp Technologies';
 
-  if (variant === "terminal") {
-    src = "/branding/Lumina Edge brand.png";
-    alt = "RinaWarp Terminal Pro";
-  } else if (variant === "aimvc") {
-    src = "/branding/Lumina Flow brand.png";
-    alt = "RinaWarp AI Music Video Creator";
+  if (variant === 'terminal') {
+    src = '/branding/Lumina Edge brand.png';
+    alt = 'RinaWarp Terminal Pro';
+  } else if (variant === 'aimvc') {
+    src = '/branding/Lumina Flow brand.png';
+    alt = 'RinaWarp AI Music Video Creator';
   }
 
   return (

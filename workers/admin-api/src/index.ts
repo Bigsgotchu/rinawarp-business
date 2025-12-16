@@ -1,4 +1,4 @@
-import { handleLicenseValidate } from "./license-validate";
+import { handleLicenseValidate } from './license-validate';
 export interface Env {
   ADMIN_API_SECRET: string;
   BILLING_KV: KVNamespace;
@@ -105,7 +105,6 @@ export default {
         });
 
         return jsonResponse({ data: filtered.slice(0, limit) });
-
       } else if (url.pathname === '/api/admin/licenses' && request.method === 'POST') {
         const body = await request.json();
         const newLicense: License = {
@@ -122,17 +121,14 @@ export default {
 
         // In a real implementation, you would store this in your database or KV store
         return jsonResponse({ data: newLicense }, 201);
-
       } else if (url.pathname === '/api/admin/licenses' && request.method === 'PATCH') {
         const body = await request.json();
         // In a real implementation, you would update the license in your database or KV store
         return jsonResponse({ data: { ...body, status: 'updated' } });
-
       } else if (url.pathname === '/api/admin/licenses' && request.method === 'DELETE') {
         const body = await request.json();
         // In a real implementation, you would delete the license from your database or KV store
         return jsonResponse({ success: true });
-
       } else if (url.pathname === '/api/admin/pricing' && request.method === 'GET') {
         // In a real implementation, you would fetch this from your database or KV store
         const mockPricing: PricingConfig = {
@@ -180,12 +176,10 @@ export default {
         };
 
         return jsonResponse({ config: mockPricing });
-
       } else if (url.pathname === '/api/admin/pricing' && request.method === 'PUT') {
         const body = await request.json();
         // In a real implementation, you would update the pricing in your database or KV store
         return jsonResponse({ config: body.config });
-
       } else if (url.pathname === '/api/admin/billing-summary' && request.method === 'GET') {
         // Mock billing summary
         const billingSummary = {
@@ -204,9 +198,8 @@ export default {
         };
 
         return jsonResponse(billingSummary);
-      } else if (url.pathname === "/api/admin/licenses/validate" && request.method === "POST") {
+      } else if (url.pathname === '/api/admin/licenses/validate' && request.method === 'POST') {
         return handleLicenseValidate(request, env);
-
       }
 
       return jsonResponse({ error: 'Not found' }, 404);

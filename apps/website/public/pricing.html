@@ -1,682 +1,718 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>RinaWarp Pricing — Simple, transparent pricing for local-first terminal workflows</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Simple, transparent pricing. Start free. Upgrade only when Rina saves you real time. Local-first, no ads, no telemetry, no data resale." />
-  <link rel="stylesheet" href="/css/brand.css" />
-  <link rel="stylesheet" href="/styles.css" />
-  
-  <!-- Stripe.js -->
-  <script src="https://js.stripe.com/v3/"></script>
-  
-  <!-- Set Stripe publishable key -->
-  <script>
-    window.RINA_STRIPE_PUBLISHABLE_KEY = "pk_live_REPLACE_WITH_YOUR_PUBLISHABLE_KEY";
-  </script>
-  
-  <!-- Load checkout script -->
-  <script src="/checkout.js" defer></script>
-  
-  <style>
-    .rw-pricing {
-      padding: 60px 20px;
-    }
-    
-    .rw-pricing__header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-    
-    .rw-pricing__subhead {
-      font-size: 1.25rem;
-      color: #64748b;
-      max-width: 600px;
-      margin: 20px auto;
-    }
-    
-    .rw-pricing__note {
-      display: block;
-      font-size: 0.875rem;
-      color: #94a3b8;
-      margin-top: 8px;
-    }
-    
-    .rw-pricing__badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 32px;
-    }
-    
-    .rw-badge {
-      background: #f1f5f9;
-      color: #475569;
-      padding: 6px 12px;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-    }
-    
-    .rw-plans {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 32px;
-      margin-bottom: 80px;
-    }
-    
-    .rw-plan {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 32px 24px;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-    
-    .rw-plan:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .rw-plan--featured {
-      border: 2px solid #6366f1;
-      transform: scale(1.05);
-      box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
-    }
-    
-    .rw-plan__ribbon {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: white;
-      padding: 4px 16px;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-    
-    .rw-plan__top {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    
-    .rw-plan__top h2 {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #1e293b;
-      margin-bottom: 12px;
-    }
-    
-    .rw-plan__price {
-      margin-bottom: 16px;
-    }
-    
-    .rw-plan__amount {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #1e293b;
-    }
-    
-    .rw-plan__term {
-      color: #64748b;
-      margin-left: 8px;
-    }
-    
-    .rw-plan__desc {
-      color: #64748b;
-      line-height: 1.6;
-    }
-    
-    .rw-plan__features {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px 0;
-    }
-    
-    .rw-plan__features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 12px;
-      color: #374151;
-      font-size: 0.875rem;
-    }
-    
-    .rw-plan__features li::before {
-      content: '✓';
-      color: #10b981;
-      font-weight: bold;
-      margin-top: 2px;
-    }
-    
-    .rw-plan__cta {
-      text-align: center;
-    }
-    
-    .rw-btn {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-    }
-    
-    .rw-btn--primary {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: white;
-    }
-    
-    .rw-btn--primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-    }
-    
-    .rw-btn--secondary {
-      background: #f1f5f9;
-      color: #1e293b;
-    }
-    
-    .rw-btn--secondary:hover {
-      background: #e2e8f0;
-    }
-    
-    .rw-plan__fineprint {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      margin-top: 12px;
-      text-align: center;
-    }
-    
-    .rw-lifetime {
-      margin-top: 80px;
-      padding-top: 60px;
-      border-top: 1px solid #e2e8f0;
-    }
-    
-    .rw-lifetime h2 {
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      color: #1e293b;
-      margin-bottom: 16px;
-    }
-    
-    .rw-lifetime__subhead {
-      font-size: 1.125rem;
-      color: #64748b;
-      text-align: center;
-      max-width: 600px;
-      margin: 0 auto 48px;
-    }
-    
-    .rw-callout {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 48px;
-    }
-    
-    .rw-callout__fineprint {
-      font-size: 0.875rem;
-      color: #64748b;
-      margin-top: 12px;
-      margin-bottom: 0;
-    }
-    
-    .rw-plans--lifetime {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-    
-    .rw-faq {
-      max-width: 800px;
-      margin: 80px auto 0;
-    }
-    
-    .rw-faq h2 {
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      color: #1e293b;
-      margin-bottom: 48px;
-    }
-    
-    .rw-faq details {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      overflow: hidden;
-    }
-    
-    .rw-faq summary {
-      padding: 20px 24px;
-      font-weight: 600;
-      color: #1e293b;
-      cursor: pointer;
-      list-style: none;
-    }
-    
-    .rw-faq summary::-webkit-details-marker {
-      display: none;
-    }
-    
-    .rw-faq details[open] summary {
-      border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .rw-faq details p {
-      padding: 20px 24px;
-      color: #64748b;
-      margin: 0;
-      line-height: 1.6;
-    }
-    
-    .rw-pricing__footer {
-      text-align: center;
-      margin-top: 80px;
-      padding-top: 60px;
-      border-top: 1px solid #e2e8f0;
-    }
-    
-    .rw-pricing__footer h2 {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #1e293b;
-      margin-bottom: 16px;
-    }
-    
-    .rw-pricing__footer p {
-      color: #64748b;
-      margin-bottom: 32px;
-    }
-    
-    .rw-pricing__footer-cta {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      align-items: center;
-    }
-    
-    @media (min-width: 640px) {
-      .rw-pricing__footer-cta {
-        flex-direction: row;
-        justify-content: center;
+  <head>
+    <meta charset="UTF-8" />
+    <title>RinaWarp Pricing — Simple, transparent pricing for local-first terminal workflows</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Simple, transparent pricing. Start free. Upgrade only when Rina saves you real time. Local-first, no ads, no telemetry, no data resale."
+    />
+    <link rel="stylesheet" href="/css/brand.css" />
+    <link rel="stylesheet" href="/styles.css" />
+
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- Set Stripe publishable key -->
+    <script>
+      window.RINA_STRIPE_PUBLISHABLE_KEY = 'pk_live_REPLACE_WITH_YOUR_PUBLISHABLE_KEY';
+    </script>
+
+    <!-- Load checkout script -->
+    <script src="/checkout.js" defer></script>
+
+    <style>
+      .rw-pricing {
+        padding: 60px 20px;
       }
-    }
-    
-    .rw-pricing__legal {
-      font-size: 0.875rem;
-      color: #94a3b8;
-      margin-top: 16px;
-    }
-    
-    @media (max-width: 768px) {
-      .rw-plans {
-        grid-template-columns: 1fr;
+
+      .rw-pricing__header {
+        text-align: center;
+        margin-bottom: 60px;
       }
-      
-      .rw-plan--featured {
-        transform: none;
+
+      .rw-pricing__subhead {
+        font-size: 1.25rem;
+        color: #64748b;
+        max-width: 600px;
+        margin: 20px auto;
       }
-      
+
+      .rw-pricing__note {
+        display: block;
+        font-size: 0.875rem;
+        color: #94a3b8;
+        margin-top: 8px;
+      }
+
       .rw-pricing__badges {
-        justify-content: flex-start;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 32px;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="main-shell">
-    <!-- NAV -->
-    <header class="nav">
-      <div class="nav-left">
-        <div class="nav-logo">
-          <img src="/branding/Lumina Flow brand.png" alt="RinaWarp logo" />
-        </div>
-        <div class="nav-title">
-          RinaWarp Technologies
-          <span>Terminal • AI • Creators</span>
-        </div>
-      </div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="#products">Products</a>
-        <a href="#pricing" class="active">Pricing</a>
-        <a href="/legal/">Legal</a>
-        <a href="https://master.rinawarptech.pages.dev/admin" target="_blank" rel="noreferrer">Admin</a>
-      </nav>
-    </header>
 
-    <!-- PRICING PAGE -->
-    <section class="rw-pricing">
-      <header class="rw-pricing__header">
-        <h1>Simple, transparent pricing.</h1>
-        <p class="rw-pricing__subhead">
-          Start free. Upgrade only when Rina saves you real time.
-          <span class="rw-pricing__note">No ads. No telemetry. No data resale.</span>
-        </p>
+      .rw-badge {
+        background: #f1f5f9;
+        color: #475569;
+        padding: 6px 12px;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+      }
 
-        <div class="rw-pricing__badges" aria-label="Trust badges">
-          <span class="rw-badge">Local-first</span>
-          <span class="rw-badge">Offline-capable</span>
-          <span class="rw-badge">Stripe checkout</span>
-          <span class="rw-badge">Cancel anytime</span>
+      .rw-plans {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 32px;
+        margin-bottom: 80px;
+      }
+
+      .rw-plan {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 32px 24px;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .rw-plan:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      .rw-plan--featured {
+        border: 2px solid #6366f1;
+        transform: scale(1.05);
+        box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
+      }
+
+      .rw-plan__ribbon {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        padding: 4px 16px;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .rw-plan__top {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .rw-plan__top h2 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #1e293b;
+        margin-bottom: 12px;
+      }
+
+      .rw-plan__price {
+        margin-bottom: 16px;
+      }
+
+      .rw-plan__amount {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #1e293b;
+      }
+
+      .rw-plan__term {
+        color: #64748b;
+        margin-left: 8px;
+      }
+
+      .rw-plan__desc {
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      .rw-plan__features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px 0;
+      }
+
+      .rw-plan__features li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #374151;
+        font-size: 0.875rem;
+      }
+
+      .rw-plan__features li::before {
+        content: '✓';
+        color: #10b981;
+        font-weight: bold;
+        margin-top: 2px;
+      }
+
+      .rw-plan__cta {
+        text-align: center;
+      }
+
+      .rw-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .rw-btn--primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+      }
+
+      .rw-btn--primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+      }
+
+      .rw-btn--secondary {
+        background: #f1f5f9;
+        color: #1e293b;
+      }
+
+      .rw-btn--secondary:hover {
+        background: #e2e8f0;
+      }
+
+      .rw-plan__fineprint {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin-top: 12px;
+        text-align: center;
+      }
+
+      .rw-lifetime {
+        margin-top: 80px;
+        padding-top: 60px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .rw-lifetime h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        color: #1e293b;
+        margin-bottom: 16px;
+      }
+
+      .rw-lifetime__subhead {
+        font-size: 1.125rem;
+        color: #64748b;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 48px;
+      }
+
+      .rw-callout {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 24px;
+        margin-bottom: 48px;
+      }
+
+      .rw-callout__fineprint {
+        font-size: 0.875rem;
+        color: #64748b;
+        margin-top: 12px;
+        margin-bottom: 0;
+      }
+
+      .rw-plans--lifetime {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+
+      .rw-faq {
+        max-width: 800px;
+        margin: 80px auto 0;
+      }
+
+      .rw-faq h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        color: #1e293b;
+        margin-bottom: 48px;
+      }
+
+      .rw-faq details {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+
+      .rw-faq summary {
+        padding: 20px 24px;
+        font-weight: 600;
+        color: #1e293b;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .rw-faq summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .rw-faq details[open] summary {
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .rw-faq details p {
+        padding: 20px 24px;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .rw-pricing__footer {
+        text-align: center;
+        margin-top: 80px;
+        padding-top: 60px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .rw-pricing__footer h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1e293b;
+        margin-bottom: 16px;
+      }
+
+      .rw-pricing__footer p {
+        color: #64748b;
+        margin-bottom: 32px;
+      }
+
+      .rw-pricing__footer-cta {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+      }
+
+      @media (min-width: 640px) {
+        .rw-pricing__footer-cta {
+          flex-direction: row;
+          justify-content: center;
+        }
+      }
+
+      .rw-pricing__legal {
+        font-size: 0.875rem;
+        color: #94a3b8;
+        margin-top: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .rw-plans {
+          grid-template-columns: 1fr;
+        }
+
+        .rw-plan--featured {
+          transform: none;
+        }
+
+        .rw-pricing__badges {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-shell">
+      <!-- NAV -->
+      <header class="nav">
+        <div class="nav-left">
+          <div class="nav-logo">
+            <img src="/branding/Lumina Flow brand.png" alt="RinaWarp logo" />
+          </div>
+          <div class="nav-title">
+            RinaWarp Technologies
+            <span>Terminal • AI • Creators</span>
+          </div>
         </div>
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="#products">Products</a>
+          <a href="#pricing" class="active">Pricing</a>
+          <a href="/legal/">Legal</a>
+          <a href="https://master.rinawarptech.pages.dev/admin" target="_blank" rel="noreferrer"
+            >Admin</a
+          >
+        </nav>
       </header>
 
-      <!-- PLAN GRID -->
-      <div class="rw-plans" role="list">
-
-        <!-- FREE -->
-        <article class="rw-plan" role="listitem" data-plan="free">
-          <div class="rw-plan__top">
-            <h2>Free</h2>
-            <div class="rw-plan__price">
-              <span class="rw-plan__amount">$0</span>
-              <span class="rw-plan__term">forever</span>
-            </div>
-            <p class="rw-plan__desc">Explore RinaWarp and your local terminal workflow — no card required.</p>
-          </div>
-
-          <ul class="rw-plan__features">
-            <li>Local terminal sandbox (daily limits)</li>
-            <li>Daily command quota (anti-abuse)</li>
-            <li>Safety-restricted execution mode</li>
-            <li>No AI agent features</li>
-            <li>No voice</li>
-            <li>No premium modules</li>
-          </ul>
-
-          <div class="rw-plan__cta">
-            <a class="rw-btn rw-btn--secondary" href="/download">Download</a>
-            <p class="rw-plan__fineprint">Free is designed to be useful — not frustrating.</p>
-          </div>
-        </article>
-
-        <!-- BASIC -->
-        <article class="rw-plan" role="listitem" data-plan="basic">
-          <div class="rw-plan__top">
-            <h2>Basic</h2>
-            <div class="rw-plan__price">
-              <span class="rw-plan__amount">$9.99</span>
-              <span class="rw-plan__term">/ month</span>
-            </div>
-            <p class="rw-plan__desc">For developers who want helpful guidance without full automation.</p>
-          </div>
-
-          <ul class="rw-plan__features">
-            <li>Unlimited local terminal usage</li>
-            <li>Entry-level Rina Agent assistance</li>
-            <li>Light productivity helpers</li>
-            <li>Excludes advanced automations & premium modules</li>
-            <li>No real-time voice</li>
-          </ul>
-
-          <div class="rw-plan__cta">
-            <button class="rw-btn rw-btn--primary" data-checkout="basic">Choose Basic</button>
-            <p class="rw-plan__fineprint">Most users land here after a week of daily use.</p>
-          </div>
-        </article>
-
-        <!-- STARTER (RECOMMENDED HIGHLIGHT) -->
-        <article class="rw-plan rw-plan--featured" role="listitem" data-plan="starter" aria-label="Recommended plan">
-          <div class="rw-plan__ribbon" aria-hidden="true">Recommended</div>
-
-          <div class="rw-plan__top">
-            <h2>Starter</h2>
-            <div class="rw-plan__price">
-              <span class="rw-plan__amount">$29</span>
-              <span class="rw-plan__term">/ month</span>
-            </div>
-            <p class="rw-plan__desc">Unlock Rina's core agent workflow for daily professional terminal work.</p>
-          </div>
-
-          <ul class="rw-plan__features">
-            <li>Advanced agent suggestions & higher limits</li>
-            <li>Automation basics (repeatable workflows)</li>
-            <li>Expanded tooling set</li>
-            <li>Upgrade/downgrade anytime</li>
-          </ul>
-
-          <div class="rw-plan__cta">
-            <button class="rw-btn rw-btn--primary" data-checkout="starter">Choose Starter</button>
-            <p class="rw-plan__fineprint">Best for consistent daily usage.</p>
-          </div>
-        </article>
-
-        <!-- CREATOR -->
-        <article class="rw-plan" role="listitem" data-plan="creator">
-          <div class="rw-plan__top">
-            <h2>Creator</h2>
-            <div class="rw-plan__price">
-              <span class="rw-plan__amount">$69</span>
-              <span class="rw-plan__term">/ month</span>
-            </div>
-            <p class="rw-plan__desc">For builders who live in the terminal and want faster iteration.</p>
-          </div>
-
-          <ul class="rw-plan__features">
-            <li>Everything in Starter</li>
-            <li>Voice-enabled command execution</li>
-            <li>Priority agent execution & higher limits</li>
-            <li>Expanded modules & integrations</li>
-          </ul>
-
-          <div class="rw-plan__cta">
-            <button class="rw-btn rw-btn--primary" data-checkout="creator">Choose Creator</button>
-            <p class="rw-plan__fineprint">Best value for heavy users.</p>
-          </div>
-        </article>
-
-        <!-- PRO -->
-        <article class="rw-plan" role="listitem" data-plan="pro">
-          <div class="rw-plan__top">
-            <h2>Pro</h2>
-            <div class="rw-plan__price">
-              <span class="rw-plan__amount">$99</span>
-              <span class="rw-plan__term">/ month</span>
-            </div>
-            <p class="rw-plan__desc">For professionals who want near-zero limits and priority handling.</p>
-          </div>
-
-          <ul class="rw-plan__features">
-            <li>Everything in Creator</li>
-            <li>Unlimited agent usage (fair-use protected)</li>
-            <li>All modules included</li>
-            <li>Priority support</li>
-          </ul>
-
-          <div class="rw-plan__cta">
-            <button class="rw-btn rw-btn--primary" data-checkout="pro">Choose Pro</button>
-            <p class="rw-plan__fineprint">Designed for heavy daily workflows.</p>
-          </div>
-        </article>
-      </div>
-
-      <!-- LIFETIME -->
-      <section class="rw-lifetime" aria-labelledby="lifetime-title">
-        <h2 id="lifetime-title">Lifetime licenses (one-time purchase)</h2>
-        <p class="rw-lifetime__subhead">
-          For long-term users who prefer owning software instead of paying monthly.
-          <strong>Early tiers are limited</strong>.
-        </p>
-
-        <div class="rw-callout">
-          <p>
-            <strong>What "lifetime" means:</strong>
-            Lifetime licenses include all features available at time of purchase.
-            Future cloud services may require a separate plan.
+      <!-- PRICING PAGE -->
+      <section class="rw-pricing">
+        <header class="rw-pricing__header">
+          <h1>Simple, transparent pricing.</h1>
+          <p class="rw-pricing__subhead">
+            Start free. Upgrade only when Rina saves you real time.
+            <span class="rw-pricing__note">No ads. No telemetry. No data resale.</span>
           </p>
-          <p class="rw-callout__fineprint">
-            Lifetime licenses help fund long-term development — no ads, no telemetry, no VC pressure.
+
+          <div class="rw-pricing__badges" aria-label="Trust badges">
+            <span class="rw-badge">Local-first</span>
+            <span class="rw-badge">Offline-capable</span>
+            <span class="rw-badge">Stripe checkout</span>
+            <span class="rw-badge">Cancel anytime</span>
+          </div>
+        </header>
+
+        <!-- PLAN GRID -->
+        <div class="rw-plans" role="list">
+          <!-- FREE -->
+          <article class="rw-plan" role="listitem" data-plan="free">
+            <div class="rw-plan__top">
+              <h2>Free</h2>
+              <div class="rw-plan__price">
+                <span class="rw-plan__amount">$0</span>
+                <span class="rw-plan__term">forever</span>
+              </div>
+              <p class="rw-plan__desc">
+                Explore RinaWarp and your local terminal workflow — no card required.
+              </p>
+            </div>
+
+            <ul class="rw-plan__features">
+              <li>Local terminal sandbox (daily limits)</li>
+              <li>Daily command quota (anti-abuse)</li>
+              <li>Safety-restricted execution mode</li>
+              <li>No AI agent features</li>
+              <li>No voice</li>
+              <li>No premium modules</li>
+            </ul>
+
+            <div class="rw-plan__cta">
+              <a class="rw-btn rw-btn--secondary" href="/download">Download</a>
+              <p class="rw-plan__fineprint">Free is designed to be useful — not frustrating.</p>
+            </div>
+          </article>
+
+          <!-- BASIC -->
+          <article class="rw-plan" role="listitem" data-plan="basic">
+            <div class="rw-plan__top">
+              <h2>Basic</h2>
+              <div class="rw-plan__price">
+                <span class="rw-plan__amount">$9.99</span>
+                <span class="rw-plan__term">/ month</span>
+              </div>
+              <p class="rw-plan__desc">
+                For developers who want helpful guidance without full automation.
+              </p>
+            </div>
+
+            <ul class="rw-plan__features">
+              <li>Unlimited local terminal usage</li>
+              <li>Entry-level Rina Agent assistance</li>
+              <li>Light productivity helpers</li>
+              <li>Excludes advanced automations & premium modules</li>
+              <li>No real-time voice</li>
+            </ul>
+
+            <div class="rw-plan__cta">
+              <button class="rw-btn rw-btn--primary" data-checkout="basic">Choose Basic</button>
+              <p class="rw-plan__fineprint">Most users land here after a week of daily use.</p>
+            </div>
+          </article>
+
+          <!-- STARTER (RECOMMENDED HIGHLIGHT) -->
+          <article
+            class="rw-plan rw-plan--featured"
+            role="listitem"
+            data-plan="starter"
+            aria-label="Recommended plan"
+          >
+            <div class="rw-plan__ribbon" aria-hidden="true">Recommended</div>
+
+            <div class="rw-plan__top">
+              <h2>Starter</h2>
+              <div class="rw-plan__price">
+                <span class="rw-plan__amount">$29</span>
+                <span class="rw-plan__term">/ month</span>
+              </div>
+              <p class="rw-plan__desc">
+                Unlock Rina's core agent workflow for daily professional terminal work.
+              </p>
+            </div>
+
+            <ul class="rw-plan__features">
+              <li>Advanced agent suggestions & higher limits</li>
+              <li>Automation basics (repeatable workflows)</li>
+              <li>Expanded tooling set</li>
+              <li>Upgrade/downgrade anytime</li>
+            </ul>
+
+            <div class="rw-plan__cta">
+              <button class="rw-btn rw-btn--primary" data-checkout="starter">Choose Starter</button>
+              <p class="rw-plan__fineprint">Best for consistent daily usage.</p>
+            </div>
+          </article>
+
+          <!-- CREATOR -->
+          <article class="rw-plan" role="listitem" data-plan="creator">
+            <div class="rw-plan__top">
+              <h2>Creator</h2>
+              <div class="rw-plan__price">
+                <span class="rw-plan__amount">$69</span>
+                <span class="rw-plan__term">/ month</span>
+              </div>
+              <p class="rw-plan__desc">
+                For builders who live in the terminal and want faster iteration.
+              </p>
+            </div>
+
+            <ul class="rw-plan__features">
+              <li>Everything in Starter</li>
+              <li>Voice-enabled command execution</li>
+              <li>Priority agent execution & higher limits</li>
+              <li>Expanded modules & integrations</li>
+            </ul>
+
+            <div class="rw-plan__cta">
+              <button class="rw-btn rw-btn--primary" data-checkout="creator">Choose Creator</button>
+              <p class="rw-plan__fineprint">Best value for heavy users.</p>
+            </div>
+          </article>
+
+          <!-- PRO -->
+          <article class="rw-plan" role="listitem" data-plan="pro">
+            <div class="rw-plan__top">
+              <h2>Pro</h2>
+              <div class="rw-plan__price">
+                <span class="rw-plan__amount">$99</span>
+                <span class="rw-plan__term">/ month</span>
+              </div>
+              <p class="rw-plan__desc">
+                For professionals who want near-zero limits and priority handling.
+              </p>
+            </div>
+
+            <ul class="rw-plan__features">
+              <li>Everything in Creator</li>
+              <li>Unlimited agent usage (fair-use protected)</li>
+              <li>All modules included</li>
+              <li>Priority support</li>
+            </ul>
+
+            <div class="rw-plan__cta">
+              <button class="rw-btn rw-btn--primary" data-checkout="pro">Choose Pro</button>
+              <p class="rw-plan__fineprint">Designed for heavy daily workflows.</p>
+            </div>
+          </article>
+        </div>
+
+        <!-- LIFETIME -->
+        <section class="rw-lifetime" aria-labelledby="lifetime-title">
+          <h2 id="lifetime-title">Lifetime licenses (one-time purchase)</h2>
+          <p class="rw-lifetime__subhead">
+            For long-term users who prefer owning software instead of paying monthly.
+            <strong>Early tiers are limited</strong>.
           </p>
-        </div>
 
-        <div class="rw-plans rw-plans--lifetime" role="list">
-          <article class="rw-plan" role="listitem" data-plan="founder-lifetime">
-            <div class="rw-plan__top">
-              <h3>Founder Lifetime</h3>
-              <div class="rw-plan__price">
-                <span class="rw-plan__amount">$699</span>
-                <span class="rw-plan__term">one-time</span>
-              </div>
-              <p class="rw-plan__desc">Early supporter tier. Limited to <strong>200</strong> total.</p>
-            </div>
-            <ul class="rw-plan__features">
-              <li>Lifetime license (one-time)</li>
-              <li>Priority onboarding email</li>
-              <li>Early access to major releases</li>
-            </ul>
-            <div class="rw-plan__cta">
-              <button class="rw-btn rw-btn--primary" data-checkout="founder_lifetime">Get Founder Lifetime</button>
-              <p class="rw-plan__fineprint">When the 200 sell out, this tier is gone.</p>
-            </div>
-          </article>
+          <div class="rw-callout">
+            <p>
+              <strong>What "lifetime" means:</strong>
+              Lifetime licenses include all features available at time of purchase. Future cloud
+              services may require a separate plan.
+            </p>
+            <p class="rw-callout__fineprint">
+              Lifetime licenses help fund long-term development — no ads, no telemetry, no VC
+              pressure.
+            </p>
+          </div>
 
-          <article class="rw-plan" role="listitem" data-plan="pioneer-lifetime">
-            <div class="rw-plan__top">
-              <h3>Pioneer Lifetime</h3>
-              <div class="rw-plan__price">
-                <span class="rw-plan__amount">$800</span>
-                <span class="rw-plan__term">one-time</span>
+          <div class="rw-plans rw-plans--lifetime" role="list">
+            <article class="rw-plan" role="listitem" data-plan="founder-lifetime">
+              <div class="rw-plan__top">
+                <h3>Founder Lifetime</h3>
+                <div class="rw-plan__price">
+                  <span class="rw-plan__amount">$699</span>
+                  <span class="rw-plan__term">one-time</span>
+                </div>
+                <p class="rw-plan__desc">
+                  Early supporter tier. Limited to <strong>200</strong> total.
+                </p>
               </div>
-              <p class="rw-plan__desc">Second wave. Limited to <strong>300</strong> total.</p>
-            </div>
-            <ul class="rw-plan__features">
-              <li>Lifetime license (one-time)</li>
-              <li>Priority onboarding email</li>
-              <li>Early access to major releases</li>
-            </ul>
-            <div class="rw-plan__cta">
-              <button class="rw-btn rw-btn--primary" data-checkout="pioneer_lifetime">Get Pioneer Lifetime</button>
-              <p class="rw-plan__fineprint">When the 300 sell out, this tier is gone.</p>
-            </div>
-          </article>
+              <ul class="rw-plan__features">
+                <li>Lifetime license (one-time)</li>
+                <li>Priority onboarding email</li>
+                <li>Early access to major releases</li>
+              </ul>
+              <div class="rw-plan__cta">
+                <button class="rw-btn rw-btn--primary" data-checkout="founder_lifetime">
+                  Get Founder Lifetime
+                </button>
+                <p class="rw-plan__fineprint">When the 200 sell out, this tier is gone.</p>
+              </div>
+            </article>
 
-          <article class="rw-plan" role="listitem" data-plan="evergreen-lifetime">
-            <div class="rw-plan__top">
-              <h3>Evergreen Lifetime</h3>
-              <div class="rw-plan__price">
-                <span class="rw-plan__amount">$999</span>
-                <span class="rw-plan__term">one-time</span>
+            <article class="rw-plan" role="listitem" data-plan="pioneer-lifetime">
+              <div class="rw-plan__top">
+                <h3>Pioneer Lifetime</h3>
+                <div class="rw-plan__price">
+                  <span class="rw-plan__amount">$800</span>
+                  <span class="rw-plan__term">one-time</span>
+                </div>
+                <p class="rw-plan__desc">Second wave. Limited to <strong>300</strong> total.</p>
               </div>
-              <p class="rw-plan__desc">Always available after early tiers sell out.</p>
-            </div>
-            <ul class="rw-plan__features">
-              <li>Lifetime license (one-time)</li>
-              <li>Standard onboarding</li>
-              <li>Access to local-first features</li>
-            </ul>
-            <div class="rw-plan__cta">
-              <button class="rw-btn rw-btn--primary" data-checkout="evergreen_lifetime">Get Evergreen Lifetime</button>
-              <p class="rw-plan__fineprint">Best for people who want ownership long-term.</p>
-            </div>
-          </article>
-        </div>
+              <ul class="rw-plan__features">
+                <li>Lifetime license (one-time)</li>
+                <li>Priority onboarding email</li>
+                <li>Early access to major releases</li>
+              </ul>
+              <div class="rw-plan__cta">
+                <button class="rw-btn rw-btn--primary" data-checkout="pioneer_lifetime">
+                  Get Pioneer Lifetime
+                </button>
+                <p class="rw-plan__fineprint">When the 300 sell out, this tier is gone.</p>
+              </div>
+            </article>
+
+            <article class="rw-plan" role="listitem" data-plan="evergreen-lifetime">
+              <div class="rw-plan__top">
+                <h3>Evergreen Lifetime</h3>
+                <div class="rw-plan__price">
+                  <span class="rw-plan__amount">$999</span>
+                  <span class="rw-plan__term">one-time</span>
+                </div>
+                <p class="rw-plan__desc">Always available after early tiers sell out.</p>
+              </div>
+              <ul class="rw-plan__features">
+                <li>Lifetime license (one-time)</li>
+                <li>Standard onboarding</li>
+                <li>Access to local-first features</li>
+              </ul>
+              <div class="rw-plan__cta">
+                <button class="rw-btn rw-btn--primary" data-checkout="evergreen_lifetime">
+                  Get Evergreen Lifetime
+                </button>
+                <p class="rw-plan__fineprint">Best for people who want ownership long-term.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="rw-faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">FAQ</h2>
+
+          <details>
+            <summary>Do I have to start with a paid plan?</summary>
+            <p>No. Start on Free and upgrade when the agent saves you enough time to justify it.</p>
+          </details>
+
+          <details>
+            <summary>Is my data sent anywhere?</summary>
+            <p>
+              Core features are local-first. If you enable cloud features, only what's required for
+              that request is transmitted.
+            </p>
+          </details>
+
+          <details>
+            <summary>Can I cancel or downgrade?</summary>
+            <p>Yes. Cancel anytime. Plan changes take effect at the next billing cycle.</p>
+          </details>
+
+          <details>
+            <summary>What about refunds?</summary>
+            <p>
+              We offer a straightforward refund policy. If something isn't working as expected,
+              contact support and we'll help.
+            </p>
+          </details>
+
+          <details>
+            <summary>Why are lifetime tiers limited?</summary>
+            <p>
+              They're early-supporter tiers designed to fund development without ads or telemetry.
+              Once each tier sells out, it closes permanently.
+            </p>
+          </details>
+        </section>
+
+        <!-- FOOTER CTA -->
+        <footer class="rw-pricing__footer">
+          <h2>Ready to try RinaWarp?</h2>
+          <p>Download free, then upgrade when you're ready.</p>
+          <div class="rw-pricing__footer-cta">
+            <a class="rw-btn rw-btn--primary" href="/download">Download for Windows</a>
+            <a class="rw-btn rw-btn--secondary" href="/docs">Read the Docs</a>
+          </div>
+          <p class="rw-pricing__legal">Payments are processed securely by Stripe.</p>
+        </footer>
       </section>
-
-      <!-- FAQ -->
-      <section class="rw-faq" aria-labelledby="faq-title">
-        <h2 id="faq-title">FAQ</h2>
-
-        <details>
-          <summary>Do I have to start with a paid plan?</summary>
-          <p>No. Start on Free and upgrade when the agent saves you enough time to justify it.</p>
-        </details>
-
-        <details>
-          <summary>Is my data sent anywhere?</summary>
-          <p>Core features are local-first. If you enable cloud features, only what's required for that request is transmitted.</p>
-        </details>
-
-        <details>
-          <summary>Can I cancel or downgrade?</summary>
-          <p>Yes. Cancel anytime. Plan changes take effect at the next billing cycle.</p>
-        </details>
-
-        <details>
-          <summary>What about refunds?</summary>
-          <p>We offer a straightforward refund policy. If something isn't working as expected, contact support and we'll help.</p>
-        </details>
-
-        <details>
-          <summary>Why are lifetime tiers limited?</summary>
-          <p>They're early-supporter tiers designed to fund development without ads or telemetry. Once each tier sells out, it closes permanently.</p>
-        </details>
-      </section>
-
-      <!-- FOOTER CTA -->
-      <footer class="rw-pricing__footer">
-        <h2>Ready to try RinaWarp?</h2>
-        <p>Download free, then upgrade when you're ready.</p>
-        <div class="rw-pricing__footer-cta">
-          <a class="rw-btn rw-btn--primary" href="/download">Download for Windows</a>
-          <a class="rw-btn rw-btn--secondary" href="/docs">Read the Docs</a>
-        </div>
-        <p class="rw-pricing__legal">Payments are processed securely by Stripe.</p>
-      </footer>
-    </section>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div>© <span id="year"></span> RinaWarp Technologies LLC • Built in Utah</div>
-    <div class="footer-links">
-      <a href="/legal/terms-of-service.html">Terms</a>
-      <a href="/legal/privacy-policy.html">Privacy</a>
-      <a href="/legal/ai-ethical-policy.html">AI Ethics</a>
-      <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
-      <a href="/legal/ai-music-video-creator-eula.html">AI-MVC EULA</a>
     </div>
-  </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    
-    // Handle checkout buttons
-    document.querySelectorAll('[data-checkout]').forEach(button => {
-      button.addEventListener('click', async function() {
-        const plan = this.dataset.checkout;
-        
-        // Add loading state
-        this.disabled = true;
-        this.textContent = 'Processing...';
-        
-        try {
-          // Redirect to checkout or show auth modal
-          if (!window.localStorage.getItem('rina_email')) {
-            // Show simple email capture
-            const email = prompt('Please enter your email for checkout:');
-            if (!email) {
-              this.disabled = false;
-              this.textContent = this.dataset.originalText || 'Choose Plan';
-              return;
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div>© <span id="year"></span> RinaWarp Technologies LLC • Built in Utah</div>
+      <div class="footer-links">
+        <a href="/legal/terms-of-service.html">Terms</a>
+        <a href="/legal/privacy-policy.html">Privacy</a>
+        <a href="/legal/ai-ethical-policy.html">AI Ethics</a>
+        <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
+        <a href="/legal/ai-music-video-creator-eula.html">AI-MVC EULA</a>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Handle checkout buttons
+      document.querySelectorAll('[data-checkout]').forEach((button) => {
+        button.addEventListener('click', async function () {
+          const plan = this.dataset.checkout;
+
+          // Add loading state
+          this.disabled = true;
+          this.textContent = 'Processing...';
+
+          try {
+            // Redirect to checkout or show auth modal
+            if (!window.localStorage.getItem('rina_email')) {
+              // Show simple email capture
+              const email = prompt('Please enter your email for checkout:');
+              if (!email) {
+                this.disabled = false;
+                this.textContent = this.dataset.originalText || 'Choose Plan';
+                return;
+              }
+              window.localStorage.setItem('rina_email', email);
             }
-            window.localStorage.setItem('rina_email', email);
+
+            // Here you would integrate with your actual checkout system
+            // For now, just show an alert
+            alert(`Starting checkout for ${plan} plan. This would integrate with Stripe.`);
+          } catch (error) {
+            console.error('Checkout error:', error);
+            alert('Failed to start checkout. Please try again.');
+          } finally {
+            this.disabled = false;
+            this.textContent = this.dataset.originalText || 'Choose Plan';
           }
-          
-          // Here you would integrate with your actual checkout system
-          // For now, just show an alert
-          alert(`Starting checkout for ${plan} plan. This would integrate with Stripe.`);
-          
-        } catch (error) {
-          console.error('Checkout error:', error);
-          alert('Failed to start checkout. Please try again.');
-        } finally {
-          this.disabled = false;
-          this.textContent = this.dataset.originalText || 'Choose Plan';
-        }
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

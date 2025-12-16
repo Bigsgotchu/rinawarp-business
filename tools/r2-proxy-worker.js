@@ -1,20 +1,20 @@
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    const prefix = "/terminal-pro/";
+    const prefix = '/terminal-pro/';
 
     if (!url.pathname.startsWith(prefix)) {
-      return new Response("Invalid path", { status: 400 });
+      return new Response('Invalid path', { status: 400 });
     }
 
     // Keep the full path including terminal-pro/ for the object key
     const objectKey = url.pathname.slice(1); // Remove leading slash only
 
     // Extract client information for logging
-    const clientIp = request.headers.get("cf-connecting-ip") || "unknown";
-    const userAgent = request.headers.get("user-agent") || "unknown";
-    const country = request.headers.get("cf-ipcountry") || "unknown";
-    const referer = request.headers.get("referer") || "direct";
+    const clientIp = request.headers.get('cf-connecting-ip') || 'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+    const country = request.headers.get('cf-ipcountry') || 'unknown';
+    const referer = request.headers.get('referer') || 'direct';
 
     // Log download event to Cloudflare Logs
     console.log(`[Download] ${objectKey} from ${clientIp} (${country}) - User-Agent: ${userAgent}`);
@@ -24,11 +24,11 @@ export default {
 
       if (!object) {
         console.log(`[404] File not found: ${objectKey} - Requested by ${clientIp}`);
-        return new Response("File not found", { status: 404 });
+        return new Response('File not found', { status: 404 });
       }
 
       // Log successful download with file size
-      const fileSize = object.size || object.body?.length || "unknown";
+      const fileSize = object.size || object.body?.length || 'unknown';
       console.log(`[200] Successfully served: ${objectKey} (${fileSize} bytes) to ${clientIp}`);
 
       // Optional: Send to webhook for analytics (uncomment to enable)
@@ -61,18 +61,17 @@ export default {
       return new Response(object.body, {
         status: 200,
         headers: {
-          "Content-Type": object.httpMetadata?.contentType || "application/octet-stream",
-          "Cache-Control": "public, max-age=3600",
-          "Access-Control-Allow-Origin": "https://rinawarptech.com",
-          "X-Content-Type-Options": "nosniff",
-          "X-RinaWarp-Download": "true",
-          "X-RinaWarp-Version": "0.9.0"
-        }
+          'Content-Type': object.httpMetadata?.contentType || 'application/octet-stream',
+          'Cache-Control': 'public, max-age=3600',
+          'Access-Control-Allow-Origin': 'https://rinawarptech.com',
+          'X-Content-Type-Options': 'nosniff',
+          'X-RinaWarp-Download': 'true',
+          'X-RinaWarp-Version': '0.9.0',
+        },
       });
-
     } catch (err) {
       console.log(`[500] R2 error for ${objectKey}: ${err.message} - Client: ${clientIp}`);
       return new Response(`R2 error: ${err.message}`, { status: 500 });
     }
-  }
+  },
 };

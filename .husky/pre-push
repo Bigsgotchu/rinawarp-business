@@ -1,0 +1,9 @@
+# Fast local guard (changed-only); CI does full gates
+echo "🛡️  Pre-push safety check (changed files only)..."
+pnpm -s format:changed
+pnpm -s lint:changed
+# optional (non-blocking):
+pnpm -s spell:changed || true
+pnpm -s lint:css:changed || true
+
+echo "✅ Pre-push check passed - safe to push!"

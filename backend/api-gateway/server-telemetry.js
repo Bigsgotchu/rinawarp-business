@@ -17,14 +17,14 @@ const MAX_BUFFER_SIZE = 1000;
 function aggregateTelemetry(data) {
   const now = new Date();
   const hour = Math.floor(now.getHours() / 6) * 6; // Group by 6-hour windows
-  
+
   return {
     timestamp: now.toISOString(),
     hour: hour,
     appVersion: data.appVersion,
     os: data.os,
     agent: data.agent,
-    license: data.license
+    license: data.license,
   };
 }
 
@@ -63,29 +63,34 @@ const SERVICE_REGISTRY = {
 };
 
 // Environment configuration
-const LICENSING_SERVICE_URL = process.env.LICENSING_SERVICE_URL || "http://localhost:3003";
-const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || "http://localhost:3001";
-const DOMAIN = process.env.DOMAIN || "http://localhost:3000";
+const LICENSING_SERVICE_URL = process.env.LICENSING_SERVICE_URL || 'http://localhost:3003';
+const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
+const DOMAIN = process.env.DOMAIN || 'http://localhost:3000';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://api.stripe.com"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        connectSrc: ["'self'", 'https://api.stripe.com'],
+      },
     },
-  },
-}));
+  }),
+);
 
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:5173', 'https://rinawarptech.com'],
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || [
+      'http://localhost:5173',
+      'https://rinawarptech.com',
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -133,15 +138,16 @@ const authenticateToken = async (req, res, next) => {
     }
 
     // Verify token with auth service
-    const response = await axios.post(`${AUTH_SERVICE_URL}/auth/verify`, 
+    const response = await axios.post(
+      `${AUTH_SERVICE_URL}/auth/verify`,
       {},
       {
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
         timeout: 5000,
-      }
+      },
     );
 
     if (response.data.valid) {
@@ -161,7 +167,7 @@ const proxyToService = (serviceName, options = {}) => {
   return async (req, res) => {
     try {
       const service = SERVICE_REGISTRY[serviceName];
-      
+
       if (!service) {
         return res.status(503).json({ error: `Service ${serviceName} not available` });
       }
@@ -169,7 +175,7 @@ const proxyToService = (serviceName, options = {}) => {
       // Determine target path
       let targetPath = req.path;
       let queryString = req.url.split('?')[1] || '';
-      
+
       // Handle path rewriting based on service type
       if (serviceName === 'auth-service') {
         targetPath = targetPath.replace(/^\/auth/, '');
@@ -178,7 +184,7 @@ const proxyToService = (serviceName, options = {}) => {
       }
 
       const targetUrl = `${service.url}${targetPath}${queryString ? '?' + queryString : ''}`;
-      
+
       console.log(`Proxying ${req.method} ${req.path} to ${serviceName}: ${targetUrl}`);
 
       // Prepare request configuration
@@ -197,18 +203,18 @@ const proxyToService = (serviceName, options = {}) => {
       };
 
       const response = await axios(config);
-      
+
       // Forward response with proper status and headers
       Object.entries(response.headers).forEach(([key, value]) => {
         if (key.toLowerCase() !== 'transfer-encoding') {
           res.setHeader(key, value);
         }
       });
-      
+
       res.status(response.status).send(response.data);
     } catch (error) {
       console.error(`Service ${serviceName} error:`, error.message);
-      
+
       if (error.code === 'ECONNREFUSED') {
         res.status(503).json({ error: `Service ${serviceName} is unavailable` });
       } else if (error.code === 'ENOTFOUND') {
@@ -223,7 +229,7 @@ const proxyToService = (serviceName, options = {}) => {
 // Health check endpoint
 app.get('/health', async (req, res) => {
   const healthChecks = {};
-  
+
   // Check each service
   for (const [serviceName, service] of Object.entries(SERVICE_REGISTRY)) {
     try {
@@ -233,12 +239,12 @@ app.get('/health', async (req, res) => {
       });
       healthChecks[serviceName] = {
         status: response.status === 200 ? 'healthy' : 'unhealthy',
-        responseTime: response.headers['x-response-time'] || 'unknown'
+        responseTime: response.headers['x-response-time'] || 'unknown',
       };
     } catch (error) {
       healthChecks[serviceName] = {
         status: 'unhealthy',
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -259,7 +265,7 @@ app.get('/health', async (req, res) => {
 app.post('/api/telemetry', telemetryLimiter, async (req, res) => {
   try {
     const telemetryData = req.body;
-    
+
     // Validate required fields
     const requiredFields = ['appVersion', 'os'];
     for (const field of requiredFields) {
@@ -272,21 +278,32 @@ app.post('/api/telemetry', telemetryLimiter, async (req, res) => {
     const sanitizedData = {
       appVersion: String(telemetryData.appVersion).slice(0, 20), // Prevent oversized data
       os: ['win32', 'darwin', 'linux'].includes(telemetryData.os) ? telemetryData.os : 'unknown',
-      agent: telemetryData.agent ? {
-        status: ['online', 'offline'].includes(telemetryData.agent.status) ? telemetryData.agent.status : 'unknown',
-        pingMs: typeof telemetryData.agent.pingMs === 'number' ? Math.min(telemetryData.agent.pingMs, 60000) : null
-      } : null,
-      license: telemetryData.license ? {
-        tier: ['free', 'pro', 'enterprise'].includes(telemetryData.license.tier) ? telemetryData.license.tier : 'unknown',
-        offline: Boolean(telemetryData.license.offline)
-      } : null,
+      agent: telemetryData.agent
+        ? {
+            status: ['online', 'offline'].includes(telemetryData.agent.status)
+              ? telemetryData.agent.status
+              : 'unknown',
+            pingMs:
+              typeof telemetryData.agent.pingMs === 'number'
+                ? Math.min(telemetryData.agent.pingMs, 60000)
+                : null,
+          }
+        : null,
+      license: telemetryData.license
+        ? {
+            tier: ['free', 'pro', 'enterprise'].includes(telemetryData.license.tier)
+              ? telemetryData.license.tier
+              : 'unknown',
+            offline: Boolean(telemetryData.license.offline),
+          }
+        : null,
       timestamp: new Date().toISOString(),
-      ip: req.ip // For basic rate limiting, not stored permanently
+      ip: req.ip, // For basic rate limiting, not stored permanently
     };
 
     // Store in memory buffer (replace with database in production)
     telemetryBuffer.push(sanitizedData);
-    
+
     // Keep buffer size manageable
     if (telemetryBuffer.length > MAX_BUFFER_SIZE) {
       telemetryBuffer.shift();
@@ -298,16 +315,15 @@ app.post('/api/telemetry', telemetryLimiter, async (req, res) => {
         version: sanitizedData.appVersion,
         os: sanitizedData.os,
         agentStatus: sanitizedData.agent?.status,
-        licenseTier: sanitizedData.license?.tier
+        licenseTier: sanitizedData.license?.tier,
       });
     }
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: 'Telemetry received',
-      timestamp: sanitizedData.timestamp
+      timestamp: sanitizedData.timestamp,
     });
-
   } catch (error) {
     console.error('Telemetry error:', error);
     res.status(500).json({ error: 'Failed to process telemetry' });
@@ -319,10 +335,10 @@ app.get('/api/telemetry/summary', authenticateToken, async (req, res) => {
   try {
     const now = new Date();
     const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    
+
     // Filter recent telemetry
-    const recentTelemetry = telemetryBuffer.filter(item => 
-      new Date(item.timestamp) > last24Hours
+    const recentTelemetry = telemetryBuffer.filter(
+      (item) => new Date(item.timestamp) > last24Hours,
     );
 
     // Aggregate statistics
@@ -332,37 +348,39 @@ app.get('/api/telemetry/summary', authenticateToken, async (req, res) => {
       byVersion: {},
       byAgentStatus: {},
       byLicenseTier: {},
-      lastReport: recentTelemetry.length > 0 ? recentTelemetry[recentTelemetry.length - 1].timestamp : null,
+      lastReport:
+        recentTelemetry.length > 0 ? recentTelemetry[recentTelemetry.length - 1].timestamp : null,
       timeRange: {
         from: last24Hours.toISOString(),
-        to: now.toISOString()
-      }
+        to: now.toISOString(),
+      },
     };
 
     // Calculate aggregates
-    recentTelemetry.forEach(item => {
+    recentTelemetry.forEach((item) => {
       // By OS
       summary.byOS[item.os] = (summary.byOS[item.os] || 0) + 1;
-      
+
       // By Version
       summary.byVersion[item.appVersion] = (summary.byVersion[item.appVersion] || 0) + 1;
-      
+
       // By Agent Status
       if (item.agent?.status) {
-        summary.byAgentStatus[item.agent.status] = (summary.byAgentStatus[item.agent.status] || 0) + 1;
+        summary.byAgentStatus[item.agent.status] =
+          (summary.byAgentStatus[item.agent.status] || 0) + 1;
       }
-      
+
       // By License Tier
       if (item.license?.tier) {
-        summary.byLicenseTier[item.license.tier] = (summary.byLicenseTier[item.license.tier] || 0) + 1;
+        summary.byLicenseTier[item.license.tier] =
+          (summary.byLicenseTier[item.license.tier] || 0) + 1;
       }
     });
 
     res.json({
       success: true,
-      data: summary
+      data: summary,
     });
-
   } catch (error) {
     console.error('Telemetry summary error:', error);
     res.status(500).json({ error: 'Failed to generate telemetry summary' });
@@ -386,9 +404,11 @@ app.use(
       res.status(503).json({ error: 'Authentication service unavailable' });
     },
     onProxyReq: (proxyReq, req, res) => {
-      console.log(`[AUTH] ${req.method} ${req.path} -> ${AUTH_SERVICE_URL}${req.path.replace('/auth', '')}`);
-    }
-  })
+      console.log(
+        `[AUTH] ${req.method} ${req.path} -> ${AUTH_SERVICE_URL}${req.path.replace('/auth', '')}`,
+      );
+    },
+  }),
 );
 
 // AI service routes (public for now)
@@ -397,11 +417,16 @@ app.use('/ai', proxyToService('ai-service'));
 // FIXED: Protected API routes with real authentication
 app.use('/api/revenue', authenticateToken, strictLimiter, proxyToService('revenue-service'));
 app.use('/api/licensing', authenticateToken, strictLimiter, proxyToService('licensing-service'));
-app.use('/api/ai-music-video', authenticateToken, strictLimiter, proxyToService('ai-music-video-service'));
+app.use(
+  '/api/ai-music-video',
+  authenticateToken,
+  strictLimiter,
+  proxyToService('ai-music-video-service'),
+);
 
 // License check proxy (may be public or require different auth)
 app.use(
-  "/license/check",
+  '/license/check',
   createProxyMiddleware({
     target: LICENSING_SERVICE_URL,
     changeOrigin: true,
@@ -411,13 +436,13 @@ app.use(
     },
     onProxyReq: (proxyReq, req, res) => {
       console.log(`[LICENSE] ${req.method} ${req.path} -> ${LICENSING_SERVICE_URL}${req.path}`);
-    }
-  })
+    },
+  }),
 );
 
 // Auth verify proxy (dedicated endpoint)
 app.use(
-  "/auth/verify",
+  '/auth/verify',
   createProxyMiddleware({
     target: AUTH_SERVICE_URL,
     changeOrigin: true,
@@ -427,74 +452,71 @@ app.use(
     },
     onProxyReq: (proxyReq, req, res) => {
       console.log(`[AUTH-VERIFY] ${req.method} ${req.path} -> ${AUTH_SERVICE_URL}${req.path}`);
-    }
-  })
+    },
+  }),
 );
 
 // Stripe webhook endpoint (special handling)
-app.post('/api/stripe/webhook', 
-  express.raw({ type: 'application/json' }),
-  (req, res) => {
-    // This endpoint should handle Stripe webhooks directly
-    // For now, just acknowledge receipt
-    console.log('Stripe webhook received:', req.headers['stripe-signature']);
-    res.status(200).json({ received: true });
-  }
-);
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  // This endpoint should handle Stripe webhooks directly
+  // For now, just acknowledge receipt
+  console.log('Stripe webhook received:', req.headers['stripe-signature']);
+  res.status(200).json({ received: true });
+});
 
 // FIXED: Checkout endpoint with plan validation
-app.post('/api/checkout-v2', 
-  express.json({ limit: '1mb' }),
-  async (req, res) => {
-    try {
-      const { plan, successUrl, cancelUrl } = req.body;
-      
-      if (!plan) {
-        return res.status(400).json({ error: 'Plan is required' });
-      }
-      
-      // Validate plan against known plans
-      const validPlans = [
-        'starter-monthly', 'creator-monthly', 'pro-monthly',
-        'enterprise-yearly', 'pioneer-lifetime', 'founder-lifetime'
-      ];
-      
-      if (!validPlans.includes(plan)) {
-        return res.status(400).json({ error: 'Invalid plan code' });
-      }
-      
-      // This would integrate with Stripe checkout
-      // For now, return a mock response
-      res.json({ 
-        sessionId: `cs_test_${Date.now()}`,
-        plan,
-        successUrl: successUrl || `${DOMAIN}/success.html`,
-        cancelUrl: cancelUrl || `${DOMAIN}/cancel.html`
-      });
-      
-    } catch (error) {
-      console.error('Checkout error:', error);
-      res.status(500).json({ error: 'Checkout failed' });
+app.post('/api/checkout-v2', express.json({ limit: '1mb' }), async (req, res) => {
+  try {
+    const { plan, successUrl, cancelUrl } = req.body;
+
+    if (!plan) {
+      return res.status(400).json({ error: 'Plan is required' });
     }
+
+    // Validate plan against known plans
+    const validPlans = [
+      'starter-monthly',
+      'creator-monthly',
+      'pro-monthly',
+      'enterprise-yearly',
+      'pioneer-lifetime',
+      'founder-lifetime',
+    ];
+
+    if (!validPlans.includes(plan)) {
+      return res.status(400).json({ error: 'Invalid plan code' });
+    }
+
+    // This would integrate with Stripe checkout
+    // For now, return a mock response
+    res.json({
+      sessionId: `cs_test_${Date.now()}`,
+      plan,
+      successUrl: successUrl || `${DOMAIN}/success.html`,
+      cancelUrl: cancelUrl || `${DOMAIN}/cancel.html`,
+    });
+  } catch (error) {
+    console.error('Checkout error:', error);
+    res.status(500).json({ error: 'Checkout failed' });
   }
-);
+});
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'Endpoint not found',
     path: req.path,
     method: req.method,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
 // Global error handler
 app.use((error, req, res, next) => {
   console.error('Gateway error:', error);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Internal server error',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 

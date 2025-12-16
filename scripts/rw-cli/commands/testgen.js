@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from 'fs';
 
 export function testgen(name) {
   const file = `tests/${name}.test.ts`;
@@ -14,5 +14,5 @@ describe("${name}", () => {
   `;
 
   fs.writeFileSync(file, template);
-  console.log("\n✔ Test file created:", file);
+  console.log('\n✔ Test file created:', file);
 }

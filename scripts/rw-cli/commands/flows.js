@@ -1,5 +1,5 @@
 export function flows() {
-  console.log("\n🔄 Data Flow Map\n");
+  console.log('\n🔄 Data Flow Map\n');
 
   const flows = `
 User → Website → Stripe Checkout → Webhook → API → DB → License

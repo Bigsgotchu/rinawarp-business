@@ -1,0 +1,79 @@
+# 🔧 CREATING STRIPE PRODUCTS FOR FOUNDER PLANS
+
+## 📋 STRIPE PRODUCTS TO CREATE
+
+1. Go to: <https://dashboard.stripe.com/products>
+2. Create these products:
+
+
+### Product 1: RinaWarp Founder Basic
+
+- **Name**: RinaWarp Founder Basic
+- **Price**: $197.00
+- **Billing**: One-time
+- **Description**: Lifetime access to RinaWarp AI Music Creator
+- **Price ID**: `price_founder_basic_lifetime`
+
+
+### Product 2: RinaWarp Founder Pro
+
+- **Name**: RinaWarp Founder Pro
+- **Price**: $497.00
+- **Billing**: One-time
+- **Description**: Lifetime access with advanced features
+- **Price ID**: `price_founder_pro_lifetime`
+
+
+### Product 3: RinaWarp Founder Premium
+
+- **Name**: RinaWarp Founder Premium
+- **Price**: $997.00
+- **Billing**: One-time
+- **Description**: Lifetime access with premium features
+- **Price ID**: `price_founder_premium_lifetime`
+
+
+## 🔧 AFTER CREATING PRODUCTS
+
+1. Copy the price IDs from Stripe dashboard
+2. Update `backend/src/services/StripeService.ts` with real price IDs
+3. Test payment processing
+
+
+## 💰 PRICING IS NOW CONSISTENT
+
+✅ Frontend: $197, $497, $997 (lifetime)
+✅ Backend: $197, $497, $997 (lifetime)
+✅ Coin blocking implemented
+✅ Users redirected to pricing when insufficient coins
+
+## 🎯 NEXT STEPS
+
+1. Create Stripe products
+2. Update price IDs in backend
+3. Test payment flow
+4. Deploy to production
+
+
+## 🔧 COIN BLOCKING IMPLEMENTED
+
+✅ **CoinBlocking Component**: Blocks users without sufficient coins
+✅ **Music Video Creator**: Now checks coin balance before generation
+✅ **Pricing Redirect**: Users sent to pricing page when insufficient coins
+✅ **Founder Plans**: Direct links to lifetime plans for unlimited access
+
+## 💡 HOW IT WORKS
+
+1. **User tries to generate video** → System checks coin balance
+2. **Insufficient coins** → Shows coin blocking overlay with pricing options
+3. **User clicks "Get More Coins"** → Redirects to pricing page
+4. **User clicks "Founder Plan"** → Redirects to specific founder plan
+5. **Payment successful** → User gets unlimited coins for lifetime access
+
+
+## 🚀 REVENUE FLOW
+
+- **Free users**: Get 10 free coins to try the service
+- **Coin users**: Purchase individual coin packages ($2.99-$109.99)
+- **Founder users**: Pay once for lifetime unlimited access ($197/$497/$997)
+- **Blocking**: Users cannot use features without payment

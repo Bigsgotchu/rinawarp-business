@@ -22,7 +22,7 @@ export class OnboardingSystem {
           id: 'welcome',
           title: 'Welcome to RinaWarp Terminal Pro! 🧜‍♀️',
           description:
-            'Let\'s take a quick tour of your new AI-powered terminal.',
+            "Let's take a quick tour of your new AI-powered terminal.",
           target: '.terminal-container',
           position: 'center',
           action: 'highlight',
@@ -201,31 +201,31 @@ export class OnboardingSystem {
     const overlayRect = overlay.getBoundingClientRect();
 
     switch (step.position) {
-    case 'top':
-      overlay.style.position = 'fixed';
-      overlay.style.top = `${rect.top - overlayRect.height - 20}px`;
-      overlay.style.left = `${rect.left + rect.width / 2 - overlayRect.width / 2}px`;
-      break;
-    case 'bottom':
-      overlay.style.position = 'fixed';
-      overlay.style.top = `${rect.bottom + 20}px`;
-      overlay.style.left = `${rect.left + rect.width / 2 - overlayRect.width / 2}px`;
-      break;
-    case 'left':
-      overlay.style.position = 'fixed';
-      overlay.style.top = `${rect.top + rect.height / 2 - overlayRect.height / 2}px`;
-      overlay.style.left = `${rect.left - overlayRect.width - 20}px`;
-      break;
-    case 'right':
-      overlay.style.position = 'fixed';
-      overlay.style.top = `${rect.top + rect.height / 2 - overlayRect.height / 2}px`;
-      overlay.style.left = `${rect.right + 20}px`;
-      break;
-    default: // center
-      overlay.style.position = 'fixed';
-      overlay.style.top = '50%';
-      overlay.style.left = '50%';
-      overlay.style.transform = 'translate(-50%, -50%)';
+      case 'top':
+        overlay.style.position = 'fixed';
+        overlay.style.top = `${rect.top - overlayRect.height - 20}px`;
+        overlay.style.left = `${rect.left + rect.width / 2 - overlayRect.width / 2}px`;
+        break;
+      case 'bottom':
+        overlay.style.position = 'fixed';
+        overlay.style.top = `${rect.bottom + 20}px`;
+        overlay.style.left = `${rect.left + rect.width / 2 - overlayRect.width / 2}px`;
+        break;
+      case 'left':
+        overlay.style.position = 'fixed';
+        overlay.style.top = `${rect.top + rect.height / 2 - overlayRect.height / 2}px`;
+        overlay.style.left = `${rect.left - overlayRect.width - 20}px`;
+        break;
+      case 'right':
+        overlay.style.position = 'fixed';
+        overlay.style.top = `${rect.top + rect.height / 2 - overlayRect.height / 2}px`;
+        overlay.style.left = `${rect.right + 20}px`;
+        break;
+      default: // center
+        overlay.style.position = 'fixed';
+        overlay.style.top = '50%';
+        overlay.style.left = '50%';
+        overlay.style.transform = 'translate(-50%, -50%)';
     }
   }
 

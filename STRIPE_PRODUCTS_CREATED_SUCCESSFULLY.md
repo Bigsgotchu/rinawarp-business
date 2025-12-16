@@ -1,6 +1,7 @@
 # Stripe Products Created Successfully ✅
 
 ## Configuration Summary
+
 - **Business Name**: RinaWarp Terminal Pro
 - **Environment**: Production (Live Mode)
 - **API Key**: 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
@@ -9,6 +10,7 @@
 ## Products & Prices Created
 
 ### 1️⃣ BASIC — $9.99/month
+
 - **Product ID**: `prod_TbA4GHQbUAWI5D`
 - **Price ID**: `price_1SdxksGZrRdZy3W9NSDRHfes`
 - **Description**: Unlimited local terminal, limited AI agent, persistent memory
@@ -16,6 +18,7 @@
 - **Billing**: Monthly subscription
 
 ### 2️⃣ STARTER — $29/month
+
 - **Product ID**: `prod_TbA5D24sTqSV2m`
 - **Price ID**: `price_1Sdxl7GZrRdZy3W9INQvidPf`
 - **Description**: Advanced agent modes, more AI usage, basic automation
@@ -23,6 +26,7 @@
 - **Billing**: Monthly subscription
 
 ### 3️⃣ CREATOR — $69/month
+
 - **Product ID**: `prod_TbA5j3tRuZhh4a`
 - **Price ID**: `price_1SdxlKGZrRdZy3W9TvaLugc7`
 - **Description**: Voice AI, faster agent reasoning, higher limits, more modules
@@ -30,6 +34,7 @@
 - **Billing**: Monthly subscription
 
 ### 4️⃣ PRO — $99/month
+
 - **Product ID**: `prod_TbA54FTFeLSFN4`
 - **Price ID**: `price_1SdxlXGZrRdZy3W9Wr1XLBIe`
 - **Description**: Unlimited AI agent, full automation suite, all modules unlocked
@@ -37,6 +42,7 @@
 - **Billing**: Monthly subscription
 
 ### 5️⃣ LIFETIME — FOUNDER ($699, LIMITED)
+
 - **Product ID**: `prod_TbA5JYP2dWBNzZ`
 - **Price ID**: `price_1SdxlmGZrRdZy3W9ncwPfgFr`
 - **Description**: Lifetime license — early supporter edition (limited)
@@ -44,6 +50,7 @@
 - **Billing**: One-time payment (no recurring)
 
 ### 6️⃣ LIFETIME — PIONEER ($800, LIMITED)
+
 - **Product ID**: `prod_TbA6yGiwQmKRXk`
 - **Price ID**: `price_1Sdxm2GZrRdZy3W9C5tQcWiW`
 - **Description**: Lifetime license — second wave supporters
@@ -51,6 +58,7 @@
 - **Billing**: One-time payment (no recurring)
 
 ### 7️⃣ LIFETIME — EVERGREEN ($999)
+
 - **Product ID**: `prod_TbA6JPBxdf9VHZ`
 - **Price ID**: `price_1SdxmFGZrRdZy3W9skXi3jvE`
 - **Description**: Lifetime license — full access, no subscriptions
@@ -58,20 +66,22 @@
 - **Billing**: One-time payment (no recurring)
 
 ## Landing Page Requirements (EXACT MATCH)
+
 Your website pricing page should display:
 
-| Tier | Price | Stripe Type |
-|------|-------|-------------|
-| Free | $0 | No Stripe |
-| Basic | $9.99/mo | Subscription |
-| Starter | $29/mo | Subscription |
-| Creator | $69/mo | Subscription |
-| Pro | $99/mo | Subscription |
-| Founder Lifetime | $699 | One-time |
-| Pioneer Lifetime | $800 | One-time |
-| Evergreen Lifetime | $999 | One-time |
+| Tier               | Price    | Stripe Type  |
+| ------------------ | -------- | ------------ |
+| Free               | $0       | No Stripe    |
+| Basic              | $9.99/mo | Subscription |
+| Starter            | $29/mo   | Subscription |
+| Creator            | $69/mo   | Subscription |
+| Pro                | $99/mo   | Subscription |
+| Founder Lifetime   | $699     | One-time     |
+| Pioneer Lifetime   | $800     | One-time     |
+| Evergreen Lifetime | $999     | One-time     |
 
 ⚠️ **Important Notes:**
+
 - ✅ No annual discounts shown yet
 - ✅ No bundling lifetime with subscriptions
 - ✅ Exact pricing matches landing page requirements
@@ -88,8 +98,8 @@ entitlements = {
   ai_limit: number | 'unlimited',
   voice: boolean,
   modules: boolean,
-  lifetime: boolean
-}
+  lifetime: boolean,
+};
 ```
 
 ## Environment Variables for Production
@@ -119,6 +129,7 @@ RINAWARP_EVERGREEN_PRICE_ID=price_1SdxmFGZrRdZy3W9skXi3jvE
 ## Status: ✅ COMPLETE
 
 🟢 **FINAL STATUS**
+
 - ✔ Stripe products clean
 - ✔ Prices match landing page exactly
 - ✔ Upgrade ladder intact

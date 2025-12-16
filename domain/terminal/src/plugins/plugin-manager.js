@@ -259,17 +259,17 @@ class PluginManager extends EventEmitter {
     let template = '';
 
     switch (type) {
-    case 'command':
-      template = this.getCommandPluginTemplate(pluginId, name);
-      break;
-    case 'theme':
-      template = this.getThemePluginTemplate(pluginId, name);
-      break;
-    case 'workflow':
-      template = this.getWorkflowPluginTemplate(pluginId, name);
-      break;
-    default:
-      template = this.getBasicPluginTemplate(pluginId, name);
+      case 'command':
+        template = this.getCommandPluginTemplate(pluginId, name);
+        break;
+      case 'theme':
+        template = this.getThemePluginTemplate(pluginId, name);
+        break;
+      case 'workflow':
+        template = this.getWorkflowPluginTemplate(pluginId, name);
+        break;
+      default:
+        template = this.getBasicPluginTemplate(pluginId, name);
     }
 
     fs.writeFileSync(pluginPath, template);

@@ -67,12 +67,12 @@ class FeatureLimitsProduction {
       return stored
         ? JSON.parse(stored)
         : {
-          aiQueries: 0,
-          macros: 0,
-          voiceCommands: 0,
-          deviceLicenses: 0,
-          lastReset: Date.now(),
-        };
+            aiQueries: 0,
+            macros: 0,
+            voiceCommands: 0,
+            deviceLicenses: 0,
+            lastReset: Date.now(),
+          };
     } catch (error) {
       console.error('Error loading usage data:', error);
       return {

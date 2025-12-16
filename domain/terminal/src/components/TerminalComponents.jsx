@@ -100,10 +100,10 @@ export function TerminalInput({
               onClick={() => onSuggestionSelect?.(index)}
               className={`p-4 cursor-pointer transition-all duration-300 rounded-xl mx-2 my-1
                          ${
-            index === selectedSuggestion
-              ? 'bg-gradient-to-r from-mermaid-seaweed to-mermaid-cyan text-mermaid-ocean scale-105 shadow-seaweed-glow'
-              : 'hover:bg-mermaid-seaweed/20 hover:translate-x-2 hover:shadow-seaweed-glow/30'
-            }`}
+                           index === selectedSuggestion
+                             ? 'bg-gradient-to-r from-mermaid-seaweed to-mermaid-cyan text-mermaid-ocean scale-105 shadow-seaweed-glow'
+                             : 'hover:bg-mermaid-seaweed/20 hover:translate-x-2 hover:shadow-seaweed-glow/30'
+                         }`}
               role="option"
               aria-selected={index === selectedSuggestion}
             >

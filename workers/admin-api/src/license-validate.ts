@@ -3,8 +3,8 @@ function jsonResponse(status: number, body: any): Response {
   return new Response(JSON.stringify(body, null, 2), {
     status,
     headers: {
-      "content-type": "application/json; charset=utf-8",
-      "access-control-allow-origin": "*",
+      'content-type': 'application/json; charset=utf-8',
+      'access-control-allow-origin': '*',
     },
   });
 }
@@ -20,47 +20,47 @@ function jsonResponse(status: number, body: any): Response {
 export async function handleLicenseValidate(request: Request, env: Env): Promise<Response> {
   // Parse input
   let key: string | null = null;
-  const contentType = request.headers.get("content-type") || "";
+  const contentType = request.headers.get('content-type') || '';
 
   try {
-    if (contentType.includes("application/json")) {
+    if (contentType.includes('application/json')) {
       const body = await request.json();
-      key = (body.key || "").trim();
-    } else if (contentType.includes("application/x-www-form-urlencoded")) {
+      key = (body.key || '').trim();
+    } else if (contentType.includes('application/x-www-form-urlencoded')) {
       const form = await request.formData();
-      key = (form.get("key") || "").toString().trim();
+      key = (form.get('key') || '').toString().trim();
     } else {
       // Fallback: try formData anyway (for odd clients)
       const form = await request.formData().catch(() => null);
       if (form) {
-        key = (form.get("key") || "").toString().trim();
+        key = (form.get('key') || '').toString().trim();
       }
     }
   } catch (err) {
     return jsonResponse(400, {
       ok: false,
-      status: "error",
-      message: "Unable to parse request body.",
+      status: 'error',
+      message: 'Unable to parse request body.',
     });
   }
 
   if (!key) {
     return jsonResponse(400, {
       ok: false,
-      status: "error",
-      message: "No license key provided.",
+      status: 'error',
+      message: 'No license key provided.',
     });
   }
 
   // Look up license in KV
   const kvKey = `license:${key}`;
-  const record = await env.LICENSES_KV.get(kvKey, "json");
+  const record = await env.LICENSES_KV.get(kvKey, 'json');
 
   if (!record) {
     return jsonResponse(200, {
       ok: false,
-      status: "invalid",
-      message: "This license key is not recognized.",
+      status: 'invalid',
+      message: 'This license key is not recognized.',
     });
   }
 
@@ -75,42 +75,42 @@ export async function handleLicenseValidate(request: Request, env: Env): Promise
   // }
 
   const now = Date.now();
-  let status = record.status || "active";
+  let status = record.status || 'active';
   let expiresAt = record.expiresAt ? Date.parse(record.expiresAt) : null;
 
   // If we have an expiry date and it's passed, treat as expired
   if (expiresAt && expiresAt < now) {
-    status = "expired";
+    status = 'expired';
   }
 
-  if (status === "revoked") {
+  if (status === 'revoked') {
     return jsonResponse(200, {
       ok: false,
-      status: "revoked",
+      status: 'revoked',
       product: record.product || null,
-      message: "This license has been revoked. Contact support if you believe this is an error.",
+      message: 'This license has been revoked. Contact support if you believe this is an error.',
     });
   }
 
-  if (status === "expired") {
+  if (status === 'expired') {
     return jsonResponse(200, {
       ok: false,
-      status: "expired",
+      status: 'expired',
       product: record.product || null,
       expires: record.expiresAt || null,
-      message: "This license key has expired. Please renew or purchase a new license.",
+      message: 'This license key has expired. Please renew or purchase a new license.',
     });
   }
 
   // At this point, license is considered valid
   const responseBody = {
     ok: true,
-    status: "valid",
-    product: record.product || "terminal-pro",
+    status: 'valid',
+    product: record.product || 'terminal-pro',
     license: key,
     issued: record.issuedAt || null,
     expires: record.expiresAt || null,
-    message: "License successfully validated.",
+    message: 'License successfully validated.',
   };
 
   // Optionally track lastValidatedAt
@@ -120,7 +120,7 @@ export async function handleLicenseValidate(request: Request, env: Env): Promise
       JSON.stringify({
         ...record,
         lastValidatedAt: new Date().toISOString(),
-      })
+      }),
     );
   } catch (e) {
     // non-fatal, don't break validation on KV write failure

@@ -5,20 +5,20 @@
     console.log('Import successful!');
     console.log('App type:', typeof app);
     console.log('BrowserWindow type:', typeof BrowserWindow);
-    
+
     if (app && typeof app.whenReady === 'function') {
       console.log('Calling app.whenReady...');
       await app.whenReady();
       console.log('App.whenReady() successful!');
-      
+
       const win = new BrowserWindow({
         width: 400,
         height: 300,
-        show: false
+        show: false,
       });
-      
+
       console.log('Window created successfully!');
-      
+
       setTimeout(() => {
         app.quit();
       }, 1000);

@@ -145,22 +145,22 @@ app.post('/verify', async (req, res) => {
 
 // 🔹 Standard auth verification endpoint
 app.post('/auth/verify', async (req, res) => {
-  const auth = req.headers.authorization || "";
-  if (!auth.startsWith("Bearer ")) {
+  const auth = req.headers.authorization || '';
+  if (!auth.startsWith('Bearer ')) {
     return res.status(200).json({ valid: false, user: null });
   }
 
-  const token = auth.slice("Bearer ".length).trim();
+  const token = auth.slice('Bearer '.length).trim();
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret');
 
     // Enrich user data from token
     const user = {
-      id: decoded.userId || decoded.sub || decoded.id || "unknown",
+      id: decoded.userId || decoded.sub || decoded.id || 'unknown',
       email: decoded.email || null,
-      plan: decoded.plan || "free",
-      roles: decoded.roles || ["user"]
+      plan: decoded.plan || 'free',
+      roles: decoded.roles || ['user'],
     };
 
     return res.json({ valid: true, user });

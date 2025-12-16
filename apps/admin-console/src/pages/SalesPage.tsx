@@ -1,50 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-const API_BASE = 'https://rinawarptech.com'
+const API_BASE = 'https://rinawarptech.com';
 
 type LifetimeResponse = {
-  product: string
-  count: number
-}
+  product: string;
+  count: number;
+};
 
 export const SalesPage: React.FC = () => {
-  const [product, setProduct] = useState('terminal_pro')
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<LifetimeResponse | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [product, setProduct] = useState('terminal_pro');
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<LifetimeResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchLifetimeCount = async () => {
-    setLoading(true)
-    setError(null)
-    setResult(null)
+    setLoading(true);
+    setError(null);
+    setResult(null);
     try {
       const res = await fetch(`${API_BASE}/api/analytics`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           action: 'get_lifetime_count',
-          product
-        })
-      })
+          product,
+        }),
+      });
 
       if (!res.ok) {
-        const text = await res.text()
-        throw new Error(`HTTP ${res.status}: ${text}`)
+        const text = await res.text();
+        throw new Error(`HTTP ${res.status}: ${text}`);
       }
 
-      const data = await res.json()
+      const data = await res.json();
       setResult({
         product: data.product ?? product,
-        count: data.count ?? 0
-      })
+        count: data.count ?? 0,
+      });
     } catch (err: any) {
-      setError(err.message ?? 'Unknown error')
+      setError(err.message ?? 'Unknown error');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-4 text-sm">
@@ -58,7 +58,7 @@ export const SalesPage: React.FC = () => {
           <label className="text-xs text-slate-400">Product key</label>
           <select
             value={product}
-            onChange={e => setProduct(e.target.value)}
+            onChange={(e) => setProduct(e.target.value)}
             className="bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-sm outline-none focus:ring-1 focus:ring-emerald-500"
           >
             <option value="terminal_pro">terminal_pro</option>
@@ -97,5 +97,5 @@ export const SalesPage: React.FC = () => {
         restricted to internal tooling only and protected via Cloudflare Access or VPN.
       </div>
     </div>
-  )
-}
+  );
+};

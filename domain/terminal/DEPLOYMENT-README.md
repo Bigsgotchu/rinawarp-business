@@ -8,6 +8,7 @@
 - Domain name pointing to your server (e.g., `rinawarptech.com`)
 - Stripe account with API keys
 
+
 ### Automated Deployment (One Command)
 
 ```bash
@@ -28,11 +29,13 @@ This script will automatically:
 - ✅ Test the deployment
 - ✅ Provide management commands
 
+
 ### Manual Deployment (Advanced Users)
 
 ### 1. Environment Setup
 
 1. **Configure Environment Variables**
+
 
    ```bash
    cd src/domain/terminal
@@ -60,6 +63,8 @@ This script will automatically:
    ```
 
 2. **Update Frontend API URL**
+
+
    Edit `public/music-video/index.html` and update:
 
    ```javascript
@@ -106,11 +111,13 @@ pm2 save
 
    - Update `STRIPE_WEBHOOK_SECRET` in `.env`
 
+
 ### 4. Domain Configuration
 
 **Option A: Nginx Reverse Proxy (Recommended)**
 
 1. **Install Nginx:**
+
 
    ```bash
    sudo apt update
@@ -118,6 +125,7 @@ pm2 save
    ```
 
 2. **Create Nginx Configuration:**
+
 
    ```bash
    # Copy the configuration file
@@ -135,6 +143,7 @@ pm2 save
    ```
 
 3. **Install SSL with Certbot:**
+
 
    ```bash
    # Install Certbot
@@ -155,10 +164,12 @@ pm2 save
 - Point your domain's A record to your server IP
 - Update `DOMAIN` in `.env` to your actual domain
 
+
 **Option B: Direct Domain**
 
 - Point your domain's A record to your server IP
 - Update `DOMAIN` in `.env` to your actual domain
+
 
 ### 5. SSL Certificate (Required for Production)
 
@@ -230,9 +241,11 @@ curl http://localhost:3001/health
    - Update CORS origins in `server.js`
    - Check domain configuration
 
+
 ### Testing Subscription Flow
 
 1. **Start server locally:**
+
 
    ```bash
    cd src/domain/terminal
@@ -240,6 +253,7 @@ curl http://localhost:3001/health
    ```
 
 2. **Test API endpoints:**
+
 
    ```bash
    curl http://localhost:3001/health
@@ -252,6 +266,7 @@ curl http://localhost:3001/health
    - Open `http://localhost:3001/music-video`
    - Try purchasing a subscription
    - Check browser console for errors
+
 
 ## 📋 Production Checklist
 
@@ -266,6 +281,7 @@ curl http://localhost:3001/health
 - [ ] Health check endpoint working
 - [ ] Subscription flow tested
 
+
 ## 🚨 Security Notes
 
 - Never commit `.env` files to version control
@@ -274,6 +290,7 @@ curl http://localhost:3001/health
 - Regularly rotate API keys
 - Monitor server logs for suspicious activity
 - Keep Node.js and dependencies updated
+
 
 ## 📞 Support
 

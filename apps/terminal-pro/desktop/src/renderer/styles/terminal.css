@@ -2,774 +2,845 @@
 
 /* Xterm.js Terminal Styling */
 .xterm {
-    font-feature-settings: "liga" 0;
-    position: relative;
-    user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
+  font-feature-settings: 'liga' 0;
+  position: relative;
+  user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
 }
 
 .xterm.focus,
 .xterm:focus {
-    outline: none;
+  outline: none;
 }
 
 .xterm .xterm-helpers {
-    position: absolute;
-    top: 0;
-    z-index: 5;
+  position: absolute;
+  inset-block-start: 0;
+  z-index: 5;
 }
 
 .xterm .xterm-helper-textarea {
-    padding: 0;
-    border: 0;
-    margin: 0;
-    position: absolute;
-    opacity: 0;
-    left: -9999em;
-    top: 0;
-    width: 0;
-    height: 0;
-    z-index: -5;
-    white-space: nowrap;
-    overflow: hidden;
-    resize: none;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  position: absolute;
+  opacity: 0;
+  inset-inline-start: -9999em;
+  inset-block-start: 0;
+  width: 0;
+  height: 0;
+  z-index: -5;
+  white-space: nowrap;
+  overflow: hidden;
+  resize: none;
 }
 
 .xterm .composition-view {
-    background: var(--terminal-bg);
-    color: var(--terminal-text);
-    display: none;
-    position: absolute;
-    white-space: nowrap;
-    z-index: 1;
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  display: none;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 1;
 }
 
 .xterm .composition-view.active {
-    display: block;
+  display: block;
 }
 
 .xterm .xterm-viewport {
-    background-color: var(--terminal-bg);
-    overflow-y: scroll;
-    cursor: default;
-    position: absolute;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
+  background-color: var(--terminal-bg);
+  overflow-y: scroll;
+  cursor: default;
+  position: absolute;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
 }
 
 .xterm .xterm-screen {
-    position: relative;
+  position: relative;
 }
 
 .xterm .xterm-scroll-area {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .xterm .xterm-scrollbars {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .xterm .xterm-scrollbars > div {
-    position: absolute;
-    z-index: 6;
-    color: var(--terminal-text);
+  position: absolute;
+  z-index: 6;
+  color: var(--terminal-text);
 }
 
 .xterm .xterm-scrollbars .scrollbar-bottom {
-    bottom: 0;
+  inset-block-end: 0;
 }
 
 .xterm .xterm-scrollbars .scrollbar-top {
-    top: 0;
+  inset-block-start: 0;
 }
 
 .xterm .xterm-scrollbars .scrollbar-left {
-    left: 0;
+  inset-inline-start: 0;
 }
 
 .xterm .xterm-scrollbars .scrollbar-right {
-    right: 0;
+  inset-inline-end: 0;
 }
 
 .xterm .xterm-scrollbars .scrollbar-thumb {
-    background-color: var(--terminal-text);
-    opacity: 0.3;
-    position: relative;
-    border-radius: 3px;
+  background-color: var(--terminal-text);
+  opacity: 0.3;
+  position: relative;
+  border-radius: 3px;
 }
 
 .xterm .xterm-scrollbars .scrollbar-thumb:active {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .xterm .xterm-scrollbars .scrollbar-track {
-    background-color: var(--terminal-bg);
-    opacity: 0.3;
+  background-color: var(--terminal-bg);
+  opacity: 0.3;
 }
 
 .xterm .xterm-scrollbars .scrollbar-top.scrollbar-thumb,
 .xterm .xterm-scrollbars .scrollbar-bottom.scrollbar-thumb {
-    left: 0;
-    right: 0;
-    height: 10px;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  height: 10px;
 }
 
 .xterm .xterm-scrollbars .scrollbar-left.scrollbar-thumb,
 .xterm .xterm-scrollbars .scrollbar-right.scrollbar-thumb {
-    top: 0;
-    bottom: 0;
-    width: 10px;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  width: 10px;
 }
 
 .xterm .xterm-scrollbars .scrollbar-track-x {
-    height: 10px;
+  height: 10px;
 }
 
 .xterm .xterm-scrollbars .scrollbar-track-y {
-    width: 10px;
+  width: 10px;
 }
 
 .xterm .xterm-scrollbars .scrollbar-track.scrollbar-scrolling {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .xterm .xterm-scrollbars .scrollbar-thumb-x {
-    height: 10px;
+  height: 10px;
 }
 
 .xterm .xterm-scrollbars .scrollbar-thumb-y {
-    width: 10px;
+  width: 10px;
 }
 
 .xterm .xterm-scrollbars .scrollbar-slider {
-    background: var(--terminal-text);
-    opacity: 0.3;
-    position: relative;
+  background: var(--terminal-text);
+  opacity: 0.3;
+  position: relative;
 }
 
 .xterm .xterm-scrollbars .scrollbar-slider:active {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .xterm .xterm-scrollbars .scrollbar-scrollarea {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .xterm .xterm-decoration-container {
-    position: absolute;
-    z-index: 6;
-    top: 0;
-    right: 0;
-    pointer-events: none;
+  position: absolute;
+  z-index: 6;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  pointer-events: none;
 }
 
 .xterm .xterm-decoration {
-    z-index: 6;
-    pointer-events: none;
+  z-index: 6;
+  pointer-events: none;
 }
 
 .xterm .xterm-decoration-top {
-    z-index: 6;
+  z-index: 6;
 }
 
 .xterm .xterm-decoration-bottom {
-    z-index: 6;
+  z-index: 6;
 }
 
 .xterm .xterm-decoration-layer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    pointer-events: none;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  pointer-events: none;
 }
 
 .xterm .xterm-decoration-layer-top {
-    z-index: 6;
+  z-index: 6;
 }
 
 .xterm .xterm-decoration-layer-bottom {
-    z-index: 6;
+  z-index: 6;
 }
 
 .xterm .xterm-decoration.z-index-top {
-    z-index: 6;
+  z-index: 6;
 }
 
 .xterm .xterm-decoration.z-index-bottom {
-    z-index: 6;
+  z-index: 6;
 }
 
 .xterm .xterm-screen canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 0;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  z-index: 0;
 }
 
 .xterm .xterm-scroll-area {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .xterm-char-measure-element {
-    display: inline-block;
-    visibility: hidden;
+  display: inline-block;
+  visibility: hidden;
 }
 
 .xterm.enable-mouse-events {
-    cursor: default;
+  cursor: default;
 }
 
 .xterm.xterm-cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .xterm.column-select.focus {
-    cursor: crosshair;
+  cursor: crosshair;
 }
 
 .xterm .xterm-accessibility,
 .xterm .xterm-message {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 10;
-    color: transparent;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  z-index: 10;
+  color: transparent;
 }
 
 .xterm .live-region {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
+  position: absolute;
+  inset-inline-start: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .xterm-dim {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .xterm .xterm-decoration-overview-ruler {
-    z-index: 7;
-    position: absolute;
-    pointer-events: none;
-    top: 0;
-    right: 0;
-    left: auto;
-    opacity: 0.3;
+  z-index: 7;
+  position: absolute;
+  pointer-events: none;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  opacity: 0.3;
 }
 
 .xterm-decoration-top {
-    z-index: 2;
-    position: relative;
+  z-index: 2;
+  position: relative;
 }
 
 .xterm-decoration-bottom {
-    z-index: 2;
-    position: relative;
+  z-index: 2;
+  position: relative;
 }
 
 .xterm-decoration-layer-top {
-    z-index: 2;
-    position: relative;
+  z-index: 2;
+  position: relative;
 }
 
 .xterm-decoration-layer-bottom {
-    z-index: 2;
-    position: relative;
+  z-index: 2;
+  position: relative;
 }
 
 .xterm-decoration-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  pointer-events: none;
 }
 
 .xterm-decoration-overview-ruler {
-    z-index: 7;
-    position: absolute;
-    pointer-events: none;
-    top: 0;
-    right: 0;
-    left: auto;
-    opacity: 0.3;
+  z-index: 7;
+  position: absolute;
+  pointer-events: none;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  opacity: 0.3;
 }
 
 /* Terminal Content Styling */
 .terminal-instance {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .terminal-content {
-    flex: 1;
-    position: relative;
-    background: var(--terminal-bg);
+  flex: 1;
+  position: relative;
+  background: var(--terminal-bg);
 }
 
 /* RinaWarp Custom Terminal Enhancements */
 .xterm .terminal-header {
-    background: var(--rw-surface);
-    color: var(--rw-text-primary);
-    padding: 4px 8px;
-    font-size: 12px;
-    border-bottom: 1px solid var(--rw-border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  background: var(--rw-surface);
+  color: var(--rw-text-primary);
+  padding: 4px 8px;
+  font-size: 12px;
+  border-inset-block-end: 1px solid var(--rw-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .terminal-status-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--rw-secondary);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rw-secondary);
 }
 
 .terminal-status-indicator.error {
-    background: #ff4757;
+  background: #ff4757;
 }
 
 .terminal-status-indicator.warning {
-    background: var(--rw-accent);
+  background: var(--rw-accent);
 }
 
 .terminal-path {
-    font-family: var(--font-mono);
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  font-family: var(--font-mono);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Terminal Selection Styles */
 .xterm.enable-mouse-events .xterm-viewport {
-    cursor: text;
+  cursor: text;
 }
 
 .xterm.enable-mouse-events.xterm-column-select.focus .xterm-viewport {
-    cursor: crosshair;
+  cursor: crosshair;
 }
 
 .xterm.enable-mouse-events.xterm-focus .xterm-viewport,
 .xterm.enable-mouse-events.xterm.focus .xterm-viewport {
-    cursor: default;
+  cursor: default;
 }
 
 .xterm .xterm-viewport,
 .xterm .xterm-screen {
-    /* The selection is visible. */
-    cursor: text;
+  /* The selection is visible. */
+  cursor: text;
 }
 
 .xterm.column-select.focus .xterm-viewport,
 .xterm.column-select.focus .xterm-screen {
-    cursor: crosshair;
+  cursor: crosshair;
 }
 
 .xterm.enable-mouse-events.xterm-not-.focus .xterm-viewport,
 .xterm.enable-mouse-events.xterm-not-focus .xterm-viewport {
-    cursor: default;
+  cursor: default;
 }
 
 /* Terminal Input Area */
 .xterm .prompt {
-    color: var(--rw-secondary);
+  color: var(--rw-secondary);
 }
 
 .xterm .cursor-layer {
-    z-index: 4;
+  z-index: 4;
 }
 
 .xterm .cursor-layer .xterm-cursor-layer {
-    z-index: 4;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 6;
-    pointer-events: none;
+  z-index: 4;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  z-index: 6;
+  pointer-events: none;
 }
 
 .xterm .cursor-layer .xterm-cursor-layer {
-    display: none;
+  display: none;
 }
 
 .xterm .cursor-layer .xterm-cursor-layer.update {
-    display: block;
-    animation: blink 1s infinite;
+  display: block;
+  animation: blink 1s infinite;
 }
 
 @keyframes blink {
-    0%, 50% {
-        opacity: 1;
-    }
-    51%, 100% {
-        opacity: 0;
-    }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 /* Terminal Colors */
 .xterm .xterm-screen {
-    position: relative;
+  position: relative;
 }
 
 .xterm .xterm-screen .xterm-decoration-container .xterm-decoration {
-    z-index: 6;
-    position: absolute;
-    pointer-events: none;
-    display: none;
+  z-index: 6;
+  position: absolute;
+  pointer-events: none;
+  display: none;
 }
 
 .xterm .xterm-screen .xterm-decoration-container .xterm-decoration.top {
-    z-index: 6;
+  z-index: 6;
 }
 
 .xterm .xterm-screen .xterm-decoration-container .xterm-decoration.bottom {
-    z-index: 2;
+  z-index: 2;
 }
 
 .xterm .xterm-decoration-layer {
-    z-index: 6;
-    position: relative;
+  z-index: 6;
+  position: relative;
 }
 
 .xterm .xterm-decoration-layer-top {
-    z-index: 6;
-    position: relative;
+  z-index: 6;
+  position: relative;
 }
 
 .xterm .xterm-decoration-layer-bottom {
-    z-index: 6;
-    position: relative;
+  z-index: 6;
+  position: relative;
 }
 
 /* ANSI Color Support */
-.ansi-black-fg { color: #000000; }
-.ansi-red-fg { color: #e06c75; }
-.ansi-green-fg { color: #98c379; }
-.ansi-yellow-fg { color: #d19a66; }
-.ansi-blue-fg { color: #61afef; }
-.ansi-magenta-fg { color: #c678dd; }
-.ansi-cyan-fg { color: #56b6c2; }
-.ansi-white-fg { color: #abb2bf; }
+.ansi-black-fg {
+  color: #000000;
+}
+.ansi-red-fg {
+  color: #e06c75;
+}
+.ansi-green-fg {
+  color: #98c379;
+}
+.ansi-yellow-fg {
+  color: #d19a66;
+}
+.ansi-blue-fg {
+  color: #61afef;
+}
+.ansi-magenta-fg {
+  color: #c678dd;
+}
+.ansi-cyan-fg {
+  color: #56b6c2;
+}
+.ansi-white-fg {
+  color: #abb2bf;
+}
 
-.ansi-black-bg { background: #000000; }
-.ansi-red-bg { background: #e06c75; }
-.ansi-green-bg { background: #98c379; }
-.ansi-yellow-bg { background: #d19a66; }
-.ansi-blue-bg { background: #61afef; }
-.ansi-magenta-bg { background: #c678dd; }
-.ansi-cyan-bg { background: #56b6c2; }
-.ansi-white-bg { background: #abb2bf; }
+.ansi-black-bg {
+  background: #000000;
+}
+.ansi-red-bg {
+  background: #e06c75;
+}
+.ansi-green-bg {
+  background: #98c379;
+}
+.ansi-yellow-bg {
+  background: #d19a66;
+}
+.ansi-blue-bg {
+  background: #61afef;
+}
+.ansi-magenta-bg {
+  background: #c678dd;
+}
+.ansi-cyan-bg {
+  background: #56b6c2;
+}
+.ansi-white-bg {
+  background: #abb2bf;
+}
 
-.ansi-bright-black-fg { color: #5c6370; }
-.ansi-bright-red-fg { color: #e06c75; }
-.ansi-bright-green-fg { color: #98c379; }
-.ansi-bright-yellow-fg { color: #d19a66; }
-.ansi-bright-blue-fg { color: #61afef; }
-.ansi-bright-magenta-fg { color: #c678dd; }
-.ansi-bright-cyan-fg { color: #56b6c2; }
-.ansi-bright-white-fg { color: #ffffff; }
+.ansi-bright-black-fg {
+  color: #5c6370;
+}
+.ansi-bright-red-fg {
+  color: #e06c75;
+}
+.ansi-bright-green-fg {
+  color: #98c379;
+}
+.ansi-bright-yellow-fg {
+  color: #d19a66;
+}
+.ansi-bright-blue-fg {
+  color: #61afef;
+}
+.ansi-bright-magenta-fg {
+  color: #c678dd;
+}
+.ansi-bright-cyan-fg {
+  color: #56b6c2;
+}
+.ansi-bright-white-fg {
+  color: #ffffff;
+}
 
-.ansi-bright-black-bg { background: #5c6370; }
-.ansi-bright-red-bg { background: #e06c75; }
-.ansi-bright-green-bg { background: #98c379; }
-.ansi-bright-yellow-bg { background: #d19a66; }
-.ansi-bright-blue-bg { background: #61afef; }
-.ansi-bright-magenta-bg { background: #c678dd; }
-.ansi-bright-cyan-bg { background: #56b6c2; }
-.ansi-bright-white-bg { background: #ffffff; }
+.ansi-bright-black-bg {
+  background: #5c6370;
+}
+.ansi-bright-red-bg {
+  background: #e06c75;
+}
+.ansi-bright-green-bg {
+  background: #98c379;
+}
+.ansi-bright-yellow-bg {
+  background: #d19a66;
+}
+.ansi-bright-blue-bg {
+  background: #61afef;
+}
+.ansi-bright-magenta-bg {
+  background: #c678dd;
+}
+.ansi-bright-cyan-bg {
+  background: #56b6c2;
+}
+.ansi-bright-white-bg {
+  background: #ffffff;
+}
 
 /* Terminal Commands Highlighting */
 .terminal-command {
-    color: var(--rw-secondary);
+  color: var(--rw-secondary);
 }
 
 .terminal-error {
-    color: #ff4757;
+  color: #ff4757;
 }
 
 .terminal-warning {
-    color: var(--rw-accent);
+  color: var(--rw-accent);
 }
 
 .terminal-info {
-    color: var(--rw-primary);
+  color: var(--rw-primary);
 }
 
 .terminal-success {
-    color: var(--rw-secondary);
+  color: var(--rw-secondary);
 }
 
 /* Terminal Tab Styling */
 .terminal-tab {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0 16px;
-    height: 40px;
-    background: none;
-    border: none;
-    color: var(--rw-text-secondary);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: var(--rw-text-secondary);
+  cursor: pointer;
+  border-inset-block-end: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .terminal-tab:hover {
-    background-color: var(--rw-surface-light);
-    color: var(--rw-text-primary);
+  background-color: var(--rw-surface-light);
+  color: var(--rw-text-primary);
 }
 
 .terminal-tab.active {
-    background-color: var(--rw-background);
-    color: var(--rw-primary);
-    border-bottom-color: var(--rw-primary);
+  background-color: var(--rw-background);
+  color: var(--rw-primary);
+  border-bottom-color: var(--rw-primary);
 }
 
 .terminal-tab .icon {
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .terminal-tab .title {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: left;
-    min-width: 0;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  min-width: 0;
 }
 
 .terminal-tab .close-btn {
-    width: 16px;
-    height: 16px;
-    border: none;
-    background: none;
-    color: var(--rw-text-muted);
-    cursor: pointer;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: all 0.2s ease;
-    font-size: 12px;
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: none;
+  color: var(--rw-text-muted);
+  cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
+  font-size: 12px;
 }
 
 .terminal-tab:hover .close-btn {
-    opacity: 1;
+  opacity: 1;
 }
 
 .terminal-tab .close-btn:hover {
-    background-color: rgba(255, 71, 87, 0.2);
-    color: #ff4757;
+  background-color: rgba(255, 71, 87, 0.2);
+  color: #ff4757;
 }
 
 /* Terminal Activity Indicator */
 .terminal-tab.activity {
-    position: relative;
+  position: relative;
 }
 
 .terminal-tab.activity::after {
-    content: '';
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 6px;
-    height: 6px;
-    background: var(--rw-secondary);
-    border-radius: 50%;
-    animation: pulse 1.5s infinite;
+  content: '';
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  width: 6px;
+  height: 6px;
+  background: var(--rw-secondary);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.5;
-        transform: scale(1.2);
-    }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
 }
 
 /* Terminal Search */
 .terminal-search {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: var(--rw-surface);
-    border: 1px solid var(--rw-border);
-    border-radius: 4px;
-    padding: 4px 8px;
-    display: none;
-    z-index: 100;
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: none;
+  z-index: 100;
 }
 
 .terminal-search.show {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .terminal-search-input {
-    background: none;
-    border: none;
-    color: var(--rw-text-primary);
-    outline: none;
-    font-size: 12px;
-    width: 200px;
+  background: none;
+  border: none;
+  color: var(--rw-text-primary);
+  outline: none;
+  font-size: 12px;
+  width: 200px;
 }
 
 .terminal-search-btn {
-    background: none;
-    border: none;
-    color: var(--rw-text-secondary);
-    cursor: pointer;
-    font-size: 12px;
-    padding: 2px 4px;
+  background: none;
+  border: none;
+  color: var(--rw-text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
 }
 
 .terminal-search-btn:hover {
-    color: var(--rw-text-primary);
+  color: var(--rw-text-primary);
 }
 
 /* Terminal Drag and Drop */
 .terminal-content.drag-over {
-    background: var(--terminal-bg);
-    border: 2px dashed var(--rw-primary);
+  background: var(--terminal-bg);
+  border: 2px dashed var(--rw-primary);
 }
 
 .terminal-content.drag-over::before {
-    content: 'Drop files here';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--rw-surface);
-    color: var(--rw-text-primary);
-    padding: 20px 40px;
-    border-radius: 8px;
-    border: 2px dashed var(--rw-primary);
-    z-index: 1000;
-    font-size: 16px;
-    font-weight: 600;
+  content: 'Drop files here';
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--rw-surface);
+  color: var(--rw-text-primary);
+  padding: 20px 40px;
+  border-radius: 8px;
+  border: 2px dashed var(--rw-primary);
+  z-index: 1000;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 /* Terminal Context Menu */
 .context-menu {
-    background: var(--rw-surface);
-    border: 1px solid var(--rw-border);
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    padding: 4px 0;
-    z-index: 10000;
-    min-width: 150px;
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 4px 0;
+  z-index: 10000;
+  min-width: 150px;
 }
 
 .context-menu-item {
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--rw-text-primary);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--rw-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .context-menu-item:hover {
-    background-color: var(--rw-primary);
-    color: white;
+  background-color: var(--rw-primary);
+  color: white;
 }
 
 .context-menu-separator {
-    height: 1px;
-    background: var(--rw-border);
-    margin: 4px 0;
+  height: 1px;
+  background: var(--rw-border);
+  margin: 4px 0;
 }
 
 /* Terminal Loading State */
 .terminal-loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    color: var(--rw-text-secondary);
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--rw-text-secondary);
 }
 
 .terminal-loading-spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--rw-surface-light);
-    border-top: 3px solid var(--rw-primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--rw-surface-light);
+  border-inset-block-start: 3px solid var(--rw-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Terminal Error State */
 .terminal-error {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: var(--rw-text-secondary);
-    padding: 20px;
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--rw-text-secondary);
+  padding: 20px;
 }
 
 .terminal-error-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-    color: #ff4757;
+  font-size: 48px;
+  margin-inset-block-end: 16px;
+  color: #ff4757;
 }
 
 .terminal-error-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--rw-text-primary);
+  font-size: 18px;
+  font-weight: 600;
+  margin-inset-block-end: 8px;
+  color: var(--rw-text-primary);
 }
 
 .terminal-error-message {
-    font-size: 14px;
-    margin-bottom: 16px;
+  font-size: 14px;
+  margin-inset-block-end: 16px;
 }
 
 .terminal-error-retry {
-    background: var(--rw-primary);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
+  background: var(--rw-primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .terminal-error-retry:hover {
-    background: var(--rw-primary);
-    opacity: 0.9;
+  background: var(--rw-primary);
+  opacity: 0.9;
 }
 
 /* Responsive Terminal */
@@ -811,7 +882,7 @@
   gap: 8px;
   padding: 8px 10px;
   background: linear-gradient(90deg, rgba(8, 47, 73, 0.9), rgba(30, 64, 175, 0.9));
-  border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+  border-inset-block-end: 1px solid rgba(15, 23, 42, 0.9);
 }
 
 #terminal-tabs {
@@ -846,7 +917,10 @@
   gap: 6px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.05s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.05s ease;
 }
 
 .rw-tab:hover {
@@ -857,7 +931,9 @@
   background: linear-gradient(135deg, #22c1c3, #4facfe);
   color: #0b1120;
   font-weight: 600;
-  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.7), 0 14px 30px rgba(56, 189, 248, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.7),
+    0 14px 30px rgba(56, 189, 248, 0.5);
 }
 
 .rw-tab-closed {
@@ -875,13 +951,16 @@
   color: #e5e7eb;
   font-size: 18px;
   line-height: 0;
-  padding-bottom: 3px;
+  padding-inset-block-end: 3px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 4px;
-  transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+  margin-inset-inline-end: 4px;
+  transition:
+    background 0.15s ease,
+    transform 0.05s ease,
+    box-shadow 0.15s ease;
 }
 
 .rw-btn-tab-new:hover {

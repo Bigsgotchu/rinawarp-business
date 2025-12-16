@@ -5,15 +5,15 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('electronAPI', {
   // Message box
   showMessageBox: (options) => ipcRenderer.invoke('show-message-box', options),
-  
+
   // Open dialog
   showOpenDialog: (options) => ipcRenderer.invoke('show-open-dialog', options),
-  
+
   // Platform info
   platform: process.platform,
-  
+
   // Logging
-  log: (message) => ipcRenderer.send('log', message)
+  log: (message) => ipcRenderer.send('log', message),
 });
 
 // Log when preload script loads

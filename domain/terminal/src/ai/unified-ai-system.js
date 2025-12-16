@@ -38,32 +38,32 @@ class UnifiedAISystem {
       let response;
 
       switch (this.currentMode) {
-      case 'hybrid':
-        response = await this.generateHybridResponse(
-          prompt,
-          context,
-          options
-        );
-        break;
-      case 'llm':
-        response = await this.generateLLMResponse(prompt, context, options);
-        break;
-      case 'learning':
-        response = await this.generateLearningResponse(
-          prompt,
-          context,
-          options
-        );
-        break;
-      case 'local':
-        response = await this.generateLocalResponse(prompt, context, options);
-        break;
-      default:
-        response = await this.generateHybridResponse(
-          prompt,
-          context,
-          options
-        );
+        case 'hybrid':
+          response = await this.generateHybridResponse(
+            prompt,
+            context,
+            options
+          );
+          break;
+        case 'llm':
+          response = await this.generateLLMResponse(prompt, context, options);
+          break;
+        case 'learning':
+          response = await this.generateLearningResponse(
+            prompt,
+            context,
+            options
+          );
+          break;
+        case 'local':
+          response = await this.generateLocalResponse(prompt, context, options);
+          break;
+        default:
+          response = await this.generateHybridResponse(
+            prompt,
+            context,
+            options
+          );
       }
 
       // Update performance metrics
@@ -89,7 +89,7 @@ class UnifiedAISystem {
       this.updatePerformanceMetrics(Date.now() - startTime, false);
 
       return {
-        response: 'I\'m experiencing technical difficulties. Please try again.',
+        response: "I'm experiencing technical difficulties. Please try again.",
         provider: 'error',
         mode: this.currentMode,
         confidence: 0.1,
@@ -153,7 +153,7 @@ class UnifiedAISystem {
     } else {
       return {
         response:
-          'I don\'t have enough data to make a prediction yet. Keep using the terminal and I\'ll learn your patterns!',
+          "I don't have enough data to make a prediction yet. Keep using the terminal and I'll learn your patterns!",
         provider: 'learning',
         confidence: 0.1,
         sources: ['learning'],

@@ -1,6 +1,6 @@
-import { exec } from "child_process";
-import { promisify } from "util";
-import os from "os";
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import os from 'os';
 
 const execAsync = promisify(exec);
 
@@ -19,7 +19,7 @@ export interface SystemInfo {
 export async function getSystemInfo(): Promise<SystemInfo> {
   const memTotal = os.totalmem();
   const memFree = os.freemem();
-  
+
   return {
     platform: os.platform(),
     arch: os.arch(),
@@ -29,13 +29,13 @@ export async function getSystemInfo(): Promise<SystemInfo> {
     totalMemory: memTotal,
     freeMemory: memFree,
     loadAverage: os.loadavg(),
-    nodeVersion: process.version
+    nodeVersion: process.version,
   };
 }
 
 export async function getDiskUsage(): Promise<any> {
   try {
-    const { stdout } = await execAsync("df -h");
+    const { stdout } = await execAsync('df -h');
     return stdout;
   } catch (error) {
     throw new Error(`Failed to get disk usage: ${error}`);
@@ -44,7 +44,7 @@ export async function getDiskUsage(): Promise<any> {
 
 export async function getMemoryUsage(): Promise<any> {
   try {
-    const { stdout } = await execAsync("free -h");
+    const { stdout } = await execAsync('free -h');
     return stdout;
   } catch (error) {
     throw new Error(`Failed to get memory usage: ${error}`);
@@ -53,7 +53,7 @@ export async function getMemoryUsage(): Promise<any> {
 
 export async function getUptime(): Promise<any> {
   try {
-    const { stdout } = await execAsync("uptime");
+    const { stdout } = await execAsync('uptime');
     return stdout;
   } catch (error) {
     throw new Error(`Failed to get uptime: ${error}`);
@@ -77,11 +77,11 @@ export async function getSystemLogs(lines: number = 50): Promise<string> {
 
 export function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
-  
+
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 

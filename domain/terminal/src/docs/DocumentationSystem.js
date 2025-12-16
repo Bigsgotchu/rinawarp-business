@@ -677,9 +677,9 @@ rinawarp admin audit export --format=json --period=month</code></pre>
       if (command) {
         // Simulate AI response
         const responses = [
-          'Hello! I\'m Rina, your AI assistant. How can I help you today?',
-          'That\'s a great question! Let me help you with that.',
-          'I\'d be happy to assist you with that task.',
+          "Hello! I'm Rina, your AI assistant. How can I help you today?",
+          "That's a great question! Let me help you with that.",
+          "I'd be happy to assist you with that task.",
           'Let me think about that and provide you with the best solution.',
         ];
 

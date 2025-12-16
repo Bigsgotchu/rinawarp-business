@@ -1,16 +1,23 @@
-name: Preprod Smoke
+name: Preprod Smoke (staging)
 on:
-  workflow_dispatch:
   push:
-    branches: [ staging ]
+    branches: ['staging']
+  workflow_dispatch:
 jobs:
-  smoke:
+  smoke-staging:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt-get update && sudo apt-get install -y jq
       - run: chmod +x scripts/smoke/preprod.sh
-      - env:
+      - name: Run staging smoke
+        env:
           SITE_BASE: https://staging.rinawarptech.com
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
         run: bash scripts/smoke/preprod.sh
+      - name: Mark artifact on PASS
+        run: echo '{"status":"green","env":"staging","at":"'$(date -Is)'"}' > staging-green.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: staging-green
+          path: staging-green.json

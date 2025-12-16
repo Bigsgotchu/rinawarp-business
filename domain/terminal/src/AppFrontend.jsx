@@ -26,11 +26,11 @@ function AppFrontend() {
   // Core state
   const [logs, setLogs] = useState([
     'Welcome to RinaWarp Terminal Pro - AI-Powered Terminal Emulator!',
-    'Ask me anything - I\'m your AI coding assistant!',
+    "Ask me anything - I'm your AI coding assistant!",
     'Type !ai-providers to see all available AI models',
-    'Try: \'help me with git\' or \'explain this code\'',
+    "Try: 'help me with git' or 'explain this code'",
     'Type !help to see all available commands',
-    'Run \'./setup-ai.sh\' to start the AI backend server',
+    "Run './setup-ai.sh' to start the AI backend server",
   ]);
   const [input, setInput] = useState('');
   const [stats, setStats] = useState({ cpu: 0, ram: 0, net: 0 });
@@ -222,381 +222,381 @@ function AppFrontend() {
       const specialCommand = command.slice(1).toLowerCase();
 
       switch (specialCommand) {
-      case 'help':
-        setLogs((prev) => [
-          ...prev,
-          '📋 Available commands:',
-          '!help - Show this help',
-          '!clear - Clear terminal',
-          '!stats - Show system stats',
-          '!theme <name> - Change theme',
-          '!voice - Toggle voice',
-          '!ai <provider> - Switch AI provider (groq, openai, ollama, huggingface, cohere)',
-          '!ai-providers - Show all available AI providers',
-          '!ai-config - Open AI configuration panel',
-          '!ai-mode - Show available AI modes',
-          '!ai-mode <mode> - Switch AI mode (hybrid, llm, learning, local)',
-          '!test-ai - Test AI backend connection',
-          '!test-rina - Test Rina AI integration',
-          '!chat <message> - Chat with Rina directly',
-          '!monitor - Show monitoring dashboard',
-          '!monitor-start - Start monitoring',
-          '!monitor-stop - Stop monitoring',
-          '!monitor-status - Show current status',
-          '!monitor-alerts - Show active alerts',
-          '!monitor-stripe - Show Stripe status',
-          '!alerts-config - Show alert configuration',
-          '!alerts-test - Test alert system',
-          '!onboarding - Start tutorial',
-          '!docs - Show documentation',
-          '!performance - Show performance metrics',
-          '!enterprise - Show enterprise status',
-          '!integrations - Show integrations',
-          '!update - Check for updates',
-          '!update-push - Push personal changes to production',
-          '!update-status - Show update status',
-        ]);
-        break;
-      case 'clear':
-        setLogs([]);
-        break;
-      case 'stats':
-        setLogs((prev) => [
-          ...prev,
-          `💻 CPU: ${stats.cpu.toFixed(1)}%`,
-          `🧠 RAM: ${stats.ram.toFixed(1)}%`,
-          `🌐 Network: ${stats.net} bytes/s`,
-        ]);
-        break;
-      case 'voice':
-        setVoiceEnabled(!voiceEnabled);
-        setLogs((prev) => [
-          ...prev,
-          `🎤 Voice ${!voiceEnabled ? 'enabled' : 'disabled'}`,
-        ]);
-        break;
-      case 'monitor':
-        if (monitor) {
-          monitor.showDashboard();
-        } else {
+        case 'help':
           setLogs((prev) => [
             ...prev,
-            '❌ Monitoring system not initialized',
+            '📋 Available commands:',
+            '!help - Show this help',
+            '!clear - Clear terminal',
+            '!stats - Show system stats',
+            '!theme <name> - Change theme',
+            '!voice - Toggle voice',
+            '!ai <provider> - Switch AI provider (groq, openai, ollama, huggingface, cohere)',
+            '!ai-providers - Show all available AI providers',
+            '!ai-config - Open AI configuration panel',
+            '!ai-mode - Show available AI modes',
+            '!ai-mode <mode> - Switch AI mode (hybrid, llm, learning, local)',
+            '!test-ai - Test AI backend connection',
+            '!test-rina - Test Rina AI integration',
+            '!chat <message> - Chat with Rina directly',
+            '!monitor - Show monitoring dashboard',
+            '!monitor-start - Start monitoring',
+            '!monitor-stop - Stop monitoring',
+            '!monitor-status - Show current status',
+            '!monitor-alerts - Show active alerts',
+            '!monitor-stripe - Show Stripe status',
+            '!alerts-config - Show alert configuration',
+            '!alerts-test - Test alert system',
+            '!onboarding - Start tutorial',
+            '!docs - Show documentation',
+            '!performance - Show performance metrics',
+            '!enterprise - Show enterprise status',
+            '!integrations - Show integrations',
+            '!update - Check for updates',
+            '!update-push - Push personal changes to production',
+            '!update-status - Show update status',
           ]);
-        }
-        break;
-      case 'monitor-start':
-        if (monitor) {
-          monitor.startMonitoring();
-        } else {
+          break;
+        case 'clear':
+          setLogs([]);
+          break;
+        case 'stats':
           setLogs((prev) => [
             ...prev,
-            '❌ Monitoring system not initialized',
+            `💻 CPU: ${stats.cpu.toFixed(1)}%`,
+            `🧠 RAM: ${stats.ram.toFixed(1)}%`,
+            `🌐 Network: ${stats.net} bytes/s`,
           ]);
-        }
-        break;
-      case 'monitor-stop':
-        if (monitor) {
-          monitor.stopMonitoring();
-        } else {
+          break;
+        case 'voice':
+          setVoiceEnabled(!voiceEnabled);
           setLogs((prev) => [
             ...prev,
-            '❌ Monitoring system not initialized',
+            `🎤 Voice ${!voiceEnabled ? 'enabled' : 'disabled'}`,
           ]);
-        }
-        break;
-      case 'monitor-status':
-        if (monitor) {
-          monitor.showStatus();
-        } else {
-          setLogs((prev) => [
-            ...prev,
-            '❌ Monitoring system not initialized',
-          ]);
-        }
-        break;
-      case 'monitor-alerts':
-        if (monitor) {
-          monitor.showAlerts();
-        } else {
-          setLogs((prev) => [
-            ...prev,
-            '❌ Monitoring system not initialized',
-          ]);
-        }
-        break;
-      case 'monitor-stripe':
-        if (monitor) {
-          monitor.showStripeStatus();
-        } else {
-          setLogs((prev) => [
-            ...prev,
-            '❌ Monitoring system not initialized',
-          ]);
-        }
-        break;
-      case 'alerts-config':
-        if (alertSystem) {
-          alertSystem.showConfig();
-        } else {
-          setLogs((prev) => [...prev, '❌ Alert system not initialized']);
-        }
-        break;
-      case 'alerts-test':
-        if (alertSystem) {
-          alertSystem.testAlerts();
-        } else {
-          setLogs((prev) => [...prev, '❌ Alert system not initialized']);
-        }
-        break;
-      case 'onboarding':
-        setShowOnboarding(true);
-        if (onboardingSystem) {
-          onboardingSystem.startTutorial();
-        }
-        break;
-      case 'docs':
-        setShowDocumentation(true);
-        break;
-      case 'performance':
-        if (performanceMonitor) {
-          const report = performanceMonitor.getPerformanceReport();
-          setLogs((prev) => [
-            ...prev,
-            `📊 Performance Score: ${report.score}/100`,
-            `⚡ Load Time: ${report.metrics.performance.loadTime}ms`,
-            `🧠 Memory Usage: ${report.metrics.performance.memoryUsage?.percentage || 0}%`,
-            `❌ Error Rate: ${report.metrics.performance.errorRate}`,
-          ]);
-        }
-        break;
-      case 'enterprise':
-        if (enterpriseManager) {
-          const status = enterpriseManager.getEnterpriseStatus();
-          setLogs((prev) => [
-            ...prev,
-            `🏢 Enterprise Features: ${Object.keys(status.features).filter((f) => status.features[f]).length} enabled`,
-            `👥 Team Members: ${status.team.memberCount}`,
-            `🔐 SSO: ${status.sso ? 'Configured' : 'Not configured'}`,
-            `📋 Audit Events: ${status.auditLog.totalEvents}`,
-          ]);
-        }
-        break;
-      case 'integrations':
-        if (integrationManager) {
-          const enabled = integrationManager.getEnabledIntegrations();
-          setLogs((prev) => [
-            ...prev,
-            `🔌 Enabled Integrations: ${enabled.length}`,
-            `📋 Available: ${integrationManager.getAvailableIntegrations().length}`,
-          ]);
-        }
-        break;
-      case 'update':
-        if (updateManager) {
-          setLogs((prev) => [...prev, '🔄 Checking for updates...']);
-          updateManager
-            .checkForUpdates()
-            .then((updateInfo) => {
-              if (updateInfo) {
-                setLogs((prev) => [
-                  ...prev,
-                  `✅ Update available: v${updateInfo.newVersion}`,
-                  `📦 Size: ${Math.round(updateInfo.updateSize / 1024)}KB`,
-                  `🆕 Features: ${updateInfo.features.join(', ')}`,
-                  `⚠️  Critical: ${updateInfo.critical ? 'Yes' : 'No'}`,
-                ]);
-              } else {
-                setLogs((prev) => [...prev, '✅ You\'re up to date!']);
-              }
-            })
-            .catch((error) => {
-              setLogs((prev) => [
-                ...prev,
-                `❌ Update check failed: ${error.message}`,
-              ]);
-            });
-        } else {
-          setLogs((prev) => [...prev, '❌ Update manager not initialized']);
-        }
-        break;
-      case 'update-push':
-        if (updateManager) {
-          setLogs((prev) => [
-            ...prev,
-            '📤 Pushing personal changes to production...',
-          ]);
-          updateManager
-            .pushPersonalChanges()
-            .then((result) => {
-              setLogs((prev) => [
-                ...prev,
-                '✅ Changes pushed successfully!',
-                `📊 New version: ${result.newVersion}`,
-                `📁 Processed: ${result.processedChanges} changes`,
-              ]);
-            })
-            .catch((error) => {
-              setLogs((prev) => [
-                ...prev,
-                `❌ Push failed: ${error.message}`,
-              ]);
-            });
-        } else {
-          setLogs((prev) => [...prev, '❌ Update manager not initialized']);
-        }
-        break;
-      case 'update-status':
-        if (updateManager) {
-          const status = updateManager.getUpdateStatus();
-          setLogs((prev) => [
-            ...prev,
-            '📊 Update Status:',
-            `🔢 Current Version: ${status.currentVersion}`,
-            `🔓 Personal Mode: ${status.isPersonal ? 'Yes' : 'No'}`,
-            `🔄 Auto-Update: ${status.autoUpdateEnabled ? 'Enabled' : 'Disabled'}`,
-            `⏰ Last Check: ${status.lastCheck}`,
-          ]);
-        } else {
-          setLogs((prev) => [...prev, '❌ Update manager not initialized']);
-        }
-        break;
-      case 'ai-providers':
-        setLogs((prev) => [
-          ...prev,
-          '🤖 Available AI Providers:',
-          `• Groq (Fast, Premium) - Current: ${aiProvider === 'groq' ? '✅' : '❌'}`,
-          `• OpenAI (Advanced, Premium) - Current: ${aiProvider === 'openai' ? '✅' : '❌'}`,
-          `• Ollama (Local, Free) - Current: ${aiProvider === 'ollama' ? '✅' : '❌'}`,
-          `• Hugging Face (Free Tier) - Current: ${aiProvider === 'huggingface' ? '✅' : '❌'}`,
-          `• Cohere (Free Tier) - Current: ${aiProvider === 'cohere' ? '✅' : '❌'}`,
-          '💡 Use \'!ai <provider>\' to switch',
-        ]);
-        break;
-      case 'ai-config':
-        setShowAIConfig(true);
-        break;
-      case 'ai-mode':
-        if (unifiedAISystem) {
-          const modes = unifiedAISystem.getAvailableModes();
-          setLogs((prev) => [
-            ...prev,
-            '🧠 Available AI Modes:',
-            ...modes.map((mode) => `• ${mode.name}: ${mode.description}`),
-            '💡 Use \'!ai-mode <mode>\' to switch',
-          ]);
-        }
-        break;
-      case 'test-ai':
-        setLogs((prev) => [
-          ...prev,
-          '🧪 Testing AI backend connection...',
-          '📡 Checking server at https://rinawarptech.com...',
-        ]);
-
-        // Test AI backend
-        fetch('https://rinawarptech.com/api/ai', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompt: 'Hello! Test connection.',
-            provider: 'groq',
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
+          break;
+        case 'monitor':
+          if (monitor) {
+            monitor.showDashboard();
+          } else {
             setLogs((prev) => [
               ...prev,
-              '✅ AI Backend Connected!',
-              `🤖 Response: ${data.response}`,
-              `🔧 Provider: ${data.provider || 'fallback'}`,
-              `⚡ Status: ${data.type === 'ai' ? 'Working' : 'Fallback Mode'}`,
+              '❌ Monitoring system not initialized',
             ]);
-          })
-          .catch((error) => {
-            setLogs((prev) => [
-              ...prev,
-              '❌ AI Backend Not Available',
-              '💡 Run \'./setup-ai.sh\' to start the server',
-              `🔧 Error: ${error.message}`,
-            ]);
-          });
-        break;
-      case 'test-rina':
-        if (rinaAI) {
-          setLogs((prev) => [...prev, '🧜‍♀️ Testing Rina AI integration...']);
-          rinaAI.testConnection().then((result) => {
-            if (result.success) {
-              setLogs((prev) => [
-                ...prev,
-                '✅ Rina AI is working!',
-                `💖 Response: ${result.response}`,
-                `🧜‍♀️ Personality: ${result.rinaPersonality ? 'Active' : 'Basic'}`,
-              ]);
-            } else {
-              setLogs((prev) => [
-                ...prev,
-                `❌ Rina AI test failed: ${result.error}`,
-                `🧜‍♀️ Personality: ${result.rinaPersonality ? 'Active' : 'Basic'}`,
-              ]);
-            }
-          });
-        } else {
-          setLogs((prev) => [...prev, '❌ Rina AI system not initialized']);
-        }
-        break;
-      default:
-        if (specialCommand.startsWith('theme ')) {
-          const themeName = specialCommand.split(' ')[1];
-          setCurrentTheme(themeName);
-          setLogs((prev) => [...prev, `🎨 Theme changed to ${themeName}`]);
-        } else if (specialCommand.startsWith('ai ')) {
-          const provider = specialCommand.split(' ')[1];
-          setAiProvider(provider);
-          setLogs((prev) => [
-            ...prev,
-            `🤖 AI provider changed to ${provider}`,
-          ]);
-        } else if (specialCommand.startsWith('ai-mode ')) {
-          const mode = specialCommand.split(' ')[1];
-          if (unifiedAISystem) {
-            const success = unifiedAISystem.setMode(mode);
-            if (success) {
-              setLogs((prev) => [...prev, `🧠 AI mode changed to ${mode}`]);
-            } else {
-              setLogs((prev) => [...prev, `❌ Invalid AI mode: ${mode}`]);
-            }
           }
-        } else if (specialCommand.startsWith('chat ')) {
-          const message = specialCommand.substring(5); // Remove 'chat ' prefix
-          if (rinaAI && message.trim()) {
-            setLogs((prev) => [...prev, `You: ${message}`]);
-            rinaAI
-              .chat(message, { preferredProvider: aiProvider })
-              .then((response) => {
+          break;
+        case 'monitor-start':
+          if (monitor) {
+            monitor.startMonitoring();
+          } else {
+            setLogs((prev) => [
+              ...prev,
+              '❌ Monitoring system not initialized',
+            ]);
+          }
+          break;
+        case 'monitor-stop':
+          if (monitor) {
+            monitor.stopMonitoring();
+          } else {
+            setLogs((prev) => [
+              ...prev,
+              '❌ Monitoring system not initialized',
+            ]);
+          }
+          break;
+        case 'monitor-status':
+          if (monitor) {
+            monitor.showStatus();
+          } else {
+            setLogs((prev) => [
+              ...prev,
+              '❌ Monitoring system not initialized',
+            ]);
+          }
+          break;
+        case 'monitor-alerts':
+          if (monitor) {
+            monitor.showAlerts();
+          } else {
+            setLogs((prev) => [
+              ...prev,
+              '❌ Monitoring system not initialized',
+            ]);
+          }
+          break;
+        case 'monitor-stripe':
+          if (monitor) {
+            monitor.showStripeStatus();
+          } else {
+            setLogs((prev) => [
+              ...prev,
+              '❌ Monitoring system not initialized',
+            ]);
+          }
+          break;
+        case 'alerts-config':
+          if (alertSystem) {
+            alertSystem.showConfig();
+          } else {
+            setLogs((prev) => [...prev, '❌ Alert system not initialized']);
+          }
+          break;
+        case 'alerts-test':
+          if (alertSystem) {
+            alertSystem.testAlerts();
+          } else {
+            setLogs((prev) => [...prev, '❌ Alert system not initialized']);
+          }
+          break;
+        case 'onboarding':
+          setShowOnboarding(true);
+          if (onboardingSystem) {
+            onboardingSystem.startTutorial();
+          }
+          break;
+        case 'docs':
+          setShowDocumentation(true);
+          break;
+        case 'performance':
+          if (performanceMonitor) {
+            const report = performanceMonitor.getPerformanceReport();
+            setLogs((prev) => [
+              ...prev,
+              `📊 Performance Score: ${report.score}/100`,
+              `⚡ Load Time: ${report.metrics.performance.loadTime}ms`,
+              `🧠 Memory Usage: ${report.metrics.performance.memoryUsage?.percentage || 0}%`,
+              `❌ Error Rate: ${report.metrics.performance.errorRate}`,
+            ]);
+          }
+          break;
+        case 'enterprise':
+          if (enterpriseManager) {
+            const status = enterpriseManager.getEnterpriseStatus();
+            setLogs((prev) => [
+              ...prev,
+              `🏢 Enterprise Features: ${Object.keys(status.features).filter((f) => status.features[f]).length} enabled`,
+              `👥 Team Members: ${status.team.memberCount}`,
+              `🔐 SSO: ${status.sso ? 'Configured' : 'Not configured'}`,
+              `📋 Audit Events: ${status.auditLog.totalEvents}`,
+            ]);
+          }
+          break;
+        case 'integrations':
+          if (integrationManager) {
+            const enabled = integrationManager.getEnabledIntegrations();
+            setLogs((prev) => [
+              ...prev,
+              `🔌 Enabled Integrations: ${enabled.length}`,
+              `📋 Available: ${integrationManager.getAvailableIntegrations().length}`,
+            ]);
+          }
+          break;
+        case 'update':
+          if (updateManager) {
+            setLogs((prev) => [...prev, '🔄 Checking for updates...']);
+            updateManager
+              .checkForUpdates()
+              .then((updateInfo) => {
+                if (updateInfo) {
+                  setLogs((prev) => [
+                    ...prev,
+                    `✅ Update available: v${updateInfo.newVersion}`,
+                    `📦 Size: ${Math.round(updateInfo.updateSize / 1024)}KB`,
+                    `🆕 Features: ${updateInfo.features.join(', ')}`,
+                    `⚠️  Critical: ${updateInfo.critical ? 'Yes' : 'No'}`,
+                  ]);
+                } else {
+                  setLogs((prev) => [...prev, "✅ You're up to date!"]);
+                }
+              })
+              .catch((error) => {
                 setLogs((prev) => [
                   ...prev,
-                  `${response.emoji} Rina (${response.mood}): ${response.message}`,
-                  `🔧 Provider: ${response.provider} | Energy: ${response.energy}/10`,
+                  `❌ Update check failed: ${error.message}`,
+                ]);
+              });
+          } else {
+            setLogs((prev) => [...prev, '❌ Update manager not initialized']);
+          }
+          break;
+        case 'update-push':
+          if (updateManager) {
+            setLogs((prev) => [
+              ...prev,
+              '📤 Pushing personal changes to production...',
+            ]);
+            updateManager
+              .pushPersonalChanges()
+              .then((result) => {
+                setLogs((prev) => [
+                  ...prev,
+                  '✅ Changes pushed successfully!',
+                  `📊 New version: ${result.newVersion}`,
+                  `📁 Processed: ${result.processedChanges} changes`,
                 ]);
               })
               .catch((error) => {
                 setLogs((prev) => [
                   ...prev,
-                  `❌ Chat error: ${error.message}`,
+                  `❌ Push failed: ${error.message}`,
                 ]);
               });
-          } else if (!message.trim()) {
-            setLogs((prev) => [...prev, '❓ Usage: !chat <your message>']);
           } else {
-            setLogs((prev) => [...prev, '❌ Rina AI not available']);
+            setLogs((prev) => [...prev, '❌ Update manager not initialized']);
           }
-        } else {
+          break;
+        case 'update-status':
+          if (updateManager) {
+            const status = updateManager.getUpdateStatus();
+            setLogs((prev) => [
+              ...prev,
+              '📊 Update Status:',
+              `🔢 Current Version: ${status.currentVersion}`,
+              `🔓 Personal Mode: ${status.isPersonal ? 'Yes' : 'No'}`,
+              `🔄 Auto-Update: ${status.autoUpdateEnabled ? 'Enabled' : 'Disabled'}`,
+              `⏰ Last Check: ${status.lastCheck}`,
+            ]);
+          } else {
+            setLogs((prev) => [...prev, '❌ Update manager not initialized']);
+          }
+          break;
+        case 'ai-providers':
           setLogs((prev) => [
             ...prev,
-            `❓ Unknown command: ${specialCommand}`,
+            '🤖 Available AI Providers:',
+            `• Groq (Fast, Premium) - Current: ${aiProvider === 'groq' ? '✅' : '❌'}`,
+            `• OpenAI (Advanced, Premium) - Current: ${aiProvider === 'openai' ? '✅' : '❌'}`,
+            `• Ollama (Local, Free) - Current: ${aiProvider === 'ollama' ? '✅' : '❌'}`,
+            `• Hugging Face (Free Tier) - Current: ${aiProvider === 'huggingface' ? '✅' : '❌'}`,
+            `• Cohere (Free Tier) - Current: ${aiProvider === 'cohere' ? '✅' : '❌'}`,
+            "💡 Use '!ai <provider>' to switch",
           ]);
-        }
+          break;
+        case 'ai-config':
+          setShowAIConfig(true);
+          break;
+        case 'ai-mode':
+          if (unifiedAISystem) {
+            const modes = unifiedAISystem.getAvailableModes();
+            setLogs((prev) => [
+              ...prev,
+              '🧠 Available AI Modes:',
+              ...modes.map((mode) => `• ${mode.name}: ${mode.description}`),
+              "💡 Use '!ai-mode <mode>' to switch",
+            ]);
+          }
+          break;
+        case 'test-ai':
+          setLogs((prev) => [
+            ...prev,
+            '🧪 Testing AI backend connection...',
+            '📡 Checking server at https://rinawarptech.com...',
+          ]);
+
+          // Test AI backend
+          fetch('https://rinawarptech.com/api/ai', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prompt: 'Hello! Test connection.',
+              provider: 'groq',
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              setLogs((prev) => [
+                ...prev,
+                '✅ AI Backend Connected!',
+                `🤖 Response: ${data.response}`,
+                `🔧 Provider: ${data.provider || 'fallback'}`,
+                `⚡ Status: ${data.type === 'ai' ? 'Working' : 'Fallback Mode'}`,
+              ]);
+            })
+            .catch((error) => {
+              setLogs((prev) => [
+                ...prev,
+                '❌ AI Backend Not Available',
+                "💡 Run './setup-ai.sh' to start the server",
+                `🔧 Error: ${error.message}`,
+              ]);
+            });
+          break;
+        case 'test-rina':
+          if (rinaAI) {
+            setLogs((prev) => [...prev, '🧜‍♀️ Testing Rina AI integration...']);
+            rinaAI.testConnection().then((result) => {
+              if (result.success) {
+                setLogs((prev) => [
+                  ...prev,
+                  '✅ Rina AI is working!',
+                  `💖 Response: ${result.response}`,
+                  `🧜‍♀️ Personality: ${result.rinaPersonality ? 'Active' : 'Basic'}`,
+                ]);
+              } else {
+                setLogs((prev) => [
+                  ...prev,
+                  `❌ Rina AI test failed: ${result.error}`,
+                  `🧜‍♀️ Personality: ${result.rinaPersonality ? 'Active' : 'Basic'}`,
+                ]);
+              }
+            });
+          } else {
+            setLogs((prev) => [...prev, '❌ Rina AI system not initialized']);
+          }
+          break;
+        default:
+          if (specialCommand.startsWith('theme ')) {
+            const themeName = specialCommand.split(' ')[1];
+            setCurrentTheme(themeName);
+            setLogs((prev) => [...prev, `🎨 Theme changed to ${themeName}`]);
+          } else if (specialCommand.startsWith('ai ')) {
+            const provider = specialCommand.split(' ')[1];
+            setAiProvider(provider);
+            setLogs((prev) => [
+              ...prev,
+              `🤖 AI provider changed to ${provider}`,
+            ]);
+          } else if (specialCommand.startsWith('ai-mode ')) {
+            const mode = specialCommand.split(' ')[1];
+            if (unifiedAISystem) {
+              const success = unifiedAISystem.setMode(mode);
+              if (success) {
+                setLogs((prev) => [...prev, `🧠 AI mode changed to ${mode}`]);
+              } else {
+                setLogs((prev) => [...prev, `❌ Invalid AI mode: ${mode}`]);
+              }
+            }
+          } else if (specialCommand.startsWith('chat ')) {
+            const message = specialCommand.substring(5); // Remove 'chat ' prefix
+            if (rinaAI && message.trim()) {
+              setLogs((prev) => [...prev, `You: ${message}`]);
+              rinaAI
+                .chat(message, { preferredProvider: aiProvider })
+                .then((response) => {
+                  setLogs((prev) => [
+                    ...prev,
+                    `${response.emoji} Rina (${response.mood}): ${response.message}`,
+                    `🔧 Provider: ${response.provider} | Energy: ${response.energy}/10`,
+                  ]);
+                })
+                .catch((error) => {
+                  setLogs((prev) => [
+                    ...prev,
+                    `❌ Chat error: ${error.message}`,
+                  ]);
+                });
+            } else if (!message.trim()) {
+              setLogs((prev) => [...prev, '❓ Usage: !chat <your message>']);
+            } else {
+              setLogs((prev) => [...prev, '❌ Rina AI not available']);
+            }
+          } else {
+            setLogs((prev) => [
+              ...prev,
+              `❓ Unknown command: ${specialCommand}`,
+            ]);
+          }
       }
       return;
     }
@@ -604,7 +604,7 @@ function AppFrontend() {
     // Simulate AI response (Warp style - no prefix)
     const responses = [
       'I understand you want to run that command!',
-      'That\'s an interesting command you\'re trying to execute.',
+      "That's an interesting command you're trying to execute.",
       'Let me help you with that command execution.',
       'I can assist you with terminal operations!',
       'Command processed successfully!',
@@ -881,7 +881,7 @@ function AppFrontend() {
                             setLogs((prev) => [
                               ...prev,
                               `❌ AI Not Available: ${error.message}`,
-                              '💡 Run \'./setup-ai.sh\' to start the server',
+                              "💡 Run './setup-ai.sh' to start the server",
                             ]);
                           });
                       }}

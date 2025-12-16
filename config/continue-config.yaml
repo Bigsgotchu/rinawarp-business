@@ -7,10 +7,10 @@ experimental:
 
 # Additional settings for rina-agent compatibility
 models:
-  - title: "Rina Agent (Local)"
-    provider: "openai"
-    model: "rina-agent"
-    apiBase: "http://localhost:3000"
+  - title: 'Rina Agent (Local)'
+    provider: 'openai'
+    model: 'rina-agent'
+    apiBase: 'http://localhost:3000'
 
 # Logging to help debug any remaining issues
 systemMessage: |

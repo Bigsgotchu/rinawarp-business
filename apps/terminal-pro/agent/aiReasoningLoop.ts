@@ -3,9 +3,9 @@
  * Planner/Executor/Verifier pattern with guardrails
  */
 
-import { planNextStep } from "./planNextStep";
-import { stateManager } from "./state-enhanced";
-import { NextStep } from "./types";
+import { planNextStep } from './planNextStep';
+import { stateManager } from './state-enhanced';
+import { NextStep } from './types';
 
 export interface Goal {
   description: string;
@@ -84,17 +84,19 @@ export class AIReasoningLoop {
   private slowLoopEnabled = false;
   private userApprovalRequired = true;
   private riskGuardrailsEnabled = true;
-  
+
   private lastSlowLoopRun = 0;
   private errorCountLastHour = 0;
   private planCache = new Map<string, Plan>();
-  
-  constructor(options: {
-    fastLoopEnabled?: boolean;
-    slowLoopEnabled?: boolean;
-    userApprovalRequired?: boolean;
-    riskGuardrailsEnabled?: boolean;
-  } = {}) {
+
+  constructor(
+    options: {
+      fastLoopEnabled?: boolean;
+      slowLoopEnabled?: boolean;
+      userApprovalRequired?: boolean;
+      riskGuardrailsEnabled?: boolean;
+    } = {},
+  ) {
     this.fastLoopEnabled = options.fastLoopEnabled ?? true;
     this.slowLoopEnabled = options.slowLoopEnabled ?? false;
     this.userApprovalRequired = options.userApprovalRequired ?? true;
@@ -137,15 +139,15 @@ export class AIReasoningLoop {
     try {
       // Build context for planning
       const context = await this.buildContext();
-      
+
       // Use existing heuristics for immediate suggestions
       const nextStep = planNextStep(context);
-      
+
       // Only return suggestions, not complex planning
       if (nextStep.kind === 'suggestion' || nextStep.kind === 'checklist') {
         return nextStep;
       }
-      
+
       return null;
     } catch (error) {
       console.warn('[AIReasoningLoop] Fast loop failed:', error);
@@ -159,13 +161,13 @@ export class AIReasoningLoop {
   private async runSlowLoop(event: any): Promise<NextStep | null> {
     try {
       this.lastSlowLoopRun = Date.now();
-      
+
       const context = await this.buildContext();
       const goal = this.extractGoal(context);
-      
+
       // Generate plan using AI reasoning
       const plan = await this.generatePlan(goal, context);
-      
+
       if (!plan || plan.steps.length === 0) {
         return null;
       }
@@ -176,21 +178,23 @@ export class AIReasoningLoop {
         const approvalRequest = this.createApprovalRequest(firstStep, plan.goal);
         return {
           kind: 'checklist',
-          items: [{
-            text: `AI suggests: ${firstStep.explanation}`,
-            acceptText: 'Approve & Execute',
-            tool: {
-              tool: 'ai.reasoning.approve',
-              input: { step: firstStep, plan }
-            }
-          }],
-          message: 'AI reasoning loop requires approval'
+          items: [
+            {
+              text: `AI suggests: ${firstStep.explanation}`,
+              acceptText: 'Approve & Execute',
+              tool: {
+                tool: 'ai.reasoning.approve',
+                input: { step: firstStep, plan },
+              },
+            },
+          ],
+          message: 'AI reasoning loop requires approval',
         };
       }
 
       // Execute first step directly if no approval needed
       const result = await this.executeStep(firstStep, context);
-      
+
       if (result.success) {
         return {
           kind: 'suggestion',
@@ -198,8 +202,8 @@ export class AIReasoningLoop {
           acceptText: 'Execute',
           tool: {
             tool: 'ai.reasoning.execute',
-            input: { step: firstStep, context }
-          }
+            input: { step: firstStep, context },
+          },
         };
       }
 
@@ -215,29 +219,29 @@ export class AIReasoningLoop {
    */
   private shouldTriggerSlowLoop(event: any): boolean {
     if (!this.slowLoopEnabled) return false;
-    
+
     const now = Date.now();
-    
+
     // Don't run too frequently (at least 30 seconds between runs)
     if (now - this.lastSlowLoopRun < 30000) {
       return false;
     }
-    
+
     // Trigger on repeated failures
     if (this.errorCountLastHour >= 3) {
       return true;
     }
-    
+
     // Trigger on explicit user request
     if (event?.triggerAI) {
       return true;
     }
-    
+
     // Trigger on high-severity errors
     if (event?.severity === 'high') {
       return true;
     }
-    
+
     return false;
   }
 
@@ -254,17 +258,17 @@ export class AIReasoningLoop {
 
       // Generate plan using AI reasoning
       const plan = await this.aiPlanner.generatePlan(goal, context);
-      
+
       // Cache the plan
       if (plan) {
         this.planCache.set(cacheKey, plan);
-        
+
         // Clear cache after 5 minutes
         setTimeout(() => {
           this.planCache.delete(cacheKey);
         }, 300000);
       }
-      
+
       return plan;
     } catch (error) {
       console.error('[AIReasoningLoop] Plan generation failed:', error);
@@ -279,13 +283,13 @@ export class AIReasoningLoop {
     async generatePlan(goal: Goal, context: Context): Promise<Plan | null> {
       // This would integrate with your AI service
       // For now, implement rule-based planning based on common patterns
-      
+
       const steps: PlanStep[] = [];
-      
+
       // Handle common error patterns
       if (context.lastShell?.exitCode !== 0) {
         const error = context.lastShell.stderrTail;
-        
+
         if (error.includes('EADDRINUSE')) {
           steps.push({
             intent: 'Fix port conflict',
@@ -293,19 +297,27 @@ export class AIReasoningLoop {
             args: { filter: 'port' },
             expectedSignal: 'port_conflict_identified',
             explanation: 'Identify process using the port',
-            rollback: { intent: 'Rollback port fix', tool: 'shell.run', args: { cmd: 'echo "Manual intervention required"' } }
+            rollback: {
+              intent: 'Rollback port fix',
+              tool: 'shell.run',
+              args: { cmd: 'echo "Manual intervention required"' },
+            },
           });
-          
+
           steps.push({
             intent: 'Kill conflicting process',
             tool: 'shell.run',
             args: { cmd: 'kill -9 {{pid}}' },
             expectedSignal: 'port_freed',
             explanation: 'Kill the process using the port',
-            rollback: { intent: 'Restart service', tool: 'shell.run', args: { cmd: 'start_service' } }
+            rollback: {
+              intent: 'Restart service',
+              tool: 'shell.run',
+              args: { cmd: 'start_service' },
+            },
           });
         }
-        
+
         if (error.includes('MODULE_NOT_FOUND')) {
           steps.push({
             intent: 'Install missing module',
@@ -313,10 +325,14 @@ export class AIReasoningLoop {
             args: { cmd: 'npm install {{missing_module}}' },
             expectedSignal: 'module_installed',
             explanation: 'Install the missing npm module',
-            rollback: { intent: 'Uninstall module', tool: 'shell.run', args: { cmd: 'npm uninstall {{missing_module}}' } }
+            rollback: {
+              intent: 'Uninstall module',
+              tool: 'shell.run',
+              args: { cmd: 'npm uninstall {{missing_module}}' },
+            },
           });
         }
-        
+
         if (error.includes('whenReady')) {
           steps.push({
             intent: 'Wait for service',
@@ -324,22 +340,26 @@ export class AIReasoningLoop {
             args: { cmd: 'sleep 5 && curl -f http://localhost:3000/health' },
             expectedSignal: 'service_ready',
             explanation: 'Wait for service to be ready',
-            rollback: { intent: 'Check service status', tool: 'shell.run', args: { cmd: 'curl -f http://localhost:3000/health || echo "Service down"' } }
+            rollback: {
+              intent: 'Check service status',
+              tool: 'shell.run',
+              args: { cmd: 'curl -f http://localhost:3000/health || echo "Service down"' },
+            },
           });
         }
       }
-      
+
       if (steps.length === 0) {
         return null; // No plan needed
       }
-      
+
       return {
         goal,
         steps,
         estimatedTime: steps.length * 30, // 30 seconds per step
-        riskLevel: this.calculateRiskLevel(steps)
+        riskLevel: this.calculateRiskLevel(steps),
       };
-    }
+    },
   };
 
   /**
@@ -348,45 +368,44 @@ export class AIReasoningLoop {
   private async executeStep(step: PlanStep, context: Context): Promise<Result> {
     try {
       console.log(`[AIReasoningLoop] Executing: ${step.explanation}`);
-      
+
       // Execute based on tool type
       let output: any;
-      
+
       switch (step.tool) {
         case 'shell.run':
           output = await this.executeShellCommand(step.args.cmd, context.cwd);
           break;
-          
+
         case 'process.list':
           output = await this.listProcesses(step.args.filter);
           break;
-          
+
         case 'git.status':
           output = await this.getGitStatus(context.cwd);
           break;
-          
+
         default:
           throw new Error(`Unknown tool: ${step.tool}`);
       }
-      
+
       // Check if we got the expected signal
       const signal = this.interpretOutput(step.expectedSignal, output);
-      
+
       return {
         success: true,
         output,
         signal,
-        continue: true
+        continue: true,
       };
-      
     } catch (error) {
       console.error('[AIReasoningLoop] Step execution failed:', error);
-      
+
       return {
         success: false,
         error: error.message,
         continue: false,
-        escalate: true
+        escalate: true,
       };
     }
   }
@@ -396,7 +415,7 @@ export class AIReasoningLoop {
    */
   private requiresApproval(step: PlanStep): boolean {
     if (!this.userApprovalRequired) return false;
-    
+
     // Always require approval for risky operations
     if (this.riskGuardrailsEnabled) {
       const riskyPatterns = [
@@ -404,13 +423,13 @@ export class AIReasoningLoop {
         /sudo\s+/,
         /chmod\s+/,
         /kill\s+-?\s*\d+/,
-        /systemctl\s+(stop|restart|reload)/
+        /systemctl\s+(stop|restart|reload)/,
       ];
-      
+
       const command = step.args.cmd || '';
-      return riskyPatterns.some(pattern => pattern.test(command));
+      return riskyPatterns.some((pattern) => pattern.test(command));
     }
-    
+
     return false;
   }
 
@@ -422,7 +441,7 @@ export class AIReasoningLoop {
       step,
       explanation: `${goal.description}: ${step.explanation}`,
       riskLevel: this.calculateRiskLevel([step]),
-      command: step.args.cmd
+      command: step.args.cmd,
     };
   }
 
@@ -431,36 +450,36 @@ export class AIReasoningLoop {
    */
   private async buildContext(): Promise<Context> {
     const cwd = stateManager.getWorkingDirectory();
-    
+
     // Get git status
     let gitState;
     try {
       const { execSync } = require('child_process');
       const branch = execSync('git branch --show-current', { cwd, encoding: 'utf8' }).trim();
       const status = execSync('git status --porcelain', { cwd, encoding: 'utf8' }).trim();
-      
+
       gitState = {
         isRepo: true,
         branch,
-        dirty: status.length > 0
+        dirty: status.length > 0,
       };
     } catch {
       gitState = { isRepo: false };
     }
-    
+
     return {
       cwd,
       lastShell: stateManager.getLastShellEvent(),
       git: gitState,
       node: {
-        hasPackageJson: require('fs').existsSync('./package.json')
+        hasPackageJson: require('fs').existsSync('./package.json'),
       },
       agentHealth: {
         ok: true,
         recentlyCrashed: stateManager.getCrashCountLastHour() > 0,
-        restartCount1h: stateManager.getCrashCountLastHour()
+        restartCount1h: stateManager.getCrashCountLastHour(),
       },
-      errorHistory: this.getErrorHistory()
+      errorHistory: this.getErrorHistory(),
     };
   }
 
@@ -469,26 +488,26 @@ export class AIReasoningLoop {
    */
   private extractGoal(context: Context): Goal {
     const lastError = context.errorHistory?.[context.errorHistory.length - 1];
-    
+
     if (lastError) {
       return {
         description: `Fix error: ${lastError.error}`,
         context: lastError,
-        priority: 'high'
+        priority: 'high',
       };
     }
-    
+
     if (context.lastShell?.exitCode !== 0) {
       return {
         description: 'Resolve command failure',
         context: context.lastShell,
-        priority: 'medium'
+        priority: 'medium',
       };
     }
-    
+
     return {
       description: 'Optimize workflow',
-      priority: 'low'
+      priority: 'low',
     };
   }
 
@@ -497,27 +516,27 @@ export class AIReasoningLoop {
    */
   private trackError(event: any) {
     const now = Date.now();
-    
+
     // Add to error history
     if (!stateManager.getErrorHistory) {
       stateManager.getErrorHistory = () => [];
     }
-    
+
     const errorHistory = stateManager.getErrorHistory();
     errorHistory.push({
       timestamp: now,
       command: event.cmd,
-      error: event.stderr
+      error: event.stderr,
     });
-    
+
     // Keep only last 10 errors
     if (errorHistory.length > 10) {
       errorHistory.shift();
     }
-    
+
     // Count errors in last hour
-    const oneHourAgo = now - (60 * 60 * 1000);
-    this.errorCountLastHour = errorHistory.filter(e => e.timestamp > oneHourAgo).length;
+    const oneHourAgo = now - 60 * 60 * 1000;
+    this.errorCountLastHour = errorHistory.filter((e) => e.timestamp > oneHourAgo).length;
   }
 
   /**
@@ -526,13 +545,13 @@ export class AIReasoningLoop {
   private calculateRiskLevel(steps: PlanStep[]): 'low' | 'medium' | 'high' {
     const highRiskTools = ['shell.run', 'git.push', 'npm.publish'];
     const mediumRiskTools = ['file.write', 'file.delete', 'process.kill'];
-    
-    const hasHighRisk = steps.some(step => highRiskTools.includes(step.tool));
+
+    const hasHighRisk = steps.some((step) => highRiskTools.includes(step.tool));
     if (hasHighRisk) return 'high';
-    
-    const hasMediumRisk = steps.some(step => mediumRiskTools.includes(step.tool));
+
+    const hasMediumRisk = steps.some((step) => mediumRiskTools.includes(step.tool));
     if (hasMediumRisk) return 'medium';
-    
+
     return 'low';
   }
 
@@ -548,11 +567,11 @@ export class AIReasoningLoop {
     const { execSync } = require('child_process');
     const output = execSync('ps aux', { encoding: 'utf8' });
     const lines = output.split('\n');
-    
+
     if (filter === 'port') {
-      return lines.filter(line => line.includes(':3000') || line.includes(':8080'));
+      return lines.filter((line) => line.includes(':3000') || line.includes(':8080'));
     }
-    
+
     return lines;
   }
 
@@ -566,11 +585,11 @@ export class AIReasoningLoop {
     if (expectedSignal === 'port_conflict_identified' && typeof output === 'string') {
       return output.includes(':3000') ? 'port_conflict_identified' : 'no_conflict';
     }
-    
+
     if (expectedSignal === 'service_ready') {
       return 'service_ready';
     }
-    
+
     return 'completed';
   }
 

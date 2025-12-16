@@ -6,7 +6,7 @@ The Rina Agent now features a comprehensive persistent memory system using SQLit
 
 - **Persistent Key-Value Storage**: Store and retrieve data across sessions
 - **Conversation History**: Full chat history with metadata
-- **Event Logging**: Audit trail of all agent activities  
+- **Event Logging**: Audit trail of all agent activities
 - **Tool Registry**: Permission-based tool execution system
 - **Electron Integration**: Supervisor-based agent management
 - **Enhanced Reasoning**: Context-aware responses using memory
@@ -65,7 +65,7 @@ The agent uses a Cursor-style tool registry with:
 ### Available Tools
 
 1. **memory:get** - Retrieve values from persistent storage
-2. **memory:put** - Store key-value pairs in persistent storage  
+2. **memory:put** - Store key-value pairs in persistent storage
 3. **memory:recent** - Get recent conversation messages
 4. **system.info** - Basic system information (CPU, memory, platform)
 5. **shell.run** - Execute shell commands with timeout and safety
@@ -75,7 +75,7 @@ The agent uses a Cursor-style tool registry with:
 ```
 apps/terminal-pro/agent/
 ├── package.json              # ES module configuration
-├── tsconfig.json            # TypeScript configuration  
+├── tsconfig.json            # TypeScript configuration
 ├── src/
 │   ├── index.ts             # Main agent entry point
 │   ├── tools/
@@ -93,19 +93,19 @@ apps/terminal-pro/agent/
 
 ```typescript
 // Store user preferences
-kvSet("user_preference:theme", "dark");
+kvSet('user_preference:theme', 'dark');
 
 // Retrieve stored values
-const theme = kvGet("user_preference:theme"); // "dark"
+const theme = kvGet('user_preference:theme'); // "dark"
 
 // Log events for audit trail
-logEvent("tool_used", { tool: "shell.run", args: { command: "ls" } });
+logEvent('tool_used', { tool: 'shell.run', args: { command: 'ls' } });
 
 // Add messages to conversation history
-addMessage("convo-123", "user", "Hello agent!", { metadata: "important" });
+addMessage('convo-123', 'user', 'Hello agent!', { metadata: 'important' });
 
 // Retrieve recent conversation context
-const recent = getRecentMessages("convo-123", 10);
+const recent = getRecentMessages('convo-123', 10);
 ```
 
 ### 2. Tool Registry with Permissions
@@ -113,21 +113,21 @@ const recent = getRecentMessages("convo-123", 10);
 ```typescript
 // Register a tool with specific permissions
 registerTool({
-  name: "shell.run",
-  description: "Run shell commands safely",
-  requires: ["shell"], // Requires shell permission
+  name: 'shell.run',
+  description: 'Run shell commands safely',
+  requires: ['shell'], // Requires shell permission
   schema: {
-    type: "object",
+    type: 'object',
     properties: {
-      command: { type: "string" },
-      timeoutMs: { type: "number", default: 15000 }
+      command: { type: 'string' },
+      timeoutMs: { type: 'number', default: 15000 },
     },
-    required: ["command"]
+    required: ['command'],
   },
   async run({ command, timeoutMs = 15000 }, ctx) {
     // Tool implementation with permission context
     return executeCommand(command, timeoutMs);
-  }
+  },
 });
 ```
 
@@ -154,12 +154,12 @@ The agent provides context-aware responses:
 ```javascript
 // Renderer can now use:
 const status = await window.rinaAgent.status();
-const result = await window.rinaAgent.tool("memory:get", { key: "theme" });
-const response = await window.rinaAgent.chat("Hello agent!", "convo-123");
+const result = await window.rinaAgent.tool('memory:get', { key: 'theme' });
+const response = await window.rinaAgent.chat('Hello agent!', 'convo-123');
 
 // Listen to agent events
 const cleanup = window.rinaAgent.onEvent((event) => {
-  console.log("Agent event:", event);
+  console.log('Agent event:', event);
 });
 ```
 
@@ -169,14 +169,14 @@ const cleanup = window.rinaAgent.onEvent((event) => {
 
 ```javascript
 // Store user preferences
-await window.rinaAgent.tool("memory:put", {
-  key: "user_preference:theme", 
-  value: "dark"
+await window.rinaAgent.tool('memory:put', {
+  key: 'user_preference:theme',
+  value: 'dark',
 });
 
 // Retrieve preferences
-const theme = await window.rinaAgent.tool("memory:get", {
-  key: "user_preference:theme"
+const theme = await window.rinaAgent.tool('memory:get', {
+  key: 'user_preference:theme',
 });
 ```
 
@@ -185,14 +185,14 @@ const theme = await window.rinaAgent.tool("memory:get", {
 ```javascript
 // Start a conversation with persistent memory
 const response = await window.rinaAgent.chat(
-  "Remember that I prefer dark theme",
-  "user-session-123"
+  'Remember that I prefer dark theme',
+  'user-session-123',
 );
 
 // Later session can reference previous context
-const recent = await window.rinaAgent.tool("memory:recent", {
-  convoId: "user-session-123",
-  limit: 5
+const recent = await window.rinaAgent.tool('memory:recent', {
+  convoId: 'user-session-123',
+  limit: 5,
 });
 ```
 
@@ -200,13 +200,13 @@ const recent = await window.rinaAgent.tool("memory:recent", {
 
 ```javascript
 // Shell command (requires shell permission)
-const result = await window.rinaAgent.tool("shell.run", {
-  command: "ls -la",
-  timeoutMs: 10000
+const result = await window.rinaAgent.tool('shell.run', {
+  command: 'ls -la',
+  timeoutMs: 10000,
 });
 
 // System information (no special permissions needed)
-const sysInfo = await window.rinaAgent.tool("system.info", {});
+const sysInfo = await window.rinaAgent.tool('system.info', {});
 ```
 
 ## Testing
@@ -220,6 +220,7 @@ node test-persistent.cjs
 ```
 
 The test validates:
+
 - ✅ Agent startup and version detection
 - ✅ Persistent memory storage and retrieval
 - ✅ Conversation history with metadata
@@ -233,10 +234,10 @@ The test validates:
 ### 1. Electron Main Process
 
 ```javascript
-const { createAgentSupervisor } = require("./agent-supervisor");
+const { createAgentSupervisor } = require('./agent-supervisor');
 
 const agent = createAgentSupervisor({
-  getMainWindow: () => mainWindow
+  getMainWindow: () => mainWindow,
 });
 
 // Start agent when app is ready
@@ -245,7 +246,7 @@ app.whenReady().then(() => {
 });
 
 // Cleanup on app quit
-app.on("before-quit", () => {
+app.on('before-quit', () => {
   agent.stop();
 });
 ```
@@ -253,14 +254,14 @@ app.on("before-quit", () => {
 ### 2. IPC Handlers
 
 ```javascript
-const { ipcMain } = require("electron");
+const { ipcMain } = require('electron');
 
-ipcMain.handle("rina-agent:tool", async (_evt, payload) => {
+ipcMain.handle('rina-agent:tool', async (_evt, payload) => {
   const res = await agent.requestTool(payload);
   return res;
 });
 
-ipcMain.handle("rina-agent:status", async () => {
+ipcMain.handle('rina-agent:status', async () => {
   return { running: agent.isRunning() };
 });
 ```
@@ -271,16 +272,16 @@ ipcMain.handle("rina-agent:status", async () => {
 // In React/Vue/etc component
 useEffect(() => {
   const cleanup = window.rinaAgent.onEvent((event) => {
-    if (event.type === "agent:tool:result") {
+    if (event.type === 'agent:tool:result') {
       // Show tool execution result
       showToolCard(event.tool, event.result);
     }
-    if (event.type === "agent:chat:result") {
+    if (event.type === 'agent:chat:result') {
       // Display chat response
       addMessage(event.text);
     }
   });
-  
+
   return cleanup;
 }, []);
 ```

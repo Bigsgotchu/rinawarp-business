@@ -7,13 +7,16 @@ Test release notes generation
 ## 📦 Installation
 
 ### Linux
+
 - **AppImage**: Download and run the AppImage file
 - **Debian/Ubuntu**: Install the .deb package
 
 ### Windows
+
 - Download and run the Setup.exe installer
 
-### macOS  
+### macOS
+
 - Download the .dmg file and drag to Applications
 
 ## 🔧 System Requirements
@@ -25,7 +28,7 @@ Test release notes generation
 ## 📋 Release Checklist
 
 - [ ] Security audit passed
-- [ ] All platform builds successful  
+- [ ] All platform builds successful
 - [ ] Artifact validation passed
 - [ ] Release notes generated
 - [ ] Git tag created

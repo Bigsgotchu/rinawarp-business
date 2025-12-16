@@ -1,0 +1,74 @@
+name: Day-2 Ops Automation
+
+on:
+  schedule:
+    # Weekly maintenance - Mondays at 05:00 UTC
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+jobs:
+  weekly-maintenance:
+    name: Weekly Maintenance
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js (with version file)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Cleanup
+        run: pnpm ops:cache:cleanup
+
+      - name: Hook Health Check
+        run: pnpm ops:hook:health
+
+      - name: Format Commit Freezing
+        run: pnpm ops:format:freeze
+
+      - name: Security Audit
+        run: pnpm audit --audit-level moderate
+
+      - name: Dependency Update Check
+        run: pnpm deps:check
+
+      - name: Generate Maintenance Report
+        run: |
+          echo "## 🛠️ Weekly Maintenance Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Completed Tasks" >> $GITHUB_STEP_SUMMARY
+          echo "- Cache cleanup performed" >> $GITHUB_STEP_SUMMARY
+          echo "- Hook health verified" >> $GITHUB_STEP_SUMMARY
+          echo "- Format commits frozen" >> $GITHUB_STEP_SUMMARY
+          echo "- Security audit passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Dependencies checked" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 System Health" >> $GITHUB_STEP_SUMMARY
+          echo "- Node version: $(node --version)" >> $GITHUB_STEP_SUMMARY
+          echo "- pnpm version: $(pnpm --version)" >> $GITHUB_STEP_SUMMARY
+          echo "- Maintenance date: $(date)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Commit Format Updates
+        if: success()
+        run: |
+          if git diff --quiet .git-blame-ignore-revs; then
+            echo "No format commits to freeze this week"
+          else
+            git add .git-blame-ignore-revs
+            git commit -m "docs: weekly format commit freeze update"
+            echo "✅ Format commits frozen and committed"
+          fi

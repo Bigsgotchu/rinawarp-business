@@ -78,23 +78,23 @@ export class AdvancedPerformanceMonitor {
 
   processPerformanceEntry(entry) {
     switch (entry.entryType) {
-    case 'navigation':
-      this.metrics.performance.loadTime =
+      case 'navigation':
+        this.metrics.performance.loadTime =
           entry.loadEventEnd - entry.loadEventStart;
-      this.metrics.performance.renderTime =
+        this.metrics.performance.renderTime =
           entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart;
-      break;
-    case 'paint':
-      if (entry.name === 'first-contentful-paint') {
-        this.metrics.performance.firstContentfulPaint = entry.startTime;
-      }
-      break;
-    case 'measure':
-      this.metrics.performance[entry.name] = entry.duration;
-      break;
-    case 'resource':
-      this.processResourceEntry(entry);
-      break;
+        break;
+      case 'paint':
+        if (entry.name === 'first-contentful-paint') {
+          this.metrics.performance.firstContentfulPaint = entry.startTime;
+        }
+        break;
+      case 'measure':
+        this.metrics.performance[entry.name] = entry.duration;
+        break;
+      case 'resource':
+        this.processResourceEntry(entry);
+        break;
     }
   }
 

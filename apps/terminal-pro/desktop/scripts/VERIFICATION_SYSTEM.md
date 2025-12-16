@@ -1,0 +1,309 @@
+# RinaWarp Terminal Pro - Publish Verification System
+
+Comprehensive verification system for ensuring artifact integrity and proper deployment configuration before promoting releases to stable channels.
+
+## Overview
+
+This verification system provides multiple layers of validation to catch CDN glitches, truncated uploads, wrong builds, misconfigured headers, and feed content issues before promoting releases to production.
+
+## Components
+
+### 1. Enhanced Pre-Publish Guard (`pre-publish-guard.js`)
+
+**Purpose**: Verifies artifact existence and validates HTTP headers with retry logic.
+
+**Features**:
+
+- Artifact presence validation
+- Content-Type and Cache-Control header validation
+- Exponential backoff retry logic (3 attempts)
+- IPv4-only connections to avoid IPv6 issues
+- 30-second timeouts for resilience
+
+**Usage**:
+
+```bash
+pnpm prepublish:guard
+# or with custom origin
+UPDATES_ORIGIN="https://custom.domain" pnpm prepublish:guard
+```
+
+**Validated Headers**:
+
+- `.exe` files: `octet-stream` or `application/x-msdownload` + `max-age` or `immutable`
+- `.AppImage` files: `octet-stream` or `application/vnd.appimage` + `max-age` or `immutable`
+- `.blockmap` files: `application/octet-stream` or `application/x-msdownload` + `max-age` or `immutable`
+- Feed files (`latest.yml`, `latest-mac.yml`): `text/yaml` or `application/x-yaml` + `no-cache`
+
+### 2. Hash Verification (`pre-publish-guard-hash.js`)
+
+**Purpose**: Streams each artifact and compares SHA-256 hash against SHA256SUMS.
+
+**Features**:
+
+- Downloads and hashes artifacts in-memory (no temp files)
+- Compares against SHA256SUMS from the release directory
+- Exponential backoff retry logic (3 attempts)
+- 60-second timeout per artifact
+- Detailed mismatch reporting
+
+**Usage**:
+
+```bash
+pnpm prepublish:hash
+# or with custom origin
+UPDATES_ORIGIN="https://custom.domain" pnpm prepublish:hash
+```
+
+**Validated Artifacts**:
+
+- `RinaWarpTerminalPro-{version}.exe`
+- `RinaWarpTerminalPro-{version}.exe.blockmap`
+- `RinaWarp%20Terminal%20Pro-{version}.zip`
+- `RinaWarp-Terminal-Pro-{version}.AppImage`
+
+### 3. Feed Validation (`validate-feeds.js`)
+
+**Purpose**: Validates `latest.yml` and `latest-mac.yml` content for correct version and URLs.
+
+**Features**:
+
+- Version reference validation
+- URL origin validation (allows Pages domains during propagation)
+- Supports multiple allowed origins
+- 30-second timeout per feed
+
+**Usage**:
+
+```bash
+pnpm prepublish:feeds
+# or with custom origin
+UPDATES_ORIGIN="https://custom.domain" pnpm prepublish:feeds
+```
+
+**Validated Content**:
+
+- Version number matches current release
+- All URLs use approved origins:
+  - Custom domain (`updates.rinawarp.dev`)
+  - Pages domains (`*.pages.dev`, `*.cf-pages.net`)
+
+### 4. Combined Verification Pipeline
+
+**Purpose**: Runs all verification steps in sequence.
+
+**Usage**:
+
+```bash
+pnpm prepublish:verify
+```
+
+**Pipeline Steps**:
+
+1. Pre-publish guard (artifacts + headers)
+2. Hash verification against SHA256SUMS
+3. Feed content validation
+
+## CI/CD Integration
+
+### Complete Pipeline Script (`ci-publish-pipeline.sh`)
+
+**Purpose**: Orchestrates the complete publish process with atomic feed promotion.
+
+**Usage**:
+
+```bash
+# Basic usage
+./scripts/ci-publish-pipeline.sh
+
+# With custom version and origin
+./scripts/ci-publish-pipeline.sh 1.2.3 https://updates.company.com
+
+# With Cloudflare cache purge
+CF_API_TOKEN="your-token" CF_ZONE_ID="your-zone" ./scripts/ci-publish-pipeline.sh
+```
+
+**Pipeline Steps**:
+
+1. **Deploy Artifacts**: Upload to Cloudflare Pages
+2. **Run Verification Guards**: All pre-publish checks
+3. **Promote Feeds**: Update stable/latest.yml and stable/latest-mac.yml
+4. **Re-deploy**: Upload feed changes
+5. **Cache Purge**: Clear Cloudflare cache for feed files (optional)
+
+### Environment Variables
+
+- `VERSION`: Override version (defaults to package.json)
+- `UPDATES_ORIGIN`: Override origin URL (defaults to https://updates.rinawarp.dev)
+- `CF_API_TOKEN`: Cloudflare API token for cache purging
+- `CF_ZONE_ID`: Cloudflare Zone ID for cache purging
+- `PAGES_PROJECT`: Cloudflare Pages project name (defaults to rinawarp-updates)
+
+## Local Testing
+
+### Smoke Test Script (`smoke-test-local.sh`)
+
+**Purpose**: Tests all verification scripts against a Pages default domain.
+
+**Usage**:
+
+```bash
+# Test against default Pages domain
+./scripts/smoke-test-local.sh
+
+# Test against specific Pages domain
+./scripts/smoke-test-local.sh your-project.pages.dev
+```
+
+**Test Coverage**:
+
+- Pre-publish guard functionality
+- Hash verification against live SHA256SUMS
+- Feed content validation
+- Combined verification pipeline
+- Connectivity tests
+
+## Package.json Scripts
+
+Added verification scripts to `package.json`:
+
+```json
+{
+  "scripts": {
+    "prepublish:guard": "node ./scripts/pre-publish-guard.js",
+    "prepublish:hash": "node ./scripts/pre-publish-guard-hash.js",
+    "prepublish:feeds": "node ./scripts/validate-feeds.js",
+    "prepublish:verify": "pnpm prepublish:guard && pnpm prepublish:hash && pnpm prepublish:feeds",
+    "release:pages": "pnpm build:all && pnpm release:stage && pnpm sbom && pnpm release:checklist && pnpm prepublish:verify && pnpm deploy:pages"
+  }
+}
+```
+
+## Error Handling
+
+### Retry Logic
+
+All verification scripts implement exponential backoff retry logic:
+
+- **3 attempts** with delays: 1s, 2s, 4s
+- **Graceful failure** with detailed error messages
+- **Timeout protection**: 30s for HEAD requests, 60s for downloads
+
+### Error Messages
+
+- **Specific artifact/file identification**
+- **Expected vs actual values** for hash mismatches
+- **Header validation details** for content-type/cache-control issues
+- **URL validation context** for feed content problems
+
+## Security Considerations
+
+### Hash Verification
+
+- **No temp files**: Artifacts streamed directly to memory for hashing
+- **CDN glitch detection**: Catches corrupted or incomplete uploads
+- **Build verification**: Ensures correct builds were uploaded
+
+### Header Validation
+
+- **Content-Type enforcement**: Prevents incorrect MIME types
+- **Cache-Control validation**: Ensures proper caching behavior
+- **Security headers**: Validates cache settings for static assets
+
+### Feed Validation
+
+- **Version consistency**: Prevents version drift between artifacts and feeds
+- **Origin validation**: Ensures feeds point to approved domains
+- **URL integrity**: Validates all download URLs in feeds
+
+## Monitoring and Alerts
+
+### Failed Verification Triggers
+
+- **Artifact missing**: Deployment not complete or CDN issues
+- **Hash mismatch**: Corrupted upload, CDN glitch, or wrong build
+- **Header misconfiguration**: CDN or Pages configuration issues
+- **Feed content problems**: Version drift or incorrect URLs
+
+### Recommended Monitoring
+
+- **CI/CD pipeline failures** → Alert development team
+- **Cache purge failures** → Manual cache clearing required
+- **DNS propagation issues** → Wait for propagation or use Pages domain
+
+## Troubleshooting
+
+### Common Issues
+
+1. **DNS Propagation**
+
+   ```bash
+   # Use Pages default domain during DNS propagation
+   UPDATES_ORIGIN="https://your-project.pages.dev" pnpm prepublish:verify
+   ```
+
+2. **Timeout Issues**
+
+   ```bash
+   # Increase timeouts by modifying scripts if needed
+   # Current defaults: 30s HEAD, 60s downloads
+   ```
+
+3. **Hash Mismatches**
+   - Check if correct SHA256SUMS was uploaded
+   - Verify build artifacts are complete
+   - Check CDN cache consistency
+
+4. **Header Validation Failures**
+   - Review Cloudflare/Netlify header configuration
+   - Check `_headers` file configuration
+   - Verify Pages project settings
+
+### Debug Mode
+
+All scripts provide detailed output for debugging:
+
+```bash
+# Enable verbose curl output
+UPDATES_ORIGIN="https://custom.domain" pnpm prepublish:guard
+```
+
+## Best Practices
+
+1. **Always test locally first**: Use smoke-test-local.sh before CI/CD
+2. **Use Pages domain for testing**: Avoid DNS issues during development
+3. **Monitor retry patterns**: Multiple retries may indicate network/CDN issues
+4. **Cache purge after feed updates**: Essential for immediate availability
+5. **Version consistency**: Ensure package.json version matches artifacts
+
+## File Structure
+
+```
+scripts/
+├── pre-publish-guard.js          # Enhanced guard with headers + retry
+├── pre-publish-guard-hash.js     # SHA-256 hash verification
+├── validate-feeds.js             # Feed content validation
+├── ci-publish-pipeline.sh        # Complete CI/CD integration
+├── smoke-test-local.sh           # Local testing script
+└── VERIFICATION_SYSTEM.md        # This documentation
+```
+
+## Integration Points
+
+### Electron Builder Integration
+
+- **Automatic artifact discovery**: Uses package.json version and naming conventions
+- **SHA256SUMS generation**: Should be generated during build process
+- **Platform-specific artifacts**: Handles Windows, macOS, Linux builds
+
+### Cloudflare Pages Integration
+
+- **Automatic deployments**: Uses wrangler for artifact uploads
+- **Cache management**: Precise cache purging for feed files only
+- **Environment handling**: Supports staging and production environments
+
+### CI/CD Pipeline Integration
+
+- **Atomic operations**: Separates artifact deployment from feed promotion
+- **Rollback capability**: Failed verification prevents feed promotion
+- **Environment variables**: Flexible configuration for different environments

@@ -1,269 +1,274 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="RinaWarp Technologies LLC Legal Hub - Comprehensive legal documents including Terms of Service, Privacy Policy, and compliance information">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="RinaWarp Technologies LLC Legal Hub - Comprehensive legal documents including Terms of Service, Privacy Policy, and compliance information"
+    />
     <title>Legal Hub | RinaWarp Technologies LLC</title>
-    <link rel="stylesheet" href="/legal/css/legal.css">
+    <link rel="stylesheet" href="/legal/css/legal.css" />
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('theme-toggle');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+      document.addEventListener('DOMContentLoaded', function () {
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
 
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            updateThemeButton(currentTheme);
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeButton(currentTheme);
 
-            themeToggle.addEventListener('click', function() {
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeButton(newTheme);
-            });
-
-            function updateThemeButton(theme) {
-                const icon = theme === 'light' ? '🌙' : '☀️';
-                const text = theme === 'light' ? 'Dark Mode' : 'Light Mode';
-                themeToggle.innerHTML = `${icon} ${text}`;
-            }
-
-            const backToTop = document.getElementById('back-to-top');
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    backToTop.classList.add('visible');
-                } else {
-                    backToTop.classList.remove('visible');
-                }
-            });
-
-            backToTop.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+        themeToggle.addEventListener('click', function () {
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeButton(newTheme);
         });
+
+        function updateThemeButton(theme) {
+          const icon = theme === 'light' ? '🌙' : '☀️';
+          const text = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+          themeToggle.innerHTML = `${icon} ${text}`;
+        }
+
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', function () {
+          if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+
+        backToTop.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="container">
-            <nav class="navbar">
-                <a href="/" class="logo">RinaWarp Technologies LLC</a>
-                <div class="nav-links">
-                    <a href="/legal/">Legal Hub</a>
-                    <a href="/">Home</a>
-                    <a href="/contact">Contact</a>
-                    <button id="theme-toggle" class="theme-toggle">☀️ Light Mode</button>
-                </div>
-            </nav>
-        </div>
+      <div class="container">
+        <nav class="navbar">
+          <a href="/" class="logo">RinaWarp Technologies LLC</a>
+          <div class="nav-links">
+            <a href="/legal/">Legal Hub</a>
+            <a href="/">Home</a>
+            <a href="/contact">Contact</a>
+            <button id="theme-toggle" class="theme-toggle">☀️ Light Mode</button>
+          </div>
+        </nav>
+      </div>
     </header>
 
     <main class="main-content">
-        <div class="container">
-            <div class="legal-header">
-                <h1>RinaWarp Legal Hub</h1>
-                <p>Comprehensive legal documents and compliance information</p>
-            </div>
-
-            <div class="category-section" id="core-policies">
-                <h2>Core Policies</h2>
-                <div class="document-grid">
-                    <div class="document-card">
-                        <h3>Terms of Service</h3>
-                        <p>Our comprehensive terms governing the use of all RinaWarp products and services.</p>
-                        <a href="terms-of-service.html">Read Terms →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Privacy Policy</h3>
-                        <p>How we collect, use, and protect your personal information.</p>
-                        <a href="privacy-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Refund Policy</h3>
-                        <p>Our policies regarding refunds, cancellations, and billing disputes.</p>
-                        <a href="refund-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Cookie Policy</h3>
-                        <p>Information about our use of cookies and tracking technologies.</p>
-                        <a href="cookie-policy.html">Read Policy →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section" id="data-privacy">
-                <h2>Data & Privacy</h2>
-                <div class="document-grid">
-                    <div class="document-card">
-                        <h3>GDPR/CCPA Policy</h3>
-                        <p>Our compliance with European and California privacy regulations.</p>
-                        <a href="gdpr-ccpa-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Data Processing Agreement</h3>
-                        <p>Legal agreement governing how we process customer data.</p>
-                        <a href="data-processing-agreement.html">Read Agreement →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Data Subject Request Policy</h3>
-                        <p>How to exercise your data privacy rights with RinaWarp.</p>
-                        <a href="data-subject-request-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Accessibility Policy</h3>
-                        <p>Our commitment to accessible technology and services.</p>
-                        <a href="accessibility-policy.html">Read Policy →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section" id="ai-ethics">
-                <h2>AI Ethics</h2>
-                <div class="document-grid">
-                    <div class="document-card">
-                        <h3>AI Ethical Policy</h3>
-                        <p>Our principles and guidelines for responsible AI development.</p>
-                        <a href="ai-ethical-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Acceptable Use Policy</h3>
-                        <p>Rules and guidelines for appropriate use of our AI services.</p>
-                        <a href="acceptable-use-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>AI Output Policy</h3>
-                        <p>Guidelines for content generated by our AI systems.</p>
-                        <a href="ai-output-policy.html">Read Policy →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section" id="security-compliance">
-                <h2>Security & Compliance</h2>
-                <div class="document-grid">
-                    <div class="document-card">
-                        <h3>Security Policy</h3>
-                        <p>Our comprehensive approach to security and data protection.</p>
-                        <a href="security-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>DMCA Policy</h3>
-                        <p>Our copyright infringement policies and procedures.</p>
-                        <a href="dmca-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Vendor/Third-Party Policy</h3>
-                        <p>How we work with third-party vendors and service providers.</p>
-                        <a href="vendor-third-party-policy.html">Read Policy →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section" id="software-licensing">
-                <h2>Software Licensing</h2>
-                <div class="document-grid">
-                    <div class="document-card">
-                        <h3>Terminal Pro EULA</h3>
-                        <p>End User License Agreement for Terminal Pro software.</p>
-                        <a href="terminal-pro-eula.html">Read EULA →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>AI Music Video Creator EULA</h3>
-                        <p>End User License Agreement for our AI Music Video Creator.</p>
-                        <a href="ai-music-video-creator-eula.html">Read EULA →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Commercial License Agreement</h3>
-                        <p>Licensing terms for commercial use of our software.</p>
-                        <a href="commercial-license-agreement.html">Read Agreement →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Subscription & Billing Agreement</h3>
-                        <p>Terms governing our subscription services and billing.</p>
-                        <a href="subscription-billing-agreement.html">Read Agreement →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section" id="customer-rights">
-                <h2>Customer Rights</h2>
-                <div class="document-grid">
-                    <div class="document-card">
-                        <h3>Payment & Refund Policy</h3>
-                        <p>Detailed information about payments, refunds, and billing.</p>
-                        <a href="payment-refund-policy.html">Read Policy →</a>
-                    </div>
-                    <div class="document-card">
-                        <h3>Subscription Billing Policy</h3>
-                        <p>Terms and conditions for our subscription services.</p>
-                        <a href="subscription-billing-policy.html">Read Policy →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section" id="developer-policies">
-                <h2>Developer Policies</h2>
-                <div class="document-grid">
-                    <div class="document-card">
-                        <h3>Acceptable Use Policy</h3>
-                        <p>Rules for developers using our APIs and services.</p>
-                        <a href="acceptable-use-policy.html">Read Policy →</a>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="legal-header">
+          <h1>RinaWarp Legal Hub</h1>
+          <p>Comprehensive legal documents and compliance information</p>
         </div>
+
+        <div class="category-section" id="core-policies">
+          <h2>Core Policies</h2>
+          <div class="document-grid">
+            <div class="document-card">
+              <h3>Terms of Service</h3>
+              <p>
+                Our comprehensive terms governing the use of all RinaWarp products and services.
+              </p>
+              <a href="terms-of-service.html">Read Terms →</a>
+            </div>
+            <div class="document-card">
+              <h3>Privacy Policy</h3>
+              <p>How we collect, use, and protect your personal information.</p>
+              <a href="privacy-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>Refund Policy</h3>
+              <p>Our policies regarding refunds, cancellations, and billing disputes.</p>
+              <a href="refund-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>Cookie Policy</h3>
+              <p>Information about our use of cookies and tracking technologies.</p>
+              <a href="cookie-policy.html">Read Policy →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section" id="data-privacy">
+          <h2>Data & Privacy</h2>
+          <div class="document-grid">
+            <div class="document-card">
+              <h3>GDPR/CCPA Policy</h3>
+              <p>Our compliance with European and California privacy regulations.</p>
+              <a href="gdpr-ccpa-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>Data Processing Agreement</h3>
+              <p>Legal agreement governing how we process customer data.</p>
+              <a href="data-processing-agreement.html">Read Agreement →</a>
+            </div>
+            <div class="document-card">
+              <h3>Data Subject Request Policy</h3>
+              <p>How to exercise your data privacy rights with RinaWarp.</p>
+              <a href="data-subject-request-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>Accessibility Policy</h3>
+              <p>Our commitment to accessible technology and services.</p>
+              <a href="accessibility-policy.html">Read Policy →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section" id="ai-ethics">
+          <h2>AI Ethics</h2>
+          <div class="document-grid">
+            <div class="document-card">
+              <h3>AI Ethical Policy</h3>
+              <p>Our principles and guidelines for responsible AI development.</p>
+              <a href="ai-ethical-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>Acceptable Use Policy</h3>
+              <p>Rules and guidelines for appropriate use of our AI services.</p>
+              <a href="acceptable-use-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>AI Output Policy</h3>
+              <p>Guidelines for content generated by our AI systems.</p>
+              <a href="ai-output-policy.html">Read Policy →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section" id="security-compliance">
+          <h2>Security & Compliance</h2>
+          <div class="document-grid">
+            <div class="document-card">
+              <h3>Security Policy</h3>
+              <p>Our comprehensive approach to security and data protection.</p>
+              <a href="security-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>DMCA Policy</h3>
+              <p>Our copyright infringement policies and procedures.</p>
+              <a href="dmca-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>Vendor/Third-Party Policy</h3>
+              <p>How we work with third-party vendors and service providers.</p>
+              <a href="vendor-third-party-policy.html">Read Policy →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section" id="software-licensing">
+          <h2>Software Licensing</h2>
+          <div class="document-grid">
+            <div class="document-card">
+              <h3>Terminal Pro EULA</h3>
+              <p>End User License Agreement for Terminal Pro software.</p>
+              <a href="terminal-pro-eula.html">Read EULA →</a>
+            </div>
+            <div class="document-card">
+              <h3>AI Music Video Creator EULA</h3>
+              <p>End User License Agreement for our AI Music Video Creator.</p>
+              <a href="ai-music-video-creator-eula.html">Read EULA →</a>
+            </div>
+            <div class="document-card">
+              <h3>Commercial License Agreement</h3>
+              <p>Licensing terms for commercial use of our software.</p>
+              <a href="commercial-license-agreement.html">Read Agreement →</a>
+            </div>
+            <div class="document-card">
+              <h3>Subscription & Billing Agreement</h3>
+              <p>Terms governing our subscription services and billing.</p>
+              <a href="subscription-billing-agreement.html">Read Agreement →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section" id="customer-rights">
+          <h2>Customer Rights</h2>
+          <div class="document-grid">
+            <div class="document-card">
+              <h3>Payment & Refund Policy</h3>
+              <p>Detailed information about payments, refunds, and billing.</p>
+              <a href="payment-refund-policy.html">Read Policy →</a>
+            </div>
+            <div class="document-card">
+              <h3>Subscription Billing Policy</h3>
+              <p>Terms and conditions for our subscription services.</p>
+              <a href="subscription-billing-policy.html">Read Policy →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section" id="developer-policies">
+          <h2>Developer Policies</h2>
+          <div class="document-grid">
+            <div class="document-card">
+              <h3>Acceptable Use Policy</h3>
+              <p>Rules for developers using our APIs and services.</p>
+              <a href="acceptable-use-policy.html">Read Policy →</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="/legal/terms-of-service.html">Terms of Service</a></li>
-                        <li><a href="/legal/privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="/legal/refund-policy.html">Refund Policy</a></li>
-                        <li><a href="/legal/cookie-policy.html">Cookie Policy</a></li>
-                        <li><a href="/legal/security-policy.html">Security Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Compliance</h3>
-                    <ul>
-                        <li><a href="/legal/gdpr-ccpa-policy.html">GDPR/CCPA Policy</a></li>
-                        <li><a href="/legal/ai-ethical-policy.html">AI Ethics</a></li>
-                        <li><a href="/legal/dmca-policy.html">DMCA Policy</a></li>
-                        <li><a href="/legal/data-processing-agreement.html">Data Processing</a></li>
-                        <li><a href="/legal/accessibility-policy.html">Accessibility</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Licensing</h3>
-                    <ul>
-                        <li><a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a></li>
-                        <li><a href="/legal/ai-music-video-creator-eula.html">AI MVC EULA</a></li>
-                        <li><a href="/legal/commercial-license-agreement.html">Commercial License</a></li>
-                        <li><a href="/legal/subscription-billing-agreement.html">Billing Agreement</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <ul>
-                        <li>Support: support@rinawarptech.com</li>
-                        <li>Legal: legal@rinawarptech.com</li>
-                        <li>Privacy: privacy@rinawarptech.com</li>
-                        <li>Business: karina@rinawarptech.com</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 RinaWarp Technologies LLC. All rights reserved.</p>
-                <p>Effective Date: [Auto-fill] | Last Updated: [Auto-fill]</p>
-            </div>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Legal</h3>
+            <ul>
+              <li><a href="/legal/terms-of-service.html">Terms of Service</a></li>
+              <li><a href="/legal/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/legal/refund-policy.html">Refund Policy</a></li>
+              <li><a href="/legal/cookie-policy.html">Cookie Policy</a></li>
+              <li><a href="/legal/security-policy.html">Security Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Compliance</h3>
+            <ul>
+              <li><a href="/legal/gdpr-ccpa-policy.html">GDPR/CCPA Policy</a></li>
+              <li><a href="/legal/ai-ethical-policy.html">AI Ethics</a></li>
+              <li><a href="/legal/dmca-policy.html">DMCA Policy</a></li>
+              <li><a href="/legal/data-processing-agreement.html">Data Processing</a></li>
+              <li><a href="/legal/accessibility-policy.html">Accessibility</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Licensing</h3>
+            <ul>
+              <li><a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a></li>
+              <li><a href="/legal/ai-music-video-creator-eula.html">AI MVC EULA</a></li>
+              <li><a href="/legal/commercial-license-agreement.html">Commercial License</a></li>
+              <li><a href="/legal/subscription-billing-agreement.html">Billing Agreement</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <ul>
+              <li>Support: support@rinawarptech.com</li>
+              <li>Legal: legal@rinawarptech.com</li>
+              <li>Privacy: privacy@rinawarptech.com</li>
+              <li>Business: karina@rinawarptech.com</li>
+            </ul>
+          </div>
         </div>
+        <div class="copyright">
+          <p>© 2025 RinaWarp Technologies LLC. All rights reserved.</p>
+          <p>Effective Date: [Auto-fill] | Last Updated: [Auto-fill]</p>
+        </div>
+      </div>
     </footer>
 
     <a href="#" id="back-to-top" class="back-to-top">↑</a>
-</body>
+  </body>
 </html>

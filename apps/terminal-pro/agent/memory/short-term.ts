@@ -10,7 +10,7 @@ class ShortTermMemoryManager {
     recentCommands: [],
     recentOutputs: [],
     currentSession: {},
-    buffer: []
+    buffer: [],
   };
 
   private maxCommands = 50;
@@ -71,7 +71,7 @@ class ShortTermMemoryManager {
       recentCommands: [],
       recentOutputs: [],
       currentSession: {},
-      buffer: []
+      buffer: [],
     };
   }
 }

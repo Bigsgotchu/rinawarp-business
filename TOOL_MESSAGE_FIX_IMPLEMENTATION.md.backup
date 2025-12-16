@@ -1,0 +1,99 @@
+# Tool Message Fix Implementation Summary
+
+## Problem Resolved
+
+Fixed the "tool_call_id not found" error where clients were sending tool messages
+referencing tool call IDs that were never issued by the model.
+
+## Server-Side Fix (Primary Solution)
+
+### File Modified: `apps/terminal-pro/agent/src/app.ts`
+
+#### Changes Made
+
+1. **Updated ChatMessage Interface** (Line 16)
+   - Added `tool_call_id?: string;` field to support tool call references
+   - Maintains backward compatibility
+
+2. **Added Message Sanitizer Function** (Lines 24-43)
+
+
+   ```typescript
+   function sanitizeMessagesForNonToolModel(messages: ChatMessage[]): ChatMessage[];
+   ```
+
+   - Converts stray tool/function messages to assistant notes
+   - Preserves traceability by including tool name and ID in content
+   - Applied to both `/v1/chat/completions` and `/chat` endpoints
+
+3. **Applied Sanitizer in Endpoints**
+   - **Before validation** to ensure clean data flow
+   - **Both streaming and non-streaming** chat completions
+   - **Both OpenAI-compatible and simple chat** endpoints
+
+
+## Client-Side Fixes (Preventive)
+
+### Created: `config/continue-config.yaml`
+
+- Disables tools in Continue IDE: `experimental.enableTools: false`
+- Configures local rina-agent model connection
+- Includes helpful system message
+
+
+### Created: `config/CLIENT_TOOL_DISABLING_GUIDE.md`
+
+- Comprehensive guide for all client types (Continue, KiloCode, Cline)
+- Step-by-step instructions to disable tool calling
+- Technical explanation of the root cause
+
+
+## Technical Details
+
+### Root Cause
+
+- Minimax and other providers require every `role:"tool"` message to reference a
+
+  prior assistant `tool_calls[].id`
+
+- Local rina-agent doesn't emit OpenAI-style tool calls
+- Stray tool messages break provider validation → "2013 tool id not found"
+
+
+### Solution Benefits
+
+1. **Server-side sanitization**: Handles any tool messages that get through
+2. **Client-side disabling**: Prevents the issue at the source
+3. **Traceability preserved**: Converted tool messages show as
+
+   `[tool:name id=call_id] content`
+
+4. **Backward compatible**: Doesn't break existing functionality
+5. **Zero-downtime**: Works with current deployment
+
+
+## Verification
+
+✅ TypeScript compilation successful  
+✅ No breaking changes to existing API  
+✅ All endpoints properly sanitized  
+✅ Client configurations created
+
+## Files Created/Modified
+
+- ✅ `apps/terminal-pro/agent/src/app.ts` - Server implementation
+- ✅ `config/continue-config.yaml` - Continue IDE config
+- ✅ `config/CLIENT_TOOL_DISABLING_GUIDE.md` - Client setup guide
+- ✅ `TOOL_MESSAGE_FIX_IMPLEMENTATION.md` - This summary
+
+
+## Next Steps (Optional)
+
+1. **Deploy the server changes** to production
+2. **Update client configurations** using provided files
+3. **Monitor logs** for any remaining tool-related errors
+4. **Consider full tool_calls support** if needed in the future
+
+
+The fix ensures robust handling of tool messages while maintaining full
+compatibility with existing workflows.

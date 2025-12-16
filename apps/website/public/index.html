@@ -1,270 +1,334 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>RinaWarp Technologies — Terminal Pro & AI Music Video Creator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="RinaWarp Terminal Pro and AI Music Video Creator — ultra-fast terminal productivity and AI-powered music videos for creators."
-  />
-  <link rel="stylesheet" href="/css/brand.css" />
-  <link rel="stylesheet" href="/public/styles.css" />
-</head>
-<body>
-  <div class="main-shell">
-    <!-- NAV -->
-    <header class="nav">
-      <div class="nav-left">
-        <div class="nav-logo">
-          <!-- if you prefer logo: <img src="/branding/Lumina Edge brand.png" alt="RinaWarp logo" /> -->
-        </div>
-        <div class="nav-title">
-          RinaWarp Technologies
-          <span>Terminal • AI • Creators</span>
-        </div>
-      </div>
-      <nav class="nav-links">
-        <a href="#products">Products</a>
-        <a href="#pricing">Pricing</a>
-        <a href="/legal/">Legal</a>
-        <a href="https://master.rinawarptech.pages.dev/admin" target="_blank" rel="noreferrer">Admin</a>
-        <button class="nav-cta" onclick="window.location.href='/terminal/'">
-          Download Terminal Pro
-          <span class="icon">⬇️</span>
-        </button>
-      </nav>
-    </header>
-
-    <!-- HERO -->
-    <main>
-      <section class="hero">
-        <div>
-          <div class="hero-left-eyebrow">
-            <span class="hero-badge-pill">Now live</span>
-            <span>Terminal Pro + AI Music Video Creator</span>
+  <head>
+    <meta charset="UTF-8" />
+    <title>RinaWarp Technologies — Terminal Pro & AI Music Video Creator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="RinaWarp Terminal Pro and AI Music Video Creator — ultra-fast terminal productivity and AI-powered music videos for creators."
+    />
+    <link rel="stylesheet" href="/css/brand.css" />
+    <link rel="stylesheet" href="/public/styles.css" />
+  </head>
+  <body>
+    <div class="main-shell">
+      <!-- NAV -->
+      <header class="nav">
+        <div class="nav-left">
+          <div class="nav-logo">
+            <!-- if you prefer logo: <img src="/branding/Lumina Edge brand.png" alt="RinaWarp logo" /> -->
           </div>
-          <h1 class="hero-title">
-            One studio for <span class="highlight">power users & creators</span>.
-          </h1>
-          <p class="hero-subtitle">
-            RinaWarp Terminal Pro makes your machine feel like an extension of your brain.
-            AI Music Video Creator turns tracks into share-ready visual stories in minutes.
-          </p>
-
-          <div class="hero-ctas">
-            <button class="btn-primary" onclick="window.location.href='/terminal/'">
-              <span class="icon">⚡</span>
-              Download Terminal Pro
-            </button>
-            <button class="btn-outline" onclick="window.location.href='/ai-music-video/'">
-              <span class="icon">🎬</span>
-              Explore AI Music Video Creator
-            </button>
-          </div>
-          <div class="hero-footnote">
-            No shady subscriptions. Clear pricing. Built for serious builders and artists.
-          </div>
-
-          <div class="card-row">
-            <div class="card">
-              <div class="card-title">RinaWarp Terminal Pro</div>
-              <div class="card-body">
-                A modern, opinionated terminal experience with secure licensing, production-ready integrations,
-                and workflows tuned for shipping real projects.
-              </div>
-              <div class="card-pill-row">
-                <span class="card-pill">Mermaid theme UI</span>
-                <span class="card-pill">One-time license</span>
-                <span class="card-pill">Cloudflare-backed security</span>
-              </div>
-            </div>
-            <div class="card" style="background: radial-gradient(circle at top left, rgba(244, 114, 182, 0.28), rgba(15, 23, 42, 0.98));">
-              <div class="card-title">AI Music Video Creator</div>
-              <div class="card-body">
-                Turn songs into AI-generated videos, visuals, and motion art.
-                Built-in credits, subscriptions, and analytics powered by Stripe + Cloudflare.
-              </div>
-              <div class="card-pill-row">
-                <span class="card-pill">Neon unicorn visuals</span>
-                <span class="card-pill">Creator-friendly plans</span>
-                <span class="card-pill">Usage-based credits</span>
-              </div>
-            </div>
+          <div class="nav-title">
+            RinaWarp Technologies
+            <span>Terminal • AI • Creators</span>
           </div>
         </div>
+        <nav class="nav-links">
+          <a href="#products">Products</a>
+          <a href="#pricing">Pricing</a>
+          <a href="/legal/">Legal</a>
+          <a href="https://master.rinawarptech.pages.dev/admin" target="_blank" rel="noreferrer"
+            >Admin</a
+          >
+          <button class="nav-cta" onclick="window.location.href = '/terminal/'">
+            Download Terminal Pro
+            <span class="icon">⬇️</span>
+          </button>
+        </nav>
+      </header>
 
-        <!-- right hero: quick overview card -->
-        <aside>
-          <div class="pricing-card">
-            <div class="badge-pill" style="margin-bottom: 10px;">
-              <span>🛡️</span> Stripe billing • Cloudflare protected
-            </div>
-            <div style="font-size: 13px; color: #9ca3af; margin-bottom: 10px;">
-              Every purchase and license runs through a hardened stack:
-              Stripe, Cloudflare Pages + Workers, KV-backed analytics, and dedicated
-              admin tools.
-            </div>
-            <ul class="pricing-list">
-              <li>Verified domains & keys for Terminal Pro</li>
-              <li>Secure credit system for AI video generation</li>
-              <li>Admin console to review billing & customer history</li>
-              <li>Legal hub for ToS, Privacy, EULAs & AI Ethics</li>
-            </ul>
-            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="window.location.href='/terminal/'">
-              Start with Terminal Pro
-              <span class="icon">🚀</span>
-            </button>
-            <div style="margin-top: 8px; font-size: 11px; color: #9ca3af;">
-              Prefer the AI visuals first? <a href="/ai-music-video/">Explore AI Music Video Creator</a>.
-            </div>
-          </div>
-        </aside>
-      </section>
-
-      <!-- PRODUCTS SECTION -->
-      <section class="section" id="products">
-        <div class="section-header">
+      <!-- HERO -->
+      <main>
+        <section class="hero">
           <div>
-            <div class="section-title">Products</div>
-            <div class="section-subtitle">Two flagship experiences — one cohesive platform.</div>
-          </div>
-        </div>
-
-        <div class="feature-grid">
-          <article class="feature-item">
-            <h3>Terminal Pro — Mermaid Engine</h3>
-            <p>
-              A high-contrast, hot pink + coral + teal terminal theme that respects your eyes and your focus.
-              Built for builders who live in the shell, ship quickly, and care about the details.
+            <div class="hero-left-eyebrow">
+              <span class="hero-badge-pill">Now live</span>
+              <span>Terminal Pro + AI Music Video Creator</span>
+            </div>
+            <h1 class="hero-title">
+              One studio for <span class="highlight">power users & creators</span>.
+            </h1>
+            <p class="hero-subtitle">
+              RinaWarp Terminal Pro makes your machine feel like an extension of your brain. AI
+              Music Video Creator turns tracks into share-ready visual stories in minutes.
             </p>
-            <ul class="pricing-list" style="margin-top: 10px;">
-              <li>Lightning-fast command workflows</li>
-              <li>Secure licensing and offline-friendly mode</li>
-              <li>Smart project context and rich output panes</li>
-            </ul>
-            <button class="btn-outline" onclick="window.location.href='/terminal/'">
-              Learn more
-              <span class="icon">↗</span>
-            </button>
-          </article>
 
-          <article class="feature-item" style="background: radial-gradient(circle at top left, rgba(168, 85, 247, 0.55), rgba(15, 23, 42, 0.98));">
-            <h3>AI Music Video Creator — Neon Unicorn</h3>
-            <p>
-              Generate high-impact visuals that match your tracks.
-              Designed for artists, producers, and creators who want scroll-stopping video without a studio budget.
-            </p>
-            <ul class="pricing-list" style="margin-top: 10px;">
-              <li>Credit-based system tuned for predictable spend</li>
-              <li>Subscription tiers for heavy creator workflows</li>
-              <li>Export formats optimized for socials & streaming</li>
-            </ul>
-            <button class="btn-outline" onclick="window.location.href='/ai-music-video/'">
-              Explore AI-MVC
-              <span class="icon">🎧</span>
-            </button>
-          </article>
+            <div class="hero-ctas">
+              <button class="btn-primary" onclick="window.location.href = '/terminal/'">
+                <span class="icon">⚡</span>
+                Download Terminal Pro
+              </button>
+              <button class="btn-outline" onclick="window.location.href = '/ai-music-video/'">
+                <span class="icon">🎬</span>
+                Explore AI Music Video Creator
+              </button>
+            </div>
+            <div class="hero-footnote">
+              No shady subscriptions. Clear pricing. Built for serious builders and artists.
+            </div>
+
+            <div class="card-row">
+              <div class="card">
+                <div class="card-title">RinaWarp Terminal Pro</div>
+                <div class="card-body">
+                  A modern, opinionated terminal experience with secure licensing, production-ready
+                  integrations, and workflows tuned for shipping real projects.
+                </div>
+                <div class="card-pill-row">
+                  <span class="card-pill">Mermaid theme UI</span>
+                  <span class="card-pill">One-time license</span>
+                  <span class="card-pill">Cloudflare-backed security</span>
+                </div>
+              </div>
+              <div
+                class="card"
+                style="
+                  background: radial-gradient(
+                    circle at top left,
+                    rgba(244, 114, 182, 0.28),
+                    rgba(15, 23, 42, 0.98)
+                  );
+                "
+              >
+                <div class="card-title">AI Music Video Creator</div>
+                <div class="card-body">
+                  Turn songs into AI-generated videos, visuals, and motion art. Built-in credits,
+                  subscriptions, and analytics powered by Stripe + Cloudflare.
+                </div>
+                <div class="card-pill-row">
+                  <span class="card-pill">Neon unicorn visuals</span>
+                  <span class="card-pill">Creator-friendly plans</span>
+                  <span class="card-pill">Usage-based credits</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- right hero: quick overview card -->
+          <aside>
+            <div class="pricing-card">
+              <div class="badge-pill" style="margin-bottom: 10px">
+                <span>🛡️</span> Stripe billing • Cloudflare protected
+              </div>
+              <div style="font-size: 13px; color: #9ca3af; margin-bottom: 10px">
+                Every purchase and license runs through a hardened stack: Stripe, Cloudflare Pages +
+                Workers, KV-backed analytics, and dedicated admin tools.
+              </div>
+              <ul class="pricing-list">
+                <li>Verified domains & keys for Terminal Pro</li>
+                <li>Secure credit system for AI video generation</li>
+                <li>Admin console to review billing & customer history</li>
+                <li>Legal hub for ToS, Privacy, EULAs & AI Ethics</li>
+              </ul>
+              <button
+                class="btn-primary"
+                style="width: 100%; justify-content: center"
+                onclick="window.location.href = '/terminal/'"
+              >
+                Start with Terminal Pro
+                <span class="icon">🚀</span>
+              </button>
+              <div style="margin-top: 8px; font-size: 11px; color: #9ca3af">
+                Prefer the AI visuals first?
+                <a href="/ai-music-video/">Explore AI Music Video Creator</a>.
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <!-- PRODUCTS SECTION -->
+        <section class="section" id="products">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Products</div>
+              <div class="section-subtitle">Two flagship experiences — one cohesive platform.</div>
+            </div>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-item">
+              <h3>Terminal Pro — Mermaid Engine</h3>
+              <p>
+                A high-contrast, hot pink + coral + teal terminal theme that respects your eyes and
+                your focus. Built for builders who live in the shell, ship quickly, and care about
+                the details.
+              </p>
+              <ul class="pricing-list" style="margin-top: 10px">
+                <li>Lightning-fast command workflows</li>
+                <li>Secure licensing and offline-friendly mode</li>
+                <li>Smart project context and rich output panes</li>
+              </ul>
+              <button class="btn-outline" onclick="window.location.href = '/terminal/'">
+                Learn more
+                <span class="icon">↗</span>
+              </button>
+            </article>
+
+            <article
+              class="feature-item"
+              style="
+                background: radial-gradient(
+                  circle at top left,
+                  rgba(168, 85, 247, 0.55),
+                  rgba(15, 23, 42, 0.98)
+                );
+              "
+            >
+              <h3>AI Music Video Creator — Neon Unicorn</h3>
+              <p>
+                Generate high-impact visuals that match your tracks. Designed for artists,
+                producers, and creators who want scroll-stopping video without a studio budget.
+              </p>
+              <ul class="pricing-list" style="margin-top: 10px">
+                <li>Credit-based system tuned for predictable spend</li>
+                <li>Subscription tiers for heavy creator workflows</li>
+                <li>Export formats optimized for socials & streaming</li>
+              </ul>
+              <button class="btn-outline" onclick="window.location.href = '/ai-music-video/'">
+                Explore AI-MVC
+                <span class="icon">🎧</span>
+              </button>
+            </article>
+          </div>
+        </section>
+
+        <!-- PRICING SECTION -->
+        <section class="section" id="pricing">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Pricing built to be fair & clear</div>
+              <div class="section-subtitle">
+                One-time license for Terminal Pro. Creator-friendly plans for AI Music Video
+                Creator.
+              </div>
+            </div>
+          </div>
+
+          <div class="pricing-row">
+            <div class="pricing-card">
+              <div class="badge-pill" style="margin-bottom: 8px">
+                <span>⚡</span> RinaWarp Terminal Pro
+              </div>
+              <div class="pricing-price">
+                $<span id="price-terminal">—</span> <span>one-time license</span>
+              </div>
+              <div class="pricing-line">
+                Includes future 1.x updates, license verification, and access to the RinaWarp
+                ecosystem.
+              </div>
+              <ul class="pricing-list">
+                <li>One machine license with secure activation</li>
+                <li>Mermaid color scheme tuned for daily use</li>
+                <li>Works alongside your existing tools & editors</li>
+              </ul>
+              <button
+                class="btn-primary"
+                style="width: 100%; justify-content: center"
+                onclick="window.location.href = '/terminal/'"
+              >
+                Download Terminal Pro
+              </button>
+            </div>
+
+            <!-- Add Bundle Option -->
+            <div
+              class="pricing-card"
+              style="
+                background: radial-gradient(
+                  circle at top left,
+                  rgba(56, 189, 248, 0.4),
+                  rgba(15, 23, 42, 0.98)
+                );
+                border-color: rgba(56, 189, 248, 0.7);
+              "
+            >
+              <div class="badge-pill" style="border-color: rgba(56, 189, 248, 0.7); color: #7dd3fc">
+                <span>💎</span> RinaWarp Bundle
+              </div>
+              <div class="pricing-price">
+                $<span id="price-bundle">—</span> <span>best value</span>
+              </div>
+              <div class="pricing-line">
+                Get both Terminal Pro and AI Music Video Creator Pro together for maximum
+                productivity.
+              </div>
+              <ul class="pricing-list">
+                <li>Terminal Pro license + AI-MVC Pro subscription</li>
+                <li>Complete RinaWarp studio experience</li>
+                <li>Best pricing for power users</li>
+              </ul>
+              <a
+                href="/api/checkout?product=bundle"
+                class="btn-primary"
+                style="width: 100%; justify-content: center"
+              >
+                Get the Bundle
+              </a>
+            </div>
+
+            <div
+              class="pricing-card"
+              style="
+                background: radial-gradient(
+                  circle at top left,
+                  rgba(124, 58, 237, 0.4),
+                  rgba(15, 23, 42, 0.98)
+                );
+                border-color: rgba(168, 85, 247, 0.7);
+              "
+            >
+              <div
+                class="badge-pill"
+                style="border-color: rgba(244, 114, 182, 0.7); color: #f9a8d4"
+              >
+                <span>🎬</span> AI Music Video Creator
+              </div>
+              <
+              <div class="pricing-price">
+                $<span id="price-aimvc">—</span> <span>/month • creators</span>
+              </div>
+              <div class="pricing-line">
+                Keep ownership of your music. Get AI-generated visuals tuned for your sound.
+              </div>
+              <ul class="pricing-list">
+                <li>Monthly credits for video renders</li>
+                <li>Pay-as-you-go packs when you spike</li>
+                <li>Tiered plans for artists, labels & studios</li>
+              </ul>
+              <button
+                class="btn-outline"
+                style="width: 100%; justify-content: center"
+                onclick="window.location.href = '/ai-music-video/'"
+              >
+                View AI-MVC plans
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div>© <span id="year"></span> RinaWarp Technologies LLC • Built in Utah</div>
+        <div class="footer-links">
+          <a href="/legal/terms-of-service.html">Terms</a>
+          <a href="/legal/privacy-policy.html">Privacy</a>
+          <a href="/legal/ai-ethical-policy.html">AI Ethics</a>
+          <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
+          <a href="/legal/ai-music-video-creator-eula.html">AI-MVC EULA</a>
         </div>
-      </section>
+      </footer>
+    </div>
 
-      <!-- PRICING SECTION -->
-      <section class="section" id="pricing">
-        <div class="section-header">
-          <div>
-            <div class="section-title">Pricing built to be fair & clear</div>
-            <div class="section-subtitle">
-              One-time license for Terminal Pro. Creator-friendly plans for AI Music Video Creator.
-            </div>
-          </div>
-        </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
 
-        <div class="pricing-row">
-          <div class="pricing-card">
-            <div class="badge-pill" style="margin-bottom: 8px;">
-              <span>⚡</span> RinaWarp Terminal Pro
-            </div>
-            <div class="pricing-price">
-              $<span id="price-terminal">—</span> <span>one-time license</span>
-            </div>
-            <div class="pricing-line">
-              Includes future 1.x updates, license verification, and access to the RinaWarp ecosystem.
-            </div>
-            <ul class="pricing-list">
-              <li>One machine license with secure activation</li>
-              <li>Mermaid color scheme tuned for daily use</li>
-              <li>Works alongside your existing tools & editors</li>
-            </ul>
-            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="window.location.href='/terminal/'">
-              Download Terminal Pro
-            </button>
-          </div>
-
-          <!-- Add Bundle Option -->
-          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.4), rgba(15, 23, 42, 0.98)); border-color: rgba(56, 189, 248, 0.7);">
-            <div class="badge-pill" style="border-color: rgba(56, 189, 248, 0.7); color: #7dd3fc;">
-              <span>💎</span> RinaWarp Bundle
-            </div>
-            <div class="pricing-price">
-              $<span id="price-bundle">—</span> <span>best value</span>
-            </div>
-            <div class="pricing-line">
-              Get both Terminal Pro and AI Music Video Creator Pro together for maximum productivity.
-            </div>
-            <ul class="pricing-list">
-              <li>Terminal Pro license + AI-MVC Pro subscription</li>
-              <li>Complete RinaWarp studio experience</li>
-              <li>Best pricing for power users</li>
-            </ul>
-            <a href="/api/checkout?product=bundle" class="btn-primary" style="width: 100%; justify-content: center;">
-              Get the Bundle
-            </a>
-          </div>
-
-          <div class="pricing-card" style="background: radial-gradient(circle at top left, rgba(124, 58, 237, 0.4), rgba(15, 23, 42, 0.98)); border-color: rgba(168, 85, 247, 0.7);">
-            <div class="badge-pill" style="border-color: rgba(244, 114, 182, 0.7); color: #f9a8d4;">
-              <span>🎬</span> AI Music Video Creator
-            </div>
-            < <div class="pricing-price">
-              $<span id="price-aimvc">—</span> <span>/month • creators</span>
-            </div>
-            <div class="pricing-line">
-              Keep ownership of your music. Get AI-generated visuals tuned for your sound.
-            </div>
-            <ul class="pricing-list">
-              <li>Monthly credits for video renders</li>
-              <li>Pay-as-you-go packs when you spike</li>
-              <li>Tiered plans for artists, labels & studios</li>
-            </ul>
-            <button class="btn-outline" style="width: 100%; justify-content: center;" onclick="window.location.href='/ai-music-video/'">
-              View AI-MVC plans
-            </button>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div>© <span id="year"></span> RinaWarp Technologies LLC • Built in Utah</div>
-      <div class="footer-links">
-        <a href="/legal/terms-of-service.html">Terms</a>
-        <a href="/legal/privacy-policy.html">Privacy</a>
-        <a href="/legal/ai-ethical-policy.html">AI Ethics</a>
-        <a href="/legal/terminal-pro-eula.html">Terminal Pro EULA</a>
-        <a href="/legal/ai-music-video-creator-eula.html">AI-MVC EULA</a>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Optional: hydrate prices from your existing JSON/endpoint later
-    // For now, you can hardcode or pull from /public/releases/downloads.json or KV-backed endpoint
-    document.getElementById('price-terminal').textContent = '49';
-    document.getElementById('price-aimvc').textContent = '19';
-    document.getElementById('price-bundle').textContent = '79';
-  </script>
-</body>
+      // Optional: hydrate prices from your existing JSON/endpoint later
+      // For now, you can hardcode or pull from /public/releases/downloads.json or KV-backed endpoint
+      document.getElementById('price-terminal').textContent = '49';
+      document.getElementById('price-aimvc').textContent = '19';
+      document.getElementById('price-bundle').textContent = '79';
+    </script>
+  </body>
 </html>

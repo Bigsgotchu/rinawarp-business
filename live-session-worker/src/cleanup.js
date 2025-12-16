@@ -3,7 +3,7 @@ export async function cleanupStaleSessions(env) {
 
   await env.DB.prepare(
     `UPDATE live_sessions SET status='ended'
-     WHERE last_activity_at < ? AND status='active'`
+     WHERE last_activity_at < ? AND status='active'`,
   )
     .bind(cutoff)
     .run();

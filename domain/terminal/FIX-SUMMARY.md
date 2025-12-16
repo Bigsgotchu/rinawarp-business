@@ -16,6 +16,7 @@ The issue was a **module type mismatch** in the Electron configuration:
 2. **The actual main file** was `electron/main.mjs` (ES Module format)
 3. **Electron tried to `require()`** the ES Module, which is not supported
 
+
 ## Fixes Applied
 
 ### 1. Fixed electron/package.json
@@ -27,6 +28,7 @@ The issue was a **module type mismatch** in the Electron configuration:
 - Changed `"main": "main.js"` to `"main": "main.mjs"`
 - Added `"type": "module"` to explicitly declare ES Module support
 
+
 ### 2. Fixed AppEnhanced.jsx
 
 **File:** `src/domain/terminal/src/AppEnhanced.jsx`
@@ -35,6 +37,7 @@ The issue was a **module type mismatch** in the Electron configuration:
 
 - Removed duplicate `ActivationModal` import
 - Kept only the lazy-loaded version to avoid build conflicts
+
 
 ### 3. Updated Build Configuration
 
@@ -45,6 +48,7 @@ The issue was a **module type mismatch** in the Electron configuration:
 - Added `"extraMetadata": { "main": "electron/main.mjs" }` to build config
 - Added proper Linux, Windows, and Mac build targets
 - Configured proper file inclusion patterns
+
 
 ## Installation Instructions
 
@@ -62,6 +66,7 @@ This will:
 - Update the desktop launcher
 - Copy the application icon
 
+
 ### Option 2: Manual Installation
 
 ```bash
@@ -77,6 +82,7 @@ After installation, you can run the application in three ways:
 1. **From Application Menu:** Search for "RinaWarp Terminal Pro"
 2. **From Terminal:** `/opt/rinawarp-terminal-pro/rinawarp-terminal-pro.AppImage`
 3. **Desktop Shortcut:** Click the desktop icon (if created)
+
 
 ## Verification
 
@@ -96,6 +102,7 @@ The application should now launch without the ES Module error.
 2. `src/domain/terminal/src/AppEnhanced.jsx` - Removed duplicate import
 3. `src/domain/terminal/package.json` - Updated build configuration
 
+
 ### Build Process
 
 ```bash
@@ -110,6 +117,7 @@ npm run make
 - **AppImage Location:** `src/domain/terminal/release/Rinawarp Terminal Pro-1.0.0.AppImage`
 - **Size:** ~422 MB
 - **Format:** Linux AppImage (portable executable)
+
 
 ## Future Builds
 
@@ -128,6 +136,7 @@ If you still encounter issues:
 
 1. **Check Electron version:**
 
+
    ```bash
    cd src/domain/terminal
    npm list electron
@@ -135,17 +144,21 @@ If you still encounter issues:
 
 2. **Verify the build:**
 
+
    ```bash
    file "release/Rinawarp Terminal Pro-1.0.0.AppImage"
    ```
 
 3. **Check permissions:**
 
+
    ```bash
    ls -la /opt/rinawarp-terminal-pro/rinawarp-terminal-pro.AppImage
    ```
 
 4. **Run with debug output:**
+
+
    ```bash
    /opt/rinawarp-terminal-pro/rinawarp-terminal-pro.AppImage --verbose
    ```

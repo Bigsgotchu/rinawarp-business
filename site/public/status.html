@@ -1,111 +1,173 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <title>RinaWarp · Status</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link rel="stylesheet" href="/css/shared.css"/>
-  <style>
-    body{background:#0d0d10;color:#eaeaea}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-    .card{background:#15151a;border:1px solid #24242a;border-radius:12px;padding:16px}
-    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .pill{padding:4px 10px;border-radius:999px;border:1px solid #2a2a33;background:#1b1b22}
-    .ok{color:#7CFFB0} .bad{color:#FF7A7A}
-    .tile{border:1px solid #2a2a33;border-radius:10px;padding:12px}
-    .tile h4{margin:0 0 6px 0}
-    .small{font-size:12px;color:#9aa0a6}
-    a.btn{display:inline-block;padding:8px 12px;border-radius:10px;border:1px solid #2a2a33;text-decoration:none;color:#eaeaea;background:#1b1b22}
-  </style>
-</head>
-<body>
-<div class="wrap">
-  <h1>RinaWarp · Status</h1>
-  <div class="card">
-    <div class="row">
-      <div><span class="small">Version</span><div id="v" style="font-size:20px">—</div></div>
-      <div><span class="small">Release date</span><div id="d" style="font-size:20px">—</div></div>
-      <div><span class="small">Overall</span><div id="overall" style="font-size:20px">—</div></div>
-      <div style="margin-left:auto;">
-        <button id="refresh" class="pill">Refresh</button>
-        <a class="btn" href="/api/health/downloads" target="_blank">Health JSON</a>
+  <head>
+    <meta charset="utf-8" />
+    <title>RinaWarp · Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/shared.css" />
+    <style>
+      body {
+        background: #0d0d10;
+        color: #eaeaea;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      .card {
+        background: #15151a;
+        border: 1px solid #24242a;
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #2a2a33;
+        background: #1b1b22;
+      }
+      .ok {
+        color: #7cffb0;
+      }
+      .bad {
+        color: #ff7a7a;
+      }
+      .tile {
+        border: 1px solid #2a2a33;
+        border-radius: 10px;
+        padding: 12px;
+      }
+      .tile h4 {
+        margin: 0 0 6px 0;
+      }
+      .small {
+        font-size: 12px;
+        color: #9aa0a6;
+      }
+      a.btn {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid #2a2a33;
+        text-decoration: none;
+        color: #eaeaea;
+        background: #1b1b22;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>RinaWarp · Status</h1>
+      <div class="card">
+        <div class="row">
+          <div>
+            <span class="small">Version</span>
+            <div id="v" style="font-size: 20px">—</div>
+          </div>
+          <div>
+            <span class="small">Release date</span>
+            <div id="d" style="font-size: 20px">—</div>
+          </div>
+          <div>
+            <span class="small">Overall</span>
+            <div id="overall" style="font-size: 20px">—</div>
+          </div>
+          <div style="margin-left: auto">
+            <button id="refresh" class="pill">Refresh</button>
+            <a class="btn" href="/api/health/downloads" target="_blank">Health JSON</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Download assets</h3>
+        <div id="tiles" class="grid"></div>
+        <div class="small" style="margin-top: 8px">
+          Green = reachable (HTTP 200). Red = failing.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Release notes</h3>
+        <div id="notes">—</div>
+        <div style="margin-top: 8px">
+          <a id="checksums" class="btn" href="/download/checksums" target="_blank">Checksums</a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <h3>Download assets</h3>
-    <div id="tiles" class="grid"></div>
-    <div class="small" style="margin-top:8px">Green = reachable (HTTP 200). Red = failing.</div>
-  </div>
+    <script>
+      (async function () {
+        const $ = (id) => document.getElementById(id);
 
-  <div class="card">
-    <h3>Release notes</h3>
-    <div id="notes">—</div>
-    <div style="margin-top:8px">
-      <a id="checksums" class="btn" href="/download/checksums" target="_blank">Checksums</a>
-    </div>
-  </div>
-</div>
+        async function load() {
+          // meta
+          let meta = {};
+          try {
+            const r = await fetch('/api/latest/meta', { cache: 'no-store' });
+            if (r.ok) meta = await r.json();
+          } catch {}
+          $('v').textContent = meta.version || '—';
+          $('d').textContent = meta.date || '—';
+          $('notes').textContent = meta.notes || '—';
+          if (meta?.assets?.checksums) $('checksums').href = '/download/checksums';
 
-<script>
-(async function(){
-  const $ = (id)=>document.getElementById(id);
+          // health
+          let health = {};
+          try {
+            const r = await fetch('/api/health/downloads', { cache: 'no-store' });
+            if (r.ok) health = await r.json();
+          } catch {}
+          const ok = health.ok === true;
+          $('overall').innerHTML = ok
+            ? '<span class="ok">OK</span>'
+            : '<span class="bad">ERROR</span>';
 
-  async function load() {
-    // meta
-    let meta = {};
-    try{
-      const r = await fetch('/api/latest/meta', { cache:'no-store' });
-      if (r.ok) meta = await r.json();
-    }catch{}
-    $('v').textContent = meta.version || '—';
-    $('d').textContent = meta.date || '—';
-    $('notes').textContent = meta.notes || '—';
-    if (meta?.assets?.checksums) $('checksums').href = '/download/checksums';
+          const tiles = $('tiles');
+          tiles.innerHTML = '';
+          const results = Array.isArray(health.results) ? health.results : [];
+          // Ensure predictable order
+          const order = ['win', 'mac', 'mac_arm64', 'mac_x64', 'linux', 'deb', 'rpm', 'checksums'];
+          const map = Object.fromEntries(results.map((x) => [x.name, x]));
+          order.forEach((name) => {
+            // derive URL: use health url if present, else from meta.assets
+            let url = map[name]?.url;
+            if (!url && meta?.assets?.[name]) {
+              const base = location.origin; // link to same-origin route (/download/* already redirects)
+              url = meta.assets[name].startsWith('/') ? meta.assets[name] : '/download.html';
+            }
+            if (!url) return;
 
-    // health
-    let health = {};
-    try{
-      const r = await fetch('/api/health/downloads', { cache:'no-store' });
-      if (r.ok) health = await r.json();
-    }catch{}
-    const ok = health.ok === true;
-    $('overall').innerHTML = ok ? '<span class="ok">OK</span>' : '<span class="bad">ERROR</span>';
+            const r = map[name];
+            const good = r ? !!r.ok : false;
+            const status = r ? r.status : '—';
 
-    const tiles = $('tiles'); tiles.innerHTML='';
-    const results = Array.isArray(health.results) ? health.results : [];
-    // Ensure predictable order
-    const order = ['win','mac','mac_arm64','mac_x64','linux','deb','rpm','checksums'];
-    const map = Object.fromEntries(results.map(x=>[x.name, x]));
-    order.forEach(name=>{
-      // derive URL: use health url if present, else from meta.assets
-      let url = map[name]?.url;
-      if (!url && meta?.assets?.[name]) {
-        const base = (location.origin); // link to same-origin route (/download/* already redirects)
-        url = meta.assets[name].startsWith('/') ? meta.assets[name] : ('/download.html');
-      }
-      if (!url) return;
-
-      const r = map[name];
-      const good = r ? !!r.ok : false;
-      const status = r ? r.status : '—';
-
-      const tile = document.createElement('div');
-      tile.className = 'tile';
-      tile.innerHTML = `
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            tile.innerHTML = `
         <h4>${name}</h4>
         <div>Status: ${good ? '<span class="ok">OK</span>' : '<span class="bad">ERROR</span>'} <span class="small">(HTTP ${status})</span></div>
         <div class="small" style="margin-top:6px; word-break:break-all;"><a class="btn" href="${url}" target="_blank" rel="noreferrer">Open</a></div>
       `;
-      tiles.appendChild(tile);
-    });
-  }
+            tiles.appendChild(tile);
+          });
+        }
 
-  $('refresh').onclick = load;
-  document.addEventListener('DOMContentLoaded', load);
-})();
-</script>
-</body>
+        $('refresh').onclick = load;
+        document.addEventListener('DOMContentLoaded', load);
+      })();
+    </script>
+  </body>
 </html>

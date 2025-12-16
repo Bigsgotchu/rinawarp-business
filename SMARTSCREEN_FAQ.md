@@ -5,6 +5,7 @@
 ## ❓ Why does Windows show a SmartScreen warning?
 
 ### Short answer:
+
 Because RinaWarp Terminal Pro is a new developer tool, not because it's unsafe.
 
 ### Long answer:
@@ -14,7 +15,7 @@ Windows SmartScreen uses reputation, not virus detection. New apps — especiall
 RinaWarp Terminal Pro is:
 
 - ✅ Code-signed with valid certificate
-- ✅ Not obfuscated  
+- ✅ Not obfuscated
 - ✅ Not bundled with unwanted installers
 - ✅ Not collecting telemetry
 - ✅ Open about its architecture and limitations
@@ -37,6 +38,7 @@ You can verify the digital signature by right-clicking the file → Properties �
 ## 📊 Developer-Friendly Approach
 
 **Portable ZIP Distribution:**
+
 - Zero installer friction
 - Devs can inspect the executable
 - No admin privileges required
@@ -44,6 +46,7 @@ You can verify the digital signature by right-clicking the file → Properties �
 - Works in isolated environments
 
 **What you get:**
+
 ```
 RinaWarp-Terminal-Pro-v1.0.0-Windows.zip
 └── RinaWarp Terminal Pro.exe (176MB)

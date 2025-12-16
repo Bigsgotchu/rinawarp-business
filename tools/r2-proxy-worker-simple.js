@@ -12,7 +12,7 @@ export default {
     if (!ALLOWED_METHODS.includes(request.method)) {
       return new Response('Method Not Allowed', {
         status: 405,
-        headers: { 'Allow': ALLOWED_METHODS.join(', ') }
+        headers: { Allow: ALLOWED_METHODS.join(', ') },
       });
     }
 
@@ -28,14 +28,14 @@ export default {
       // Forward the request to R2
       const r2Response = await fetch(targetUrl, {
         method: request.method,
-        headers: cleanHeaders(request.headers)
+        headers: cleanHeaders(request.headers),
       });
 
       // If R2 returns 404, return a friendly 404
       if (r2Response.status === 404) {
         return new Response('File not found', {
           status: 404,
-          headers: { 'Content-Type': 'text/plain' }
+          headers: { 'Content-Type': 'text/plain' },
         });
       }
 
@@ -43,7 +43,7 @@ export default {
       if (!r2Response.ok) {
         return new Response(`R2 Error: ${r2Response.statusText}`, {
           status: r2Response.status,
-          headers: { 'Content-Type': 'text/plain' }
+          headers: { 'Content-Type': 'text/plain' },
         });
       }
 
@@ -60,15 +60,14 @@ export default {
       setSecurityHeaders(response.headers);
 
       return response;
-
     } catch (error) {
       console.error('R2 Proxy Error:', error);
       return new Response('Internal Server Error', {
         status: 500,
-        headers: { 'Content-Type': 'text/plain' }
+        headers: { 'Content-Type': 'text/plain' },
       });
     }
-  }
+  },
 };
 
 // Helper functions
@@ -90,12 +89,14 @@ function setCacheHeaders(headers, path) {
 
   if (path.includes('manifest.json')) {
     headers.set('Cache-Control', `public, max-age=${CACHE_TTL}`);
-  }
-  else if (path.includes('.exe') || path.includes('.zip') ||
-           path.includes('.AppImage') || path.includes('.deb')) {
+  } else if (
+    path.includes('.exe') ||
+    path.includes('.zip') ||
+    path.includes('.AppImage') ||
+    path.includes('.deb')
+  ) {
     headers.set('Cache-Control', 'public, max-age=300'); // 5 minutes
-  }
-  else {
+  } else {
     headers.set('Cache-Control', 'public, max-age=60'); // 1 minute
   }
 }

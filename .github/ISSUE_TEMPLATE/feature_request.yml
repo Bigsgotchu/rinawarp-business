@@ -1,0 +1,27 @@
+name: "🚀 Feature request"
+description: Suggest an idea for the project
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      placeholder: What user pain are we addressing?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      placeholder: Describe the solution. Sketch API/UI if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: input
+    id: success
+    attributes:
+      label: Success criteria
+      placeholder: How will we know it worked?

@@ -1,0 +1,63 @@
+name: release
+on:
+  push:
+    tags: ['v*.*.*']
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+jobs:
+  electron:
+    runs-on: macos-latest   # required for Apple notarization
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - name: Setup Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.0.0 --activate
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # macOS code signing: uses CSC_* env handled by electron-builder
+      - name: Decode macOS signing cert
+        if: env.MACOS_CERT_P12_BASE64 != null
+        run: |
+          echo "$MACOS_CERT_P12_BASE64" | base64 --decode > mac_signing.p12
+        env:
+          MACOS_CERT_P12_BASE64: ${{ secrets.MACOS_CERT_P12_BASE64 }}
+
+      # Windows signing (optional; works on macOS via electron-builder)
+      - name: Decode Windows signing cert
+        if: env.WIN_CERT_PFX_BASE64 != null
+        run: |
+          echo "$WIN_CERT_PFX_BASE64" | base64 --decode > win_cert.pfx
+        env:
+          WIN_CERT_PFX_BASE64: ${{ secrets.WIN_CERT_PFX_BASE64 }}
+
+      - name: Build & publish (signed & notarized)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # ----- macOS signing / notarization -----
+          CSC_LINK: mac_signing.p12
+          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          # Team short name or ID if needed
+          # APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+          # ----- Windows code signing -----
+          WIN_CSC_LINK: ${{ secrets.WIN_CERT_PFX_URL }}           # OR base64→file then set WIN_CSC_LINK=file:./win_cert.pfx
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CERT_PASSWORD }}
+
+          # Timestamp servers (recommended, defaults are fine)
+          # WIN_CERT_TIMESTAMP_SERVER: http://timestamp.digicert.com
+          # CSC_FOR_PULL_REQUEST: true   # allow unsigned on PRs if desired
+        run: pnpm release
+
+      - name: Verify packaged preload
+        run: pnpm smoke:preload:packaged

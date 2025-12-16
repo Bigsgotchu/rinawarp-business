@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
   // Device Scanning
@@ -13,16 +13,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.invoke('pull-file', deviceId, remotePath, localPath, platform),
 
   // Device Management (NEW)
-  shutdownDevice: (deviceId, platform) =>
-    ipcRenderer.invoke('shutdown-device', deviceId, platform),
+  shutdownDevice: (deviceId, platform) => ipcRenderer.invoke('shutdown-device', deviceId, platform),
 
   // Remote Input (NEW)
   sendInputText: (deviceId, platform, text) =>
     ipcRenderer.invoke('send-input-text', deviceId, platform, text),
 
   // Backup & Restore
-  backupDevice: payload => ipcRenderer.invoke('backup-device', payload),
-  restoreDevice: payload => ipcRenderer.invoke('restore-device', payload),
+  backupDevice: (payload) => ipcRenderer.invoke('backup-device', payload),
+  restoreDevice: (payload) => ipcRenderer.invoke('restore-device', payload),
 
   // Application management (NEW)
   listApps: (deviceId, platform) => ipcRenderer.invoke('list-apps', deviceId, platform),
@@ -32,11 +31,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.invoke('uninstall-app', deviceId, platform, identifier),
 
   // System toolkit
-  rebootDeviceMode: payload => ipcRenderer.invoke('reboot-device-mode', payload),
+  rebootDeviceMode: (payload) => ipcRenderer.invoke('reboot-device-mode', payload),
   getBatteryInfo: (deviceId, platform) =>
     ipcRenderer.invoke('get-battery-info', deviceId, platform),
-  getSystemInfo: (deviceId, platform) =>
-    ipcRenderer.invoke('get-system-info', deviceId, platform),
+  getSystemInfo: (deviceId, platform) => ipcRenderer.invoke('get-system-info', deviceId, platform),
 
   // Recovery wizard
   startRecoveryScan: (deviceId, platform, dataType) =>
@@ -52,11 +50,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // File Dialogs (openSaveDialog is NEW)
   openFolderDialog: () => ipcRenderer.invoke('open-folder-dialog'),
-  openSaveDialog: defaultFilename =>
-    ipcRenderer.invoke('open-save-dialog', defaultFilename),
-  openFileDialog: extensions => ipcRenderer.invoke('open-file-dialog', extensions),
+  openSaveDialog: (defaultFilename) => ipcRenderer.invoke('open-save-dialog', defaultFilename),
+  openFileDialog: (extensions) => ipcRenderer.invoke('open-file-dialog', extensions),
 
   // New function for the actual unlock process
   triggerSecureUnlock: (deviceId, proofFilePath) =>
-    ipcRenderer.invoke('trigger-secure-unlock', deviceId, proofFilePath)
-})
+    ipcRenderer.invoke('trigger-secure-unlock', deviceId, proofFilePath),
+});

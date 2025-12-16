@@ -26,9 +26,10 @@ export default {
 
     const headers = new Headers(r2Response.headers);
     headers.set('Access-Control-Allow-Origin', 'https://rinawarptech.com');
-    headers.set('Cache-Control', objectPath.endsWith('.json')
-      ? 'public, max-age=3600'
-      : 'public, max-age=300');
+    headers.set(
+      'Cache-Control',
+      objectPath.endsWith('.json') ? 'public, max-age=3600' : 'public, max-age=300',
+    );
     headers.set('X-Content-Type-Options', 'nosniff');
     headers.set('Content-Security-Policy', "default-src 'none'; style-src 'self' 'unsafe-inline';");
 

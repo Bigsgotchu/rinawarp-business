@@ -12,10 +12,12 @@ This software and all associated intellectual property is the exclusive property
 - **All Rights Reserved**
 - **Proprietary and Confidential**
 
+
 ## Trademark Notice
 
 - RinaWarp™ is a trademark of RinaWarp Technologies, LLC
 - All other trademarks are the property of their respective owners
+
 
 ## License
 
@@ -27,6 +29,7 @@ For licensing inquiries or permission requests, contact:
 
 - Email: <legal@rinawarptech.com>
 - Website: <https://rinawarptech.com>
+
 
 ## Legal Notice
 

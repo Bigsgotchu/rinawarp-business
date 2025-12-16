@@ -1,36 +1,36 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
 export function inspect() {
-  console.log("\n🔎 RinaWarp Repo Inspector\n");
+  console.log('\n🔎 RinaWarp Repo Inspector\n');
 
   const findings = [];
 
   function scan(dir) {
-    fs.readdirSync(dir).forEach(file => {
+    fs.readdirSync(dir).forEach((file) => {
       const full = path.join(dir, file);
 
       if (fs.statSync(full).isDirectory()) {
         scan(full);
-      } else if (file.endsWith(".ts") || file.endsWith(".js")) {
-        const content = fs.readFileSync(full, "utf8");
+      } else if (file.endsWith('.ts') || file.endsWith('.js')) {
+        const content = fs.readFileSync(full, 'utf8');
 
-        if (content.includes("..")) {
-          findings.push("Relative path climbing in " + full);
+        if (content.includes('..')) {
+          findings.push('Relative path climbing in ' + full);
         }
-        if (!content.includes("export") && !content.includes("import")) {
-          findings.push("Possibly unused file: " + full);
+        if (!content.includes('export') && !content.includes('import')) {
+          findings.push('Possibly unused file: ' + full);
         }
       }
     });
   }
 
-  scan(".");
+  scan('.');
 
   if (findings.length === 0) {
-    console.log("✔ No issues found.\n");
+    console.log('✔ No issues found.\n');
   } else {
-    console.log("⚠ Findings:\n");
-    findings.forEach(f => console.log(" - " + f));
+    console.log('⚠ Findings:\n');
+    findings.forEach((f) => console.log(' - ' + f));
   }
 }

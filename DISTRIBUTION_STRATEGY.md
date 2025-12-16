@@ -9,12 +9,14 @@
 **Status:** ✅ ALREADY COMPLETED
 
 **Package:**
+
 ```
 RinaWarp-Terminal-Pro-v1.0.0-Windows.zip (111MB)
 └── RinaWarp Terminal Pro.exe (176MB)
 ```
 
 **Advantages:**
+
 - Zero installer friction
 - Developers trust portable executables
 - Works without admin privileges
@@ -23,6 +25,7 @@ RinaWarp-Terminal-Pro-v1.0.0-Windows.zip (111MB)
 - No system changes required
 
 **Use Cases:**
+
 - Developer tool distribution
 - Community platforms (HN, Reddit, Twitter)
 - Technical users who prefer control
@@ -33,6 +36,7 @@ RinaWarp-Terminal-Pro-v1.0.0-Windows.zip (111MB)
 **Status:** 🔄 OPTIONAL - Add in Week 2+
 
 **Configuration:**
+
 ```json
 {
   "build": {
@@ -60,16 +64,19 @@ RinaWarp-Terminal-Pro-v1.0.0-Windows.zip (111MB)
 ```
 
 **Windows Command:**
+
 ```powershell
 npx electron-builder --win nsis
 ```
 
 **Output:**
+
 ```
 RinaWarp Terminal Pro Setup 1.0.0.exe
 ```
 
 **Advantages:**
+
 - Start Menu entries
 - Future auto-update support
 - Enterprise deployment ready
@@ -77,28 +84,31 @@ RinaWarp Terminal Pro Setup 1.0.0.exe
 
 ## 📊 Distribution Matrix
 
-| Audience | Format | Timing |
-|----------|--------|--------|
-| **Developers** | ✅ ZIP (portable) | Launch Day |
-| **Non-technical users** | NSIS | Week 2+ |
-| **Show HN / Reddit** | ✅ ZIP | Launch Day |
-| **Enterprise** | NSIS | When requested |
+| Audience                | Format            | Timing         |
+| ----------------------- | ----------------- | -------------- |
+| **Developers**          | ✅ ZIP (portable) | Launch Day     |
+| **Non-technical users** | NSIS              | Week 2+        |
+| **Show HN / Reddit**    | ✅ ZIP            | Launch Day     |
+| **Enterprise**          | NSIS              | When requested |
 
 ## 🚀 Launch Day Strategy (RECOMMENDED)
 
 ### Primary Distribution: Portable ZIP
+
 - **File:** `RinaWarp-Terminal-Pro-v1.0.0-Windows.zip`
 - **Size:** 111MB
 - **Distribution:** Direct download, Show HN, social media
 - **Audience:** Developers, technical users, community
 
 ### Code Signing: Professional Approach
+
 - **Process:** Linux build → Windows signing → SmartScreen reputation
 - **Certificate:** OV or EV Authenticode
 - **Script:** `WINDOWS_CODE_SIGNING_SCRIPT.ps1`
 - **Verification:** `signtool verify`
 
 ### SmartScreen Handling
+
 - **FAQ:** `SMARTSCREEN_FAQ.md` (ready for support)
 - **Message:** Clear, calm, non-defensive
 - **Education:** Explain reputation vs safety
@@ -107,18 +117,21 @@ RinaWarp Terminal Pro Setup 1.0.0.exe
 ## 📈 Rollout Timeline
 
 ### Day 0 (Launch)
+
 - ✅ Portable ZIP distribution
 - ✅ Show HN post
 - ✅ SmartScreen FAQ published
 - ✅ Developer community engagement
 
 ### Week 1
+
 - Monitor ZIP download metrics
 - Track SmartScreen reputation changes
 - Collect user feedback
 - Prepare NSIS installer
 
 ### Week 2+ (Optional)
+
 - Add NSIS installer for non-technical users
 - Enterprise deployment support
 - Auto-update infrastructure
@@ -127,12 +140,14 @@ RinaWarp Terminal Pro Setup 1.0.0.exe
 ## 🎯 Success Metrics
 
 ### ZIP Distribution
+
 - Download count (first 7 days)
 - SmartScreen warning decrease over time
 - User feedback quality
 - Community adoption rate
 
 ### Code Signing Impact
+
 - SmartScreen reputation improvement
 - False positive reduction
 - User trust metrics
@@ -141,12 +156,14 @@ RinaWarp Terminal Pro Setup 1.0.0.exe
 ## 🛡️ Quality Assurance
 
 ### Pre-Launch Validation
+
 - ✅ All tests passed (6/6 basic, 9/9 comprehensive)
 - ✅ Build hash locked (`b0d82095b7fc0b0342d623f431695c7d5da6f188`)
 - ✅ v1.0.0 scope locked
 - ✅ Portable package validated
 
 ### Post-Launch Monitoring
+
 - Download success rate
 - SmartScreen warning frequency
 - User installation success

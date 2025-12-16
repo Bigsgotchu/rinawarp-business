@@ -1,5 +1,5 @@
 // tests/utils/pretty-log.js
-import chalk from "chalk";
+import chalk from 'chalk';
 
 export function logSection(title) {
   console.log(chalk.cyan(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`));

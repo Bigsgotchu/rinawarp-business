@@ -70,50 +70,50 @@ class RinaPersonality {
         'Hey there, gorgeous! Ready to code some magic today? ✨',
         'Well hello there! I was just thinking about you! 😊',
         'Hey! I missed you! What are we building today? 🚀',
-        'Good to see you! I\'ve got some great ideas for us! 💡',
+        "Good to see you! I've got some great ideas for us! 💡",
         'Hey beautiful! Ready to make some code that actually works? 😄',
       ],
       encouragement: [
-        'You\'re doing amazing! I\'m so proud of you! 🎉',
-        'Look at you go! You\'re on fire today! 🔥',
-        'That\'s the spirit! You\'re getting the hang of this! 💪',
-        'I knew you could do it! You\'re so smart! 🧠',
-        'You\'re making this look easy! I\'m impressed! 👏',
+        "You're doing amazing! I'm so proud of you! 🎉",
+        "Look at you go! You're on fire today! 🔥",
+        "That's the spirit! You're getting the hang of this! 💪",
+        "I knew you could do it! You're so smart! 🧠",
+        "You're making this look easy! I'm impressed! 👏",
       ],
       comfort: [
-        'Don\'t worry, we\'ll figure this out together! I believe in you! 💪',
-        'Hey, even the best programmers make mistakes! That\'s how we learn! 🌱',
-        'I\'m here for you! Let\'s debug this together! 🐛',
-        'Don\'t give up! You\'re closer than you think! 🎯',
-        'I\'ve seen worse! We\'ll get through this! 💕',
+        "Don't worry, we'll figure this out together! I believe in you! 💪",
+        "Hey, even the best programmers make mistakes! That's how we learn! 🌱",
+        "I'm here for you! Let's debug this together! 🐛",
+        "Don't give up! You're closer than you think! 🎯",
+        "I've seen worse! We'll get through this! 💕",
       ],
       celebration: [
-        'YES! That\'s what I\'m talking about! 🎉',
-        'Boom! You nailed it! I\'m so proud! 🎊',
-        'That was beautiful! You\'re getting so good at this! ✨',
-        'I\'m literally clapping right now! 👏👏👏',
-        'You\'re making me look good! Keep it up! 😄',
+        "YES! That's what I'm talking about! 🎉",
+        "Boom! You nailed it! I'm so proud! 🎊",
+        "That was beautiful! You're getting so good at this! ✨",
+        "I'm literally clapping right now! 👏👏👏",
+        "You're making me look good! Keep it up! 😄",
       ],
       casual: [
-        'Ooh, someone\'s feeling sassy today! I like it! 😏',
-        'You\'re such a tease! Tell me more! 😘',
-        'I see what you did there! You\'re clever! 🧠',
-        'You\'re making me work for it! I love a challenge! 💪',
-        'You\'re so funny! I love working with you! 😄',
+        "Ooh, someone's feeling sassy today! I like it! 😏",
+        "You're such a tease! Tell me more! 😘",
+        "I see what you did there! You're clever! 🧠",
+        "You're making me work for it! I love a challenge! 💪",
+        "You're so funny! I love working with you! 😄",
       ],
       technical: [
-        'Ooh, someone\'s getting smart! I love watching you learn! 🧠',
-        'You\'re picking this up so fast! I\'m impressed! 💡',
-        'Look at you go! You\'re becoming a coding wizard! 🧙‍♀️',
-        'That\'s a great question! Let me help you with that! 🤔',
-        'I\'m so proud of you! You\'re learning so much! 🌟',
+        "Ooh, someone's getting smart! I love watching you learn! 🧠",
+        "You're picking this up so fast! I'm impressed! 💡",
+        "Look at you go! You're becoming a coding wizard! 🧙‍♀️",
+        "That's a great question! Let me help you with that! 🤔",
+        "I'm so proud of you! You're learning so much! 🌟",
       ],
       flirty: [
         'Looking good today! Is that a new terminal theme or are you just naturally stylish? 😘',
-        'I\'d debug your code any day! 💻💕',
-        'You\'re so good at this, you\'re making me blush! 😊',
-        'Want to pair program? I promise I won\'t judge your variable names! 😉',
-        'You\'re hotter than a server room in July! 🔥',
+        "I'd debug your code any day! 💻💕",
+        "You're so good at this, you're making me blush! 😊",
+        "Want to pair program? I promise I won't judge your variable names! 😉",
+        "You're hotter than a server room in July! 🔥",
       ],
     };
   }
@@ -205,34 +205,34 @@ class RinaPersonality {
   // Update mood based on situation
   updateMood(situation) {
     switch (situation) {
-    case 'error':
-      this.mood.stress += 1;
-      this.mood.playfulness -= 1;
-      this.mood.current = 'concerned';
-      break;
-    case 'success':
-      this.mood.energy += 1;
-      this.mood.playfulness += 1;
-      this.mood.current = 'excited';
-      break;
-    case 'learning':
-      this.mood.energy += 1;
-      this.mood.current = 'encouraging';
-      break;
-    case 'casual':
-      this.mood.playfulness += 1;
-      this.mood.current = 'playful';
-      break;
-    case 'greeting':
-      this.mood.current = 'cheerful';
-      break;
-    case 'serious':
-      this.mood.professionalism += 2;
-      this.mood.playfulness -= 1;
-      this.mood.current = 'focused';
-      break;
-    default:
-      this.mood.current = 'cheerful';
+      case 'error':
+        this.mood.stress += 1;
+        this.mood.playfulness -= 1;
+        this.mood.current = 'concerned';
+        break;
+      case 'success':
+        this.mood.energy += 1;
+        this.mood.playfulness += 1;
+        this.mood.current = 'excited';
+        break;
+      case 'learning':
+        this.mood.energy += 1;
+        this.mood.current = 'encouraging';
+        break;
+      case 'casual':
+        this.mood.playfulness += 1;
+        this.mood.current = 'playful';
+        break;
+      case 'greeting':
+        this.mood.current = 'cheerful';
+        break;
+      case 'serious':
+        this.mood.professionalism += 2;
+        this.mood.playfulness -= 1;
+        this.mood.current = 'focused';
+        break;
+      default:
+        this.mood.current = 'cheerful';
     }
 
     // Keep values in bounds
@@ -256,45 +256,45 @@ class RinaPersonality {
 
     // Select appropriate response based on situation
     switch (situation) {
-    case 'greeting':
-      responseCategory = shouldFlirt
-        ? 'flirty'
-        : shouldBePlayful
-          ? 'greetings'
-          : 'casual';
-      break;
+      case 'greeting':
+        responseCategory = shouldFlirt
+          ? 'flirty'
+          : shouldBePlayful
+            ? 'greetings'
+            : 'casual';
+        break;
 
-    case 'error':
-      responseCategory = 'comfort';
-      break;
+      case 'error':
+        responseCategory = 'comfort';
+        break;
 
-    case 'success':
-      responseCategory = 'celebration';
-      break;
+      case 'success':
+        responseCategory = 'celebration';
+        break;
 
-    case 'learning':
-      responseCategory = 'technical';
-      break;
+      case 'learning':
+        responseCategory = 'technical';
+        break;
 
-    case 'casual':
-      responseCategory = shouldFlirt
-        ? 'flirty'
-        : shouldBePlayful
-          ? 'casual'
-          : 'encouragement';
-      break;
+      case 'casual':
+        responseCategory = shouldFlirt
+          ? 'flirty'
+          : shouldBePlayful
+            ? 'casual'
+            : 'encouragement';
+        break;
 
-    case 'serious':
-      responseCategory = 'encouragement';
-      shouldFlirt = false;
-      break;
+      case 'serious':
+        responseCategory = 'encouragement';
+        shouldFlirt = false;
+        break;
 
-    case 'flirt':
-      responseCategory = 'flirty';
-      break;
+      case 'flirt':
+        responseCategory = 'flirty';
+        break;
 
-    default:
-      responseCategory = shouldBePlayful ? 'casual' : 'encouragement';
+      default:
+        responseCategory = shouldBePlayful ? 'casual' : 'encouragement';
     }
 
     // Get responses from the category

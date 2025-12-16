@@ -35,31 +35,31 @@ const UpdateNotification = () => {
 
   const getStatusColor = (type) => {
     switch (type) {
-    case 'available':
-      return 'bg-blue-500';
-    case 'downloading':
-      return 'bg-yellow-500';
-    case 'downloaded':
-      return 'bg-green-500';
-    case 'error':
-      return 'bg-red-500';
-    default:
-      return 'bg-gray-500';
+      case 'available':
+        return 'bg-blue-500';
+      case 'downloading':
+        return 'bg-yellow-500';
+      case 'downloaded':
+        return 'bg-green-500';
+      case 'error':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
     }
   };
 
   const getStatusIcon = (type) => {
     switch (type) {
-    case 'available':
-      return '⬆️';
-    case 'downloading':
-      return '📥';
-    case 'downloaded':
-      return '✅';
-    case 'error':
-      return '❌';
-    default:
-      return 'ℹ️';
+      case 'available':
+        return '⬆️';
+      case 'downloading':
+        return '📥';
+      case 'downloaded':
+        return '✅';
+      case 'error':
+        return '❌';
+      default:
+        return 'ℹ️';
     }
   };
 

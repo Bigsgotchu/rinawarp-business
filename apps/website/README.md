@@ -54,15 +54,19 @@ npm run db:migrate
 ## API Endpoints
 
 ### Checkout Session Creation
+
 - **Endpoint**: `POST /api/checkout-v2`
 - **Request Body**:
+
   ```json
   {
     "plan": "student|professional|enterprise",
     "email": "user@example.com"
   }
   ```
+
 - **Response**:
+
   ```json
   {
     "url": "https://checkout.stripe.com/..."
@@ -70,14 +74,18 @@ npm run db:migrate
   ```
 
 ### License Verification
+
 - **Endpoint**: `POST /api/license/verify`
 - **Request Body**:
+
   ```json
   {
     "licenseKey": "RINA-XXXX-XXXX-XXXX-XXXX"
   }
   ```
+
 - **Response**:
+
   ```json
   {
     "valid": true,
@@ -93,8 +101,10 @@ npm run db:migrate
   ```
 
 ### License Lookup by Email
+
 - **Endpoint**: `GET /api/license/by-email?email=user@example.com`
 - **Response**:
+
   ```json
   {
     "email": "user@example.com",
@@ -107,6 +117,7 @@ npm run db:migrate
   ```
 
 ### Stripe Webhook
+
 - **Endpoint**: `POST /api/stripe/webhook`
 - **Headers**: `Stripe-Signature: ...`
 - **Body**: Stripe webhook payload

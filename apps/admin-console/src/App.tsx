@@ -1,14 +1,14 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import { Sidebar } from "./components/Sidebar";
-import { TopBar } from "./components/TopBar";
-import { Dashboard } from "./views/Dashboard";
-import { Licenses } from "./views/Licenses";
-import { Customers } from "./views/Customers";
-import { AnalyticsView } from "./views/Analytics";
-import { Logs } from "./views/Logs";
-import { Settings } from "./views/Settings";
-import { AdminProvider } from "./lib/adminContext";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Sidebar } from './components/Sidebar';
+import { TopBar } from './components/TopBar';
+import { Dashboard } from './views/Dashboard';
+import { Licenses } from './views/Licenses';
+import { Customers } from './views/Customers';
+import { AnalyticsView } from './views/Analytics';
+import { Logs } from './views/Logs';
+import { Settings } from './views/Settings';
+import { AdminProvider } from './lib/adminContext';
 
 const App: React.FC = () => {
   return (

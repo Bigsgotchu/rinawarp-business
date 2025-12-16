@@ -1,11 +1,11 @@
-import { LastShellEvent, GitState, NodeState, AgentHealth, RecentUserAction } from "./types";
+import { LastShellEvent, GitState, NodeState, AgentHealth, RecentUserAction } from './types';
 
 interface AgentState {
   lastCommand?: string;
   workingDirectory?: string;
   environment?: Record<string, string>;
   userContext?: Record<string, any>;
-  
+
   // Enhanced state for planning heuristics
   lastShellEvent?: LastShellEvent;
   gitState?: GitState;
@@ -20,7 +20,7 @@ interface AgentState {
 class StateManager {
   private state: AgentState = {
     recentUserActions: [],
-    crashHistory: []
+    crashHistory: [],
   };
 
   getState(): AgentState {
@@ -102,7 +102,7 @@ class StateManager {
       this.state.recentUserActions = [];
     }
     this.state.recentUserActions.push(action);
-    
+
     // Keep only last 10 actions
     if (this.state.recentUserActions.length > 10) {
       this.state.recentUserActions = this.state.recentUserActions.slice(-10);
@@ -134,10 +134,10 @@ class StateManager {
       this.state.crashHistory = [];
     }
     this.state.crashHistory.push(Date.now());
-    
+
     // Keep only crashes from last hour
-    const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    this.state.crashHistory = this.state.crashHistory.filter(time => time > oneHourAgo);
+    const oneHourAgo = Date.now() - 60 * 60 * 1000;
+    this.state.crashHistory = this.state.crashHistory.filter((time) => time > oneHourAgo);
   }
 
   getCrashCountLastHour(): number {
@@ -147,7 +147,7 @@ class StateManager {
   clear(): void {
     this.state = {
       recentUserActions: [],
-      crashHistory: []
+      crashHistory: [],
     };
   }
 }

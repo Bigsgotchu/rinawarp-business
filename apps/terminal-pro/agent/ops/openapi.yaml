@@ -4,18 +4,18 @@ info:
   version: 1.0.0
 servers:
   - url: http://127.0.0.1:{port}
-    variables: { port: { default: "3333" } }
+    variables: { port: { default: '3333' } }
 paths:
   /health:
     get:
       summary: Liveness probe
       responses:
-        "200": { description: OK }
+        '200': { description: OK }
   /v1/models:
     get:
       summary: List models
       responses:
-        "200":
+        '200':
           description: List
           content:
             application/json:
@@ -54,10 +54,10 @@ paths:
                 temperature: { type: number, minimum: 0, maximum: 2 }
                 top_p: { type: number, exclusiveMinimum: 0, maximum: 1 }
       responses:
-        "200":
+        '200':
           description: Chat completion
           content:
             application/json: {}
             text/event-stream: {}
-        "400": { description: Bad request }
-        "415": { description: Unsupported media type }
+        '400': { description: Bad request }
+        '415': { description: Unsupported media type }

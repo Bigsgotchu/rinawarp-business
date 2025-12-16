@@ -19,10 +19,10 @@ Features:
 **Usage**:
 
 ```typescript
-import { logger, httpLogger } from "./logger";
+import { logger, httpLogger } from './logger';
 
 // Logs automatically include request correlation
-(req as any).log?.info({ rid: (req as any).rid }, "Processing request");
+(req as any).log?.info({ rid: (req as any).rid }, 'Processing request');
 ```
 
 **Environment Variables**:
@@ -166,24 +166,22 @@ CORS_ORIGIN=*                    # CORS origin
 ```yaml
 # Prometheus alerting rules
 groups:
+  - name: rinawarp
 
-- name: rinawarp
+    rules:
+      - alert: HighErrorRate
 
-  rules:
+        expr: rate(rinawarp_http_request_duration_seconds_count{status=~"4..|5.."}[5m]) > 0.1
+        for: 2m
+        annotations:
+          summary: 'High error rate detected'
 
-  - alert: HighErrorRate
+      - alert: SlowChatResponses
 
-    expr: rate(rinawarp_http_request_duration_seconds_count{status=~"4..|5.."}[5m]) > 0.1
-    for: 2m
-    annotations:
-      summary: "High error rate detected"
-
-  - alert: SlowChatResponses
-
-    expr: histogram_quantile(0.95, rate(rinawarp_chat_completion_duration_seconds_bucket[5m])) > 2
-    for: 5m
-    annotations:
-      summary: "Chat responses are slower than expected"
+        expr: histogram_quantile(0.95, rate(rinawarp_chat_completion_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        annotations:
+          summary: 'Chat responses are slower than expected'
 ```
 
 ## 🚀 Production Deployment
@@ -212,29 +210,27 @@ spec:
   template:
     spec:
       containers:
+        - name: rina-agent
 
-      - name: rina-agent
+          env:
+            - name: RL_ENABLE
 
-        env:
+              value: 'true'
 
-        - name: RL_ENABLE
+            - name: REQUIRE_API_KEY
 
-          value: "true"
+              value: 'true'
 
-        - name: REQUIRE_API_KEY
+            - name: API_KEY
 
-          value: "true"
+              valueFrom:
+                secretKeyRef:
+                  name: rina-secrets
+                  key: api-key
 
-        - name: API_KEY
+            - name: LOG_LEVEL
 
-          valueFrom:
-            secretKeyRef:
-              name: rina-secrets
-              key: api-key
-
-        - name: LOG_LEVEL
-
-          value: "info"
+              value: 'info'
 ```
 
 ## 🔍 Troubleshooting

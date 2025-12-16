@@ -171,7 +171,7 @@ function generateReleaseNotes(manifest) {
   let notes = `# RinaWarp Terminal Pro ${version}\n\n`;
   notes += `Released on ${new Date(manifest.buildTime).toLocaleDateString()}\n\n`;
 
-  notes += '## What\'s New\n\n';
+  notes += "## What's New\n\n";
   notes += '🚀 **Production-ready builds** with cross-platform support\n';
   notes += '🔐 **Enhanced security** with code signing and verification\n';
   notes += '⚡ **Optimized performance** with production builds\n';

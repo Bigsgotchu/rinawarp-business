@@ -17,10 +17,12 @@ export const onRequestPost = async ({ request, env }) => {
       'line_items[0][quantity]': quantity,
       allow_promotion_codes: 'true',
       automatic_tax: 'enabled',
-      billing_address_collection: 'auto'
+      billing_address_collection: 'auto',
     });
 
-    const res = await okOrThrow(stripeFetch(env, '/v1/checkout/sessions', { method: 'POST', body: params }));
+    const res = await okOrThrow(
+      stripeFetch(env, '/v1/checkout/sessions', { method: 'POST', body: params }),
+    );
     const session = await res.json();
     return json({ ok: true, id: session.id, url: session.url });
   } catch (e) {

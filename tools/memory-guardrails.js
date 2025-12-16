@@ -13,7 +13,7 @@ class MemoryGuardrails {
       /imagined.*api/i,
       /created.*function/i,
       /generated.*file/i,
-      /made up.*dependency/i
+      /made up.*dependency/i,
     ];
   }
 
@@ -27,7 +27,7 @@ class MemoryGuardrails {
       statement: statement,
       isValid: true,
       issues: [],
-      confidence: 1.0
+      confidence: 1.0,
     };
 
     // Check for hallucination patterns
@@ -37,7 +37,7 @@ class MemoryGuardrails {
         validationResult.issues.push({
           type: 'hallucination_pattern',
           pattern: pattern.toString(),
-          severity: 'high'
+          severity: 'high',
         });
         validationResult.confidence *= 0.3;
       }
@@ -52,7 +52,7 @@ class MemoryGuardrails {
         validationResult.issues.push({
           type: 'unverified_knowledge',
           source: knownFact.source,
-          severity: 'medium'
+          severity: 'medium',
         });
         validationResult.confidence *= 0.5;
       }
@@ -61,7 +61,7 @@ class MemoryGuardrails {
       validationResult.issues.push({
         type: 'unknown_statement',
         severity: 'medium',
-        recommendation: 'verify_before_use'
+        recommendation: 'verify_before_use',
       });
       validationResult.confidence *= 0.6;
     }
@@ -81,7 +81,7 @@ class MemoryGuardrails {
       verified: true,
       source: metadata.source || 'user_input',
       timestamp: new Date().toISOString(),
-      ...metadata
+      ...metadata,
     });
   }
 
@@ -107,7 +107,7 @@ class MemoryGuardrails {
       assumptionsChecked: assumptions.length,
       issuesFound: 0,
       safeToProceed: true,
-      recommendations: []
+      recommendations: [],
     };
 
     for (const assumption of assumptions) {
@@ -119,7 +119,7 @@ class MemoryGuardrails {
         report.recommendations.push({
           assumption: assumption,
           issues: validation.issues,
-          action: 'STOP_AND_VERIFY'
+          action: 'STOP_AND_VERIFY',
         });
       }
     }

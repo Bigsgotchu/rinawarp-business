@@ -159,27 +159,27 @@ const ProjectHealthDashboard = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-    case 'healthy':
-      return 'text-mermaid-cyan';
-    case 'warning':
-      return 'text-yellow-400';
-    case 'critical':
-      return 'text-red-400';
-    default:
-      return 'text-mermaid-text';
+      case 'healthy':
+        return 'text-mermaid-cyan';
+      case 'warning':
+        return 'text-yellow-400';
+      case 'critical':
+        return 'text-red-400';
+      default:
+        return 'text-mermaid-text';
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
-    case 'healthy':
-      return '🟢';
-    case 'warning':
-      return '🟡';
-    case 'critical':
-      return '🔴';
-    default:
-      return '⚪';
+      case 'healthy':
+        return '🟢';
+      case 'warning':
+        return '🟡';
+      case 'critical':
+        return '🔴';
+      default:
+        return '⚪';
     }
   };
 

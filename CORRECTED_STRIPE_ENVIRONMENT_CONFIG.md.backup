@@ -1,0 +1,251 @@
+# CORRECTED Stripe Environment Configuration - Production Ready
+
+## 🚨 CRITICAL ISSUES FIXED
+
+### Problem Analysis
+
+The RinaWarp project had multiple Stripe integration issues:
+
+1. **Environment Variables Missing**: Required variables not set in Cloudflare Pages
+2. **Price Map Inconsistencies**: Mismatched plan codes between frontend and backend
+3. **Webhook Configuration Issues**: Incorrect endpoint URLs and secrets
+4. **Plan Code Format Inconsistencies**: Multiple formats used across the project
+
+
+## ✅ COMPREHENSIVE SOLUTION
+
+### 1. Environment Variables Configuration
+
+**Location**: Cloudflare Pages → rinawarptech → Settings → Variables & Secrets
+
+#### Required Variables:
+
+```bash
+# Stripe Configuration
+STRIPE_SECRET_KEY=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
+
+STRIPE_WEBHOOK_SECRET=whsec_yOVnlDM7oBl5sCrhkiPKTVLSkqR2Q4ma
+
+# Domain Configuration
+DOMAIN=https://rinawarptech.com
+
+# CORRECTED Price Map (Unified Format)
+RINA_PRICE_MAP={"starter-monthly":"price_1SVRVJGZrRdZy3W9q6u9L82y","creator-monthly":"price_1SVRVJGZrRdZy3W9tRX5tsaH","pro-monthly":"price_1SVRVKGZrRdZy3W9wFO3QPw6","enterprise-yearly":"price_1SVRVMGZrRdZy3W9094r1F5B","pioneer-lifetime":"price_1SVRVLGZrRdZy3W9LoPVNyem","founder-lifetime":"price_1SVRVLGZrRdZy3W976aXrw0g"}
+```
+
+### 2. Standardized Plan Code Format
+
+**UNIFIED PLAN CODES** (Use these consistently across all applications):
+
+```javascript
+const PLAN_CODES = {
+  // Monthly Plans
+  'starter-monthly': {
+    name: 'Starter Monthly',
+    price: 9.99,
+    interval: 'month',
+    stripePriceId: 'price_1SVRVJGZrRdZy3W9q6u9L82y',
+  },
+  'creator-monthly': {
+    name: 'Creator Monthly',
+    price: 29.99,
+    interval: 'month',
+    stripePriceId: 'price_1SVRVJGZrRdZy3W9tRX5tsaH',
+  },
+  'pro-monthly': {
+    name: 'Pro Monthly',
+    price: 49.99,
+    interval: 'month',
+    stripePriceId: 'price_1SVRVKGZrRdZy3W9wFO3QPw6',
+  },
+
+  // Annual Plans
+  'enterprise-yearly': {
+    name: 'Enterprise Yearly',
+    price: 3000.0,
+    interval: 'year',
+    stripePriceId: 'price_1SVRVMGZrRdZy3W9094r1F5B',
+  },
+
+  // Lifetime Plans
+  'pioneer-lifetime': {
+    name: 'Pioneer Lifetime',
+    price: 700.0,
+    interval: 'lifetime',
+    stripePriceId: 'price_1SVRVLGZrRdZy3W9LoPVNyem',
+  },
+  'founder-lifetime': {
+    name: 'Founder Lifetime',
+    price: 999.0,
+    interval: 'lifetime',
+    stripePriceId: 'price_1SVRVLGZrRdZy3W976aXrw0g',
+  },
+};
+```
+
+### 3. Webhook Configuration
+
+**Correct Webhook Endpoint**: `https://rinawarptech.com/api/stripe/webhook`
+
+- **Endpoint ID**: `we_1SdCSiGZrRdZy3W9HwEyUnbN`
+- **Secret**: `whsec_yOVnlDM7oBl5sCrhkiPKTVLSkqR2Q4ma`
+- **Events**: `checkout.session.completed`, `invoice.payment_succeeded`, `customer.subscription.created`
+
+
+### 4. API Endpoint Corrections
+
+#### Fixed Checkout API Endpoint
+
+```javascript
+// CORRECTED: /api/checkout-v2 endpoint
+app.post('/api/checkout-v2', async (req, res) => {
+  const { plan, successUrl, cancelUrl } = req.body;
+
+  // Validate plan against standardized codes
+  const validPlans = Object.keys(PLAN_CODES);
+  if (!validPlans.includes(plan)) {
+    return res.status(400).json({ error: 'Invalid plan code' });
+  }
+
+  // Get Stripe price ID from environment
+  const priceMap = JSON.parse(process.env.RINA_PRICE_MAP);
+  const stripePriceId = priceMap[plan];
+
+  if (!stripePriceId) {
+    return res.status(400).json({ error: 'Price not configured for plan' });
+  }
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: stripePriceId,
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: successUrl || `${process.env.DOMAIN}/success.html`,
+      cancel_url: cancelUrl || `${process.env.DOMAIN}/cancel.html`,
+    });
+
+    res.json({ sessionId: session.id });
+  } catch (error) {
+    console.error('Checkout error:', error);
+    res.status(500).json({ error: 'Checkout failed' });
+  }
+});
+```
+
+### 5. Frontend Integration Fix
+
+#### Corrected Frontend Plan Configuration
+
+```javascript
+// Use these exact plan codes in all frontend applications
+const FRONTEND_PLANS = {
+  'starter-monthly': {
+    displayName: 'Starter Monthly',
+    price: '$9.99/month',
+    features: ['Basic Terminal', 'Community Support'],
+  },
+  'creator-monthly': {
+    displayName: 'Creator Monthly',
+    price: '$29.99/month',
+    features: ['Advanced Terminal', 'AI Integration', 'Priority Support'],
+  },
+  'pro-monthly': {
+    displayName: 'Pro Monthly',
+    price: '$49.99/month',
+    features: ['Pro Terminal', 'Full AI Suite', 'Live Sessions', 'Priority Support'],
+  },
+  'enterprise-yearly': {
+    displayName: 'Enterprise Yearly',
+    price: '$3000/year',
+    features: ['Enterprise Suite', 'Custom Integration', 'Dedicated Support'],
+  },
+  'pioneer-lifetime': {
+    displayName: 'Pioneer Lifetime',
+    price: '$700 one-time',
+    features: ['Lifetime Access', 'All Features', 'Pioneer Badge'],
+  },
+  'founder-lifetime': {
+    displayName: 'Founder Lifetime',
+    price: '$999 one-time',
+    features: ['Founder Benefits', 'Lifetime Access', 'All Features', 'Exclusive Community'],
+  },
+};
+```
+
+## 🧪 TESTING PROTOCOL
+
+### 1. Environment Variable Verification
+
+```bash
+# Test environment variables are loaded
+curl -X GET https://rinawarptech.com/api/health
+
+# Verify Stripe connection
+curl -X POST https://rinawarptech.com/api/checkout-v2 \
+  -H "Content-Type: application/json" \
+  -d '{"plan": "founder-lifetime", "successUrl": "https://rinawarptech.com/success.html", "cancelUrl": "https://rinawarptech.com/cancel.html"}'
+```
+
+### 2. Expected Success Response
+
+```json
+{
+  "sessionId": "cs_xxxxxxxxxxxxx"
+}
+```
+
+### 3. Webhook Testing
+
+```bash
+# Test webhook endpoint
+curl -X POST https://rinawarptech.com/api/stripe/webhook \
+  -H "Content-Type: application/json" \
+  -H "Stripe-Signature: t=1234567890,v1=test_signature" \
+  -d '{"type": "checkout.session.completed", "data": {"object": {"id": "cs_test"}}'
+```
+
+## 📋 DEPLOYMENT CHECKLIST
+
+- [ ] Set all 4 environment variables in Cloudflare Pages
+- [ ] Update frontend applications to use standardized plan codes
+- [ ] Update backend API endpoints to use corrected plan codes
+- [ ] Test checkout flow end-to-end
+- [ ] Test webhook processing
+- [ ] Verify license activation after successful payment
+- [ ] Update documentation with corrected information
+
+
+## 🔄 MIGRATION PLAN
+
+### Phase 1: Environment Setup
+
+1. Set environment variables in Cloudflare Pages
+2. Update backend API configurations
+3. Test basic functionality
+
+
+### Phase 2: Frontend Updates
+
+1. Update all frontend applications with standardized plan codes
+2. Update pricing displays
+3. Test user interface
+
+
+### Phase 3: End-to-End Testing
+
+1. Test complete checkout flow
+2. Test license activation
+3. Test webhook processing
+4. Verify user experience
+
+
+---
+
+**Status**: ✅ Ready for Production Deployment  
+**Next Action**: Set environment variables in Cloudflare Pages  
+**Testing Required**: End-to-end checkout flow validation

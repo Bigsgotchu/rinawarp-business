@@ -177,58 +177,58 @@ class AIProviderManager {
 
     try {
       switch (provider) {
-      case 'openai':
-        return await this.generateOpenAI(providerInstance, {
-          messages,
-          model,
-          temperature,
-          maxTokens,
-          stream,
-          onToken,
-        });
+        case 'openai':
+          return await this.generateOpenAI(providerInstance, {
+            messages,
+            model,
+            temperature,
+            maxTokens,
+            stream,
+            onToken,
+          });
 
-      case 'groq':
-        return await this.generateGroq(providerInstance, {
-          messages,
-          model,
-          temperature,
-          maxTokens,
-          stream,
-          onToken,
-        });
+        case 'groq':
+          return await this.generateGroq(providerInstance, {
+            messages,
+            model,
+            temperature,
+            maxTokens,
+            stream,
+            onToken,
+          });
 
-      case 'claude':
-        return await this.generateClaude(providerInstance, {
-          messages,
-          model,
-          temperature,
-          maxTokens,
-          stream,
-          onToken,
-        });
+        case 'claude':
+          return await this.generateClaude(providerInstance, {
+            messages,
+            model,
+            temperature,
+            maxTokens,
+            stream,
+            onToken,
+          });
 
-      case 'gemini':
-        return await this.generateGemini(providerInstance, {
-          messages,
-          model,
-          temperature,
-          maxTokens,
-          stream,
-          onToken,
-        });
+        case 'gemini':
+          return await this.generateGemini(providerInstance, {
+            messages,
+            model,
+            temperature,
+            maxTokens,
+            stream,
+            onToken,
+          });
 
-      case 'ollama':
-        return await this.generateOllama(providerInstance, {
-          messages,
-          model,
-          temperature,
-          maxTokens,
-          stream,
-          onToken,
-        });
+        case 'ollama':
+          return await this.generateOllama(providerInstance, {
+            messages,
+            model,
+            temperature,
+            maxTokens,
+            stream,
+            onToken,
+          });
 
-      default:
-        throw new Error(`Unsupported provider: ${provider}`);
+        default:
+          throw new Error(`Unsupported provider: ${provider}`);
       }
     } catch (error) {
       console.error(`Error generating completion with ${provider}:`, error);
@@ -481,23 +481,23 @@ class AIProviderManager {
     try {
       let providerInstance;
       switch (providerId) {
-      case 'openai':
-        providerInstance = new OpenAI({ apiKey: providerConfig.apiKey });
-        break;
-      case 'groq':
-        providerInstance = new Groq({ apiKey: providerConfig.apiKey });
-        break;
-      case 'claude':
-        providerInstance = new Anthropic({ apiKey: providerConfig.apiKey });
-        break;
-      case 'gemini':
-        providerInstance = new GoogleGenerativeAI(providerConfig.apiKey);
-        break;
-      case 'ollama':
-        providerInstance = { client: null, available: true };
-        break;
-      default:
-        throw new Error(`Unsupported provider: ${providerId}`);
+        case 'openai':
+          providerInstance = new OpenAI({ apiKey: providerConfig.apiKey });
+          break;
+        case 'groq':
+          providerInstance = new Groq({ apiKey: providerConfig.apiKey });
+          break;
+        case 'claude':
+          providerInstance = new Anthropic({ apiKey: providerConfig.apiKey });
+          break;
+        case 'gemini':
+          providerInstance = new GoogleGenerativeAI(providerConfig.apiKey);
+          break;
+        case 'ollama':
+          providerInstance = { client: null, available: true };
+          break;
+        default:
+          throw new Error(`Unsupported provider: ${providerId}`);
       }
       this.providers.set(providerId, providerInstance);
       console.log(`Provider ${providerId} added dynamically`);

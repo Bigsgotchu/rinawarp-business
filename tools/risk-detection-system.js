@@ -12,7 +12,7 @@ class RiskDetector {
       ambiguousInstruction: 0.85,
       missingDependencies: 0.75,
       unvalidatedPath: 0.95,
-      systemModification: 0.88
+      systemModification: 0.88,
     };
   }
 
@@ -27,7 +27,7 @@ class RiskDetector {
       timestamp: new Date().toISOString(),
       riskFactorsDetected: [],
       riskScore: 0,
-      recommendation: 'PROCEED'
+      recommendation: 'PROCEED',
     };
 
     // Check for file overwrite risk
@@ -35,7 +35,7 @@ class RiskDetector {
       riskReport.riskFactorsDetected.push({
         factor: 'fileOverwrite',
         description: 'Operation will overwrite existing file',
-        severity: this.riskFactors.fileOverwrite
+        severity: this.riskFactors.fileOverwrite,
       });
       riskReport.riskScore += this.riskFactors.fileOverwrite;
     }
@@ -45,7 +45,7 @@ class RiskDetector {
       riskReport.riskFactorsDetected.push({
         factor: 'largeOutput',
         description: `Large output detected (${operation.outputSize} lines)`,
-        severity: this.riskFactors.largeOutput
+        severity: this.riskFactors.largeOutput,
       });
       riskReport.riskScore += this.riskFactors.largeOutput;
     }
@@ -55,7 +55,7 @@ class RiskDetector {
       riskReport.riskFactorsDetected.push({
         factor: 'ambiguousInstruction',
         description: `Instruction ambiguity detected (${operation.instructionAmbiguity * 100}%)`,
-        severity: this.riskFactors.ambiguousInstruction
+        severity: this.riskFactors.ambiguousInstruction,
       });
       riskReport.riskScore += this.riskFactors.ambiguousInstruction;
     }
@@ -65,17 +65,17 @@ class RiskDetector {
       riskReport.riskFactorsDetected.push({
         factor: 'missingDependencies',
         description: `${operation.missingDependencies.length} missing dependencies detected`,
-        severity: this.riskFactors.missingDependencies
+        severity: this.riskFactors.missingDependencies,
       });
       riskReport.riskScore += this.riskFactors.missingDependencies;
     }
 
     // Check for unvalidated paths
-    if (operation.paths && operation.paths.some(path => !path.validated)) {
+    if (operation.paths && operation.paths.some((path) => !path.validated)) {
       riskReport.riskFactorsDetected.push({
         factor: 'unvalidatedPath',
         description: 'Unvalidated file paths detected',
-        severity: this.riskFactors.unvalidatedPath
+        severity: this.riskFactors.unvalidatedPath,
       });
       riskReport.riskScore += this.riskFactors.unvalidatedPath;
     }

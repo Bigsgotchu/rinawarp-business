@@ -4,22 +4,22 @@ export const DemoMode = (() => {
 
   const script = [
     {
-      type: "text",
+      type: 'text',
       delay: 800,
-      text: "Welcome to RinaWarp Terminal Pro — AI-powered terminal for builders.",
+      text: 'Welcome to RinaWarp Terminal Pro — AI-powered terminal for builders.',
     },
     {
-      type: "command",
+      type: 'command',
       delay: 1000,
-      text: "ls -la",
+      text: 'ls -la',
     },
     {
-      type: "aiCommand",
+      type: 'aiCommand',
       delay: 1200,
-      text: "explain last error",
+      text: 'explain last error',
     },
     {
-      type: "voiceHint",
+      type: 'voiceHint',
       delay: 1500,
       text: '“Hey Rina, fix this broken command.”',
     },
@@ -30,13 +30,13 @@ export const DemoMode = (() => {
 
     const step = script[scriptIndex++];
     setTimeout(async () => {
-      if (step.type === "text") {
+      if (step.type === 'text') {
         window.RinaTerminalUI?.appendDemoMessage(step.text);
-      } else if (step.type === "command") {
+      } else if (step.type === 'command') {
         window.RinaTerminalUI?.runDemoCommand(step.text);
-      } else if (step.type === "aiCommand") {
+      } else if (step.type === 'aiCommand') {
         window.RinaTerminalUI?.runAIDemoCommand(step.text);
-      } else if (step.type === "voiceHint") {
+      } else if (step.type === 'voiceHint') {
         window.RinaTerminalUI?.showVoiceHint(step.text);
       }
 

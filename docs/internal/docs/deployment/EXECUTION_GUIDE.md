@@ -52,18 +52,88 @@ I can help you prepare the copyright headers and templates, but you'll need to a
 
 ```javascript
 /**
+
  * RinaWarp Terminal Pro
  * © 2025 RinaWarp Technologies, LLC - All Rights Reserved
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * PROPRIETARY SOFTWARE - CONFIDENTIAL
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * This software is proprietary and confidential. All rights reserved.
  * Unauthorized reproduction, distribution, or use is strictly prohibited.
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * For licensing inquiries: legal@rinawarptech.com
+
+
+
+
+
+
+
+
+
+
+
+
+
  *
+
  * @author RinaWarp Technologies, LLC
  * @copyright © 2025 RinaWarp Technologies, LLC
+
+
+
+
+
+
+
+
+
+
+
+
+
  */
 ```
 

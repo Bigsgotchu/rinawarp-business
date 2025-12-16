@@ -13,30 +13,30 @@ const TEST_DATA = {
   os: process.platform,
   agent: {
     status: 'online',
-    pingMs: 42
+    pingMs: 42,
   },
   license: {
     tier: 'pro',
-    offline: false
-  }
+    offline: false,
+  },
 };
 
 async function testTelemetryEndpoint() {
   console.log('🧪 Testing Telemetry Endpoint...\n');
-  
+
   try {
     // Test health check
     console.log('1️⃣ Testing API Gateway health...');
     const health = await axios.get(`${API_BASE}/health`);
     console.log('✅ API Gateway healthy:', health.data.status);
-    
+
     // Test telemetry endpoint
     console.log('\n2️⃣ Testing telemetry submission...');
     const telemetry = await axios.post(`${API_BASE}/api/telemetry`, TEST_DATA, {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
     console.log('✅ Telemetry submitted:', telemetry.data);
-    
+
     // Test dashboard (just check if endpoint exists)
     console.log('\n3️⃣ Testing telemetry summary endpoint...');
     try {
@@ -50,22 +50,21 @@ async function testTelemetryEndpoint() {
         throw authError;
       }
     }
-    
+
     console.log('\n🎉 All tests passed! Telemetry system is working.\n');
-    
+
     console.log('📊 Next steps:');
     console.log('1. Launch desktop app with telemetry client');
     console.log('2. Open dashboard: apps/terminal-pro/desktop/dashboard/telemetry-dashboard.html');
     console.log('3. Monitor real-time data in dashboard');
-    
   } catch (error) {
     console.error('❌ Test failed:', error.message);
-    
+
     if (error.code === 'ECONNREFUSED') {
       console.error('\n💡 Make sure API Gateway is running:');
       console.error('cd backend/api-gateway && npm start');
     }
-    
+
     process.exit(1);
   }
 }

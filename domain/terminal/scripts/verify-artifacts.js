@@ -61,20 +61,20 @@ artifacts.forEach((artifact) => {
 
   try {
     switch (ext) {
-    case '.dmg':
-      verifyDmg(artifactPath);
-      break;
-    case '.exe':
-    case '.msi':
-      verifyWindows(artifactPath);
-      break;
-    case '.appimage':
-    case '.deb':
-    case '.rpm':
-      verifyLinux(artifactPath);
-      break;
-    default:
-      verifyGeneric(artifactPath);
+      case '.dmg':
+        verifyDmg(artifactPath);
+        break;
+      case '.exe':
+      case '.msi':
+        verifyWindows(artifactPath);
+        break;
+      case '.appimage':
+      case '.deb':
+      case '.rpm':
+        verifyLinux(artifactPath);
+        break;
+      default:
+        verifyGeneric(artifactPath);
     }
 
     // Checksum verification

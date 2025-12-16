@@ -44,9 +44,9 @@ Successfully implemented comprehensive iOS support for the RinaWarp Phone Manage
 
 ```javascript
 // Combined Android and iOS device scanning
-const androidDevices = await adbClient.listDevices()
-const iosDevices = await iosDevice.listDevices()
-const deviceList = [...androidDevices, ...iosDevices]
+const androidDevices = await adbClient.listDevices();
+const iosDevices = await iosDevice.listDevices();
+const deviceList = [...androidDevices, ...iosDevices];
 ```
 
 #### File System Integration
@@ -54,9 +54,9 @@ const deviceList = [...androidDevices, ...iosDevices]
 ```javascript
 // Platform-specific file browsing
 if (platform === 'android') {
-    // Use ADB protocols
+  // Use ADB protocols
 } else if (platform === 'ios') {
-    // Use iOS-specific APIs with proper error handling
+  // Use iOS-specific APIs with proper error handling
 }
 ```
 
@@ -121,4 +121,4 @@ if (platform === 'android') {
 
 ## Conclusion
 
-The implementation successfully transforms RinaWarp Phone Manager from an Android-only tool to a true cross-platform device management solution. The architecture maintains backward compatibility while providing a solid foundation for iOS support that will work seamlessly in appropriate development environment 
+The implementation successfully transforms RinaWarp Phone Manager from an Android-only tool to a true cross-platform device management solution. The architecture maintains backward compatibility while providing a solid foundation for iOS support that will work seamlessly in appropriate development environment

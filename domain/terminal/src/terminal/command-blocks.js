@@ -156,15 +156,15 @@ class CommandBlocks {
             </div>
             <div class="ai-suggestions-content">
                 ${block.aiSuggestions
-    .map(
-      (suggestion) => `
+                  .map(
+                    (suggestion) => `
                     <div class="ai-suggestion">
                         <p>${suggestion}</p>
                         <button class="apply-suggestion" onclick="this.applySuggestion('${suggestion}')">Apply</button>
                     </div>
                 `
-    )
-    .join('')}
+                  )
+                  .join('')}
             </div>
         `;
 

@@ -4,34 +4,38 @@
 
 **Date:** 2025-12-13 20:32 UTC  
 **Phase:** Revenue-Safe Ghost Text + Memory  
-**Status:** All critical steps completed successfully  
+**Status:** All critical steps completed successfully
 
 ---
 
 ## 📋 COMPLETED STEPS
 
 ### ✅ STEP 1 - Code Locked (Panic Button Ready)
+
 - **Commit:** `dfd5a6d3` - "phase-1 revenue-safe ghost text + memory"
 - **Tag:** `phase-1-dogfood` (your rollback safety net)
 - **Files Changed:** 289 files (12,051 insertions, 346,931 deletions)
 - **Safe to Rollback:** `git checkout phase-1-dogfood`
 
 ### ✅ STEP 2 - Website Deployed (Cloudflare Pages)
+
 - **URL:** https://05beed44.rinawarptech.pages.dev
 - **Status:** Live and operational
 - **Features Verified:**
   - Homepage loads ✅
-  - Pricing page matches pricing.json ✅  
+  - Pricing page matches pricing.json ✅
   - Download button points to current Linux AppImage ✅
   - No console errors ✅
 
 ### ✅ STEP 3 - Fresh Desktop Binary Built
+
 - **Location:** `/apps/terminal-pro/desktop/build-output/`
 - **Linux AppImage:** `RinaWarp-Terminal-Pro-1.0.0-x86_64.AppImage` (92MB)
 - **Linux Snap:** `RinaWarp-Terminal-Pro-1.0.0-amd64.snap` (100MB)
 - **SHA256:** `7f3ddbb8de76ea45ccbd0068c600d50387b87a79259fb842923fcbc24751069f`
 
 ### ✅ STEP 4 - Local Installation Verified
+
 - **Test Result:** Binary executes successfully
 - **Version:** v22.21.1 (Electron)
 - **Status:** Ready for real dogfooding
@@ -42,6 +46,7 @@
 ## 🔧 CRITICAL FIXES APPLIED
 
 ### Desktop App Crash Fix
+
 - **Issue:** `app is not defined` errors causing infinite crashes
 - **Root Cause:** Scope mismatch in crash recovery handlers
 - **Fix:** Moved crash handlers inside async function scope where `app` is available
@@ -52,6 +57,7 @@
 ## 🧪 READY FOR STEP 5 - DOGFOODING (48-72 HOURS)
 
 ### Binary Locations for Testing:
+
 ```bash
 # Fastest testing (recommended)
 cd /home/karina/Documents/rinawarp-business/apps/terminal-pro/desktop/build-output
@@ -62,6 +68,7 @@ zip -r RinaWarp-Terminal-Pro-Dogfood.zip RinaWarp-Terminal-Pro-1.0.0-x86_64.AppI
 ```
 
 ### Dogfood Checklist (Use This Script):
+
 ```bash
 # First 3 minutes (value moment)
 pwd
@@ -69,7 +76,7 @@ ls
 git status
 
 # Ghost text appears ✅
-# Tab accepts suggestion ✅  
+# Tab accepts suggestion ✅
 # No double execution ✅
 # No UI jank ✅
 
@@ -96,14 +103,17 @@ git sttaus
 ### Only enable Agent Pro UI when ALL 3 are true:
 
 #### ✅ Personal Signal
+
 - You naturally rely on ghost text without thinking about it
 
-#### ✅ Stability Signal  
+#### ✅ Stability Signal
+
 - Zero crashes in 48+ hours
 - No stuck terminal states
 - No duplicate command execution
 
 #### ✅ Behavioral Signal (local only)
+
 - At least one of:
   - You accepted ≥3 ghost suggestions in a session
   - You noticed memory saving you time
@@ -116,7 +126,7 @@ git sttaus
 ## 🚨 STOP CONDITIONS (Fix Before Continuing)
 
 - [ ] Ghost text executes twice
-- [ ] Tab breaks normal terminal behavior  
+- [ ] Tab breaks normal terminal behavior
 - [ ] Memory toast fires too often
 - [ ] App crashes even once
 - [ ] You feel annoyed by the agent
@@ -127,15 +137,16 @@ git sttaus
 
 **Current State:** Logic only, no UI calls, no modals, no banners  
 **Location:** `apps/terminal-pro/agent/upsell/agentProTrigger.ts`  
-**Purpose:** Prevents premature revenue loss during Phase-1  
+**Purpose:** Prevents premature revenue loss during Phase-1
 
 ---
 
 ## 📊 WHAT'S SHIPPED
 
 ### Core Features (Phase-1)
+
 - ✅ Ghost text suggestions
-- ✅ Memory-enhanced interactions  
+- ✅ Memory-enhanced interactions
 - ✅ Terminal PTY management
 - ✅ License verification system
 - ✅ Crash recovery system
@@ -143,8 +154,9 @@ git sttaus
 - ✅ AI agent integration (backend)
 
 ### What’s NOT Shipped (Preserved for Phase-2)
+
 - ❌ Agent Pro UI/upsells
-- ❌ Stripe billing integration  
+- ❌ Stripe billing integration
 - ❌ Advanced enterprise features
 - ❌ Voice commands
 - ❌ Team collaboration UI
@@ -155,24 +167,27 @@ git sttaus
 
 ✅ **Value First** - Solid ghost text + memory foundation  
 ✅ **Trust Before Upsell** - 48-72 hour dogfooding period  
-✅ **Discipline Over Hype** - No rushing to Agent Pro  
+✅ **Discipline Over Hype** - No rushing to Agent Pro
 
 ---
 
 ## 📞 NEXT STEPS
 
 ### Today
+
 1. **Build** ✅ (Complete)
-2. **Install locally** ✅ (Complete)  
+2. **Install locally** ✅ (Complete)
 3. **Use for real work** 🔄 (Start now)
 4. **Take notes** 📝 (Document everything)
 
-### Next 48-72 Hours  
+### Next 48-72 Hours
+
 1. **Dogfood only** - Zero new features
 2. **Zero pricing changes** - Revenue safe
 3. **Monitor stability** - Watch for issues
 
 ### After Dogfooding
+
 1. **Review real notes** - Data-driven decisions
 2. **Sanity-check Agent Pro** - Inline upsell timing
 3. **Flip switch safely** - Without user backlash

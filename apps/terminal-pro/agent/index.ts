@@ -1,14 +1,14 @@
-import { setupSupervisor } from "./supervisor";
-import { handleMessage } from "./protocol";
+import { setupSupervisor } from './supervisor';
+import { handleMessage } from './protocol';
 
-console.log("[RinaAgent] starting…");
+console.log('[RinaAgent] starting…');
 
-process.on("message", async (msg) => {
+process.on('message', async (msg) => {
   try {
     await handleMessage(msg);
   } catch (err) {
     process.send?.({
-      type: "agent:error",
+      type: 'agent:error',
       error: String(err),
     });
   }
@@ -17,6 +17,6 @@ process.on("message", async (msg) => {
 setupSupervisor();
 
 process.send?.({
-  type: "agent:ready",
+  type: 'agent:ready',
   pid: process.pid,
 });

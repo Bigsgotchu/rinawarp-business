@@ -38,8 +38,8 @@ const Portal = () => {
 
         const response = await fetch(`/api/team/get?teamId=${teamId}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
+            Authorization: `Bearer ${authToken}`,
+          },
         });
 
         if (!response.ok) {
@@ -114,14 +114,9 @@ const Portal = () => {
       />
 
       <div className="flex">
-        <PortalSidebar
-          activeView={activeView}
-          onViewChange={setActiveView}
-        />
+        <PortalSidebar activeView={activeView} onViewChange={setActiveView} />
 
-        <main className="flex-1 p-6 overflow-auto">
-          {renderView()}
-        </main>
+        <main className="flex-1 p-6 overflow-auto">{renderView()}</main>
       </div>
     </div>
   );

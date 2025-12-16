@@ -39,29 +39,34 @@ const SERVICE_REGISTRY = {
 };
 
 // Environment configuration
-const LICENSING_SERVICE_URL = process.env.LICENSING_SERVICE_URL || "http://localhost:3003";
-const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || "http://localhost:3001";
-const DOMAIN = process.env.DOMAIN || "http://localhost:3000";
+const LICENSING_SERVICE_URL = process.env.LICENSING_SERVICE_URL || 'http://localhost:3003';
+const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
+const DOMAIN = process.env.DOMAIN || 'http://localhost:3000';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://api.stripe.com"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        connectSrc: ["'self'", 'https://api.stripe.com'],
+      },
     },
-  },
-}));
+  }),
+);
 
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:5173', 'https://rinawarptech.com'],
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || [
+      'http://localhost:5173',
+      'https://rinawarptech.com',
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -101,15 +106,16 @@ const authenticateToken = async (req, res, next) => {
     }
 
     // Verify token with auth service
-    const response = await axios.post(`${AUTH_SERVICE_URL}/auth/verify`, 
+    const response = await axios.post(
+      `${AUTH_SERVICE_URL}/auth/verify`,
       {},
       {
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
         timeout: 5000,
-      }
+      },
     );
 
     if (response.data.valid) {
@@ -129,7 +135,7 @@ const proxyToService = (serviceName, options = {}) => {
   return async (req, res) => {
     try {
       const service = SERVICE_REGISTRY[serviceName];
-      
+
       if (!service) {
         return res.status(503).json({ error: `Service ${serviceName} not available` });
       }
@@ -137,7 +143,7 @@ const proxyToService = (serviceName, options = {}) => {
       // Determine target path
       let targetPath = req.path;
       let queryString = req.url.split('?')[1] || '';
-      
+
       // Handle path rewriting based on service type
       if (serviceName === 'auth-service') {
         targetPath = targetPath.replace(/^\/auth/, '');
@@ -146,7 +152,7 @@ const proxyToService = (serviceName, options = {}) => {
       }
 
       const targetUrl = `${service.url}${targetPath}${queryString ? '?' + queryString : ''}`;
-      
+
       console.log(`Proxying ${req.method} ${req.path} to ${serviceName}: ${targetUrl}`);
 
       // Prepare request configuration
@@ -165,18 +171,18 @@ const proxyToService = (serviceName, options = {}) => {
       };
 
       const response = await axios(config);
-      
+
       // Forward response with proper status and headers
       Object.entries(response.headers).forEach(([key, value]) => {
         if (key.toLowerCase() !== 'transfer-encoding') {
           res.setHeader(key, value);
         }
       });
-      
+
       res.status(response.status).send(response.data);
     } catch (error) {
       console.error(`Service ${serviceName} error:`, error.message);
-      
+
       if (error.code === 'ECONNREFUSED') {
         res.status(503).json({ error: `Service ${serviceName} is unavailable` });
       } else if (error.code === 'ENOTFOUND') {
@@ -191,7 +197,7 @@ const proxyToService = (serviceName, options = {}) => {
 // Health check endpoint
 app.get('/health', async (req, res) => {
   const healthChecks = {};
-  
+
   // Check each service
   for (const [serviceName, service] of Object.entries(SERVICE_REGISTRY)) {
     try {
@@ -201,12 +207,12 @@ app.get('/health', async (req, res) => {
       });
       healthChecks[serviceName] = {
         status: response.status === 200 ? 'healthy' : 'unhealthy',
-        responseTime: response.headers['x-response-time'] || 'unknown'
+        responseTime: response.headers['x-response-time'] || 'unknown',
       };
     } catch (error) {
       healthChecks[serviceName] = {
         status: 'unhealthy',
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -238,9 +244,11 @@ app.use(
       res.status(503).json({ error: 'Authentication service unavailable' });
     },
     onProxyReq: (proxyReq, req, res) => {
-      console.log(`[AUTH] ${req.method} ${req.path} -> ${AUTH_SERVICE_URL}${req.path.replace('/auth', '')}`);
-    }
-  })
+      console.log(
+        `[AUTH] ${req.method} ${req.path} -> ${AUTH_SERVICE_URL}${req.path.replace('/auth', '')}`,
+      );
+    },
+  }),
 );
 
 // AI service routes (public for now)
@@ -249,11 +257,16 @@ app.use('/ai', proxyToService('ai-service'));
 // FIXED: Protected API routes with real authentication
 app.use('/api/revenue', authenticateToken, strictLimiter, proxyToService('revenue-service'));
 app.use('/api/licensing', authenticateToken, strictLimiter, proxyToService('licensing-service'));
-app.use('/api/ai-music-video', authenticateToken, strictLimiter, proxyToService('ai-music-video-service'));
+app.use(
+  '/api/ai-music-video',
+  authenticateToken,
+  strictLimiter,
+  proxyToService('ai-music-video-service'),
+);
 
 // License check proxy (may be public or require different auth)
 app.use(
-  "/license/check",
+  '/license/check',
   createProxyMiddleware({
     target: LICENSING_SERVICE_URL,
     changeOrigin: true,
@@ -263,13 +276,13 @@ app.use(
     },
     onProxyReq: (proxyReq, req, res) => {
       console.log(`[LICENSE] ${req.method} ${req.path} -> ${LICENSING_SERVICE_URL}${req.path}`);
-    }
-  })
+    },
+  }),
 );
 
 // Auth verify proxy (dedicated endpoint)
 app.use(
-  "/auth/verify",
+  '/auth/verify',
   createProxyMiddleware({
     target: AUTH_SERVICE_URL,
     changeOrigin: true,
@@ -279,74 +292,71 @@ app.use(
     },
     onProxyReq: (proxyReq, req, res) => {
       console.log(`[AUTH-VERIFY] ${req.method} ${req.path} -> ${AUTH_SERVICE_URL}${req.path}`);
-    }
-  })
+    },
+  }),
 );
 
 // Stripe webhook endpoint (special handling)
-app.post('/api/stripe/webhook', 
-  express.raw({ type: 'application/json' }),
-  (req, res) => {
-    // This endpoint should handle Stripe webhooks directly
-    // For now, just acknowledge receipt
-    console.log('Stripe webhook received:', req.headers['stripe-signature']);
-    res.status(200).json({ received: true });
-  }
-);
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  // This endpoint should handle Stripe webhooks directly
+  // For now, just acknowledge receipt
+  console.log('Stripe webhook received:', req.headers['stripe-signature']);
+  res.status(200).json({ received: true });
+});
 
 // FIXED: Checkout endpoint with plan validation
-app.post('/api/checkout-v2', 
-  express.json({ limit: '1mb' }),
-  async (req, res) => {
-    try {
-      const { plan, successUrl, cancelUrl } = req.body;
-      
-      if (!plan) {
-        return res.status(400).json({ error: 'Plan is required' });
-      }
-      
-      // Validate plan against known plans
-      const validPlans = [
-        'starter-monthly', 'creator-monthly', 'pro-monthly',
-        'enterprise-yearly', 'pioneer-lifetime', 'founder-lifetime'
-      ];
-      
-      if (!validPlans.includes(plan)) {
-        return res.status(400).json({ error: 'Invalid plan code' });
-      }
-      
-      // This would integrate with Stripe checkout
-      // For now, return a mock response
-      res.json({ 
-        sessionId: `cs_test_${Date.now()}`,
-        plan,
-        successUrl: successUrl || `${DOMAIN}/success.html`,
-        cancelUrl: cancelUrl || `${DOMAIN}/cancel.html`
-      });
-      
-    } catch (error) {
-      console.error('Checkout error:', error);
-      res.status(500).json({ error: 'Checkout failed' });
+app.post('/api/checkout-v2', express.json({ limit: '1mb' }), async (req, res) => {
+  try {
+    const { plan, successUrl, cancelUrl } = req.body;
+
+    if (!plan) {
+      return res.status(400).json({ error: 'Plan is required' });
     }
+
+    // Validate plan against known plans
+    const validPlans = [
+      'starter-monthly',
+      'creator-monthly',
+      'pro-monthly',
+      'enterprise-yearly',
+      'pioneer-lifetime',
+      'founder-lifetime',
+    ];
+
+    if (!validPlans.includes(plan)) {
+      return res.status(400).json({ error: 'Invalid plan code' });
+    }
+
+    // This would integrate with Stripe checkout
+    // For now, return a mock response
+    res.json({
+      sessionId: `cs_test_${Date.now()}`,
+      plan,
+      successUrl: successUrl || `${DOMAIN}/success.html`,
+      cancelUrl: cancelUrl || `${DOMAIN}/cancel.html`,
+    });
+  } catch (error) {
+    console.error('Checkout error:', error);
+    res.status(500).json({ error: 'Checkout failed' });
   }
-);
+});
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'Endpoint not found',
     path: req.path,
     method: req.method,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
 // Global error handler
 app.use((error, req, res, next) => {
   console.error('Gateway error:', error);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Internal server error',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 

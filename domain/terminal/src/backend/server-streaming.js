@@ -198,7 +198,10 @@ app.post('/api/ai-stream', async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS?.split(',')[0] || 'https://rinawarptech.com');
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    process.env.ALLOWED_ORIGINS?.split(',')[0] || 'https://rinawarptech.com'
+  );
   res.setHeader('Access-Control-Allow-Headers', 'Cache-Control');
   res.flushHeaders();
 
@@ -397,7 +400,7 @@ app.get('/api/memory', (req, res) => {
 app.post('/api/memory/clear', (req, res) => {
   sessionMemory = [];
   saveMemory();
-  res.json({ success: true, message: 'Rina\'s memory cleared!' });
+  res.json({ success: true, message: "Rina's memory cleared!" });
 });
 
 app.get('/api/memory/summary', (req, res) => {

@@ -17,15 +17,15 @@ export function getPlugins() {
 // Example plugin loader (later: load from disk/remote)
 export function loadBuiltInPlugins() {
   // Placeholder for built-in plugins
-  registerPlugin("sample.rina.docs", {
-    name: "Rina Docs Helper",
-    version: "1.0.0",
+  registerPlugin('sample.rina.docs', {
+    name: 'Rina Docs Helper',
+    version: '1.0.0',
     commands: [
       {
-        id: "rina:open-docs",
-        label: "Open RinaWarp Documentation",
+        id: 'rina:open-docs',
+        label: 'Open RinaWarp Documentation',
         run: () => {
-          window.open("https://rinawarptech.com/docs", "_blank");
+          window.open('https://rinawarptech.com/docs', '_blank');
         },
       },
     ],

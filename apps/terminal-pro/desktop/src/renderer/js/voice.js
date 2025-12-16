@@ -2,34 +2,34 @@ import { RinaAIRouter } from './ai-router.js';
 import { askRinaChat } from './ai.js';
 
 export function initVoiceMode() {
-  const hud = document.getElementById("voice-hud");
-  const status = document.getElementById("voice-status");
+  const hud = document.getElementById('voice-hud');
+  const status = document.getElementById('voice-status');
 
   if (!hud) return;
 
-  hud.classList.remove("hidden");
+  hud.classList.remove('hidden');
 
   let listening = false;
 
   hud.onclick = async () => {
     if (!listening) {
-      status.textContent = "Listening...";
+      status.textContent = 'Listening...';
       listening = true;
       await window.RinaVoice.start();
     } else {
-      status.textContent = "Stopped";
+      status.textContent = 'Stopped';
       listening = false;
       await window.RinaVoice.stop();
     }
   };
 
   window.RinaVoice.onTranscript(async (spoken) => {
-    status.textContent = "Processing: " + spoken;
+    status.textContent = 'Processing: ' + spoken;
     await handleCommand(spoken);
   });
 
   window.RinaVoice.onResponse((r) => {
-    status.textContent = "Rina says: " + r;
+    status.textContent = 'Rina says: ' + r;
   });
 }
 
@@ -57,7 +57,7 @@ Classify this into ONE intent:
 - chat
 Return ONLY the intent name.
 `,
-    context: window.RinaTerminalState
+    context: window.RinaTerminalState,
   });
 
   switch (intent.trim()) {

@@ -53,7 +53,7 @@ class LicenseGate {
         return false;
       }
     } catch (err) {
-      console.debug("License unavailable, showing free tier");
+      console.debug('License unavailable, showing free tier');
       this.setStatus('error');
       this.showLicenseGate();
       return false;
@@ -106,7 +106,8 @@ class LicenseGate {
     `;
 
     const description = document.createElement('p');
-    description.textContent = 'Enter your license key to unlock your Pro features. You can find it in your purchase email or RinaWarp portal.';
+    description.textContent =
+      'Enter your license key to unlock your Pro features. You can find it in your purchase email or RinaWarp portal.';
     description.style.cssText = `
       margin-top: 0;
       font-size: 0.9rem;
@@ -180,7 +181,8 @@ class LicenseGate {
       opacity: 0.75;
       text-align: center;
     `;
-    footer.innerHTML = 'Lost your key? Visit your <span style="color: #19e3ff">RinaWarp Portal</span> to recover it.';
+    footer.innerHTML =
+      'Lost your key? Visit your <span style="color: #19e3ff">RinaWarp Portal</span> to recover it.';
 
     // Assemble the form
     form.appendChild(label);
@@ -236,9 +238,8 @@ class LicenseGate {
 
       // Remove the license gate
       this.removeLicenseGate();
-
     } catch (err) {
-      console.debug("License activation failed, user can retry");
+      console.debug('License activation failed, user can retry');
       this.setStatus('error');
     }
   }

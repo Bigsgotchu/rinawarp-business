@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  getPricingConfig,
-  updatePricingConfig,
-  PricingConfig,
-  PriceEntry,
-} from '../lib/api';
+import { getPricingConfig, updatePricingConfig, PricingConfig, PriceEntry } from '../lib/api';
 import { useAdmin } from '../lib/adminContext';
 
 const inputBase =
@@ -42,19 +37,15 @@ export default function PricingPage() {
     }
   }
 
-  function updateEntry(
-    kind: ProductKind,
-    index: number,
-    patch: Partial<PriceEntry>,
-  ) {
+  function updateEntry(kind: ProductKind, index: number, patch: Partial<PriceEntry>) {
     if (!config) return;
     const clone: PricingConfig = JSON.parse(JSON.stringify(config));
     const arr =
       kind === 'terminal'
         ? clone.products.terminal
         : kind === 'amvc'
-        ? clone.products.amvc
-        : clone.products.bundles;
+          ? clone.products.amvc
+          : clone.products.bundles;
     arr[index] = { ...arr[index], ...patch };
     setConfig(clone);
   }
@@ -66,8 +57,8 @@ export default function PricingPage() {
       kind === 'terminal'
         ? clone.products.terminal
         : kind === 'amvc'
-        ? clone.products.amvc
-        : clone.products.bundles;
+          ? clone.products.amvc
+          : clone.products.bundles;
 
     arr.push({
       id: `new_${Date.now()}`,
@@ -89,8 +80,8 @@ export default function PricingPage() {
       kind === 'terminal'
         ? clone.products.terminal
         : kind === 'amvc'
-        ? clone.products.amvc
-        : clone.products.bundles;
+          ? clone.products.amvc
+          : clone.products.bundles;
     arr.splice(index, 1);
     setConfig(clone);
   }
@@ -101,11 +92,7 @@ export default function PricingPage() {
     setError(null);
     setSuccess(null);
     try {
-      const newCfg = await updatePricingConfig(
-        adminToken,
-        config,
-        updatedBy || 'admin',
-      );
+      const newCfg = await updatePricingConfig(adminToken, config, updatedBy || 'admin');
       setConfig(newCfg);
       setSuccess('Pricing updated and stored in KV.');
     } catch (err: any) {
@@ -137,27 +124,19 @@ export default function PricingPage() {
     <div className="flex flex-col gap-4 h-full">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-slate-100">
-            Pricing Configuration
-          </h1>
+          <h1 className="text-lg font-semibold text-slate-100">Pricing Configuration</h1>
           <p className="text-xs text-slate-400">
-            Edit live pricing, Stripe price IDs, and product metadata. Changes
-            are persisted to Cloudflare KV.
+            Edit live pricing, Stripe price IDs, and product metadata. Changes are persisted to
+            Cloudflare KV.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className={badge}>
-              Version:{' '}
-              <span className="ml-1 text-emerald-300">
-                {config?.version ?? '–'}
-              </span>
+              Version: <span className="ml-1 text-emerald-300">{config?.version ?? '–'}</span>
             </div>
             <p className="text-[10px] text-slate-500 mt-1">
-              Last updated:{' '}
-              {config?.updatedAt
-                ? new Date(config.updatedAt).toLocaleString()
-                : '—'}
+              Last updated: {config?.updatedAt ? new Date(config.updatedAt).toLocaleString() : '—'}
             </p>
           </div>
           <div>
@@ -189,14 +168,10 @@ export default function PricingPage() {
         </div>
       )}
 
-      {loading && (
-        <div className="text-sm text-slate-400">Loading pricing…</div>
-      )}
+      {loading && <div className="text-sm text-slate-400">Loading pricing…</div>}
 
       {!loading && !config && (
-        <div className="text-sm text-slate-400">
-          No pricing configuration loaded.
-        </div>
+        <div className="text-sm text-slate-400">No pricing configuration loaded.</div>
       )}
 
       {config && (
@@ -206,8 +181,8 @@ export default function PricingPage() {
               section.key === 'terminal'
                 ? config.products.terminal
                 : section.key === 'amvc'
-                ? config.products.amvc
-                : config.products.bundles;
+                  ? config.products.amvc
+                  : config.products.bundles;
 
             return (
               <div
@@ -216,12 +191,8 @@ export default function PricingPage() {
               >
                 <div className="flex items-center justify-between mb-1">
                   <div>
-                    <h2 className="text-sm font-semibold text-slate-100">
-                      {section.label}
-                    </h2>
-                    <p className="text-[11px] text-slate-500">
-                      {section.description}
-                    </p>
+                    <h2 className="text-sm font-semibold text-slate-100">{section.label}</h2>
+                    <p className="text-[11px] text-slate-500">{section.description}</p>
                   </div>
                   <button
                     type="button"
@@ -258,9 +229,7 @@ export default function PricingPage() {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">
-                            Plan ID
-                          </label>
+                          <label className="block text-[10px] text-slate-500 mb-1">Plan ID</label>
                           <input
                             className={inputBase + ' text-xs'}
                             value={entry.id}
@@ -288,16 +257,13 @@ export default function PricingPage() {
                       </div>
                       <div className="grid grid-cols-3 gap-2">
                         <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">
-                            Type
-                          </label>
+                          <label className="block text-[10px] text-slate-500 mb-1">Type</label>
                           <select
                             className={inputBase + ' text-xs'}
                             value={entry.type}
                             onChange={(e) =>
                               updateEntry(section.key, idx, {
-                                type: e.target
-                                  .value as PriceEntry['type'],
+                                type: e.target.value as PriceEntry['type'],
                               })
                             }
                           >
@@ -316,17 +282,13 @@ export default function PricingPage() {
                             value={entry.amount / 100}
                             onChange={(e) =>
                               updateEntry(section.key, idx, {
-                                amount: Math.round(
-                                  Number(e.target.value || 0) * 100,
-                                ),
+                                amount: Math.round(Number(e.target.value || 0) * 100),
                               })
                             }
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">
-                            Active
-                          </label>
+                          <label className="block text-[10px] text-slate-500 mb-1">Active</label>
                           <select
                             className={inputBase + ' text-xs'}
                             value={entry.active ? '1' : '0'}
@@ -342,9 +304,7 @@ export default function PricingPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[10px] text-slate-500 mb-1">
-                          Description
-                        </label>
+                        <label className="block text-[10px] text-slate-500 mb-1">Description</label>
                         <textarea
                           className={inputBase + ' text-xs'}
                           rows={2}

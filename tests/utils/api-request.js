@@ -1,20 +1,13 @@
 // tests/utils/api-request.js
-import chalk from "chalk";
+import chalk from 'chalk';
 
-export async function apiRequest({
-  base,
-  path,
-  method = "GET",
-  body,
-  token,
-  timeoutMs = 15000,
-}) {
+export async function apiRequest({ base, path, method = 'GET', body, token, timeoutMs = 15000 }) {
   const url = `${base}${path}`;
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeoutMs);
 
   const headers = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
   if (token) headers.Authorization = `Bearer ${token}`;
 

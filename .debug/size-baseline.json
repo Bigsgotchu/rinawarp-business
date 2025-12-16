@@ -1,0 +1,89 @@
+{
+  "buildDir": "apps/website/dist-website",
+  "filesCount": 52,
+  "totalBytes": 5519330,
+  "totalHuman": "5390.0 KB",
+  "largest": [
+    {
+      "path": "branding/Lumina Edge brand.png",
+      "bytes": 1396029
+    },
+    {
+      "path": "branding/Lumina Flow brand.png",
+      "bytes": 1345323
+    },
+    {
+      "path": "images/mvc-logo.png",
+      "bytes": 1201121
+    },
+    {
+      "path": "images/terminal-logo.png",
+      "bytes": 1178106
+    },
+    {
+      "path": "bundle-analysis.html",
+      "bytes": 161801
+    },
+    {
+      "path": "pricing.html",
+      "bytes": 22524
+    },
+    {
+      "path": "soft-launch.html",
+      "bytes": 18874
+    },
+    {
+      "path": "ai-music-video/index.html",
+      "bytes": 13321
+    },
+    {
+      "path": "releases/1.0.0/dashboard.html",
+      "bytes": 13119
+    },
+    {
+      "path": "legal/terms-of-service.html",
+      "bytes": 11685
+    },
+    {
+      "path": "legal/ai-ethical-policy.html",
+      "bytes": 11424
+    },
+    {
+      "path": "releases/1.0.0/ga4-ultimate-tracking.js",
+      "bytes": 11335
+    },
+    {
+      "path": "terminal/index.html",
+      "bytes": 10936
+    },
+    {
+      "path": "legal/privacy-policy.html",
+      "bytes": 10860
+    },
+    {
+      "path": "index.html",
+      "bytes": 10476
+    },
+    {
+      "path": "css/brand.css",
+      "bytes": 8681
+    },
+    {
+      "path": "css/brand.css.backup",
+      "bytes": 8681
+    },
+    {
+      "path": "downloads.html",
+      "bytes": 8365
+    },
+    {
+      "path": "analytics-config.js",
+      "bytes": 8285
+    },
+    {
+      "path": "performance-monitor.js",
+      "bytes": 7483
+    }
+  ],
+  "generatedAt": "2025-12-16T14:27:45.236Z"
+}

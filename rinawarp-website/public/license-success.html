@@ -29,41 +29,82 @@
       </header>
 
       <main>
-        <section class="section" style="max-width: 600px; margin: 0 auto; text-align: center;">
-          <div style="margin: 3rem 0;">
+        <section class="section" style="max-width: 600px; margin: 0 auto; text-align: center">
+          <div style="margin: 3rem 0">
             <!-- SUCCESS MESSAGE -->
-            <div style="background: rgba(0,255,157,0.1); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
-              <h1 style="margin-top: 0; color: #00ff9c;">✅ Payment successful</h1>
-              <p style="font-size: 1.2rem; margin: 0;">
+            <div
+              style="
+                background: rgba(0, 255, 157, 0.1);
+                padding: 2rem;
+                border-radius: 12px;
+                margin-bottom: 2rem;
+              "
+            >
+              <h1 style="margin-top: 0; color: #00ff9c">✅ Payment successful</h1>
+              <p style="font-size: 1.2rem; margin: 0">
                 Thanks for supporting local-first software.
               </p>
             </div>
 
             <!-- LICENSE REVEAL BOX -->
-            <div style="background: linear-gradient(135deg, rgba(255,45,146,0.12), rgba(26,233,255,0.08)); padding: 3rem; border-radius: 12px; border: 2px solid #30365a; margin: 2rem 0;">
-              <h2 style="margin-top: 0; color: #00ffd5;">Your License Key</h2>
-              
+            <div
+              style="
+                background: linear-gradient(
+                  135deg,
+                  rgba(255, 45, 146, 0.12),
+                  rgba(26, 233, 255, 0.08)
+                );
+                padding: 3rem;
+                border-radius: 12px;
+                border: 2px solid #30365a;
+                margin: 2rem 0;
+              "
+            >
+              <h2 style="margin-top: 0; color: #00ffd5">Your License Key</h2>
+
               <!-- LICENSE KEY DISPLAY -->
-              <div style="background: #05061a; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid #394066;">
-                <code id="license-key" style="font-size: 1.3rem; color: #00ffd5; letter-spacing: 0.1em;">
+              <div
+                style="
+                  background: #05061a;
+                  padding: 1.5rem;
+                  border-radius: 8px;
+                  margin: 1.5rem 0;
+                  border: 1px solid #394066;
+                "
+              >
+                <code
+                  id="license-key"
+                  style="font-size: 1.3rem; color: #00ffd5; letter-spacing: 0.1em"
+                >
                   RWTP-ABCD-EFGH-IJKL-MNOP
                 </code>
               </div>
 
               <!-- COPY BUTTON -->
-              <button onclick="copyLicense()" class="rw-button" style="font-size: 1.1rem; padding: 0.8rem 2rem;">
+              <button
+                onclick="copyLicense()"
+                class="rw-button"
+                style="font-size: 1.1rem; padding: 0.8rem 2rem"
+              >
                 📋 Copy License Key
               </button>
-              
-              <p id="copy-feedback" style="margin-top: 1rem; color: #00ff9c; display: none;">
+
+              <p id="copy-feedback" style="margin-top: 1rem; color: #00ff9c; display: none">
                 License key copied to clipboard!
               </p>
             </div>
 
             <!-- ACTIVATION INSTRUCTIONS -->
-            <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 8px; text-align: left;">
-              <h3 style="margin-top: 0; color: #00ffd5;">How to activate:</h3>
-              <ol style="line-height: 2; font-size: 1.1rem;">
+            <div
+              style="
+                background: rgba(255, 255, 255, 0.05);
+                padding: 2rem;
+                border-radius: 8px;
+                text-align: left;
+              "
+            >
+              <h3 style="margin-top: 0; color: #00ffd5">How to activate:</h3>
+              <ol style="line-height: 2; font-size: 1.1rem">
                 <li>Open RinaWarp Terminal Pro</li>
                 <li>Click "Enter License"</li>
                 <li>Paste your key</li>
@@ -72,19 +113,31 @@
             </div>
 
             <!-- SAFETY COPY -->
-            <div style="background: rgba(255,200,0,0.1); padding: 1rem; border-radius: 6px; margin: 1.5rem 0; border: 1px solid rgba(255,200,0,0.3);">
-              <p style="margin: 0; font-size: 0.95rem; color: #ffc800;">
-                <strong>Important:</strong> Your license key is shown only once.<br>
+            <div
+              style="
+                background: rgba(255, 200, 0, 0.1);
+                padding: 1rem;
+                border-radius: 6px;
+                margin: 1.5rem 0;
+                border: 1px solid rgba(255, 200, 0, 0.3);
+              "
+            >
+              <p style="margin: 0; font-size: 0.95rem; color: #ffc800">
+                <strong>Important:</strong> Your license key is shown only once.<br />
                 Please save it somewhere safe.
               </p>
             </div>
 
             <!-- DOWNLOAD APP CTA -->
-            <div style="margin-top: 2rem;">
-              <a href="/download.html" class="rw-button" style="font-size: 1.1rem; padding: 1rem 2rem;">
+            <div style="margin-top: 2rem">
+              <a
+                href="/download.html"
+                class="rw-button"
+                style="font-size: 1.1rem; padding: 1rem 2rem"
+              >
                 ⬇ Download RinaWarp Terminal Pro
               </a>
-              <p style="margin-top: 1rem; opacity: 0.7;">
+              <p style="margin-top: 1rem; opacity: 0.7">
                 Already have the app? Skip to step 2 above.
               </p>
             </div>
@@ -92,9 +145,19 @@
         </section>
 
         <!-- SUPPORT FOOTER -->
-        <section style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #30365a;">
-          <p style="opacity: 0.7;">
-            Need help? <a href="mailto:support@rinawarptech.com" style="color: #00ffd5;">support@rinawarptech.com</a>
+        <section
+          style="
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #30365a;
+          "
+        >
+          <p style="opacity: 0.7">
+            Need help?
+            <a href="mailto:support@rinawarptech.com" style="color: #00ffd5"
+              >support@rinawarptech.com</a
+            >
           </p>
         </section>
       </main>
@@ -113,37 +176,40 @@
       // Copy license key functionality
       function copyLicense() {
         const licenseKey = document.getElementById('license-key').textContent;
-        
-        navigator.clipboard.writeText(licenseKey).then(function() {
-          const feedback = document.getElementById('copy-feedback');
-          feedback.style.display = 'block';
-          
-          setTimeout(function() {
-            feedback.style.display = 'none';
-          }, 3000);
-        }).catch(function() {
-          // Fallback for older browsers
-          const textArea = document.createElement('textarea');
-          textArea.value = licenseKey;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          
-          const feedback = document.getElementById('copy-feedback');
-          feedback.style.display = 'block';
-          
-          setTimeout(function() {
-            feedback.style.display = 'none';
-          }, 3000);
-        });
+
+        navigator.clipboard
+          .writeText(licenseKey)
+          .then(function () {
+            const feedback = document.getElementById('copy-feedback');
+            feedback.style.display = 'block';
+
+            setTimeout(function () {
+              feedback.style.display = 'none';
+            }, 3000);
+          })
+          .catch(function () {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = licenseKey;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            const feedback = document.getElementById('copy-feedback');
+            feedback.style.display = 'block';
+
+            setTimeout(function () {
+              feedback.style.display = 'none';
+            }, 3000);
+          });
       }
 
       // In a real implementation, you would:
       // 1. Get the session_id from URL params
       // 2. Call your backend to get the actual license key
       // 3. Replace the placeholder with the real key
-      // 
+      //
       // Example:
       // const sessionId = new URLSearchParams(window.location.search).get('session_id');
       // fetch(`/api/get-license?session_id=${sessionId}`)

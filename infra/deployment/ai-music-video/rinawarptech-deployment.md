@@ -9,11 +9,13 @@
 - **SSL Certificate**: Required for HTTPS
 - **CDN**: CloudFlare or AWS CloudFront recommended
 
+
 ### 2. **Application URLs**
 
 - **Main App**: `https://rinawarptech.com/ai-music-creator`
 - **Admin Panel**: `https://rinawarptech.com/ai-music-creator/admin-avatar-creation`
 - **API Endpoints**: `https://api.rinawarptech.com` (or subdomain)
+
 
 ### 3. **Environment Configuration**
 
@@ -149,27 +151,48 @@ services:
   frontend:
     build: ./frontend
     ports:
+
       - '80:80'
+
+
     environment:
+
       - NODE_ENV=production
+
+
     volumes:
+
       - ./frontend/dist:/usr/share/nginx/html
+
 
   backend:
     build: ./backend
     ports:
+
       - '3001:3001'
+
+
     environment:
+
       - NODE_ENV=production
+
+
     volumes:
+
       - ./uploads:/app/uploads
+
+
     depends_on:
+
       - redis
+
 
   redis:
     image: redis:alpine
     ports:
+
       - '6379:6379'
+
 ```
 
 ### 7. **Website Integration**
@@ -221,6 +244,7 @@ gtag('config', 'GA_MEASUREMENT_ID', {
 - **LogRocket**: For session replay
 - **New Relic**: For performance monitoring
 
+
 ### 9. **Security Considerations**
 
 #### CORS Configuration
@@ -258,12 +282,14 @@ const limiter = rateLimit({
 - **CDN**: Static assets via CloudFlare
 - **Caching**: Browser and server-side caching
 
+
 #### Backend Optimization
 
 - **Redis Caching**: Session and data caching
 - **Database Indexing**: Optimized queries
 - **API Rate Limiting**: Prevent abuse
 - **Load Balancing**: Multiple server instances
+
 
 ### 11. **Backup & Recovery**
 
@@ -290,6 +316,7 @@ aws s3 sync s3://rinawarp-production s3://rinawarp-backup --delete
 - **Error Alerts**: Sentry notifications
 - **Server Monitoring**: CPU, Memory, Disk usage
 
+
 ### 13. **Launch Checklist**
 
 - [ ] Domain DNS configured
@@ -305,6 +332,7 @@ aws s3 sync s3://rinawarp-production s3://rinawarp-backup --delete
 - [ ] Performance optimization done
 - [ ] Documentation updated
 
+
 ### 14. **Post-Launch**
 
 #### Marketing Integration
@@ -314,12 +342,14 @@ aws s3 sync s3://rinawarp-production s3://rinawarp-backup --delete
 - **Email Marketing**: Integration with Mailchimp/ConvertKit
 - **Analytics**: Conversion tracking
 
+
 #### User Support
 
 - **Help Center**: Documentation and FAQs
 - **Contact Form**: Support ticket system
 - **Live Chat**: Real-time support
 - **Community**: Discord/Slack for users
+
 
 ---
 

@@ -9,7 +9,7 @@ console.log('🧪 MVR Phase-1 Validation Test Starting...\n');
 console.log('✅ Test 1: V1 Suggestions Map');
 try {
   const { getV1Suggestion } = require('./desktop/src/renderer/js/v1-suggestions.js');
-  
+
   const testCases = [
     { input: 'git status', expected: 'git diff' },
     { input: 'git diff', expected: 'git commit -am ""' },
@@ -18,7 +18,7 @@ try {
     { input: 'ls', expected: 'pwd' },
     { input: 'cd /home', expected: 'ls' },
   ];
-  
+
   let passed = 0;
   testCases.forEach(({ input, expected }) => {
     const result = getV1Suggestion(input);
@@ -29,7 +29,7 @@ try {
       console.log(`  ✗ "${input}" → "${result}" (expected "${expected}")`);
     }
   });
-  
+
   console.log(`  Result: ${passed}/${testCases.length} suggestions working\n`);
 } catch (error) {
   console.log(`  ✗ Error testing suggestions: ${error.message}\n`);
@@ -38,26 +38,31 @@ try {
 // Test 2: Session State
 console.log('✅ Test 2: Session State Management');
 try {
-  const { sessionState, createSessionState, incrementAcceptedSuggestions, incrementCommandsExecuted } = require('./agent/src/sessionState.ts');
-  
+  const {
+    sessionState,
+    createSessionState,
+    incrementAcceptedSuggestions,
+    incrementCommandsExecuted,
+  } = require('./agent/src/sessionState.ts');
+
   // Test initial state
   console.log(`  ✓ Initial state:`, {
     startTime: sessionState.startTime,
     acceptedSuggestions: sessionState.acceptedSuggestions,
     memoryWrites: sessionState.memoryWrites,
-    commandsExecuted: sessionState.commandsExecuted
+    commandsExecuted: sessionState.commandsExecuted,
   });
-  
+
   // Test increments
   incrementAcceptedSuggestions(sessionState);
   incrementCommandsExecuted(sessionState);
   incrementCommandsExecuted(sessionState);
-  
+
   console.log(`  ✓ After increments:`, {
     acceptedSuggestions: sessionState.acceptedSuggestions,
-    commandsExecuted: sessionState.commandsExecuted
+    commandsExecuted: sessionState.commandsExecuted,
   });
-  
+
   console.log('  Result: Session state working correctly\n');
 } catch (error) {
   console.log(`  ✗ Error testing session state: ${error.message}\n`);
@@ -68,19 +73,19 @@ console.log('✅ Test 3: Agent Pro Eligibility');
 try {
   const { checkAgentProEligibility, userState } = require('./agent/src/agentProEligibility.ts');
   const { sessionState } = require('./agent/src/sessionState.ts');
-  
+
   // Test not eligible
   const eligible = checkAgentProEligibility(sessionState);
   console.log(`  ✓ Initial eligibility: ${eligible} (should be false)`);
-  
+
   // Simulate meeting criteria
   sessionState.acceptedSuggestions = 3;
   sessionState.memoryWrites = 1;
-  sessionState.startTime = Date.now() - (9 * 60 * 1000); // 9 minutes ago
-  
+  sessionState.startTime = Date.now() - 9 * 60 * 1000; // 9 minutes ago
+
   const eligibleAfter = checkAgentProEligibility(sessionState);
   console.log(`  ✓ After meeting criteria: ${eligibleAfter} (should be true)`);
-  
+
   console.log('  Result: Agent Pro eligibility working correctly\n');
 } catch (error) {
   console.log(`  ✗ Error testing eligibility: ${error.message}\n`);
@@ -100,10 +105,10 @@ try {
     console.log(`  ✓ Would store memory:`, projectData);
     return true;
   };
-  
+
   mockRememberProject('/home/user/project', 'git status');
   mockRememberProject('/home/user/project', 'npm install');
-  
+
   console.log('  Result: Memory functionality ready\n');
 } catch (error) {
   console.log(`  ✗ Error testing memory: ${error.message}\n`);
@@ -131,13 +136,13 @@ try {
     console.log('  ✓ MVR components initialized');
     return true;
   };
-  
+
   mockInitializeMVR();
   console.log(`  ✓ Global state available:`, {
     sessionState: !!global.window.sessionState,
-    userState: !!global.window.userState
+    userState: !!global.window.userState,
   });
-  
+
   console.log('  Result: Integration layer ready\n');
 } catch (error) {
   console.log(`  ✗ Error testing integration: ${error.message}\n`);

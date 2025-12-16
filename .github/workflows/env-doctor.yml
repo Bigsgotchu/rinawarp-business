@@ -1,0 +1,25 @@
+name: env doctor
+on:
+  pull_request:
+    paths:
+      - '**/wrangler.toml'
+      - '**/required-env.json'
+      - 'package.json'
+      - 'tools/env-doctor.ts'
+jobs:
+  env-doctor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - name: Check local manifests
+        run: pnpm env:doctor:local
+      - name: Check Cloudflare declarations (wrangler.toml)
+        run: pnpm env:doctor:cf:prod
+        env:
+          CF_ACCOUNT_ID: dummy
+          CF_API_TOKEN: dummy

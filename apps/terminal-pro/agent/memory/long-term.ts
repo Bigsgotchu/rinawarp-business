@@ -1,5 +1,5 @@
-import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 
 interface LongTermMemory {
   userPreferences: Record<string, any>;
@@ -14,30 +14,33 @@ class LongTermMemoryManager {
     userPreferences: {},
     workspaceHistory: [],
     commandPatterns: {},
-    aliases: {}
+    aliases: {},
   };
 
   constructor() {
     // Store in user's home directory for persistence
-    this.memoryFile = join(process.env.HOME || process.env.USERPROFILE || "/tmp", ".rina-agent-memory.json");
+    this.memoryFile = join(
+      process.env.HOME || process.env.USERPROFILE || '/tmp',
+      '.rina-agent-memory.json',
+    );
     this.loadMemory();
   }
 
   private async loadMemory(): Promise<void> {
     try {
-      const data = await readFile(this.memoryFile, "utf8");
+      const data = await readFile(this.memoryFile, 'utf8');
       this.memory = JSON.parse(data);
     } catch (error) {
       // Memory file doesn't exist or can't be read, start with defaults
-      console.log("[RinaAgent] Starting with fresh long-term memory");
+      console.log('[RinaAgent] Starting with fresh long-term memory');
     }
   }
 
   private async saveMemory(): Promise<void> {
     try {
-      await writeFile(this.memoryFile, JSON.stringify(this.memory, null, 2), "utf8");
+      await writeFile(this.memoryFile, JSON.stringify(this.memory, null, 2), 'utf8');
     } catch (error) {
-      console.error("[RinaAgent] Failed to save long-term memory:", error);
+      console.error('[RinaAgent] Failed to save long-term memory:', error);
     }
   }
 
@@ -51,13 +54,13 @@ class LongTermMemoryManager {
   }
 
   addWorkspace(path: string): void {
-    const existing = this.memory.workspaceHistory.findIndex(w => w.path === path);
+    const existing = this.memory.workspaceHistory.findIndex((w) => w.path === path);
     if (existing !== -1) {
       this.memory.workspaceHistory.splice(existing, 1);
     }
     this.memory.workspaceHistory.unshift({
       path,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
     // Keep only last 20 workspaces
     this.memory.workspaceHistory = this.memory.workspaceHistory.slice(0, 20);
@@ -79,7 +82,7 @@ class LongTermMemoryManager {
 
   getTopCommands(limit: number = 10): Array<{ command: string; count: number }> {
     return Object.entries(this.memory.commandPatterns)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, limit)
       .map(([command, count]) => ({ command, count }));
   }
@@ -102,7 +105,7 @@ class LongTermMemoryManager {
       userPreferences: {},
       workspaceHistory: [],
       commandPatterns: {},
-      aliases: {}
+      aliases: {},
     };
     this.saveMemory();
   }

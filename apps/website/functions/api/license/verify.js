@@ -9,16 +9,15 @@ export const onRequestPost = async (context) => {
     const db = context.env.DB;
 
     if (!licenseKey) {
-      return new Response(
-        JSON.stringify({ error: 'License key is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'License key is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Query database for license
-    const result = await db.prepare(
-      'SELECT * FROM licenses WHERE license_key = ? AND status = ?'
-    )
+    const result = await db
+      .prepare('SELECT * FROM licenses WHERE license_key = ? AND status = ?')
       .bind(licenseKey, 'active')
       .first();
 
@@ -35,7 +34,7 @@ export const onRequestPost = async (context) => {
             features: JSON.parse(result.features || '[]'),
           },
         }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
       );
     } else {
       return new Response(
@@ -43,7 +42,7 @@ export const onRequestPost = async (context) => {
           valid: false,
           message: 'Invalid or expired license key',
         }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
+        { status: 401, headers: { 'Content-Type': 'application/json' } },
       );
     }
   } catch (error) {
@@ -54,7 +53,7 @@ export const onRequestPost = async (context) => {
         error: 'Failed to verify license',
         details: error.message,
       }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
     );
   }
 };

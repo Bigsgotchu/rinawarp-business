@@ -25,12 +25,12 @@ body {
 /* Navigation */
 .nav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 102, 204, 0.1);
+  border-inset-block-end: 1px solid rgba(255, 102, 204, 0.1);
   z-index: 1000;
   padding: 1rem 0;
 }
@@ -150,7 +150,7 @@ body {
   font-size: 3.5rem;
   font-weight: 800;
   line-height: 1.1;
-  margin-bottom: 1.5rem;
+  margin-inset-block-end: 1.5rem;
   color: #1a202c;
 }
 
@@ -164,14 +164,14 @@ body {
 .hero-subtitle {
   font-size: 1.25rem;
   color: #666;
-  margin-bottom: 2rem;
+  margin-inset-block-end: 2rem;
   line-height: 1.6;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-inset-block-end: 3rem;
 }
 
 .btn {
@@ -284,7 +284,7 @@ body {
 }
 
 .terminal-line {
-  margin-bottom: 0.5rem;
+  margin-inset-block-end: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -300,12 +300,12 @@ body {
 }
 
 .ai-response {
-  margin-left: 1rem;
+  margin-inset-inline-start: 1rem;
 }
 
 .ai-icon {
   color: #ff66cc;
-  margin-right: 0.5rem;
+  margin-inset-inline-end: 0.5rem;
 }
 
 .response {
@@ -344,7 +344,7 @@ body {
   text-align: center;
   font-size: 2.5rem;
   font-weight: 800;
-  margin-bottom: 1rem;
+  margin-inset-block-end: 1rem;
   color: #1a202c;
 }
 
@@ -352,7 +352,7 @@ body {
   text-align: center;
   font-size: 1.25rem;
   color: #666;
-  margin-bottom: 3rem;
+  margin-inset-block-end: 3rem;
 }
 
 .features-grid {
@@ -379,8 +379,8 @@ body {
 .feature-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
+  inset-block-start: 0;
+  inset-inline-start: -100%;
   width: 100%;
   height: 100%;
   background: linear-gradient(
@@ -393,7 +393,7 @@ body {
 }
 
 .feature-card:hover::before {
-  left: 100%;
+  inset-inline-start: 100%;
 }
 
 .feature-card:hover {
@@ -404,13 +404,13 @@ body {
 
 .feature-icon {
   font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-inset-block-end: 1rem;
 }
 
 .feature-card h3 {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-inset-block-end: 1rem;
   color: #1a202c;
 }
 
@@ -429,7 +429,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-top: 3rem;
+  margin-inset-block-start: 3rem;
 }
 
 .pricing-card {
@@ -457,8 +457,8 @@ body {
 
 .limited-badge {
   position: absolute;
-  top: -10px;
-  left: 50%;
+  inset-block-start: -10px;
+  inset-inline-start: 50%;
   transform: translateX(-50%);
   background: linear-gradient(135deg, #ff8c42, #ff66cc);
   color: white;
@@ -470,8 +470,8 @@ body {
 
 .popular-badge {
   position: absolute;
-  top: -10px;
-  left: 50%;
+  inset-block-start: -10px;
+  inset-inline-start: 50%;
   transform: translateX(-50%);
   background: #ff66cc;
   color: white;
@@ -484,12 +484,12 @@ body {
 .plan-name {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-inset-block-end: 1rem;
   color: #1a202c;
 }
 
 .plan-price {
-  margin-bottom: 2rem;
+  margin-inset-block-end: 2rem;
 }
 
 .price {
@@ -505,14 +505,14 @@ body {
 
 .plan-features {
   list-style: none;
-  margin-bottom: 2rem;
+  margin-inset-block-end: 2rem;
 }
 
 .feature-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  margin-inset-block-end: 0.75rem;
   color: #666;
 }
 
@@ -589,7 +589,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-inset-block-end: 2rem;
 }
 
 .footer-brand {
@@ -617,8 +617,8 @@ body {
 
 .footer-bottom {
   text-align: center;
-  padding-top: 2rem;
-  border-top: 1px solid #2d3748;
+  padding-inset-block-start: 2rem;
+  border-inset-block-start: 1px solid #2d3748;
   color: #a0aec0;
 }
 
@@ -638,7 +638,7 @@ body {
 
 .success-icon {
   font-size: 80px;
-  margin-bottom: 30px;
+  margin-inset-block-end: 30px;
   animation: bounce 2s infinite;
 }
 
@@ -661,7 +661,7 @@ body {
 .success-content h1 {
   font-size: 48px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-inset-block-end: 20px;
   background: linear-gradient(135deg, #4facfe 0%, #00d4aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -671,7 +671,7 @@ body {
 .success-message {
   font-size: 18px;
   color: #e0e0e0;
-  margin-bottom: 40px;
+  margin-inset-block-end: 40px;
   line-height: 1.6;
 }
 
@@ -685,14 +685,14 @@ body {
 
 .download-section h2 {
   font-size: 32px;
-  margin-bottom: 20px;
+  margin-inset-block-end: 20px;
   color: #ffffff;
 }
 
 .download-section p {
   font-size: 16px;
   color: #888;
-  margin-bottom: 30px;
+  margin-inset-block-end: 30px;
 }
 
 .download-buttons {
@@ -755,7 +755,7 @@ body {
 
 .next-steps h3 {
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-inset-block-end: 20px;
   color: #00d4aa;
 }
 
@@ -768,11 +768,11 @@ body {
   padding: 10px 0;
   font-size: 16px;
   color: #e0e0e0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-inset-block-end: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .next-steps li:last-child {
-  border-bottom: none;
+  border-inset-block-end: none;
 }
 
 .support-section {
@@ -785,14 +785,14 @@ body {
 
 .support-section h3 {
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-inset-block-end: 20px;
   color: #ffb347;
 }
 
 .support-section p {
   font-size: 16px;
   color: #e0e0e0;
-  margin-bottom: 20px;
+  margin-inset-block-end: 20px;
 }
 
 .support-links {
@@ -821,7 +821,7 @@ body {
   display: flex;
   gap: 20px;
   justify-content: center;
-  margin-top: 40px;
+  margin-inset-block-start: 40px;
 }
 
 .loading {
@@ -833,7 +833,7 @@ body {
   width: 50px;
   height: 50px;
   border: 5px solid rgba(79, 172, 254, 0.3);
-  border-top: 5px solid #4facfe;
+  border-inset-block-start: 5px solid #4facfe;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
@@ -912,7 +912,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid #404040;
+  border-inset-block-end: 1px solid #404040;
 }
 
 .terminal-dots {
@@ -950,7 +950,7 @@ body {
 }
 
 .terminal-line {
-  margin-bottom: 8px;
+  margin-inset-block-end: 8px;
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -970,7 +970,7 @@ body {
   background: rgba(255, 107, 157, 0.1);
   padding: 8px 12px;
   border-radius: 6px;
-  border-left: 3px solid #ff6b9d;
+  border-inset-inline-start: 3px solid #ff6b9d;
   margin: 8px 0;
 }
 
@@ -988,7 +988,7 @@ body {
   background: rgba(77, 208, 225, 0.1);
   padding: 8px 12px;
   border-radius: 6px;
-  border-left: 3px solid #4dd0e1;
+  border-inset-inline-start: 3px solid #4dd0e1;
   margin: 8px 0;
 }
 
@@ -1018,7 +1018,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-inset-block-start: 1rem;
   justify-content: center;
 }
 
@@ -1062,10 +1062,10 @@ body {
 .feedback::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-end: 0;
   background:
     radial-gradient(
       circle at 20% 80%,
@@ -1096,14 +1096,14 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1.5rem;
+  margin-inset-block-end: 1.5rem;
 }
 
 .feedback-info p {
   font-size: 1.2rem;
   color: #b0b0b0;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-inset-block-end: 2rem;
 }
 
 @media (max-width: 768px) {
@@ -1127,7 +1127,7 @@ body {
 
 /* Email Section Styles */
 .email-section {
-  margin-top: 3rem;
+  margin-inset-block-start: 3rem;
   padding: 2rem;
   background: white;
   border-radius: 16px;
@@ -1139,12 +1139,12 @@ body {
   font-size: 1.8rem;
   font-weight: 700;
   color: #1a202c;
-  margin-bottom: 1rem;
+  margin-inset-block-end: 1rem;
 }
 
 .email-section p {
   color: #666;
-  margin-bottom: 1.5rem;
+  margin-inset-block-end: 1.5rem;
 }
 
 .email-input-group {
@@ -1185,14 +1185,14 @@ body {
 }
 
 .email-note {
-  margin-top: 1rem;
+  margin-inset-block-start: 1rem;
   font-size: 0.9rem;
   color: #666;
   text-align: center;
   background: #f8f9fa;
   padding: 0.75rem;
   border-radius: 8px;
-  border-left: 4px solid #ff66cc;
+  border-inset-inline-start: 4px solid #ff66cc;
 }
 
 @media (max-width: 768px) {

@@ -8,51 +8,58 @@ Transform your "✅ completed" claims into provably true assertions with automat
 # Run critical validations (5 minutes)
 ./scripts/production-validate.sh --quick
 
-# Run full validation suite (15 minutes)  
+# Run full validation suite (15 minutes)
 ./scripts/production-validate.sh --full
 ```
 
 ## 📁 What's Included
 
 ### 🧪 Test Suites
+
 - **`test/stripe-webhook-audit.js`** - Webhook security and signature verification
 - **`test/license-entitlements-test.js`** - License system security and entitlements
 - **`test/tier-gating-matrix.js`** - Feature gating matrix validation
 - **`test/ai-safety-validation.js`** - AI reasoning loop v1-safety compliance
 
 ### 🛠️ Scripts
+
 - **`scripts/production-validate.sh`** - End-to-end validation runner
 - **Executable** with `--quick` and `--full` modes
 
 ### 📋 Documentation
+
 - **`VALIDATION_FRAMEWORK.md`** - Complete validation methodology
 - **`PRODUCTION_LAUNCH_CHECKLIST.md`** - Comprehensive launch checklist
 
 ## 🚀 Validation Categories
 
 ### 1. Stripe Webhook Security Audit
+
 ✅ **Raw body signature verification**  
 ✅ **Idempotency implementation**  
 ✅ **Customer ↔ user mapping**  
-✅ **Event type allowlist**  
+✅ **Event type allowlist**
 
-### 2. License Activation & Entitlements  
+### 2. License Activation & Entitlements
+
 ✅ **Device-bound licenses**  
 ✅ **Signature verification**  
 ✅ **Offline validity window**  
-✅ **Refund/cancellation logic**  
+✅ **Refund/cancellation logic**
 
 ### 3. Tier Gating Matrix
+
 ✅ **Free tier restrictions**  
 ✅ **Terminal Pro features**  
 ✅ **Agent Pro features**  
-✅ **Grace period handling**  
+✅ **Grace period handling**
 
 ### 4. AI Reasoning Loop Safety
+
 ✅ **No autonomous writes**  
 ✅ **Deterministic fallback**  
 ✅ **Risk guardrails**  
-✅ **User approval system**  
+✅ **User approval system**
 
 ## 🎛️ Individual Component Testing
 
@@ -62,7 +69,7 @@ Test specific components independently:
 # Webhook security only
 node test/stripe-webhook-audit.js
 
-# License system only  
+# License system only
 node test/license-entitlements-test.js
 
 # Feature gating only
@@ -75,18 +82,21 @@ node test/ai-safety-validation.js
 ## 📊 Understanding Results
 
 ### ✅ All Tests Pass
+
 ```
 🎉 ALL VALIDATIONS PASSED
 🚀 SYSTEM IS PRODUCTION READY
 ```
 
 ### ❌ Tests Fail
+
 ```
 ❌ VALIDATION FAILED
 ⚠️ Fix failing tests before production deployment
 ```
 
 Each test provides detailed feedback:
+
 - ✅ **PASS** - Component working correctly
 - ❌ **FAIL** - Critical issue found
 - ⚠️ **WARNING** - Non-critical issue
@@ -94,6 +104,7 @@ Each test provides detailed feedback:
 ## 🔧 Environment Setup
 
 ### Required Environment Variables
+
 ```bash
 export STRIPE_SECRET_KEY="sk_live_..."        # Production Stripe key
 export STRIPE_WEBHOOK_SECRET="whsec_..."      # From Stripe dashboard
@@ -101,6 +112,7 @@ export LICENSE_ENCRYPTION_SECRET="secure-key" # For license encryption
 ```
 
 ### Optional Tools
+
 ```bash
 # Stripe CLI for webhook testing
 npm install -g @stripe/stripe-cli
@@ -114,18 +126,21 @@ stripe listen --forward-to localhost:3000/webhook
 The framework validates these critical security requirements:
 
 ### Webhook Security
+
 - **Raw body handling** - No middleware consumes body before signature check
 - **Signature verification** - Uses Stripe's `constructEvent` correctly
 - **Idempotency** - Prevents duplicate event processing
 - **Allowlist enforcement** - Only processes expected event types
 
-### License Security  
+### License Security
+
 - **Device binding** - Licenses tied to specific devices
 - **Signature verification** - Prevents license tampering
 - **Offline expiration** - Subscriptions expire after 3 days offline
 - **Abuse protection** - Rate limiting on activation endpoints
 
 ### Feature Security
+
 - **Tier enforcement** - Users cannot access unauthorized features
 - **Client-side validation** - Server-side authorization required
 - **Graceful degradation** - Expired subscriptions properly restricted
@@ -145,13 +160,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+
         with:
           node-version: '18'
-      
+
       - name: Install dependencies
+
         run: npm install
-        
+
       - name: Run validation
+
         run: ./scripts/production-validate.sh --full
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
@@ -164,6 +182,7 @@ jobs:
 ### Common Issues
 
 **❌ "Node.js not found"**
+
 ```bash
 # Install Node.js 16+
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
@@ -171,12 +190,14 @@ sudo apt-get install -y nodejs
 ```
 
 **❌ "Permission denied"**
+
 ```bash
 # Make script executable
 chmod +x scripts/production-validate.sh
 ```
 
 **❌ "Environment variables not set"**
+
 ```bash
 # Check environment
 echo $STRIPE_SECRET_KEY
@@ -187,6 +208,7 @@ export STRIPE_SECRET_KEY="your_key"
 ```
 
 **❌ "Module not found"**
+
 ```bash
 # Install dependencies
 npm install
@@ -203,13 +225,16 @@ node test/stripe-webhook-audit.js --debug
 ## 📞 Support
 
 ### Getting Help
+
 1. Check the detailed logs in test output
 2. Review `VALIDATION_FRAMEWORK.md` for methodology
 3. Check `PRODUCTION_LAUNCH_CHECKLIST.md` for procedures
 4. Verify environment variables are set correctly
 
 ### Reporting Issues
+
 When reporting validation failures, include:
+
 - Full test output
 - Environment details (Node.js version, OS)
 - Environment variable status (without secrets)
@@ -218,13 +243,16 @@ When reporting validation failures, include:
 ## 🎯 Success Metrics
 
 ### Target Metrics
+
 - **100% test pass rate** for all critical security validations
 - **<1% webhook delivery failure rate** in production
 - **<0.1% license activation failure rate**
 - **Zero unauthorized feature access attempts**
 
 ### Continuous Monitoring
+
 After launch, monitor these metrics:
+
 - Webhook delivery success rate
 - Duplicate event processing rate
 - License activation success rate

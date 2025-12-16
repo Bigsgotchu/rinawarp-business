@@ -47,8 +47,8 @@ const server = app.listen(3002, () => {
 
   // Make a test request with malicious input
   const postData = JSON.stringify({
-    name: '\'; DROP TABLE users; --',
-    description: 'Test\'; SELECT * FROM users; --',
+    name: "'; DROP TABLE users; --",
+    description: "Test'; SELECT * FROM users; --",
     userId: 'test-user',
   });
 

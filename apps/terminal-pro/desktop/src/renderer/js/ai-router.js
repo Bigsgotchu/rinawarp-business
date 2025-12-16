@@ -1,13 +1,12 @@
 // Unified AI Router
+import { agentDebug } from './agent-debug.js';
 import {
   explainLastError,
   suggestNextCommands,
   askRinaChat,
   askAboutOutput,
-  debugSession
+  debugSession,
 } from './ai.js';
-
-import { agentDebug } from "./agent-debug.js";
 
 export class RinaAIRouter {
   static async handleRequest(type, payload = {}) {
@@ -19,10 +18,10 @@ export class RinaAIRouter {
       history: state.history,
       cwd: state.cwd,
       shell: state.shell,
-      ...payload
+      ...payload,
     };
 
-    agentDebug.log("📨 Request:", type, JSON.stringify(context));
+    agentDebug.log('📨 Request:', type, JSON.stringify(context));
 
     try {
       let result;
@@ -34,21 +33,21 @@ export class RinaAIRouter {
         case 'fixCommand':
           result = await askRinaChat({
             prompt: `Fix this broken command: ${state.lastCommand}\nError:\n${state.lastOutput}`,
-            context
+            context,
           });
           break;
 
         case 'generateCommand':
           result = await askRinaChat({
             prompt: `Generate a valid terminal command for this request:\n"${payload.goal}"`,
-            context
+            context,
           });
           break;
 
         case 'whatNext':
           result = await suggestNextCommands({
             goal: payload.goal || 'continue the current workflow',
-            ...context
+            ...context,
           });
           break;
 
@@ -65,18 +64,18 @@ export class RinaAIRouter {
       }
 
       if (!result.ok) {
-        agentDebug.log("❌ ERROR:", result.status, result.error || "Unknown error");
+        agentDebug.log('❌ ERROR:', result.status, result.error || 'Unknown error');
       } else {
-        agentDebug.log("📩 Response:", JSON.stringify(result.data).slice(0, 300));
+        agentDebug.log('📩 Response:', JSON.stringify(result.data).slice(0, 300));
       }
 
       return result;
     } catch (error) {
-      agentDebug.log("💥 Router ERROR:", error.message || String(error));
+      agentDebug.log('💥 Router ERROR:', error.message || String(error));
       return {
         ok: false,
-        error: "AI Router error",
-        details: error.message || String(error)
+        error: 'AI Router error',
+        details: error.message || String(error),
       };
     }
   }

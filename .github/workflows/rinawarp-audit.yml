@@ -3,7 +3,7 @@ name: RinaWarp Security & Smoke Audit
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   audit:

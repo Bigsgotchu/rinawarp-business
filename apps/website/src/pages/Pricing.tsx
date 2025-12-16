@@ -1,6 +1,6 @@
-import React from "react";
-import { BrandLogo } from "../components/brand/BrandLogo";
-import { PricingCard } from "../components/brand/PricingCard";
+import React from 'react';
+import { BrandLogo } from '../components/brand/BrandLogo';
+import { PricingCard } from '../components/brand/PricingCard';
 
 export const PricingPage: React.FC = () => {
   return (
@@ -32,8 +32,8 @@ export const PricingPage: React.FC = () => {
           Pricing built for founders and power users
         </h1>
         <p className="text-sm text-brand-muted mb-8 max-w-2xl">
-          Own your tooling. Pay once for Terminal Pro, or subscribe to the AI
-          Music Video Creator for ongoing generations. Bundles available.
+          Own your tooling. Pay once for Terminal Pro, or subscribe to the AI Music Video Creator
+          for ongoing generations. Bundles available.
         </p>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -44,10 +44,10 @@ export const PricingPage: React.FC = () => {
             cadence="one-time"
             description="Own the RinaWarp Terminal Pro desktop suite with lifetime updates for this major version."
             features={[
-              "Lifetime license for Terminal Pro v1",
-              "Secure device management flows",
-              "Offline-capable desktop app",
-              "Business-ready logging and auditing hooks",
+              'Lifetime license for Terminal Pro v1',
+              'Secure device management flows',
+              'Offline-capable desktop app',
+              'Business-ready logging and auditing hooks',
             ]}
             ctaLabel="Buy Terminal Pro"
           />
@@ -58,10 +58,10 @@ export const PricingPage: React.FC = () => {
             cadence="per month"
             description="Generate AI music videos, visuals, and assets with a creator-friendly workflow."
             features={[
-              "High-quality AI video renders",
-              "Credit-based generation system",
-              "Commercial usage rights (per plan)",
-              "Team-ready workflow support",
+              'High-quality AI video renders',
+              'Credit-based generation system',
+              'Commercial usage rights (per plan)',
+              'Team-ready workflow support',
             ]}
             ctaLabel="Start AI-MVC Subscription"
           />

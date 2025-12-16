@@ -9,12 +9,15 @@ This demo showcases the core value proposition: **Agent analyzes problems and su
 ## 🎬 Demo Script (60 seconds)
 
 ### Setup (5 seconds)
-*Show Terminal Pro interface*
+
+_Show Terminal Pro interface_
+
 - Clean terminal window
 - User in project directory
 - "Let me show you how Rina Agent helps fix common development problems"
 
 ### Step 1: Initial Command (5 seconds)
+
 **User types**: `npm run build`
 **Action**: User presses Enter
 **Result**: Build starts, then fails
@@ -25,13 +28,29 @@ This demo showcases the core value proposition: **Agent analyzes problems and su
 
 ✗ Error: Cannot find module 'express'
 Require stack:
+
 - /node_modules/express/index.js
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### Step 2: Agent Analysis (10 seconds)
-*Agent icon appears in corner with subtle animation*
+
+_Agent icon appears in corner with subtle animation_
 
 **Agent processes**:
+
 - Parses MODULE_NOT_FOUND error
 - Checks for package.json
 - Verifies node_modules directory
@@ -40,7 +59,9 @@ Require stack:
 **Visual feedback**: Agent thinking indicator (subtle pulsing)
 
 ### Step 3: Ghost Text Appears (15 seconds)
+
 **User sees**:
+
 - Current command still visible: `npm run build`
 - Gray text appears after cursor: `npm install`
 - Subtle highlight around suggestion
@@ -48,8 +69,10 @@ Require stack:
 **UI Text**: "Agent suggests: npm install (press Tab to accept)"
 
 ### Step 4: User Accepts (10 seconds)
+
 **User action**: Presses Tab key
-**Result**: 
+**Result**:
+
 - Command line updates to: `npm install`
 - Gray text disappears
 - Command executes automatically
@@ -60,12 +83,16 @@ added 42 packages in 2.3s
 ```
 
 ### Step 5: Next Suggestion (10 seconds)
+
 **After install completes**:
+
 - New gray text appears: `npm run build`
 - User presses Tab again
 
 ### Step 6: Success (5 seconds)
+
 **Build succeeds**:
+
 ```
 ✓ Build completed successfully
 dist/index.html (123 KB)
@@ -79,21 +106,25 @@ dist/assets/index.js (456 KB)
 ## 🎯 Key Demo Moments
 
 ### 1. Error Recognition (Most Important)
+
 - Agent instantly recognizes MODULE_NOT_FOUND
 - No user intervention needed
 - Silent background processing
 
-### 2. Context Understanding  
+### 2. Context Understanding
+
 - Agent knows this is a Node.js project (package.json)
 - Understands build failed due to missing dependency
 - Suggests the exact fix needed
 
 ### 3. One-Click Resolution
+
 - Tab to accept is intuitive
 - No complex commands to remember
 - Natural keyboard interaction
 
 ### 4. Workflow Continuity
+
 - After fix, ready for next logical step
 - Agent suggests the original command again
 - Smooth flow from problem to solution
@@ -103,16 +134,19 @@ dist/assets/index.js (456 KB)
 ## 💡 What Makes This Demo Powerful
 
 ### Immediate Value Recognition
+
 - **Problem**: Common development frustration
-- **Solution**: Agent handles it automatically  
+- **Solution**: Agent handles it automatically
 - **Result**: User doesn't even need to think
 
 ### "It Just Works" Feeling
+
 - No configuration required
 - No setup needed
 - Works immediately out of the box
 
 ### Tangible Time Savings
+
 - User doesn't need to:
   - Google the error
   - Remember npm install syntax
@@ -120,6 +154,7 @@ dist/assets/index.js (456 KB)
   - Understand the problem deeply
 
 ### Professional Polish
+
 - Smooth animations
 - Clear visual feedback
 - Intuitive interactions
@@ -129,17 +164,20 @@ dist/assets/index.js (456 KB)
 ## 🎨 Visual Design Elements
 
 ### Agent Avatar
+
 - Subtle corner icon
 - Pulsing animation when "thinking"
 - Checkmark when successful
 
 ### Ghost Text Styling
+
 - Gray color (60% opacity)
 - Italic font style
 - Smooth fade-in animation
 - Clear Tab hint
 
 ### Success States
+
 - Green checkmarks
 - Build success messages
 - Confident user expression
@@ -148,42 +186,45 @@ dist/assets/index.js (456 KB)
 
 ## 🗣️ Demo Voiceover Script
 
-*"Let's see Rina Agent in action. I'm starting a build command..."*
+_"Let's see Rina Agent in action. I'm starting a build command..."_
 
-*[Type npm run build]*
+_[Type npm run build]_
 
-*"The build failed - it can't find the express module. This is a common problem."*
+_"The build failed - it can't find the express module. This is a common problem."_
 
-*[Show agent icon appearing]*
+_[Show agent icon appearing]_
 
-*"Rina Agent analyzed the error and project structure. See this gray text? It's suggesting the exact command I need."*
+_"Rina Agent analyzed the error and project structure. See this gray text? It's suggesting the exact command I need."_
 
-*[Press Tab]*
+_[Press Tab]_
 
-*"One Tab press, and the problem is fixed. Dependencies installed, build ready to run."*
+_"One Tab press, and the problem is fixed. Dependencies installed, build ready to run."_
 
-*[Press Tab again]*
+_[Press Tab again]_
 
-*"And we're back to building. Rina Agent just saved me from Googling an error and typing commands manually."*
+_"And we're back to building. Rina Agent just saved me from Googling an error and typing commands manually."_
 
-*"This is the future of terminal productivity."*
+_"This is the future of terminal productivity."_
 
 ---
 
 ## 🎪 Demo Variations
 
 ### Variation 1: Git Workflow
+
 1. User modifies files
 2. Agent suggests git status
 3. Suggests git add -A
 4. Suggests git commit -m "update"
 
 ### Variation 2: Development Server
+
 1. User types npm run
 2. Agent suggests npm run dev (after npm install)
 3. Server starts successfully
 
 ### Variation 3: Error Recovery
+
 1. Port already in use error
 2. Agent suggests lsof to find process
 3. Suggests kill command
@@ -194,16 +235,19 @@ dist/assets/index.js (456 KB)
 ## 📊 Demo Metrics to Track
 
 ### User Engagement
+
 - **Demo completion rate**: >80%
 - **Tab acceptance rate**: >90%
 - **"Wow" moments**: 3-5 per demo
 
-### Conversion Indicators  
+### Conversion Indicators
+
 - **Questions about pricing**: "How much?"
 - **Technical questions**: "How does it work?"
 - **Immediate download**: "Can I try this now?"
 
 ### Emotional Responses
+
 - **Smile/recognition**: When Tab works
 - **Lean forward**: When error appears
 - **Relaxation**: When problem solves easily
@@ -213,18 +257,21 @@ dist/assets/index.js (456 KB)
 ## 🚀 Launch Demo Checklist
 
 ### Pre-Demo Setup
+
 - [ ] Clean terminal environment
 - [ ] Project with known failure scenario
 - [ ] Screen recording software ready
 - [ ] Backup demo scenarios
 
 ### During Demo
+
 - [ ] Speak clearly and confidently
 - [ ] Let the technology shine
 - [ ] Emphasize the "one Tab" moment
 - [ ] Show the before/after difference
 
 ### Post-Demo
+
 - [ ] Clear call-to-action
 - [ ] Download link prominent
 - [ ] Pricing information ready
@@ -235,8 +282,9 @@ dist/assets/index.js (456 KB)
 ## 🎯 Success Criteria
 
 This demo succeeds if viewers:
+
 1. **Understand the value** immediately
-2. **Want to try it themselves**  
+2. **Want to try it themselves**
 3. **See the competitive advantage**
 4. **Can imagine using it daily**
 

@@ -160,9 +160,23 @@ We are writing to inform you that your use of the mark "RinaWarp" in connection 
 RinaWarp Technologies, LLC owns the registered trademark "RinaWarp" (Registration No. [Number]) for [goods/services]. Your unauthorized use of this mark is likely to cause confusion among consumers and constitutes trademark infringement.
 
 We demand that you immediately:
+
 1. Cease all use of the "RinaWarp" mark
 2. Remove all references to "RinaWarp" from your materials
 3. Confirm in writing that you have complied with these demands
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 If you fail to comply within 10 days, we will pursue all available legal remedies.
 
@@ -187,9 +201,23 @@ We are writing to request the removal of infringing content hosted on your serve
 Our client, RinaWarp Technologies, LLC, owns the copyright in the software code that is being infringed at [URL]. The infringing content is a copy of our client's proprietary software.
 
 We request that you immediately:
+
 1. Remove the infringing content
 2. Disable access to the infringing content
 3. Confirm in writing that you have complied
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 This notice is made in good faith and under penalty of perjury.
 

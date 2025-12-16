@@ -43,6 +43,7 @@ The Rina Agent has been successfully refactored from a monolithic Continue plugi
 ### 1. Server Architecture (`apps/terminal-pro/agent/`)
 
 **Files Created:**
+
 - `server.js` - Express.js HTTP server (production ready)
 - `server.ts` - TypeScript version (for future development)
 - `chat/handleChat.js` - OpenAI-compatible chat handler
@@ -50,6 +51,7 @@ The Rina Agent has been successfully refactored from a monolithic Continue plugi
 - `package.json` - Updated with Express dependencies
 
 **Server Endpoints:**
+
 - `POST /chat` - Main chat interface (OpenAI-compatible)
 - `POST /tool` - Direct tool execution
 - `GET /health` - Health check endpoint
@@ -57,10 +59,12 @@ The Rina Agent has been successfully refactored from a monolithic Continue plugi
 ### 2. Continue Configuration (`~/.continue/config.yaml`)
 
 **Updated Configuration:**
+
 ```yaml
 schema: v1
 models:
   - name: rina-local
+
     provider: openai
     model: rina-agent
     apiBase: http://127.0.0.1:3333/chat
@@ -68,6 +72,7 @@ models:
 ```
 
 **Key Changes:**
+
 - ✅ Removed `agents:` section (old approach)
 - ✅ Added `rina-local` model pointing to our server
 - ✅ Configured OpenAI-compatible interface
@@ -78,12 +83,14 @@ The server returns proper OpenAI-style responses:
 
 ```json
 {
-  "choices": [{
-    "message": {
-      "role": "assistant",
-      "content": "Command executed successfully..."
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "Command executed successfully..."
+      }
     }
-  }]
+  ]
 }
 ```
 
@@ -137,6 +144,7 @@ The `~/.continue/config.yaml` is already updated with the correct configuration.
 ### 4. Shell Command Examples
 
 In Continue chat, try these commands:
+
 - `$ ls -la` - List files
 - `$ pwd` - Show current directory
 - `$ echo "Hello World"` - Print text

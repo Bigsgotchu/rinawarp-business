@@ -42,28 +42,28 @@ class AtomicModeTester {
         operation: {
           type: 'file_write',
           mode: 'overwrite',
-          id: 'test-overwrite'
+          id: 'test-overwrite',
         },
-        expectedRisk: true
+        expectedRisk: true,
       },
       {
         name: 'Large output detection',
         operation: {
           type: 'code_generation',
           outputSize: 1500,
-          id: 'test-large-output'
+          id: 'test-large-output',
         },
-        expectedRisk: true
+        expectedRisk: true,
       },
       {
         name: 'Safe operation',
         operation: {
           type: 'read_file',
           paths: [{ path: '/test/file.txt', validated: true }],
-          id: 'test-safe'
+          id: 'test-safe',
         },
-        expectedRisk: false
-      }
+        expectedRisk: false,
+      },
     ];
 
     for (const testCase of testCases) {
@@ -84,25 +84,25 @@ class AtomicModeTester {
 
     // Add some verified knowledge
     MemoryGuardrails.addVerifiedKnowledge('File paths must be validated before use', {
-      source: 'system_requirement'
+      source: 'system_requirement',
     });
 
     const testCases = [
       {
         name: 'Hallucination pattern detection',
         statement: 'I invented a new file called config.json',
-        expectedValid: false
+        expectedValid: false,
       },
       {
         name: 'Verified knowledge validation',
         statement: 'File paths must be validated before use',
-        expectedValid: true
+        expectedValid: true,
       },
       {
         name: 'Unknown statement detection',
         statement: 'The system has unlimited memory',
-        expectedValid: false
-      }
+        expectedValid: false,
+      },
     ];
 
     for (const testCase of testCases) {
@@ -110,7 +110,9 @@ class AtomicModeTester {
       const passed = result.isValid === testCase.expectedValid;
 
       this._recordTestResult('Memory Guardrails', testCase.name, passed);
-      console.log(`  ${passed ? '✅' : '❌'} ${testCase.name}: ${result.isValid ? 'Valid' : 'Invalid'}`);
+      console.log(
+        `  ${passed ? '✅' : '❌'} ${testCase.name}: ${result.isValid ? 'Valid' : 'Invalid'}`,
+      );
     }
   }
 
@@ -124,7 +126,7 @@ class AtomicModeTester {
       {
         name: 'Default mode is atomic',
         test: () => ModeToggleSystem.getCurrentMode() === 'atomic',
-        expected: true
+        expected: true,
       },
       {
         name: 'Switch to one-shot mode',
@@ -132,7 +134,7 @@ class AtomicModeTester {
           ModeToggleSystem.enableOneShotMode();
           return ModeToggleSystem.getCurrentMode() === 'one_shot';
         },
-        expected: true
+        expected: true,
       },
       {
         name: 'Switch to safe mode',
@@ -140,7 +142,7 @@ class AtomicModeTester {
           ModeToggleSystem.enableSafeMode();
           return ModeToggleSystem.getCurrentMode() === 'safe';
         },
-        expected: true
+        expected: true,
       },
       {
         name: 'Mode command processing',
@@ -148,8 +150,8 @@ class AtomicModeTester {
           const result = ModeToggleSystem.processModeCommand('atomic mode on');
           return result.success && result.newMode === 'atomic';
         },
-        expected: true
-      }
+        expected: true,
+      },
     ];
 
     for (const testCase of testCases) {
@@ -170,7 +172,8 @@ class AtomicModeTester {
   testSmartTaskSplitter() {
     console.log('\n🔪 Testing Smart Task Splitter...');
 
-    const complexTask = 'Create a new configuration file and then update the existing build script to use it, also add validation checks for the new configuration format';
+    const complexTask =
+      'Create a new configuration file and then update the existing build script to use it, also add validation checks for the new configuration format';
 
     const steps = SmartTaskSplitter.splitTask(complexTask);
 
@@ -178,23 +181,25 @@ class AtomicModeTester {
       {
         name: 'Task splitting produces multiple steps',
         test: () => steps.length >= 2,
-        expected: true
+        expected: true,
       },
       {
         name: 'Each step is atomic',
-        test: () => steps.every(step => step.isAtomic),
-        expected: true
+        test: () => steps.every((step) => step.isAtomic),
+        expected: true,
       },
       {
         name: 'Steps require confirmation',
-        test: () => steps.every(step => step.requiresConfirmation),
-        expected: true
-      }
+        test: () => steps.every((step) => step.requiresConfirmation),
+        expected: true,
+      },
     ];
 
     console.log(`  Task split into ${steps.length} steps:`);
     steps.forEach((step, index) => {
-      console.log(`    ${index + 1}. ${step.description} (complexity: ${step.complexity.toFixed(2)})`);
+      console.log(
+        `    ${index + 1}. ${step.description} (complexity: ${step.complexity.toFixed(2)})`,
+      );
     });
 
     for (const testCase of testCases) {
@@ -217,7 +222,7 @@ class AtomicModeTester {
       'Validate file paths before execution',
       'Check for risky operations',
       'Split complex task into atomic steps',
-      'Execute in atomic mode with confirmations'
+      'Execute in atomic mode with confirmations',
     ];
 
     let integrationPassed = true;
@@ -233,7 +238,7 @@ class AtomicModeTester {
       const riskOperation = {
         type: 'workflow_step',
         description: step,
-        id: `integration-${step.substring(0, 10)}`
+        id: `integration-${step.substring(0, 10)}`,
       };
 
       const riskCheck = RiskDetector.isOperationSafe(riskOperation);
@@ -246,7 +251,9 @@ class AtomicModeTester {
 
     const passed = integrationPassed;
     this._recordTestResult('System Integration', 'Complete workflow validation', passed);
-    console.log(`  ${passed ? '✅' : '❌'} Complete workflow validation: ${passed ? 'Passed' : 'Failed'}`);
+    console.log(
+      `  ${passed ? '✅' : '❌'} Complete workflow validation: ${passed ? 'Passed' : 'Failed'}`,
+    );
   }
 
   /**
@@ -258,7 +265,7 @@ class AtomicModeTester {
       component,
       testName,
       passed,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     if (passed) {
@@ -277,7 +284,9 @@ class AtomicModeTester {
     console.log(`  Total Tests: ${this.testResults.length}`);
     console.log(`  Passed: ${this.passedTests} ✅`);
     console.log(`  Failed: ${this.failedTests} ❌`);
-    console.log(`  Success Rate: ${((this.passedTests / this.testResults.length) * 100).toFixed(1)}%`);
+    console.log(
+      `  Success Rate: ${((this.passedTests / this.testResults.length) * 100).toFixed(1)}%`,
+    );
 
     if (this.failedTests === 0) {
       console.log('\n🎉 All tests passed! Atomic Execution Mode is ready for production.');

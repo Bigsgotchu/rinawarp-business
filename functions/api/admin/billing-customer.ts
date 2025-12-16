@@ -13,15 +13,12 @@ function json(data: unknown, status = 200) {
     status,
     headers: {
       'content-type': 'application/json',
-      'access-control-allow-origin': '*'
-    }
+      'access-control-allow-origin': '*',
+    },
   });
 }
 
-async function kvGetJson<T>(
-  kv: KVNamespace,
-  key: string
-): Promise<T | null> {
+async function kvGetJson<T>(kv: KVNamespace, key: string): Promise<T | null> {
   const raw = await kv.get(key);
   if (!raw) return null;
   try {
@@ -49,7 +46,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const lower = email.trim().toLowerCase();
     const index = await kvGetJson<{ stripeCustomerId: string }>(
       env.BILLING_KV,
-      `billing:index:customer_by_email:${lower}`
+      `billing:index:customer_by_email:${lower}`,
     );
     customerId = index?.stripeCustomerId || null;
   }
@@ -62,26 +59,18 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const customer = await kvGetJson<any>(env.BILLING_KV, customerKey);
 
   const purchasesIdxKey = `billing:index:purchases_by_customer:${customerId}`;
-  const purchaseIds =
-    (await kvGetJson<string[]>(env.BILLING_KV, purchasesIdxKey)) || [];
+  const purchaseIds = (await kvGetJson<string[]>(env.BILLING_KV, purchasesIdxKey)) || [];
   const purchases: any[] = [];
   for (const id of purchaseIds) {
-    const p = await kvGetJson<any>(
-      env.BILLING_KV,
-      `billing:purchase:${id}`
-    );
+    const p = await kvGetJson<any>(env.BILLING_KV, `billing:purchase:${id}`);
     if (p) purchases.push(p);
   }
 
-  const credits =
-    (await kvGetJson<any>(
-      env.BILLING_KV,
-      `billing:credits:${customerId}`
-    )) || null;
+  const credits = (await kvGetJson<any>(env.BILLING_KV, `billing:credits:${customerId}`)) || null;
 
   // naive subscription search
   const subsList = await env.BILLING_KV.list({
-    prefix: 'billing:subscription:'
+    prefix: 'billing:subscription:',
   });
   const subscriptions: any[] = [];
   for (const key of subsList.keys) {
@@ -94,6 +83,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     customer,
     purchases,
     subscriptions,
-    credits
+    credits,
   });
 };

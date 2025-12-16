@@ -16,6 +16,7 @@ A comprehensive, production-grade Express server implementation with enterprise 
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js >= 20.0.0
 - npm >= 9.0.0
 
@@ -69,11 +70,13 @@ docker-compose down
 ## 🧪 Testing
 
 ### Test Suite
+
 - **Unit Tests**: Individual component testing
 - **E2E Tests**: Full API endpoint testing with supertest
 - **Integration Tests**: Database and external service integration
 
 ### Test Commands
+
 ```bash
 npm test                    # Run all tests
 npm run test:watch         # Watch mode for development
@@ -82,6 +85,7 @@ npm run lint               # ESLint code quality
 ```
 
 ### Load Testing
+
 ```bash
 # Install k6 first: https://k6.io/docs/getting-started/installation/
 npm run k6                 # Run default load test (5 VUs, 30s)
@@ -92,7 +96,9 @@ BASE=http://localhost:3333 npm run k6  # Custom target URL
 ## 📊 API Documentation
 
 ### OpenAPI Specification
+
 The complete API specification is available at `ops/openapi.yaml` and can be imported into:
+
 - Postman
 - Swagger UI
 - Insomnia
@@ -101,18 +107,23 @@ The complete API specification is available at `ops/openapi.yaml` and can be imp
 ### Key Endpoints
 
 #### Health Check
+
 ```http
 GET /health
 ```
+
 Response: `{"ok": true, "ts": "2025-12-13T23:20:12.906Z"}`
 
 #### List Models
+
 ```http
 GET /v1/models
 ```
+
 Response: OpenAI-compatible models list
 
 #### Chat Completions
+
 ```http
 POST /v1/chat/completions
 Content-Type: application/json
@@ -126,13 +137,14 @@ Content-Type: application/json
 ```
 
 #### Streaming Chat
+
 ```http
 POST /v1/chat/completions
 Content-Type: application/json
 Accept: text/event-stream
 
 {
-  "model": "rina-agent", 
+  "model": "rina-agent",
   "messages": [{"role": "user", "content": "Stream test"}],
   "stream": true
 }
@@ -141,11 +153,13 @@ Accept: text/event-stream
 ## 🔧 Configuration
 
 ### Server Architecture
+
 - **app.ts**: Express app configuration (no port binding)
 - **server.ts**: HTTP server with auto-port selection
 - **Modular Design**: Easy to test and extend
 
 ### Security Features
+
 - **Helmet.js**: Security headers
 - **CORS**: Configurable cross-origin requests
 - **Input Validation**: Strict request validation
@@ -153,6 +167,7 @@ Accept: text/event-stream
 - **Rate Limiting**: Built-in express-rate-limit support
 
 ### Production Features
+
 - **Auto-port Selection**: Prevents EADDRINUSE errors
 - **Graceful Shutdown**: SIGINT/SIGTERM handling
 - **Health Checks**: Docker health check support
@@ -162,12 +177,14 @@ Accept: text/event-stream
 ## 🚦 CI/CD Pipeline
 
 ### GitHub Actions Workflow
+
 - **Node.js Matrix**: Tests on Node 20
 - **Automated Testing**: Type check, build, and test
 - **Quality Gates**: Linting and type safety
 - **Artifact Management**: Build artifacts preservation
 
 ### Deployment
+
 ```bash
 # Production deployment via Docker
 docker build -t rinawarp/agent:latest .
@@ -180,12 +197,14 @@ docker-compose up -d
 ## 📈 Performance
 
 ### Load Testing Results
+
 - **Latency Target**: p95 < 400ms
 - **Concurrent Users**: Configurable VUs
 - **Throughput**: Handles 100+ requests/second
 - **Memory Usage**: Optimized for production workloads
 
 ### Monitoring
+
 - **Health Endpoint**: `/health` for liveness probes
 - **Metrics Ready**: Prometheus integration prepared
 - **Structured Logs**: JSON format for log aggregation

@@ -1,5 +1,6 @@
 # Onboarding Value Delivery Implementation Spec
-*Technical requirements to justify pricing with immediate value*
+
+_Technical requirements to justify pricing with immediate value_
 
 ## 🎯 CORE PRINCIPLE: Pricing Justification
 
@@ -26,10 +27,10 @@ class GhostTextManager {
 
   onCommandEntered(command) {
     this.commandCount++;
-    
+
     // Skip if not a "real" command
     if (!this.isRealCommand(command)) return;
-    
+
     // Show ghost text on first or second real command
     if (this.commandCount <= 2 && !this.shownGhostText) {
       this.showGhostText(command);
@@ -38,12 +39,26 @@ class GhostTextManager {
 
   isRealCommand(command) {
     const realCommands = [
-      'git', 'npm', 'ls', 'cd', 'mkdir', 'touch',
-      'cat', 'grep', 'find', 'ps', 'kill', 'chmod',
-      'docker', 'yarn', 'node', 'python', 'java'
+      'git',
+      'npm',
+      'ls',
+      'cd',
+      'mkdir',
+      'touch',
+      'cat',
+      'grep',
+      'find',
+      'ps',
+      'kill',
+      'chmod',
+      'docker',
+      'yarn',
+      'node',
+      'python',
+      'java',
     ];
-    
-    return realCommands.some(cmd => command.startsWith(cmd));
+
+    return realCommands.some((cmd) => command.startsWith(cmd));
   }
 
   showGhostText(command) {
@@ -70,6 +85,7 @@ class GhostTextManager {
 ```
 
 ### Key Requirements:
+
 - **Trigger even in Free tier** - This is what makes pricing defensible
 - **Local-first suggestions** - Don't require AI for first value
 - **Tab-to-accept works instantly** - No delays
@@ -94,7 +110,7 @@ class MemoryManager {
     this.memoryEvents.push({
       type: eventType,
       data: data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     // Show memory moment after first few events
@@ -105,8 +121,8 @@ class MemoryManager {
 
   showMemoryMoment(eventType, data) {
     let message = '';
-    
-    switch(eventType) {
+
+    switch (eventType) {
       case 'project_detected':
         message = `Rina remembers this project: ${data.projectName}`;
         break;
@@ -127,6 +143,7 @@ class MemoryManager {
 ```
 
 ### Key Requirements:
+
 - **Show exactly once** - Don't be repetitive
 - **Small, useful memories** - Project names, command patterns, directory context
 - **Then be quiet** - No more memory mentions for rest of session
@@ -149,14 +166,14 @@ class ValueExpansion {
 
   evaluateProactiveSuggestion() {
     if (this.suggestionsGiven > 0) return; // Only one
-    
+
     const userState = this.getUserState();
-    
+
     // Only suggest if user has:
     // - Used ghost text
     // - Has some command history
     // - No errors recently
-    
+
     if (this.shouldShowProactiveSuggestion(userState)) {
       this.showProactiveSuggestion(userState);
       this.suggestionsGiven = 1;
@@ -174,7 +191,7 @@ class ValueExpansion {
 
   showProactiveSuggestion(userState) {
     const suggestions = this.getContextualSuggestions(userState);
-    
+
     if (suggestions.length > 0) {
       this.displayInlineSuggestion(suggestions[0]);
     }
@@ -184,11 +201,11 @@ class ValueExpansion {
     if (userState.hasGitRepo && userState.uncommittedChanges) {
       return ['Consider committing your changes with git add . && git commit'];
     }
-    
+
     if (userState.hasPackageJson && userState.dependenciesOutdated) {
       return ['You have outdated dependencies: npm update'];
     }
-    
+
     // ... more contextual suggestions
     return [];
   }
@@ -196,6 +213,7 @@ class ValueExpansion {
 ```
 
 ### Key Requirements:
+
 - **Contextual and useful** - Based on actual user state
 - **Feels proactive, not pushy** - Inline, dismissible
 - **No pricing mentions** - Pure value focus
@@ -217,13 +235,12 @@ class UpsellManager {
 
   evaluateUpsellEligibility(userMetrics) {
     // ALL conditions must be true
-    const canUpsell = (
+    const canUpsell =
       userMetrics.plan !== 'agent_pro' &&
       userMetrics.acceptedSuggestions >= 3 &&
       userMetrics.sessionMinutes >= 8 &&
       userMetrics.usedHeuristics === true &&
-      userMetrics.hitAiOnlyFeature === true
-    );
+      userMetrics.hitAiOnlyFeature === true;
 
     if (canUpsell && !this.upsellShown) {
       this.showUpsellInline();
@@ -231,19 +248,20 @@ class UpsellManager {
   }
 
   showUpsellInline() {
-    const message = "This is powered by Agent Pro — cloud reasoning layered on top of your local agent.";
-    
+    const message =
+      'This is powered by Agent Pro — cloud reasoning layered on top of your local agent.';
+
     this.displayInlineUpsell(message, {
       upgrade: () => this.initiateUpgrade(),
-      notNow: () => this.dismissUpsell()
+      notNow: () => this.dismissUpsell(),
     });
-    
+
     this.upsellShown = true;
   }
 
   // NEVER show upsell if:
   // - First session
-  // - No ghost text acceptance  
+  // - No ghost text acceptance
   // - No memory usage
   // - User in error recovery
   // - User offline
@@ -251,6 +269,7 @@ class UpsellManager {
 ```
 
 ### Key Requirements:
+
 - **Inline, not modal** - Respect user's flow
 - **Educational, not salesy** - Explain what they're getting
 - **Easy dismissal** - "Not now" should work
@@ -270,51 +289,52 @@ class OnboardingMetrics {
       ...data,
       timestamp: Date.now(),
       sessionId: this.sessionId,
-      userId: this.userId
+      userId: this.userId,
     });
   }
 
   // Critical metrics for Week 1:
-  
+
   onGhostTextShown() {
     this.trackEvent('ghost_text_shown', {
       commandNumber: this.commandCount,
-      timeFromStart: Date.now() - this.sessionStart
+      timeFromStart: Date.now() - this.sessionStart,
     });
   }
 
   onGhostTextAccepted() {
     this.trackEvent('ghost_text_accepted', {
       suggestionType: this.suggestionType,
-      timeFromShown: Date.now() - this.ghostTextShownTime
+      timeFromShown: Date.now() - this.ghostTextShownTime,
     });
   }
 
   onMemoryMomentShown() {
     this.trackEvent('memory_moment_shown', {
       memoryType: this.memoryType,
-      sessionDuration: Date.now() - this.sessionStart
+      sessionDuration: Date.now() - this.sessionStart,
     });
   }
 
   onUpsellShown() {
     this.trackEvent('upsell_shown', {
       trigger: this.upsellTrigger,
-      userState: this.getUserState()
+      userState: this.getUserState(),
     });
   }
 
   onUpsellAccepted() {
     this.trackEvent('upsell_accepted', {
-      timeFromEligibility: Date.now() - this.upsellEligibleTime
+      timeFromEligibility: Date.now() - this.upsellEligibleTime,
     });
   }
 }
 ```
 
 ### Dashboard Metrics (Daily Review):
+
 - Ghost text shown in first 3 commands: Target ≥80%
-- Ghost text accepted at least once: Target ≥55%  
+- Ghost text accepted at least once: Target ≥55%
 - Memory write occurs: Target ≥40%
 - Conversion rates by cohort
 
@@ -323,12 +343,14 @@ class OnboardingMetrics {
 ## ⚡ PERFORMANCE REQUIREMENTS
 
 ### Speed Requirements:
+
 - Ghost text appears within 200ms of command
 - Memory moment displays within 1 second of trigger
 - Upsell evaluation happens every 30 seconds
 - All tracking events batched to avoid UI blocking
 
 ### Offline Behavior:
+
 - Ghost text works without internet
 - Memory moments work offline
 - Analytics events queue when offline
@@ -339,6 +361,7 @@ class OnboardingMetrics {
 ## 🧪 TESTING REQUIREMENTS
 
 ### Automated Tests:
+
 ```javascript
 // Test ghost text triggers on first command
 test('Ghost text shows on first real command', () => {
@@ -350,13 +373,14 @@ test('Ghost text shows on first real command', () => {
 // Test memory moment timing
 test('Memory moment shows after 2 memory events', () => {
   const memory = new MemoryManager();
-  memory.recordMemoryEvent('project_detected', {name: 'test'});
+  memory.recordMemoryEvent('project_detected', { name: 'test' });
   memory.recordMemoryEvent('command_pattern', {});
   expect(memory.shownMemoryMoment).toBe(true);
 });
 ```
 
 ### Manual Testing Checklist:
+
 - [ ] Ghost text appears on first command (even Free)
 - [ ] Tab-to-accept works instantly
 - [ ] Memory moment shows within 3 minutes
@@ -369,6 +393,7 @@ test('Memory moment shows after 2 memory events', () => {
 ## 🚀 DEPLOYMENT CHECKLIST
 
 ### Before Launch:
+
 - [ ] Ghost text triggers in <200ms
 - [ ] Memory moment timing verified
 - [ ] Upsell logic tested with edge cases
@@ -377,6 +402,7 @@ test('Memory moment shows after 2 memory events', () => {
 - [ ] Offline functionality verified
 
 ### Week 1 Monitoring:
+
 - [ ] Daily metric reviews
 - [ ] Ghost text acceptance rate tracking
 - [ ] Memory moment effectiveness analysis

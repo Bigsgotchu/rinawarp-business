@@ -15,8 +15,8 @@ console.log('   Platform:', process.platform);
 console.log('   Architecture:', process.arch);
 
 // Test 2: Verify working directory
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 const currentDir = process.cwd();
 console.log('✅ Test 2: Working directory');
 console.log('   Current directory:', currentDir);
@@ -26,12 +26,12 @@ const requiredFiles = [
   'src/main/main.js',
   'src/renderer/index.html',
   'src/shared/preload.js',
-  'package.json'
+  'package.json',
 ];
 
 console.log('✅ Test 3: Required files check');
 let allFilesExist = true;
-requiredFiles.forEach(file => {
+requiredFiles.forEach((file) => {
   const filePath = path.join(currentDir, file);
   const exists = fs.existsSync(filePath);
   console.log(`   ${exists ? '✅' : '❌'} ${file}: ${exists ? 'Found' : 'Missing'}`);
@@ -77,7 +77,9 @@ console.log('\n📊 Test Summary');
 console.log('=============');
 console.log('✅ Node.js environment: PASSED');
 console.log(`✅ Working directory: PASSED (${currentDir})`);
-console.log(`${allFilesExist ? '✅' : '❌'} Required files: ${allFilesExist ? 'PASSED' : 'FAILED'}`);
+console.log(
+  `${allFilesExist ? '✅' : '❌'} Required files: ${allFilesExist ? 'PASSED' : 'FAILED'}`,
+);
 console.log('✅ Package.json: PASSED');
 console.log('✅ Electron availability: PASSED');
 console.log('✅ Basic functionality: PASSED');
@@ -92,8 +94,8 @@ const testResults = {
     { name: 'Required files', passed: allFilesExist },
     { name: 'Package.json validation', passed: true },
     { name: 'Electron availability', passed: true },
-    { name: 'Basic functionality', passed: true }
-  ]
+    { name: 'Basic functionality', passed: true },
+  ],
 };
 
 // Write test results to file

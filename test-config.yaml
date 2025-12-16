@@ -1,23 +1,23 @@
 # Test config file with missing block slug
 models:
-  - title: "Local RinaWarp"
-    provider: "openai"
-    model: "gpt-4"
-    
+  - title: 'Local RinaWarp'
+    provider: 'openai'
+    model: 'gpt-4'
+
 tools:
-  - rinawarptech/Rinawarptech  # This slug is missing
-  - local/rinawarp-default     # This might be a fallback
-  
+  - rinawarptech/Rinawarptech # This slug is missing
+  - local/rinawarp-default # This might be a fallback
+
 agents:
-  - name: "Rina Agent"
+  - name: 'Rina Agent'
     tools:
       - rinawarptech/Rinawarptech
       - github.com/someother/tool
-      
+
 customBlocks:
-  - name: "Custom Block"
-    source: "rinawarptech/Rinawarptech"
-    
+  - name: 'Custom Block'
+    source: 'rinawarptech/Rinawarptech'
+
 # URLs should not be affected
-website: "https://rinawarptech.com"
-github: "https://github.com/rinawarptech"
+website: 'https://rinawarptech.com'
+github: 'https://github.com/rinawarptech'

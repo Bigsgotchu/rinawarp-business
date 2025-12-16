@@ -23,7 +23,7 @@ https://rinawarptech.com/download-terminal-pro
 #### 2. Terminal Pro Founder Lifetime
 
 - **Product Name**: RinaWarp Terminal Pro - Founder Lifetime
-- **Price**: $699.00 USD  
+- **Price**: $699.00 USD
 - **Billing**: One-time payment
 - **Success URL**: `https://rinawarptech.com/download-terminal-pro`
 - **Cancel URL**: `https://rinawarptech.com/pricing.html`

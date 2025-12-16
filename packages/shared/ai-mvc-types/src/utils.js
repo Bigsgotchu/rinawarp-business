@@ -26,43 +26,43 @@ const formatDuration = (seconds) => {
 exports.formatDuration = formatDuration;
 const getStatusColor = (status) => {
   switch (status) {
-  case types_1.AvatarStatus.CREATING:
-  case types_1.ProjectStatus.CREATING:
-    return 'text-blue-600';
-  case types_1.AvatarStatus.TRAINING:
-  case types_1.ProjectStatus.PROCESSING:
-    return 'text-yellow-600';
-  case types_1.AvatarStatus.READY:
-  case types_1.ProjectStatus.READY:
-    return 'text-green-600';
-  case types_1.AvatarStatus.FAILED:
-  case types_1.ProjectStatus.FAILED:
-    return 'text-red-600';
-  default:
-    return 'text-gray-600';
+    case types_1.AvatarStatus.CREATING:
+    case types_1.ProjectStatus.CREATING:
+      return 'text-blue-600';
+    case types_1.AvatarStatus.TRAINING:
+    case types_1.ProjectStatus.PROCESSING:
+      return 'text-yellow-600';
+    case types_1.AvatarStatus.READY:
+    case types_1.ProjectStatus.READY:
+      return 'text-green-600';
+    case types_1.AvatarStatus.FAILED:
+    case types_1.ProjectStatus.FAILED:
+      return 'text-red-600';
+    default:
+      return 'text-gray-600';
   }
 };
 exports.getStatusColor = getStatusColor;
 const getStatusText = (status) => {
   switch (status) {
-  case types_1.AvatarStatus.CREATING:
-    return 'Creating Avatar';
-  case types_1.AvatarStatus.TRAINING:
-    return 'Training Model';
-  case types_1.AvatarStatus.READY:
-    return 'Ready to Use';
-  case types_1.AvatarStatus.FAILED:
-    return 'Training Failed';
-  case types_1.ProjectStatus.CREATING:
-    return 'Creating Project';
-  case types_1.ProjectStatus.PROCESSING:
-    return 'Generating Video';
-  case types_1.ProjectStatus.READY:
-    return 'Video Ready';
-  case types_1.ProjectStatus.FAILED:
-    return 'Generation Failed';
-  default:
-    return 'Unknown Status';
+    case types_1.AvatarStatus.CREATING:
+      return 'Creating Avatar';
+    case types_1.AvatarStatus.TRAINING:
+      return 'Training Model';
+    case types_1.AvatarStatus.READY:
+      return 'Ready to Use';
+    case types_1.AvatarStatus.FAILED:
+      return 'Training Failed';
+    case types_1.ProjectStatus.CREATING:
+      return 'Creating Project';
+    case types_1.ProjectStatus.PROCESSING:
+      return 'Generating Video';
+    case types_1.ProjectStatus.READY:
+      return 'Video Ready';
+    case types_1.ProjectStatus.FAILED:
+      return 'Generation Failed';
+    default:
+      return 'Unknown Status';
   }
 };
 exports.getStatusText = getStatusText;

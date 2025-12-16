@@ -15,14 +15,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
   executeCommand: (command, options) => ipcRenderer.invoke('execute-command', command, options),
   readFile: (filePath) => ipcRenderer.invoke('read-file', filePath),
   writeFile: (filePath, data) => ipcRenderer.invoke('write-file', filePath, data),
-  
+
   // License management
   validateLicense: (licenseKey) => ipcRenderer.invoke('validate-license', licenseKey),
   getLicenseInfo: () => ipcRenderer.invoke('get-license-info'),
   purchaseLicense: (tier) => ipcRenderer.invoke('purchase-license', tier),
 
   // AI features
-  getAICommandSuggestion: (naturalLanguage) => ipcRenderer.invoke('ai-command-suggestion', naturalLanguage),
+  getAICommandSuggestion: (naturalLanguage) =>
+    ipcRenderer.invoke('ai-command-suggestion', naturalLanguage),
   explainCode: (code, language) => ipcRenderer.invoke('explain-code', code, language),
   quickFix: (error, context) => ipcRenderer.invoke('quick-fix', error, context),
 
@@ -33,12 +34,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Terminal operations
   createTerminal: (options) => ipcRenderer.invoke('create-terminal', options),
   writeToTerminal: (terminalId, data) => ipcRenderer.invoke('write-terminal', terminalId, data),
-  resizeTerminal: (terminalId, cols, rows) => ipcRenderer.invoke('resize-terminal', terminalId, cols, rows),
-  
+  resizeTerminal: (terminalId, cols, rows) =>
+    ipcRenderer.invoke('resize-terminal', terminalId, cols, rows),
+
   // Enhanced terminal session management
-  createTerminalSession: (terminalId, options) => ipcRenderer.invoke('create-terminal-session', terminalId, options),
-  writeToTerminalSession: (terminalId, data) => ipcRenderer.invoke('write-to-terminal', terminalId, data),
-  resizeTerminalSession: (terminalId, cols, rows) => ipcRenderer.invoke('resize-terminal', terminalId, cols, rows),
+  createTerminalSession: (terminalId, options) =>
+    ipcRenderer.invoke('create-terminal-session', terminalId, options),
+  writeToTerminalSession: (terminalId, data) =>
+    ipcRenderer.invoke('write-to-terminal', terminalId, data),
+  resizeTerminalSession: (terminalId, cols, rows) =>
+    ipcRenderer.invoke('resize-terminal', terminalId, cols, rows),
   closeTerminalSession: (terminalId) => ipcRenderer.invoke('close-terminal-session', terminalId),
   getTerminalInfo: (terminalId) => ipcRenderer.invoke('get-terminal-info', terminalId),
 
@@ -62,7 +67,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   on: (channel, callback) => {
     const validChannels = [
       'terminal-output',
-      'terminal-error', 
+      'terminal-error',
       'terminal-exit',
       'menu-new-terminal',
       'menu-open-folder',
@@ -70,7 +75,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
       'menu-ai-suggestions',
       'menu-voice-commands',
       'menu-explain-code',
-      'menu-license'
+      'menu-license',
     ];
     if (validChannels.includes(channel)) {
       ipcRenderer.on(channel, callback);
@@ -95,62 +100,60 @@ contextBridge.exposeInMainWorld('electronAPI', {
   isOnline: () => ipcRenderer.invoke('is-online'),
 
   // 🔹 new Rina chat API
-  rinaChat: (payload) => ipcRenderer.invoke("rina:chat", payload),
+  rinaChat: (payload) => ipcRenderer.invoke('rina:chat', payload),
 
   // 🔹 Rina layout persistence
-  getRinaLayout: () => ipcRenderer.invoke("rina:get-layout"),
-  setRinaLayout: (layoutUpdate) =>
-    ipcRenderer.invoke("rina:set-layout", layoutUpdate),
+  getRinaLayout: () => ipcRenderer.invoke('rina:get-layout'),
+  setRinaLayout: (layoutUpdate) => ipcRenderer.invoke('rina:set-layout', layoutUpdate),
 
   // 🔹 License plan access
-  getLicensePlan: () => ipcRenderer.invoke("get-license-plan"),
+  getLicensePlan: () => ipcRenderer.invoke('get-license-plan'),
 
   // 🔹 Billing and license management
-  startUpgrade: (tier) => ipcRenderer.invoke("billing:start-upgrade", { tier }),
-  refreshLicense: () => ipcRenderer.invoke("license:refresh"),
+  startUpgrade: (tier) => ipcRenderer.invoke('billing:start-upgrade', { tier }),
+  refreshLicense: () => ipcRenderer.invoke('license:refresh'),
 
   // 🔹 Update functionality
-  restartUpdate: () => ipcRenderer.invoke("update:restart"),
-  onUpdateChecking: (cb) => ipcRenderer.on("update:checking", cb),
-  onUpdateAvailable: (cb) => ipcRenderer.on("update:available", cb),
-  onUpdateNone: (cb) => ipcRenderer.on("update:none", cb),
-  onUpdateError: (cb) => ipcRenderer.on("update:error", (event, err) => cb(err)),
-  onUpdateProgress: (cb) => ipcRenderer.on("update:progress", (event, data) => cb(data)),
-  onUpdateDownloaded: (cb) => ipcRenderer.on("update:downloaded", cb),
+  restartUpdate: () => ipcRenderer.invoke('update:restart'),
+  onUpdateChecking: (cb) => ipcRenderer.on('update:checking', cb),
+  onUpdateAvailable: (cb) => ipcRenderer.on('update:available', cb),
+  onUpdateNone: (cb) => ipcRenderer.on('update:none', cb),
+  onUpdateError: (cb) => ipcRenderer.on('update:error', (event, err) => cb(err)),
+  onUpdateProgress: (cb) => ipcRenderer.on('update:progress', (event, data) => cb(data)),
+  onUpdateDownloaded: (cb) => ipcRenderer.on('update:downloaded', cb),
   // Crash recovery
-  getCrashRecoveryStatus: () => ipcRenderer.invoke("crash-recovery:get-status"),
-  clearCrashRecovery: () => ipcRenderer.invoke("crash-recovery:clear"),
+  getCrashRecoveryStatus: () => ipcRenderer.invoke('crash-recovery:get-status'),
+  clearCrashRecovery: () => ipcRenderer.invoke('crash-recovery:clear'),
 });
 
 // Add methods for changelog functionality
-contextBridge.exposeInMainWorld("electronAPI", {
-  getAppVersion: () => ipcRenderer.invoke("get-app-version"),
-  getReleaseNotes: () => ipcRenderer.invoke("get-release-notes"),
-
+contextBridge.exposeInMainWorld('electronAPI', {
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  getReleaseNotes: () => ipcRenderer.invoke('get-release-notes'),
 });
 
 // New Rina Config API
 contextBridge.exposeInMainWorld('RinaConfig', {
-  getConfig: () => ipcRenderer.invoke("config:get"),
-  setLicenseKey: (key) => ipcRenderer.invoke("config:setLicenseKey", key),
-  clearLicense: () => ipcRenderer.invoke("config:clearLicense")
+  getConfig: () => ipcRenderer.invoke('config:get'),
+  setLicenseKey: (key) => ipcRenderer.invoke('config:setLicenseKey', key),
+  clearLicense: () => ipcRenderer.invoke('config:clearLicense'),
 });
 
 // New Rina License API
 contextBridge.exposeInMainWorld('RinaLicense', {
-  verify: (key) => ipcRenderer.invoke("license:verify", key)
+  verify: (key) => ipcRenderer.invoke('license:verify', key),
 });
 
 // New Rina Agent API
 contextBridge.exposeInMainWorld('RinaAgent', {
-  ask: (promptOrPayload) => ipcRenderer.invoke("agent:ask", promptOrPayload),
-  getStatus: () => ipcRenderer.invoke("agent:get-status"),
-  checkNow: () => ipcRenderer.invoke("agent:check-now"),
+  ask: (promptOrPayload) => ipcRenderer.invoke('agent:ask', promptOrPayload),
+  getStatus: () => ipcRenderer.invoke('agent:get-status'),
+  checkNow: () => ipcRenderer.invoke('agent:check-now'),
   onStatus: (handler) => {
-    ipcRenderer.on("agent:status", (_event, status) => handler(status));
+    ipcRenderer.on('agent:status', (_event, status) => handler(status));
   },
   onLog: (handler) => {
-    ipcRenderer.on("agent:log", (_event, logEvent) => handler(logEvent));
+    ipcRenderer.on('agent:log', (_event, logEvent) => handler(logEvent));
   },
 });
 
@@ -174,17 +177,13 @@ contextBridge.exposeInMainWorld('isDevelopment', process.env.NODE_ENV === 'devel
 
 // ──────────────── RinaTerminal Bridge ────────────────
 contextBridge.exposeInMainWorld('RinaTerminal', {
-  createTerminal: (options) =>
-    ipcRenderer.invoke('terminal:create', options || {}),
+  createTerminal: (options) => ipcRenderer.invoke('terminal:create', options || {}),
 
-  write: (id, data) =>
-    ipcRenderer.invoke('terminal:write', { id, data }),
+  write: (id, data) => ipcRenderer.invoke('terminal:write', { id, data }),
 
-  resize: (id, cols, rows) =>
-    ipcRenderer.invoke('terminal:resize', { id, cols, rows }),
+  resize: (id, cols, rows) => ipcRenderer.invoke('terminal:resize', { id, cols, rows }),
 
-  kill: (id) =>
-    ipcRenderer.invoke('terminal:kill', { id }),
+  kill: (id) => ipcRenderer.invoke('terminal:kill', { id }),
 
   onData: (callback) => {
     const handler = (_event, payload) => callback(payload);
@@ -201,43 +200,65 @@ contextBridge.exposeInMainWorld('RinaTerminal', {
   },
 });
 
-contextBridge.exposeInMainWorld("RinaVoice", {
-  start: () => ipcRenderer.invoke("voice:start"),
-  stop: () => ipcRenderer.invoke("voice:stop"),
+contextBridge.exposeInMainWorld('RinaVoice', {
+  start: () => ipcRenderer.invoke('voice:start'),
+  stop: () => ipcRenderer.invoke('voice:stop'),
   onTranscript: (cb) => {
-    ipcRenderer.on("voice:transcript", (_e, msg) => cb(msg));
+    ipcRenderer.on('voice:transcript', (_e, msg) => cb(msg));
   },
   onResponse: (cb) => {
-    ipcRenderer.on("voice:response", (_e, msg) => cb(msg));
-  }
+    ipcRenderer.on('voice:response', (_e, msg) => cb(msg));
+  },
 });
 
 // Add RinaSync bridge for cloud sync functionality
-contextBridge.exposeInMainWorld("RinaSync", {
-  save: (key, value) => ipcRenderer.invoke("sync:save", { key, value }),
-  load: (key) => ipcRenderer.invoke("sync:load", { key })
+contextBridge.exposeInMainWorld('RinaSync', {
+  save: (key, value) => ipcRenderer.invoke('sync:save', { key, value }),
+  load: (key) => ipcRenderer.invoke('sync:load', { key }),
 });
 
 // Add RinaTeam bridge for team collaboration features
-contextBridge.exposeInMainWorld("RinaTeam", {
-  createBillingSession: (teamId, seats) => ipcRenderer.invoke("team:create-billing-session", { teamId, seats }),
-  getSeats: (teamId) => ipcRenderer.invoke("team:get-seats", { teamId }),
-  createSharedSession: (teamId, sessionName) => ipcRenderer.invoke("team:create-shared-session", { teamId, sessionName }),
-  joinSession: (sessionId) => ipcRenderer.invoke("team:join-session", { sessionId }),
-  getActivity: (teamId, limit) => ipcRenderer.invoke("team:get-activity", { teamId, limit }),
-  storeAIMemory: (teamId, memoryType, content, tags) => ipcRenderer.invoke("team:store-ai-memory", { teamId, memoryType, content, tags }),
-  searchMemory: (teamId, query, memoryType, limit) => ipcRenderer.invoke("team:search-memory", { teamId, query, memoryType, limit })
+contextBridge.exposeInMainWorld('RinaTeam', {
+  createBillingSession: (teamId, seats) =>
+    ipcRenderer.invoke('team:create-billing-session', { teamId, seats }),
+  getSeats: (teamId) => ipcRenderer.invoke('team:get-seats', { teamId }),
+  createSharedSession: (teamId, sessionName) =>
+    ipcRenderer.invoke('team:create-shared-session', { teamId, sessionName }),
+  joinSession: (sessionId) => ipcRenderer.invoke('team:join-session', { sessionId }),
+  getActivity: (teamId, limit) => ipcRenderer.invoke('team:get-activity', { teamId, limit }),
+  storeAIMemory: (teamId, memoryType, content, tags) =>
+    ipcRenderer.invoke('team:store-ai-memory', { teamId, memoryType, content, tags }),
+  searchMemory: (teamId, query, memoryType, limit) =>
+    ipcRenderer.invoke('team:search-memory', { teamId, query, memoryType, limit }),
 });
 
 // 🔹 RinaAuth bridge for live sessions
-contextBridge.exposeInMainWorld("RinaAuth", {
+contextBridge.exposeInMainWorld('RinaAuth', {
   async getToken() {
-    return await ipcRenderer.invoke("auth:getToken");
+    return await ipcRenderer.invoke('auth:getToken');
   },
 });
 
 // 🔹 Repo detection bridge
-contextBridge.exposeInMainWorld("RinaRepo", {
-  detect: (cwd) => ipcRenderer.invoke("repo:detect", { cwd }),
-  suggest: (profile) => ipcRenderer.invoke("repo:suggest", { profile }),
+contextBridge.exposeInMainWorld('RinaRepo', {
+  detect: (cwd) => ipcRenderer.invoke('repo:detect', { cwd }),
+  suggest: (profile) => ipcRenderer.invoke('repo:suggest', { profile }),
+});
+
+// 🔹 Bridge compatibility alias for validation bundle
+contextBridge.exposeInMainWorld('bridge', {
+  invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),
+  on: (channel, callback) => {
+    const validChannels = [
+      'update:checking',
+      'update:available',
+      'update:none',
+      'update:error',
+      'update:progress',
+      'update:downloaded',
+    ];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.on(channel, callback);
+    }
+  },
 });

@@ -1,75 +1,198 @@
-/*.css:
-  - Content-Type: text/css
-  - Cache-Control: public, max-age=31536000, immutable
+headers:
+  - path: '/releases/*.exe'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.js:
-  - Content-Type: application/javascript
-  - Cache-Control: public, max-age=31536000, immutable
+  - path: '/releases/*.msi'
+    headers:
+      Content-Type: 'application/x-msi'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/assets/*.js:
-  - Content-Type: application/javascript
-  - Cache-Control: public, max-age=31536000, immutable
+  - path: '/releases/*.dmg'
+    headers:
+      Content-Type: 'application/x-apple-diskimage'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/assets/*.css:
-  - Content-Type: text/css
-  - Cache-Control: public, max-age=31536000, immutable
+  - path: '/releases/*.zip'
+    headers:
+      Content-Type: 'application/zip'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
+  - path: '/releases/*.7z'
+    headers:
+      Content-Type: 'application/x-7z-compressed'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.html:
-  - Content-Type: text/html
-  - Cache-Control: public, max-age=300
+  - path: '/releases/*.tar.gz'
+    headers:
+      Content-Type: 'application/gzip'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.woff2:
-  - Content-Type: font/woff2
-  - Cache-Control: public, max-age=31536000, immutable
+  - path: '/releases/*.AppImage'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.png:
-  - Content-Type: image/png
-  - Cache-Control: public, max-age=31536000, immutable
+  - path: '/releases/*.appimage'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.jpg:
-  - Content-Type: image/jpeg
-  - Cache-Control: public, max-age=31536000, immutable
+  - path: '/releases/*.blockmap'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.svg:
-  - Content-Type: image/svg+xml
-  - Cache-Control: public, max-age=31536000, immutable
+  - path: '/releases/*.spdx.json'
+    headers:
+      Content-Type: 'application/json'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.AppImage:
-  - Content-Type: application/octet-stream
-  - Cache-Control: public, max-age=3600
+  - path: '/stable/*.yml'
+    headers:
+      Content-Type: 'text/yaml; charset=utf-8'
+      Cache-Control: 'no-store'
+      Access-Control-Allow-Origin: '*'
+      X-Content-Type-Options: 'nosniff'
 
-/*.deb:
-  - Content-Type: application/vnd.debian.binary-package
-  - Cache-Control: public, max-age=3600
+  - path: '/stable/*.yaml'
+    headers:
+      Content-Type: 'text/yaml; charset=utf-8'
+      Cache-Control: 'no-store'
+      Access-Control-Allow-Origin: '*'
+      X-Content-Type-Options: 'nosniff'
 
-/*.rpm:
-  - Content-Type: application/x-rpm
-  - Cache-Control: public, max-age=3600
+  - path: '/*.css'
+    headers:
+      Content-Type: 'text/css'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.dmg:
-  - Content-Type: application/x-apple-diskimage
-  - Cache-Control: public, max-age=3600
+  - path: '/*.js'
+    headers:
+      Content-Type: 'application/javascript'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.exe:
-  - Content-Type: application/x-msdownload
-  - Cache-Control: public, max-age=3600
+  - path: '/assets/*.js'
+    headers:
+      Content-Type: 'application/javascript'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.zip:
-  - Content-Type: application/zip
-  - Cache-Control: public, max-age=3600
+  - path: '/assets/*.css'
+    headers:
+      Content-Type: 'text/css'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.json:
-  - Content-Type: application/json
-  - Cache-Control: public, max-age=3600
+  - path: '/*.html'
+    headers:
+      Content-Type: 'text/html'
+      Cache-Control: 'public, max-age=300'
 
-/*.yml:
-  - Content-Type: text/yaml
-  - Cache-Control: public, max-age=3600
+  - path: '/*.woff2'
+    headers:
+      Content-Type: 'font/woff2'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*.yaml:
-  - Content-Type: text/yaml
-  - Cache-Control: public, max-age=3600
+  - path: '/**/*.wasm'
+    headers:
+      Content-Type: 'application/wasm'
+      Cache-Control: 'public, max-age=31536000, immutable'
 
-/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' https://www.google-analytics.com data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:;
+  - path: '/*.png'
+    headers:
+      Content-Type: 'image/png'
+      Cache-Control: 'public, max-age=31536000, immutable'
+
+  - path: '/*.jpg'
+    headers:
+      Content-Type: 'image/jpeg'
+      Cache-Control: 'public, max-age=31536000, immutable'
+
+  - path: '/*.svg'
+    headers:
+      Content-Type: 'image/svg+xml'
+      Cache-Control: 'public, max-age=31536000, immutable'
+
+  - path: '/*.AppImage'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.appimage'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.7z'
+    headers:
+      Content-Type: 'application/x-7z-compressed'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.tar.gz'
+    headers:
+      Content-Type: 'application/gzip'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.deb'
+    headers:
+      Content-Type: 'application/vnd.debian.binary-package'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.rpm'
+    headers:
+      Content-Type: 'application/x-rpm'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.dmg'
+    headers:
+      Content-Type: 'application/x-apple-diskimage'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.exe'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.msi'
+    headers:
+      Content-Type: 'application/x-msi'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.zip'
+    headers:
+      Content-Type: 'application/zip'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.blockmap'
+    headers:
+      Content-Type: 'application/octet-stream'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.json'
+    headers:
+      Content-Type: 'application/json'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.yml'
+    headers:
+      Content-Type: 'text/yaml; charset=utf-8'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*.yaml'
+    headers:
+      Content-Type: 'text/yaml; charset=utf-8'
+      Cache-Control: 'public, max-age=3600'
+
+  - path: '/*'
+    headers:
+      # Security Headers
+      Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https:;"
+      Strict-Transport-Security: 'max-age=31536000; includeSubDomains; preload'
+      X-Frame-Options: 'DENY'
+      X-Content-Type-Options: 'nosniff'
+      Referrer-Policy: 'strict-origin-when-cross-origin'
+      Cross-Origin-Opener-Policy: 'same-origin'
+      Cross-Origin-Embedder-Policy: 'require-corp'
+      Permissions-Policy: 'accelerometer=(), camera=(), geolocation=(), microphone=(), payment=()'
+      # Caching
+      Cache-Control: 'no-store'

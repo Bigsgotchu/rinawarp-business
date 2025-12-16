@@ -10,6 +10,7 @@
 4. **Enterprise License Agreement**
 5. **Reseller/Distributor Agreement**
 
+
 ---
 
 ## 📄 END USER LICENSE AGREEMENT (EULA)
@@ -35,17 +36,20 @@ Licensee shall NOT:
 - Remove or alter any proprietary notices
 - Use the Software for any illegal or unauthorized purpose
 
+
 ### 3. INTELLECTUAL PROPERTY
 
 - All rights, title, and interest in the Software remain with Licensor
 - Software is protected by copyright, trademark, and other intellectual property laws
 - Licensee acknowledges that Software contains proprietary and confidential information
 
+
 ### 4. TERMINATION
 
 - This license terminates immediately upon breach of any terms
 - Upon termination, Licensee must destroy all copies of the Software
 - Licensor may terminate this license at any time with 30 days notice
+
 
 ### 5. DISCLAIMER OF WARRANTIES
 
@@ -80,11 +84,13 @@ Licensor provides cloud-based software services including:
 - RinaWarp AI Music Video Creator (AI Video Generation Service)
 - Related software and support services
 
+
 ### 2. ACCESS AND USE
 
 - Licensee may access and use the Services through authorized accounts
 - Licensee is responsible for maintaining account security
 - Licensee may not share account credentials with third parties
+
 
 ### 3. DATA AND PRIVACY
 
@@ -92,11 +98,13 @@ Licensor provides cloud-based software services including:
 - Licensee retains ownership of their data
 - Licensor may use aggregated, anonymized data for service improvement
 
+
 ### 4. PAYMENT TERMS
 
 - Fees are due in advance for each billing period
 - Late payments may result in service suspension
 - All fees are non-refundable unless otherwise specified
+
 
 ### 5. SERVICE LEVELS
 
@@ -104,11 +112,13 @@ Licensor provides cloud-based software services including:
 - Licensor does not guarantee 100% uptime
 - Licensee may be entitled to service credits for extended outages
 
+
 ### 6. TERMINATION
 
 - Either party may terminate with 30 days written notice
 - Licensor may suspend services for non-payment
 - Upon termination, Licensee's data will be deleted after 30 days
+
 
 ---
 
@@ -126,11 +136,13 @@ Licensor provides cloud-based software services including:
 - Advanced security features
 - Dedicated account management
 
+
 ### 2. VOLUME LICENSING
 
 - Tiered pricing based on user count
 - Site licenses available for large organizations
 - Custom pricing for enterprise deployments
+
 
 ### 3. SUPPORT AND MAINTENANCE
 
@@ -139,11 +151,13 @@ Licensor provides cloud-based software services including:
 - Security patches and bug fixes
 - Training and documentation
 
+
 ### 4. COMPLIANCE AND AUDITING
 
 - Licensee must maintain accurate user counts
 - Licensor may audit usage to ensure compliance
 - Licensee must provide usage reports upon request
+
 
 ---
 
@@ -159,17 +173,20 @@ Licensor provides cloud-based software services including:
 - API usage is subject to rate limits and quotas
 - Licensee must register for API keys
 
+
 ### 2. DEVELOPMENT RESTRICTIONS
 
 - Licensee may not create competing products
 - Licensee must attribute RinaWarp in their applications
 - Licensee may not reverse engineer the APIs
 
+
 ### 3. DISTRIBUTION
 
 - Licensee may distribute applications using RinaWarp APIs
 - Licensee must comply with all applicable laws and regulations
 - Licensee is responsible for their applications' compliance
+
 
 ---
 
@@ -185,17 +202,20 @@ Licensor provides cloud-based software services including:
 - Licensee must use approved marketing materials
 - Licensee must maintain minimum sales requirements
 
+
 ### 2. PRICING AND PAYMENTS
 
 - Reseller pricing is confidential
 - Payments are due within 30 days of invoice
 - Licensee may not sell below minimum advertised price
 
+
 ### 3. MARKETING AND SUPPORT
 
 - Licensee must provide customer support
 - Licensee must use approved marketing materials
 - Licensee must report sales and customer information
+
 
 ---
 
@@ -207,17 +227,20 @@ Licensor provides cloud-based software services including:
 - Usage tracking and reporting
 - Compliance alerts and notifications
 
+
 ### Manual Auditing
 
 - Regular compliance reviews
 - Customer usage verification
 - License renewal tracking
 
+
 ### Enforcement Actions
 
 - License suspension for non-compliance
 - Legal action for serious violations
 - Cease and desist letters
+
 
 ---
 
@@ -229,11 +252,13 @@ Licensor provides cloud-based software services including:
 - **Phone**: [Your Phone Number]
 - **Address**: [Your Business Address]
 
+
 ### Support
 
 - **Technical**: <tech@rinawarptech.com>
 - **Sales**: <sales@rinawarptech.com>
 - **Business**: <business@rinawarptech.com>
+
 
 ---
 

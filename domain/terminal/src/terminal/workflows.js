@@ -85,7 +85,7 @@ class Workflows {
         'echo "CREATE DATABASE myapp;" > database/init.sql',
         'echo "USE myapp;" >> database/init.sql',
         'echo "CREATE TABLE users (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(100), email VARCHAR(100));" >> database/init.sql',
-        'echo "INSERT INTO users (name, email) VALUES (\'John Doe\', \'john@example.com\');" >> database/init.sql',
+        "echo \"INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');\" >> database/init.sql",
       ],
     });
   }

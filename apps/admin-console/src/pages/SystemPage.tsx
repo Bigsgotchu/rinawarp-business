@@ -1,43 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 type Health = {
-  analytics?: 'ok' | 'error'
-  checkout?: 'ok' | 'error'
-}
+  analytics?: 'ok' | 'error';
+  checkout?: 'ok' | 'error';
+};
 
-const API_BASE = 'https://rinawarptech.com'
+const API_BASE = 'https://rinawarptech.com';
 
 export const SystemPage: React.FC = () => {
-  const [health, setHealth] = useState<Health>({})
-  const [loading, setLoading] = useState(true)
+  const [health, setHealth] = useState<Health>({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const run = async () => {
-      const h: Health = {}
+      const h: Health = {};
       try {
         const res = await fetch(`${API_BASE}/api/analytics`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'ping' })
-        })
-        h.analytics = res.ok ? 'ok' : 'error'
+          body: JSON.stringify({ action: 'ping' }),
+        });
+        h.analytics = res.ok ? 'ok' : 'error';
       } catch {
-        h.analytics = 'error'
+        h.analytics = 'error';
       }
 
       try {
-        const res = await fetch(`${API_BASE}/api/checkout`, { method: 'GET' })
-        h.checkout = res.ok || res.status === 405 ? 'ok' : 'error'
+        const res = await fetch(`${API_BASE}/api/checkout`, { method: 'GET' });
+        h.checkout = res.ok || res.status === 405 ? 'ok' : 'error';
       } catch {
-        h.checkout = 'error'
+        h.checkout = 'error';
       }
 
-      setHealth(h)
-      setLoading(false)
-    }
+      setHealth(h);
+      setLoading(false);
+    };
 
-    void run()
-  }, [])
+    void run();
+  }, []);
 
   return (
     <div className="space-y-4 text-sm">
@@ -55,25 +55,25 @@ export const SystemPage: React.FC = () => {
         This page should never expose secrets; it only checks HTTP reachability and basic behavior.
       </p>
     </div>
-  )
-}
+  );
+};
 
 const StatusRow: React.FC<{ label: string; status?: 'ok' | 'error'; loading: boolean }> = ({
   label,
   status,
-  loading
+  loading,
 }) => {
-  let dotClass = 'bg-slate-600'
-  let text = 'Unknown'
+  let dotClass = 'bg-slate-600';
+  let text = 'Unknown';
 
   if (loading) {
-    text = 'Checking…'
+    text = 'Checking…';
   } else if (status === 'ok') {
-    dotClass = 'bg-emerald-400'
-    text = 'OK'
+    dotClass = 'bg-emerald-400';
+    text = 'OK';
   } else if (status === 'error') {
-    dotClass = 'bg-rose-500'
-    text = 'Error'
+    dotClass = 'bg-rose-500';
+    text = 'Error';
   }
 
   return (
@@ -84,5 +84,5 @@ const StatusRow: React.FC<{ label: string; status?: 'ok' | 'error'; loading: boo
         {text}
       </span>
     </div>
-  )
-}
+  );
+};

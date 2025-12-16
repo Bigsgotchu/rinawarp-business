@@ -4,15 +4,15 @@ export async function listRecentLogs(env, sessionId, limit = 200) {
      FROM live_session_events
      WHERE session_id = ?
      ORDER BY ts DESC
-     LIMIT ?`
+     LIMIT ?`,
   )
     .bind(sessionId, limit)
     .all();
 
-  return result.results.map(e => ({
+  return result.results.map((e) => ({
     ts: e.ts,
     actor: e.actor_name,
     kind: e.kind,
-    payload: JSON.parse(e.payload || "{}")
+    payload: JSON.parse(e.payload || '{}'),
   }));
 }

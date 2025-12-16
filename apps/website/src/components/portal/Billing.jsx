@@ -19,8 +19,8 @@ const Billing = ({ teamData }) => {
         setLoading(true);
         const response = await fetch(`/api/team/seats?teamId=${teamData.id}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
+            Authorization: `Bearer ${authToken}`,
+          },
         });
 
         if (!response.ok) {
@@ -48,12 +48,12 @@ const Billing = ({ teamData }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
           teamId: teamData.id,
-          seats: seatsToAdd
-        })
+          seats: seatsToAdd,
+        }),
       });
 
       if (!response.ok) {
@@ -68,8 +68,8 @@ const Billing = ({ teamData }) => {
       // Refresh seats data
       const seatsResponse = await fetch(`/api/team/seats?teamId=${teamData.id}`, {
         headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
+          Authorization: `Bearer ${authToken}`,
+        },
       });
 
       if (seatsResponse.ok) {
@@ -130,9 +130,7 @@ const Billing = ({ teamData }) => {
 
           <div className="flex justify-between items-center">
             <span className="text-gray-600">Available Seats</span>
-            <span className="font-medium text-gray-900">
-              {seatsData?.availableSeats || 0}
-            </span>
+            <span className="font-medium text-gray-900">{seatsData?.availableSeats || 0}</span>
           </div>
         </div>
       </div>

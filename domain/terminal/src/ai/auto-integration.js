@@ -43,7 +43,7 @@ const SILENT_KNOWLEDGE_BASE = {
     autoSuggest: (terminalState) => {
       const suggestions = [];
       if (terminalState.dependencySize > 1000000) {
-        suggestions.push('Run \'npm audit\' and \'npx depcheck\'');
+        suggestions.push("Run 'npm audit' and 'npx depcheck'");
       }
       if (terminalState.localhostReferences > 0) {
         suggestions.push('Replace localhost URLs with environment variables');
@@ -130,7 +130,7 @@ class SilentAIAssistant {
     if (this.terminalState.localhostReferences > 0) {
       fixes.push({
         type: 'url-fix',
-        command: 'sed -i \'s/rinawarptech.com/${API_URL}/g\' *.js',
+        command: "sed -i 's/rinawarptech.com/${API_URL}/g' *.js",
         description: 'Replace hardcoded localhost URLs',
       });
     }
@@ -140,7 +140,7 @@ class SilentAIAssistant {
       fixes.push({
         type: 'meta-fix',
         command:
-          'sed -i \'s/apple-mobile-web-app-capable/mobile-web-app-capable/g\' *.html',
+          "sed -i 's/apple-mobile-web-app-capable/mobile-web-app-capable/g' *.html",
         description: 'Update deprecated meta tags',
       });
     }

@@ -1,69 +1,120 @@
 <!doctype html>
 <html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Download RinaWarp Terminal Pro</title>
-<style>
-body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;margin:0;background:#0d0d0f;color:#eaeaea}
-.wrap{max-width:880px;margin:0 auto;padding:32px}
-h1{font-weight:600;margin-bottom:12px}
-.card{background:#131316;border:1px solid #26262c;border-radius:16px;padding:20px;margin:16px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.btn{display:inline-block;padding:12px 14px;border-radius:12px;border:1px solid #2e2e36;text-decoration:none;color:#eaeaea;background:#1b1b22}
-.small{color:#9aa0a6;font-size:12px}
-pre{white-space:pre-wrap}
-</style>
-<div class="wrap">
-  <h1>RinaWarp Terminal Pro</h1>
-  <p class="small">Local-first, AI-assisted execution terminal.</p>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Download RinaWarp Terminal Pro</title>
+  <style>
+    body {
+      font-family:
+        system-ui,
+        Segoe UI,
+        Roboto,
+        Helvetica,
+        Arial;
+      margin: 0;
+      background: #0d0d0f;
+      color: #eaeaea;
+    }
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+    h1 {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .card {
+      background: #131316;
+      border: 1px solid #26262c;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #2e2e36;
+      text-decoration: none;
+      color: #eaeaea;
+      background: #1b1b22;
+    }
+    .small {
+      color: #9aa0a6;
+      font-size: 12px;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+  <div class="wrap">
+    <h1>RinaWarp Terminal Pro</h1>
+    <p class="small">Local-first, AI-assisted execution terminal.</p>
 
-  <div class="card">
-    <div class="grid" id="auto">
-      <a class="btn" id="primary" href="/download">Detecting your OS…</a>
-      <div class="small">If detection fails, use the direct links below.</div>
+    <div class="card">
+      <div class="grid" id="auto">
+        <a class="btn" id="primary" href="/download">Detecting your OS…</a>
+        <div class="small">If detection fails, use the direct links below.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Direct Downloads</h3>
+      <div class="grid">
+        <a class="btn" href="/download/mac">macOS (Universal)</a>
+        <a class="btn" href="/download/mac/arm">macOS Apple Silicon (arm64)</a>
+        <a class="btn" href="/download/mac/x64">macOS Intel (x64)</a>
+        <a class="btn" href="/download/win">Windows (x64)</a>
+        <a class="btn" href="/download/linux">Linux AppImage (x86_64)</a>
+        <a class="btn" href="/download/linux/deb">Linux .deb (amd64)</a>
+        <a class="btn" href="/download/linux/rpm">Linux .rpm (x86_64)</a>
+        <a class="btn" href="/download/checksums">SHA256 Checksums</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Release Notes</h3>
+      <p class="small">See the full changelog on GitHub Releases.</p>
+      <a
+        class="btn"
+        href="https://github.com/rinawarptech/terminal-pro/releases/latest"
+        target="_blank"
+        rel="noreferrer"
+        >Latest Release</a
+      >
     </div>
   </div>
-
-  <div class="card">
-    <h3>Direct Downloads</h3>
-    <div class="grid">
-      <a class="btn" href="/download/mac">macOS (Universal)</a>
-      <a class="btn" href="/download/mac/arm">macOS Apple Silicon (arm64)</a>
-      <a class="btn" href="/download/mac/x64">macOS Intel (x64)</a>
-      <a class="btn" href="/download/win">Windows (x64)</a>
-      <a class="btn" href="/download/linux">Linux AppImage (x86_64)</a>
-      <a class="btn" href="/download/linux/deb">Linux .deb (amd64)</a>
-      <a class="btn" href="/download/linux/rpm">Linux .rpm (x86_64)</a>
-      <a class="btn" href="/download/checksums">SHA256 Checksums</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Release Notes</h3>
-    <p class="small">See the full changelog on GitHub Releases.</p>
-    <a class="btn" href="https://github.com/rinawarptech/terminal-pro/releases/latest" target="_blank" rel="noreferrer">Latest Release</a>
-  </div>
-</div>
-<script>
-(function(){
-  const ua = navigator.userAgent.toLowerCase();
-  const isMac = /mac os x/.test(ua);
-  const isWin = /windows nt/.test(ua);
-  const isLinux = /linux/.test(ua) && !/android/.test(ua);
-  const isARM = /arm|aarch64|applewebkit.+(version\/\d+.*safari)/.test(ua) || /apple silicon|apple m\d/i.test(ua);
-  const btn = document.getElementById('primary');
-  if (isMac) {
-    btn.textContent = isARM ? 'Download for macOS (Apple Silicon)' : 'Download for macOS (Intel)';
-    btn.href = isARM ? '/download/mac/arm' : '/download/mac/x64';
-  } else if (isWin) {
-    btn.textContent = 'Download for Windows (x64)';
-    btn.href = '/download/win';
-  } else if (isLinux) {
-    btn.textContent = 'Download for Linux (AppImage)';
-    btn.href = '/download/linux';
-  } else {
-    btn.textContent = 'Choose your OS';
-    btn.href = '#';
-  }
-})();
-</script>
+  <script>
+    (function () {
+      const ua = navigator.userAgent.toLowerCase();
+      const isMac = /mac os x/.test(ua);
+      const isWin = /windows nt/.test(ua);
+      const isLinux = /linux/.test(ua) && !/android/.test(ua);
+      const isARM =
+        /arm|aarch64|applewebkit.+(version\/\d+.*safari)/.test(ua) ||
+        /apple silicon|apple m\d/i.test(ua);
+      const btn = document.getElementById('primary');
+      if (isMac) {
+        btn.textContent = isARM
+          ? 'Download for macOS (Apple Silicon)'
+          : 'Download for macOS (Intel)';
+        btn.href = isARM ? '/download/mac/arm' : '/download/mac/x64';
+      } else if (isWin) {
+        btn.textContent = 'Download for Windows (x64)';
+        btn.href = '/download/win';
+      } else if (isLinux) {
+        btn.textContent = 'Download for Linux (AppImage)';
+        btn.href = '/download/linux';
+      } else {
+        btn.textContent = 'Choose your OS';
+        btn.href = '#';
+      }
+    })();
+  </script>
+</html>

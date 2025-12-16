@@ -49,7 +49,7 @@
     // Check if we're in development
     isDevelopment: function () {
       return (
-        window.location.hostname === 'localhost' || 
+        window.location.hostname === 'localhost' ||
         window.location.hostname.includes('netlify.app') ||
         window.location.hostname.includes('pages.dev')
       );

@@ -82,29 +82,29 @@ class RinaWarpWebSocketServer {
       console.log(`Message from ${clientId}:`, message.type);
 
       switch (message.type) {
-      case 'ai_stream_request':
-        await this.handleAIStreamRequest(client, message);
-        break;
-      case 'voice_stream_request':
-        await this.handleVoiceStreamRequest(client, message);
-        break;
-      case 'command_stream_request':
-        await this.handleCommandStreamRequest(client, message);
-        break;
-      case 'heartbeat':
-        this.sendToClient(client.ws, { type: 'heartbeat_ack' });
-        break;
-      case 'subscribe':
-        this.handleSubscription(client, message);
-        break;
-      case 'unsubscribe':
-        this.handleUnsubscription(client, message);
-        break;
-      default:
-        this.sendToClient(client.ws, {
-          type: 'error',
-          message: `Unknown message type: ${message.type}`,
-        });
+        case 'ai_stream_request':
+          await this.handleAIStreamRequest(client, message);
+          break;
+        case 'voice_stream_request':
+          await this.handleVoiceStreamRequest(client, message);
+          break;
+        case 'command_stream_request':
+          await this.handleCommandStreamRequest(client, message);
+          break;
+        case 'heartbeat':
+          this.sendToClient(client.ws, { type: 'heartbeat_ack' });
+          break;
+        case 'subscribe':
+          this.handleSubscription(client, message);
+          break;
+        case 'unsubscribe':
+          this.handleUnsubscription(client, message);
+          break;
+        default:
+          this.sendToClient(client.ws, {
+            type: 'error',
+            message: `Unknown message type: ${message.type}`,
+          });
       }
     } catch (error) {
       console.error(`Error handling message from ${clientId}:`, error);

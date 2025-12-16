@@ -5,7 +5,7 @@ All billing-related data is stored in the `BILLING_KV` namespace.
 ## Key Prefixes
 
 - `billing:customer:{stripeCustomerId}`
-- `billing:purchase:{purchaseId}`   (purchaseId = Stripe invoice/payment_intent/session id)
+- `billing:purchase:{purchaseId}` (purchaseId = Stripe invoice/payment_intent/session id)
 - `billing:subscription:{subscriptionId}`
 - `billing:credits:{stripeCustomerId}`
 - `billing:index:customer_by_email:{emailLower}`

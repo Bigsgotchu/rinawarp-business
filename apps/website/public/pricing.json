@@ -37,11 +37,7 @@
       "interval": "month",
       "featured": true,
       "stripe_price_id": "price_starter_29",
-      "features": [
-        "Advanced agent suggestions",
-        "Automation basics",
-        "Expanded tooling set"
-      ]
+      "features": ["Advanced agent suggestions", "Automation basics", "Expanded tooling set"]
     },
 
     "creator": {
@@ -64,11 +60,7 @@
       "price": 99,
       "interval": "month",
       "stripe_price_id": "price_pro_99",
-      "features": [
-        "Unlimited agent usage (fair-use)",
-        "All modules included",
-        "Priority handling"
-      ]
+      "features": ["Unlimited agent usage (fair-use)", "All modules included", "Priority handling"]
     },
 
     "founder_lifetime": {
@@ -78,11 +70,7 @@
       "interval": "one_time",
       "limit": 200,
       "stripe_price_id": "price_founder_699",
-      "features": [
-        "Lifetime license",
-        "Early access releases",
-        "Priority onboarding"
-      ]
+      "features": ["Lifetime license", "Early access releases", "Priority onboarding"]
     },
 
     "pioneer_lifetime": {
@@ -92,10 +80,7 @@
       "interval": "one_time",
       "limit": 300,
       "stripe_price_id": "price_pioneer_800",
-      "features": [
-        "Lifetime license",
-        "Early access releases"
-      ]
+      "features": ["Lifetime license", "Early access releases"]
     },
 
     "evergreen_lifetime": {
@@ -104,10 +89,7 @@
       "price": 999,
       "interval": "one_time",
       "stripe_price_id": "price_evergreen_999",
-      "features": [
-        "Lifetime license",
-        "Standard onboarding"
-      ]
+      "features": ["Lifetime license", "Standard onboarding"]
     }
   }
 }

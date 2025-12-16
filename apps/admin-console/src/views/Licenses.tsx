@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useAdmin } from "../lib/adminContext";
-import { createApiClient, LicenseRecord } from "../lib/api";
+import React, { useEffect, useState } from 'react';
+import { useAdmin } from '../lib/adminContext';
+import { listLicenses, License } from '../lib/api';
 
 export const Licenses: React.FC = () => {
   const { apiToken } = useAdmin();
-  const api = createApiClient(apiToken);
-  const [licenses, setLicenses] = useState<LicenseRecord[]>([]);
-  const [query, setQuery] = useState("");
+  const [licenses, setLicenses] = useState<License[]>([]);
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const load = (q?: string) => {
+  const load = async (q?: string) => {
     if (!apiToken) return;
     setLoading(true);
     setError(null);
-    const promise = q ? api.searchLicenses(q) : api.getLicenses();
-    promise
-      .then(setLicenses)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    try {
+      const result = await listLicenses(apiToken, q ? { q } : {});
+      setLicenses(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load licenses');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export const Licenses: React.FC = () => {
             placeholder="Search by email or key…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && load(query)}
+            onKeyDown={(e) => e.key === 'Enter' && load(query)}
           />
           <button
             onClick={() => load(query)}
@@ -67,30 +69,28 @@ export const Licenses: React.FC = () => {
           </thead>
           <tbody>
             {licenses.map((lic) => (
-              <tr key={lic.id} className="border-t border-neutral-800/70 text-xs">
-                <td className="px-3 py-2 font-mono text-[11px]">{lic.key}</td>
+              <tr key={lic.licenseKey} className="border-t border-neutral-800/70 text-xs">
+                <td className="px-3 py-2 font-mono text-[11px]">{lic.licenseKey}</td>
                 <td className="px-3 py-2">{lic.product}</td>
-                <td className="px-3 py-2">{lic.customerEmail || "N/A"}</td>
+                <td className="px-3 py-2">{lic.email || 'N/A'}</td>
                 <td className="px-3 py-2">
                   <span
                     className={
-                      "inline-flex px-2 py-0.5 rounded-full border " +
-                      (lic.status === "active"
-                        ? "border-emerald-500 text-emerald-400"
-                        : lic.status === "expired"
-                        ? "border-yellow-500 text-yellow-400"
-                        : "border-red-500 text-red-400")
+                      'inline-flex px-2 py-0.5 rounded-full border ' +
+                      (lic.status === 'active'
+                        ? 'border-emerald-500 text-emerald-400'
+                        : lic.status === 'expired'
+                          ? 'border-yellow-500 text-yellow-400'
+                          : 'border-red-500 text-red-400')
                     }
                   >
                     {lic.status}
                   </span>
                 </td>
                 <td className="px-3 py-2">{lic.seats}</td>
+                <td className="px-3 py-2">{new Date(lic.createdAt).toLocaleDateString()}</td>
                 <td className="px-3 py-2">
-                  {new Date(lic.createdAt).toLocaleDateString()}
-                </td>
-                <td className="px-3 py-2">
-                  {lic.expiresAt ? new Date(lic.expiresAt).toLocaleDateString() : "—"}
+                  {lic.expiresAt ? new Date(lic.expiresAt).toLocaleDateString() : '—'}
                 </td>
               </tr>
             ))}
@@ -105,9 +105,7 @@ export const Licenses: React.FC = () => {
         </table>
       </div>
 
-      {loading && (
-        <div className="mt-3 text-xs text-neutral-500">Loading licenses…</div>
-      )}
+      {loading && <div className="mt-3 text-xs text-neutral-500">Loading licenses…</div>}
     </div>
   );
 };

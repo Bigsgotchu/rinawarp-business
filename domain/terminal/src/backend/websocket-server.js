@@ -20,7 +20,10 @@ app.use(express.static('dist', { maxAge: '1d' }));
 
 // CORS middleware
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS?.split(',')[0] || 'https://rinawarptech.com');
+  res.header(
+    'Access-Control-Allow-Origin',
+    process.env.ALLOWED_ORIGINS?.split(',')[0] || 'https://rinawarptech.com'
+  );
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header(
     'Access-Control-Allow-Headers',
@@ -167,7 +170,7 @@ wss.on('connection', (ws, req) => {
 
           // Send RinaWarp's greeting
           const greeting =
-            'Hey there! I\'m RinaWarp, your AI assistant. What can I help you with today?';
+            "Hey there! I'm RinaWarp, your AI assistant. What can I help you with today?";
           ws.send(
             JSON.stringify({
               type: 'text',

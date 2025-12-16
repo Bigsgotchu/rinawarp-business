@@ -6,7 +6,7 @@ const PATTERNS = [
   /\bAWS[_-]?(ACCESS|SECRET)[_\-]?KEY[=:\s]+"?([A-Za-z0-9\/+=]{16,})"?/gi,
   /\b(AWS|GITHUB|GH|NPM|NODE|DOCKER|OPENAI)[_\-]?(TOKEN|KEY|SECRET|PAT)[=:\s]+"?([A-Za-z0-9_\-\.]{12,})"?/gi,
   /\bpassword\s*[=:\s]\s*["']?([^\s"']{6,})["']?/gi,
-  /\bssh-rsa\s+[A-Za-z0-9+\/]{100,}[=]{0,3}/gi
+  /\bssh-rsa\s+[A-Za-z0-9+\/]{100,}[=]{0,3}/gi,
 ];
 
 export function redact(text) {

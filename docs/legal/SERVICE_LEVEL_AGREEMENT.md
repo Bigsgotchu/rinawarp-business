@@ -20,11 +20,11 @@ This SLA is incorporated by reference into our **Terms of Service** and **Commer
 We commit to the following uptime percentages for our cloud services:
 
 | **Service Tier** | **Monthly Uptime** | **Annual Uptime** | **Measurement Period** |
-|------------------|--------------------|-------------------|------------------------|
-| **Basic** | 99.5% | 99.0% | Calendar month |
-| **Professional** | 99.9% | 99.5% | Calendar month |
-| **Enterprise** | 99.95% | 99.9% | Calendar month |
-| **Premium** | 99.99% | 99.95% | Calendar month |
+| ---------------- | ------------------ | ----------------- | ---------------------- |
+| **Basic**        | 99.5%              | 99.0%             | Calendar month         |
+| **Professional** | 99.9%              | 99.5%             | Calendar month         |
+| **Enterprise**   | 99.95%             | 99.9%             | Calendar month         |
+| **Premium**      | 99.99%             | 99.95%            | Calendar month         |
 
 ### 2.2 Maintenance Windows
 
@@ -36,6 +36,7 @@ Scheduled maintenance may occur during:
 - **Notification**: Via email and status page
 - **Exclusion**: Maintenance windows excluded from uptime calculations
 
+
 ---
 
 ## 3. Service Credits
@@ -44,11 +45,11 @@ Scheduled maintenance may occur during:
 
 If we fail to meet our uptime commitments, you may be eligible for service credits:
 
-| **Monthly Uptime** | **Service Credit** |
-|--------------------|--------------------|
+| **Monthly Uptime**  | **Service Credit** |
+| ------------------- | ------------------ |
 | < 99.5% but ≥ 99.0% | 10% of monthly fee |
 | < 99.0% but ≥ 98.0% | 25% of monthly fee |
-| < 98.0% | 50% of monthly fee |
+| < 98.0%             | 50% of monthly fee |
 
 ### 3.2 Credit Request Process
 
@@ -60,6 +61,7 @@ To request service credits:
 4. **Send To**: [sla@rinawarptech.com](mailto:sla@rinawarptech.com)
 5. **Response Time**: Initial response within 3 business days
 
+
 ### 3.3 Credit Limitations
 
 Service credits are subject to the following limitations:
@@ -70,6 +72,7 @@ Service credits are subject to the following limitations:
 - **Expiration**: Credits must be used within 90 days
 - **No Cash Value**: Credits cannot be redeemed for cash
 
+
 ---
 
 ## 4. Support Response Times
@@ -78,12 +81,12 @@ Service credits are subject to the following limitations:
 
 We provide different support levels based on your subscription:
 
-| **Support Tier** | **Response Time** | **Availability** | **Initial Response** |
-|------------------|-------------------|------------------|----------------------|
-| **Basic** | 48 hours | Business hours | Email acknowledgment |
-| **Professional** | 24 hours | Business hours | Email + troubleshooting |
-| **Enterprise** | 4 hours | 24/7 | Phone/email + escalation |
-| **Premium** | 1 hour | 24/7 | Dedicated engineer response |
+| **Support Tier** | **Response Time** | **Availability** | **Initial Response**        |
+| ---------------- | ----------------- | ---------------- | --------------------------- |
+| **Basic**        | 48 hours          | Business hours   | Email acknowledgment        |
+| **Professional** | 24 hours          | Business hours   | Email + troubleshooting     |
+| **Enterprise**   | 4 hours           | 24/7             | Phone/email + escalation    |
+| **Premium**      | 1 hour            | 24/7             | Dedicated engineer response |
 
 ### 4.2 Support Channels
 
@@ -94,6 +97,7 @@ Available support methods by tier:
 - **Enterprise**: 24/7 phone/email/chat, screen sharing
 - **Premium**: Dedicated account manager, on-site support
 
+
 ### 4.3 Support Exclusions
 
 Support response times do not apply to:
@@ -103,6 +107,7 @@ Support response times do not apply to:
 - **Unsupported configurations**
 - **Issues caused by** customer misconfiguration
 - **Requests outside** scope of support
+
 
 ---
 
@@ -118,6 +123,7 @@ For our cloud APIs and services:
 - **Throughput**: Scalable to handle peak loads
 - **Latency**: Optimized for global distribution
 
+
 ### 5.2 Software Performance
 
 For our desktop applications:
@@ -127,6 +133,7 @@ For our desktop applications:
 - **Memory Usage**: < 500MB typical usage
 - **CPU Usage**: < 10% typical load
 - **Stability**: < 0.01% crash rate
+
 
 ### 5.3 AI Service Performance
 
@@ -138,6 +145,7 @@ For our AI-powered services:
 - **Quality Metrics**: Continuous quality monitoring
 - **Fairness**: Regular bias and fairness audits
 
+
 ---
 
 ## 6. Incident Management
@@ -146,12 +154,12 @@ For our AI-powered services:
 
 We classify incidents by severity:
 
-| **Severity** | **Description** | **Response Time** | **Resolution Time** |
-|--------------|-----------------|-------------------|---------------------|
-| **Critical** | Complete service outage | 15 minutes | 4 hours |
-| **High** | Major functionality impaired | 1 hour | 8 hours |
-| **Medium** | Partial functionality affected | 4 hours | 24 hours |
-| **Low** | Minor issues or cosmetic problems | 8 hours | 72 hours |
+| **Severity** | **Description**                   | **Response Time** | **Resolution Time** |
+| ------------ | --------------------------------- | ----------------- | ------------------- |
+| **Critical** | Complete service outage           | 15 minutes        | 4 hours             |
+| **High**     | Major functionality impaired      | 1 hour            | 8 hours             |
+| **Medium**   | Partial functionality affected    | 4 hours           | 24 hours            |
+| **Low**      | Minor issues or cosmetic problems | 8 hours           | 72 hours            |
 
 ### 6.2 Incident Response Process
 
@@ -164,6 +172,7 @@ Our incident response follows these steps:
 5. **Resolution**: Implement fix and restore service
 6. **Review**: Post-incident analysis and improvements
 
+
 ### 6.3 Communication During Incidents
 
 We provide regular updates during incidents:
@@ -174,6 +183,7 @@ We provide regular updates during incidents:
 - **Post-Mortem**: Within 5 business days of resolution
 - **Status Page**: Real-time updates at [status.rinawarptech.com](https://status.rinawarptech.com)
 
+
 ---
 
 ## 7. Security Incident Response
@@ -182,12 +192,12 @@ We provide regular updates during incidents:
 
 Security incidents are classified separately:
 
-| **Severity** | **Description** | **Response Time** |
-|--------------|-----------------|-------------------|
-| **Critical** | Data breach or major vulnerability | Immediate |
-| **High** | Potential security vulnerability | 1 hour |
-| **Medium** | Security policy violation | 4 hours |
-| **Low** | Minor security concerns | 24 hours |
+| **Severity** | **Description**                    | **Response Time** |
+| ------------ | ---------------------------------- | ----------------- |
+| **Critical** | Data breach or major vulnerability | Immediate         |
+| **High**     | Potential security vulnerability   | 1 hour            |
+| **Medium**   | Security policy violation          | 4 hours           |
+| **Low**      | Minor security concerns            | 24 hours          |
 
 ### 7.2 Security Incident Response
 
@@ -199,6 +209,7 @@ For security incidents, we:
 - **Cooperate** with law enforcement when necessary
 - **Remediate** vulnerabilities promptly
 
+
 ### 7.3 Breach Notification
 
 In case of data breaches:
@@ -208,6 +219,7 @@ In case of data breaches:
 - **Regulatory Reporting**: Within 72 hours for GDPR compliance
 - **Customer Notification**: If personal data is affected
 - **Credit Monitoring**: Offered for significant breaches
+
 
 ---
 
@@ -223,6 +235,7 @@ We commit to:
 - **Data Integrity**: Regular integrity checks and validation
 - **Disaster Recovery**: Geographic redundancy for data
 
+
 ### 8.2 Data Processing
 
 For data processing operations:
@@ -233,6 +246,7 @@ For data processing operations:
 - **Data Validation**: Input validation and sanitization
 - **Privacy Compliance**: GDPR and CCPA compliance
 
+
 ### 8.3 Data Export
 
 For data export requests:
@@ -242,6 +256,7 @@ For data export requests:
 - **Delivery Method**: Secure download link
 - **Retention**: Export available for 7 days
 - **Large Exports**: May require additional processing time
+
 
 ---
 
@@ -257,36 +272,39 @@ Our SLA does not cover:
 - **Force majeure events** beyond our control
 - **Customer-caused outages** or misconfigurations
 
+
 ### 9.2 Customer Responsibilities
 
 You are responsible for:
 
 - **Secure configuration** of your systems
 - **Proper use** of our services COMPLETED LEGAL SUITE
-Core Legal Documents (12/12):
-Terms of Service (ToS) - Comprehensive terms governing service usage
-Privacy Policy - Detailed privacy practices and data handling
-Acceptable Use Policy (AUP) - Rules for appropriate service usage
-DMCA Policy - Copyright infringement procedures
-Subscription & Billing Agreement - Subscription terms and billing practices
-Payment & Refund Policy - Payment methods and refund procedures
-Software EULA — Terminal Pro - End User License Agreement for Terminal Pro
-Commercial License Agreement - Enterprise licensing terms
-Security Policy - User-facing security measures summary
-Service Level Agreement (SLA) - Performance commitments and service credits
-Data Processing Agreement (DPA) - GDPR-compliant data processing terms
-Cookie Policy - Comprehensive cookie usage and management
-Key Features:
-Tailored to RinaWarp Technologies LLC (Utah-based company)
-References to actual products (Terminal Pro, AI Music Video Creator)
-Third-party integrations (Stripe, Cloudflare, KV storage, AI models)
-Refund policy aligned with requirements: "Refunds only for service failures"
-Comprehensive enforcement and legal protections
-GDPR & CCPA compliance throughout all documents
-Prohibited use and acceptable use guidelines
-Security measures and data protection details
-File Locations:
-All documents are located in docs/legal/ directory with consistent naming and formatting.
+
+
+  Core Legal Documents (12/12):
+  Terms of Service (ToS) - Comprehensive terms governing service usage
+  Privacy Policy - Detailed privacy practices and data handling
+  Acceptable Use Policy (AUP) - Rules for appropriate service usage
+  DMCA Policy - Copyright infringement procedures
+  Subscription & Billing Agreement - Subscription terms and billing practices
+  Payment & Refund Policy - Payment methods and refund procedures
+  Software EULA — Terminal Pro - End User License Agreement for Terminal Pro
+  Commercial License Agreement - Enterprise licensing terms
+  Security Policy - User-facing security measures summary
+  Service Level Agreement (SLA) - Performance commitments and service credits
+  Data Processing Agreement (DPA) - GDPR-compliant data processing terms
+  Cookie Policy - Comprehensive cookie usage and management
+  Key Features:
+  Tailored to RinaWarp Technologies LLC (Utah-based company)
+  References to actual products (Terminal Pro, AI Music Video Creator)
+  Third-party integrations (Stripe, Cloudflare, KV storage, AI models)
+  Refund policy aligned with requirements: "Refunds only for service failures"
+  Comprehensive enforcement and legal protections
+  GDPR & CCPA compliance throughout all documents
+  Prohibited use and acceptable use guidelines
+  Security measures and data protection details
+  File Locations:
+  All documents are located in docs/legal/ directory with consistent naming and formatting.
 
 Compliance:
 GDPR & CCPA compliant
@@ -295,9 +313,11 @@ SOC 2 security standards
 Utah state law jurisdiction
 Industry best practices throughout
 The legal suite provides a complete foundation for RinaWarp Technologies LLC's operations, protecting both the company and its users while ensuring compliance with all relevant regulations.
+
 - **Data backups** of your local data
 - **Network connectivity** to our services
 - **Compliance** with our policies
+
 
 ### 9.3 Maintenance Exclusions
 
@@ -309,11 +329,13 @@ Scheduled maintenance is excluded from SLA calculations:
 - **Performance optimizations**
 - **Feature deployments**
 
+
 ---
 
 ## 10. Reporting & Transparency
 
 ### 10.1 Service Status
+
 We provide real-time service status:
 
 - **Status Page**: [status.rinawarptech.com](https://status.rinawarptech.com)
@@ -322,7 +344,9 @@ We provide real-time service status:
 - **Performance Metrics**: Historical uptime data
 - **Subscription**: Email notifications for incidents
 
+
 ### 10.2 Performance Reports
+
 Monthly performance reports include:
 
 - **Uptime Statistics**: Monthly and annual uptime
@@ -331,7 +355,9 @@ Monthly performance reports include:
 - **Improvement Plans**: Upcoming enhancements
 - **Compliance Status**: SLA compliance overview
 
+
 ### 10.3 Transparency Reports
+
 Annual transparency reports cover:
 
 - **Security Incidents**: Summary of security events
@@ -340,11 +366,13 @@ Annual transparency reports cover:
 - **Vulnerability Disclosures**: Responsible disclosure program
 - **Service Improvements**: Major enhancements
 
+
 ---
 
 ## 11. Customer Remedies
 
 ### 11.1 Service Credit Requests
+
 To request service credits:
 
 - **Submit Within**: 30 days of the incident
@@ -353,7 +381,9 @@ To request service credits:
 - **Send To**: [sla@rinawarptech.com](mailto:sla@rinawarptech.com)
 - **Processing Time**: 5 business days for review
 
+
 ### 11.2 Escalation Process
+
 For SLA disputes:
 
 1. **Initial Review**: By our support team
@@ -362,7 +392,9 @@ For SLA disputes:
 4. **Mediation**: Neutral third-party mediation
 5. **Arbitration**: Binding arbitration as final step
 
+
 ### 11.3 Alternative Remedies
+
 In addition to service credits:
 
 - **Extended Support**: Additional support hours
@@ -371,11 +403,13 @@ In addition to service credits:
 - **Custom Solutions**: Tailored remedies for unique situations
 - **Contract Extensions**: Additional service time
 
+
 ---
 
 ## 12. SLA Modifications
 
 ### 12.1 Changes to SLA
+
 We may modify this SLA with:
 
 - **30 Days' Notice**: For material changes
@@ -384,7 +418,9 @@ We may modify this SLA with:
 - **Grandfathering**: Existing customers may keep current terms
 - **Acceptance**: Continued use constitutes acceptance
 
+
 ### 12.2 Customer-Specific SLAs
+
 For enterprise customers:
 
 - **Custom Terms**: Negotiated service levels
@@ -393,7 +429,9 @@ For enterprise customers:
 - **Penalties**: Custom remedy provisions
 - **Review Periods**: Regular SLA reviews
 
+
 ### 12.3 SLA Reviews
+
 We conduct regular SLA reviews:
 
 - **Quarterly**: Internal performance reviews
@@ -402,11 +440,13 @@ We conduct regular SLA reviews:
 - **Customer Input**: Solicitation of improvement suggestions
 - **Industry Benchmarking**: Comparison with best practices
 
+
 ---
 
 ## 13. Legal & Compliance
 
 ### 13.1 Governing Law
+
 This SLA is governed by:
 
 - **Utah State Law**: For contract interpretation
@@ -415,7 +455,9 @@ This SLA is governed by:
 - **Industry Standards**: Best practices and certifications
 - **Regulatory Requirements**: Applicable compliance standards
 
+
 ### 13.2 Dispute Resolution
+
 Disputes are resolved through:
 
 - **Negotiation**: Good faith discussions
@@ -424,7 +466,9 @@ Disputes are resolved through:
 - **Litigation**: Utah courts as last resort
 - **Alternative Resolution**: Creative problem-solving
 
+
 ### 13.3 Compliance Certifications
+
 Our services comply with:
 
 - **SOC 2 Type II**: Service organization controls
@@ -432,6 +476,7 @@ Our services comply with:
 - **PCI-DSS**: Payment card industry standards
 - **GDPR**: General Data Protection Regulation
 - **CCPA**: California Consumer Privacy Act
+
 
 ---
 
@@ -444,6 +489,7 @@ For SLA-related inquiries:
 - **Status Page**: [status.rinawarptech.com](https://status.rinawarptech.com)
 - **Phone Support**: +1 (800) 123-4567 (24/7 for critical issues)
 - **Mail**: RinaWarp Technologies LLC, Attn: SLA Compliance, [Address]
+
 
 ---
 

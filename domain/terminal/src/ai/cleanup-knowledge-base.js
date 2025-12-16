@@ -13,8 +13,8 @@ export const cleanupKnowledgeBase = {
         prevention:
           'Always check for existing scripts before creating new ones',
         commands: [
-          'find . -name \'*deploy*.sh\' | wc -l  # Count deployment scripts',
-          'ls -la | grep -E \'(setup|configure|deploy)\'  # List config scripts',
+          "find . -name '*deploy*.sh' | wc -l  # Count deployment scripts",
+          "ls -la | grep -E '(setup|configure|deploy)'  # List config scripts",
         ],
       },
       {
@@ -22,7 +22,7 @@ export const cleanupKnowledgeBase = {
         solution:
           'Only install in project root directories, not subdirectories',
         prevention:
-          'Always run \'npm install\' from the correct package.json location',
+          "Always run 'npm install' from the correct package.json location",
         commands: [
           'find . -name node_modules -type d  # Find all node_modules',
           'du -sh node_modules  # Check size before installing',
@@ -32,7 +32,7 @@ export const cleanupKnowledgeBase = {
         problem: 'Duplicate dependencies across projects',
         solution: 'Use workspace/monorepo approach or shared dependencies',
         prevention:
-          'Audit dependencies regularly with \'npm audit\' and \'npm ls\'',
+          "Audit dependencies regularly with 'npm audit' and 'npm ls'",
         commands: [
           'npm ls --depth=0  # List direct dependencies',
           'npm audit  # Check for vulnerabilities',
@@ -50,7 +50,7 @@ export const cleanupKnowledgeBase = {
         solution: 'Use environment variables and configuration files',
         prevention: 'Never hardcode URLs, always use config variables',
         examples: {
-          bad: 'fetch(\'https://rinawarptech.com/api\')',
+          bad: "fetch('https://rinawarptech.com/api')",
           good: 'fetch(`${process.env.API_URL}/api`)',
         },
       },
@@ -69,8 +69,8 @@ export const cleanupKnowledgeBase = {
           'Update to current standards (apple-mobile-web-app-capable → mobile-web-app-capable)',
         prevention: 'Regularly audit HTML for deprecated tags',
         commands: [
-          'grep -r \'apple-mobile-web-app-capable\' .  # Find deprecated tags',
-          'sed -i \'s/apple-mobile-web-app-capable/mobile-web-app-capable/g\' *.html  # Fix tags',
+          "grep -r 'apple-mobile-web-app-capable' .  # Find deprecated tags",
+          "sed -i 's/apple-mobile-web-app-capable/mobile-web-app-capable/g' *.html  # Fix tags",
         ],
       },
     ],
@@ -123,7 +123,7 @@ export const cleanupKnowledgeBase = {
         prevention: 'Regular cleanup and organization',
         commands: [
           'find . -type f | wc -l  # Count total files',
-          'find . -name \'*.bak\' -o -name \'*.tmp\' -o -name \'*~\'  # Find temp files',
+          "find . -name '*.bak' -o -name '*.tmp' -o -name '*~'  # Find temp files",
           'find . -type d -empty  # Find empty directories',
         ],
       },
@@ -132,8 +132,8 @@ export const cleanupKnowledgeBase = {
         solution: 'Use .gitignore and automated cleanup scripts',
         prevention: 'Never commit backup files to version control',
         commands: [
-          'echo \'*.bak\n*.tmp\n*~\n*.backup\' >> .gitignore',
-          'find . -name \'*.bak\' -delete  # Remove backup files',
+          "echo '*.bak\n*.tmp\n*~\n*.backup' >> .gitignore",
+          "find . -name '*.bak' -delete  # Remove backup files",
         ],
       },
       {
@@ -142,7 +142,7 @@ export const cleanupKnowledgeBase = {
         prevention: 'Use linting and cleanup tools',
         commands: [
           'find . -type d -empty -delete  # Remove empty dirs',
-          'find . -name \'*.log\' -mtime +7 -delete  # Remove old logs',
+          "find . -name '*.log' -mtime +7 -delete  # Remove old logs",
         ],
       },
     ],

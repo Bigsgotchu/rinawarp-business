@@ -1,0 +1,31 @@
+name: Promote to Production (manual gate)
+on:
+  workflow_dispatch: {}
+  workflow_run:
+    workflows: ['Preprod Smoke (staging)']
+    types: ['completed']
+jobs:
+  require-artifact:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: staging-green
+          path: .
+      - name: Check artifact
+        run: test -f staging-green.json && cat staging-green.json | jq -e '.status=="green"' >/dev/null
+  promote:
+    needs: require-artifact
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://rinawarptech.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy Pages (prod)
+        run: wrangler pages deploy ./public --project-name=rinawarptech --branch=prod
+      - name: Verify prod smoke
+        run: |
+          chmod +x scripts/smoke/prod_full.sh
+          SITE_BASE="https://rinawarptech.com" bash scripts/smoke/prod_full.sh

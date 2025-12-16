@@ -1,0 +1,353 @@
+# RinaWarp AI Music Creator - rinawarptech.com Deployment
+
+## 🚀 Production Deployment Guide
+
+### 1. **Domain Setup**
+
+- **Primary Domain**: `rinawarptech.com`
+- **Subdomain**: `ai-music-creator.rinawarptech.com` (recommended)
+- **SSL Certificate**: Required for HTTPS
+- **CDN**: CloudFlare or AWS CloudFront recommended
+
+
+### 2. **Application URLs**
+
+- **Main App**: `https://rinawarptech.com/ai-music-creator`
+- **Admin Panel**: `https://rinawarptech.com/ai-music-creator/admin-avatar-creation`
+- **API Endpoints**: `https://api.rinawarptech.com` (or subdomain)
+
+
+### 3. **Environment Configuration**
+
+#### Frontend (.env.production)
+
+```env
+VITE_API_URL=https://api.rinawarptech.com
+VITE_APP_NAME=RinaWarp AI Music Creator
+VITE_APP_VERSION=1.0.0
+VITE_APP_URL=https://rinawarptech.com/ai-music-creator
+VITE_ANALYTICS_ID=GA_MEASUREMENT_ID
+VITE_STRIPE_PUBLISHABLE_KEY=pk_live_...
+```
+
+#### Backend (.env.production)
+
+```env
+NODE_ENV=production
+PORT=3001
+API_URL=https://api.rinawarptech.com
+FRONTEND_URL=https://rinawarptech.com/ai-music-creator
+
+# AWS Configuration
+AWS_ACCESS_KEY_ID=your_production_key
+AWS_SECRET_ACCESS_KEY=your_production_secret
+AWS_REGION=us-east-1
+S3_BUCKET=rinawarp-production
+
+# AI Services
+OPENAI_API_KEY=your_production_key
+PIXVERSE_API_KEY=your_production_key
+STABLE_DIFFUSION_API_KEY=your_production_key
+RUNWAY_API_KEY=your_production_key
+
+# Stripe Configuration
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Database (if using)
+DATABASE_URL=your_production_database_url
+```
+
+### 4. **Build Commands**
+
+#### Frontend Build
+
+```bash
+cd frontend
+npm run build
+# Output: dist/ folder
+```
+
+#### Backend Build
+
+```bash
+cd backend
+npm run build
+# Output: dist/ folder
+```
+
+#### Desktop App Build
+
+```bash
+npm run build:desktop
+# Output: dist-rinawarp/ folder
+```
+
+### 5. **Server Configuration**
+
+#### Nginx Configuration
+
+```nginx
+server {
+    listen 80;
+    server_name rinawarptech.com ai-music-creator.rinawarptech.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name rinawarptech.com ai-music-creator.rinawarptech.com;
+
+    ssl_certificate /path/to/certificate.crt;
+    ssl_certificate_key /path/to/private.key;
+
+    # Frontend
+    location / {
+        root /var/www/rinawarp-ai-music-creator/frontend/dist;
+        try_files $uri $uri/ /index.html;
+
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    }
+
+    # API
+    location /api/ {
+        proxy_pass http://localhost:3001/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # WebSocket
+    location /ws {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+### 6. **Docker Deployment**
+
+#### docker-compose.yml
+
+```yaml
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+
+      - '80:80'
+
+    environment:
+
+      - NODE_ENV=production
+
+    volumes:
+
+      - ./frontend/dist:/usr/share/nginx/html
+
+
+  backend:
+    build: ./backend
+    ports:
+
+      - '3001:3001'
+
+    environment:
+
+      - NODE_ENV=production
+
+    volumes:
+
+      - ./uploads:/app/uploads
+
+    depends_on:
+
+      - redis
+
+
+  redis:
+    image: redis:alpine
+    ports:
+
+      - '6379:6379'
+
+```
+
+### 7. **Website Integration**
+
+#### HTML Embed Code for rinawarptech.com
+
+```html
+<!-- RinaWarp AI Music Creator Embed -->
+<div id="rinawarp-ai-music-creator">
+  <iframe
+    src="https://rinawarptech.com/ai-music-creator"
+    width="100%"
+    height="600"
+    frameborder="0"
+    allow="camera; microphone; fullscreen"
+    title="RinaWarp AI Music Creator"
+  >
+  </iframe>
+</div>
+
+<script>
+  // Resize iframe based on content
+  window.addEventListener('message', function (event) {
+    if (event.origin === 'https://rinawarptech.com') {
+      const iframe = document.querySelector('#rinawarp-ai-music-creator iframe');
+      if (event.data.height) {
+        iframe.style.height = event.data.height + 'px';
+      }
+    }
+  });
+</script>
+```
+
+### 8. **Analytics & Monitoring**
+
+#### Google Analytics 4
+
+```javascript
+// Add to rinawarptech.com
+gtag('config', 'GA_MEASUREMENT_ID', {
+  page_title: 'RinaWarp AI Music Creator',
+  page_location: 'https://rinawarptech.com/ai-music-creator',
+});
+```
+
+#### Error Monitoring
+
+- **Sentry**: For error tracking
+- **LogRocket**: For session replay
+- **New Relic**: For performance monitoring
+
+
+### 9. **Security Considerations**
+
+#### CORS Configuration
+
+```javascript
+// Backend CORS settings
+const corsOptions = {
+  origin: [
+    'https://rinawarptech.com',
+    'https://www.rinawarptech.com',
+    'https://ai-music-creator.rinawarptech.com',
+  ],
+  credentials: true,
+};
+```
+
+#### Rate Limiting
+
+```javascript
+// API rate limiting
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+```
+
+### 10. **Performance Optimization**
+
+#### Frontend Optimization
+
+- **Code Splitting**: Lazy load components
+- **Image Optimization**: WebP format, lazy loading
+- **CDN**: Static assets via CloudFlare
+- **Caching**: Browser and server-side caching
+
+
+#### Backend Optimization
+
+- **Redis Caching**: Session and data caching
+- **Database Indexing**: Optimized queries
+- **API Rate Limiting**: Prevent abuse
+- **Load Balancing**: Multiple server instances
+
+
+### 11. **Backup & Recovery**
+
+#### Database Backups
+
+```bash
+# Daily automated backups
+0 2 * * * pg_dump rinawarp_db > /backups/rinawarp_$(date +\%Y\%m\%d).sql
+```
+
+#### File Storage Backups
+
+```bash
+# S3 cross-region replication
+aws s3 sync s3://rinawarp-production s3://rinawarp-backup --delete
+```
+
+### 12. **Monitoring & Alerts**
+
+#### Health Checks
+
+- **Uptime Monitoring**: UptimeRobot or Pingdom
+- **Performance Monitoring**: New Relic or DataDog
+- **Error Alerts**: Sentry notifications
+- **Server Monitoring**: CPU, Memory, Disk usage
+
+
+### 13. **Launch Checklist**
+
+- [ ] Domain DNS configured
+- [ ] SSL certificate installed
+- [ ] Environment variables set
+- [ ] Database migrations run
+- [ ] CDN configured
+- [ ] Analytics tracking active
+- [ ] Error monitoring setup
+- [ ] Backup systems running
+- [ ] Load testing completed
+- [ ] Security audit passed
+- [ ] Performance optimization done
+- [ ] Documentation updated
+
+
+### 14. **Post-Launch**
+
+#### Marketing Integration
+
+- **SEO Optimization**: Meta tags, sitemap
+- **Social Media**: Open Graph tags
+- **Email Marketing**: Integration with Mailchimp/ConvertKit
+- **Analytics**: Conversion tracking
+
+
+#### User Support
+
+- **Help Center**: Documentation and FAQs
+- **Contact Form**: Support ticket system
+- **Live Chat**: Real-time support
+- **Community**: Discord/Slack for users
+
+
+---
+
+## 🎯 **Ready for Production!**
+
+Your RinaWarp AI Music Creator is now ready to be deployed to rinawarptech.com with professional-grade infrastructure and monitoring! 🚀✨

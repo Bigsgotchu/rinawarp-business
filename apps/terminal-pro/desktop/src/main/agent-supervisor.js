@@ -1,5 +1,5 @@
-const path = require("path");
-const { fork } = require("child_process");
+const { fork } = require('child_process');
+const path = require('path');
 
 function createAgentSupervisor({ getMainWindow }) {
   let child = null;
@@ -13,13 +13,13 @@ function createAgentSupervisor({ getMainWindow }) {
 
   function agentPath() {
     // Adjust if your compiled location differs
-    return path.resolve(__dirname, "../../agent/dist/index.js");
+    return path.resolve(__dirname, '../../agent/dist/index.js');
   }
 
   function sendToRenderer(payload) {
     const win = getMainWindow?.();
     if (win && !win.isDestroyed()) {
-      win.webContents.send("rina-agent:event", payload);
+      win.webContents.send('rina-agent:event', payload);
     }
   }
 
@@ -33,18 +33,18 @@ function createAgentSupervisor({ getMainWindow }) {
 
     const env = {
       ...process.env,
-      RINA_AGENT: "1"
+      RINA_AGENT: '1',
       // RINA_AI_ENDPOINT: process.env.RINA_AI_ENDPOINT
     };
 
     child = fork(agentPath(), [], {
       env,
-      stdio: ["pipe", "pipe", "pipe", "ipc"]
+      stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
     });
 
-    child.on("message", (msg) => {
+    child.on('message', (msg) => {
       // Resolve tool requests
-      if (msg && msg.type === "agent:tool:result" && msg.requestId) {
+      if (msg && msg.type === 'agent:tool:result' && msg.requestId) {
         const p = pending.get(msg.requestId);
         if (p) {
           clearTimeout(p.timeout);
@@ -57,29 +57,29 @@ function createAgentSupervisor({ getMainWindow }) {
       sendToRenderer(msg);
     });
 
-    child.on("exit", (code, signal) => {
+    child.on('exit', (code, signal) => {
       const crashed = !stopping;
       child = null;
 
-      sendToRenderer({ type: "agent:exit", code, signal, crashed });
+      sendToRenderer({ type: 'agent:exit', code, signal, crashed });
 
       if (crashed) scheduleRestart();
     });
 
-    child.on("error", (err) => {
-      sendToRenderer({ type: "agent:error", message: err?.message, stack: err?.stack });
+    child.on('error', (err) => {
+      sendToRenderer({ type: 'agent:error', message: err?.message, stack: err?.stack });
     });
 
     starting = false;
     restartCount = 0;
-    sendToRenderer({ type: "agent:spawned", pid: child.pid, path: agentPath() });
+    sendToRenderer({ type: 'agent:spawned', pid: child.pid, path: agentPath() });
   }
 
   function scheduleRestart() {
     restartCount += 1;
 
     // Backoff: 0.5s, 1s, 2s, 4s, 8s (cap)
-    const delay = Math.min(8000, 500 * (2 ** Math.min(4, restartCount - 1)));
+    const delay = Math.min(8000, 500 * 2 ** Math.min(4, restartCount - 1));
 
     setTimeout(() => {
       if (!stopping && !child) start();
@@ -94,12 +94,12 @@ function createAgentSupervisor({ getMainWindow }) {
     for (const [id, p] of pending.entries()) {
       clearTimeout(p.timeout);
       pending.delete(id);
-      p.reject(new Error("Agent stopped"));
+      p.reject(new Error('Agent stopped'));
     }
 
     if (child) {
       try {
-        child.kill("SIGTERM");
+        child.kill('SIGTERM');
       } catch (_) {}
       child = null;
     }
@@ -110,7 +110,7 @@ function createAgentSupervisor({ getMainWindow }) {
   }
 
   function requestTool({ tool, args, convoId, timeoutMs = 20000 }) {
-    if (!child) throw new Error("Agent is not running");
+    if (!child) throw new Error('Agent is not running');
 
     const requestId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
@@ -123,11 +123,11 @@ function createAgentSupervisor({ getMainWindow }) {
       pending.set(requestId, { resolve, reject, timeout });
 
       child.send({
-        type: "agent:tool:run",
+        type: 'agent:tool:run',
         requestId,
         tool,
         args: args ?? {},
-        convoId: convoId ?? "default"
+        convoId: convoId ?? 'default',
       });
     });
   }

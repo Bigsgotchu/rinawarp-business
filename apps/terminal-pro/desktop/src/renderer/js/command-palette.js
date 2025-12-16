@@ -48,7 +48,7 @@ const COMMANDS = [
           '  • Ctrl+Shift+T – New terminal tab',
           '  • Ctrl+Shift+P – Command palette',
           '  • Ctrl+L – Clear terminal (inside terminal)',
-        ].join('\n')
+        ].join('\n'),
       );
     },
   },
@@ -62,16 +62,16 @@ const COMMANDS = [
 
       const last = window.RinaTerminalUI?.getLastTerminalChunk?.();
       if (!last) {
-        console.debug("No terminal output available");
+        console.debug('No terminal output available');
         return;
       }
 
       const answer = await window.RinaAgent.ask(
-        `Explain this terminal error in simple terms and show how to fix it:\n\n${last}`
+        `Explain this terminal error in simple terms and show how to fix it:\n\n${last}`,
       );
 
-      window.RinaTerminalUI?.showAIPanel?.("Explanation", answer);
-    }
+      window.RinaTerminalUI?.showAIPanel?.('Explanation', answer);
+    },
   },
   {
     id: 'ai:fixLastCommand',
@@ -80,45 +80,45 @@ const COMMANDS = [
     run: async () => {
       const lastCmd = window.RinaTerminalUI?.getLastCommand?.();
       if (!lastCmd) {
-        console.debug("No previous command found");
+        console.debug('No previous command found');
         return;
       }
 
       const answer = await window.RinaAgent.ask(
-        `Fix this terminal command and explain the corrected version:\n\n${lastCmd}`
+        `Fix this terminal command and explain the corrected version:\n\n${lastCmd}`,
       );
 
-      window.RinaTerminalUI?.showAIPanel?.("Fixed Command", answer);
-    }
+      window.RinaTerminalUI?.showAIPanel?.('Fixed Command', answer);
+    },
   },
   {
     id: 'ai:generateCommand',
     label: 'AI: Generate Command',
     hint: 'Describe what you want to do',
     run: async () => {
-      const query = prompt("What do you want to do?");
+      const query = prompt('What do you want to do?');
       if (!query) return;
 
       const answer = await window.RinaAgent.ask(
-        `Generate a terminal command to accomplish this:\n\n"${query}"\n\nInclude explanation + safety notes.`
+        `Generate a terminal command to accomplish this:\n\n"${query}"\n\nInclude explanation + safety notes.`,
       );
 
-      window.RinaTerminalUI?.showAIPanel?.("Generated Command", answer);
-    }
+      window.RinaTerminalUI?.showAIPanel?.('Generated Command', answer);
+    },
   },
   {
     id: 'ai:whatNext',
     label: 'AI: What Should I Run Next?',
     hint: 'Ask AI to suggest the next terminal action',
     run: async () => {
-      const last = window.RinaTerminalUI?.getLastTerminalChunk?.() || "";
+      const last = window.RinaTerminalUI?.getLastTerminalChunk?.() || '';
 
       const answer = await window.RinaAgent.ask(
-        `Given this recent terminal context:\n${last}\n\nWhat should the user run next? Provide reasoning.`
+        `Given this recent terminal context:\n${last}\n\nWhat should the user run next? Provide reasoning.`,
       );
 
-      window.RinaTerminalUI?.showAIPanel?.("Suggested Next Step", answer);
-    }
+      window.RinaTerminalUI?.showAIPanel?.('Suggested Next Step', answer);
+    },
   },
 ];
 
@@ -202,7 +202,7 @@ function updateFilter(query) {
       (cmd) =>
         cmd.label.toLowerCase().includes(q) ||
         (cmd.hint && cmd.hint.toLowerCase().includes(q)) ||
-        cmd.id.toLowerCase().includes(q)
+        cmd.id.toLowerCase().includes(q),
     );
   }
   selectedIndex = 0;
@@ -223,9 +223,7 @@ function handleKeyDown(e) {
     case 'ArrowUp':
       e.preventDefault();
       if (filteredCommands.length) {
-        selectedIndex =
-          (selectedIndex - 1 + filteredCommands.length) %
-          filteredCommands.length;
+        selectedIndex = (selectedIndex - 1 + filteredCommands.length) % filteredCommands.length;
         renderResults();
       }
       break;

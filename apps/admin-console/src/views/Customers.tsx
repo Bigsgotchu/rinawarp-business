@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useAdmin } from "../lib/adminContext";
-import { createApiClient, CustomerRecord } from "../lib/api";
+import React, { useEffect, useState } from 'react';
+import { useAdmin } from '../lib/adminContext';
+import { getCustomers, Customer } from '../lib/api';
 
 export const Customers: React.FC = () => {
   const { apiToken } = useAdmin();
-  const api = createApiClient(apiToken);
-  const [customers, setCustomers] = useState<CustomerRecord[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!apiToken) return;
-    setLoading(true);
-    setError(null);
-    api
-      .getCustomers()
-      .then(setCustomers)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+
+    const loadCustomers = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getCustomers(apiToken);
+        setCustomers(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load customers');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCustomers();
   }, [apiToken]);
 
   return (
@@ -44,20 +51,12 @@ export const Customers: React.FC = () => {
               <tr key={c.id} className="border-t border-neutral-800/70 text-xs">
                 <td className="px-3 py-2">
                   <div>{c.email}</div>
-                  <div className="text-neutral-500">{c.name || "No name"}</div>
-                  <div className="text-neutral-500 font-mono text-[11px]">
-                    {c.id}
-                  </div>
+                  <div className="text-neutral-500">{c.name || 'No name'}</div>
+                  <div className="text-neutral-500 font-mono text-[11px]">{c.id}</div>
                 </td>
-                <td className="px-3 py-2">
-                  {new Date(c.createdAt).toLocaleDateString()}
-                </td>
-                <td className="px-3 py-2">
-                  {c.subscriptionStatus || "N/A"}
-                </td>
-                <td className="px-3 py-2">
-                  {c.products?.length ? c.products.join(", ") : "—"}
-                </td>
+                <td className="px-3 py-2">{new Date(c.createdAt).toLocaleDateString()}</td>
+                <td className="px-3 py-2">{c.subscriptionStatus || 'N/A'}</td>
+                <td className="px-3 py-2">{c.products?.length ? c.products.join(', ') : '—'}</td>
               </tr>
             ))}
             {!customers.length && (
@@ -71,9 +70,7 @@ export const Customers: React.FC = () => {
         </table>
       </div>
 
-      {loading && (
-        <div className="mt-3 text-xs text-neutral-500">Loading customers…</div>
-      )}
+      {loading && <div className="mt-3 text-xs text-neutral-500">Loading customers…</div>}
     </div>
   );
 };

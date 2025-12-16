@@ -6,44 +6,100 @@
 
 ```bash
 # For each repository (Music Video Creator, Terminal Pro, etc.):
+
 1. Go to GitHub.com → Your Repository
 2. Settings → General → Danger Zone
 3. Change repository visibility to "Private"
 4. Remove any public forks
 5. Audit collaborators and remove unauthorized access
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### 2. **Remove Vercel Deployments** ⚠️ URGENT
 
 ```bash
 # Remove rinawarp-terminal.vercel.app:
+
 1. Go to vercel.com → Dashboard
 2. Find "rinawarp-terminal" project
 3. Settings → Delete Project
 4. Confirm deletion
 5. Remove any custom domains
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### 3. **Apply Copyright to Terminal Pro** ⚠️ URGENT
 
 ```bash
 # For RinaWarp Terminal Pro repository:
+
 1. Add copyright headers to all source files
 2. Update package.json with proprietary license
 3. Create COPYRIGHT_NOTICE.md
 4. Update README.md with copyright information
 5. Make repository private
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ### 4. **Remove Public Traces** ⚠️ URGENT
 
 ```bash
 # Search and remove:
+
 1. Any public documentation exposing code
 2. Public API endpoints
 3. Public demos or examples
 4. Any public forks or copies
 5. Social media posts with code snippets
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ## STEP-BY-STEP INSTRUCTIONS

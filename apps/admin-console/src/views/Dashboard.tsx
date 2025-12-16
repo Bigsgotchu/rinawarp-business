@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useAdmin } from "../lib/adminContext";
-import { createApiClient, AnalyticsSummary, RecentSale } from "../lib/api";
-import { StatCard } from "../components/StatCard";
+import React, { useEffect, useState } from 'react';
+import { useAdmin } from '../lib/adminContext';
+import { getAnalyticsSummary, getRecentSales, AnalyticsSummary, RecentSale } from '../lib/api';
 
 export const Dashboard: React.FC = () => {
   const { apiToken } = useAdmin();
-  const api = createApiClient(apiToken);
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [recent, setRecent] = useState<RecentSale[]>([]);
   const [loading, setLoading] = useState(false);
@@ -13,35 +11,93 @@ export const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (!apiToken) return;
-    setLoading(true);
-    setError(null);
-    Promise.all([api.getSummary(), api.getRecentSales()])
-      .then(([s, r]) => {
-        setSummary(s);
-        setRecent(r);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+
+    const loadData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const [summaryData, recentData] = await Promise.all([
+          getAnalyticsSummary(apiToken),
+          getRecentSales(apiToken),
+        ]);
+        setSummary(summaryData);
+        setRecent(recentData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load dashboard data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, [apiToken]);
+
+  // Load Stripe prices
+  useEffect(() => {
+    const loadPrices = async () => {
+      try {
+        const r = await fetch('/api/stripe/prices?_=' + Date.now(), { cache: 'no-store' });
+        if (!r.ok) throw new Error('http ' + r.status);
+        const j = await r.json();
+        if (!j.ok) throw new Error(j.error || 'prices not ok');
+
+        const data = j.data || [];
+        const byInterval = (intv: string) =>
+          data.find((p: any) => p.recurring?.interval === intv) || null;
+        const byLookup = (key: string) =>
+          data.find((p: any) => (p.lookup_key || '').toLowerCase() === key) || null;
+
+        const monthly = byLookup('rw_pro_monthly') || byInterval('month');
+        const annual = byLookup('rw_pro_annual') || byInterval('year');
+
+        const mAmount = document.getElementById('price-monthly-amount');
+        const mCurr = document.getElementById('price-monthly-currency');
+        const aAmount = document.getElementById('price-annual-amount');
+        const aCurr = document.getElementById('price-annual-currency');
+        const oStatus = document.getElementById('price-overall-status');
+
+        const okM = !!monthly && monthly.active !== false;
+        const okA = !!annual && annual.active !== false;
+
+        if (mAmount) mAmount.textContent = okM ? `$${(monthly.unit_amount / 100).toFixed(2)}` : '—';
+        if (mCurr) mCurr.textContent = okM ? (monthly.currency || '').toUpperCase() : '—';
+        if (aAmount) aAmount.textContent = okA ? `$${(annual.unit_amount / 100).toFixed(2)}` : '—';
+        if (aCurr) aCurr.textContent = okA ? (annual.currency || '').toUpperCase() : '—';
+
+        const overallOK = okM && okA;
+        if (oStatus) oStatus.textContent = overallOK ? 'OK' : okM || okA ? 'PARTIAL' : 'ERROR';
+      } catch (e) {
+        const oStatus = document.getElementById('price-overall-status');
+        if (oStatus) oStatus.textContent = 'ERROR';
+      }
+    };
+    loadPrices();
+  }, []);
 
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <StatCard
-          label="Total Revenue"
-          value={summary ? `$${(summary.totalRevenue / 100).toFixed(2)}` : "--"}
-          hint="All-time gross revenue"
-        />
-        <StatCard
-          label="Total Sales"
-          value={summary ? summary.totalSales.toString() : "--"}
-          hint="All-time successful checkouts"
-        />
-        <StatCard
-          label="Tracked Products"
-          value={summary ? summary.products.length.toString() : "--"}
-          hint="Distinct SKUs in analytics"
-        />
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-4">
+          <div className="text-sm text-neutral-400 mb-1">Total Revenue</div>
+          <div className="text-2xl font-semibold">
+            {summary ? `$${(summary.totalRevenue / 100).toFixed(2)}` : '--'}
+          </div>
+          <div className="text-xs text-neutral-500 mt-1">All-time gross revenue</div>
+        </div>
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-4">
+          <div className="text-sm text-neutral-400 mb-1">Total Sales</div>
+          <div className="text-2xl font-semibold">
+            {summary ? summary.totalSales.toString() : '--'}
+          </div>
+          <div className="text-xs text-neutral-500 mt-1">All-time successful checkouts</div>
+        </div>
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-4">
+          <div className="text-sm text-neutral-400 mb-1">Tracked Products</div>
+          <div className="text-2xl font-semibold">
+            {summary ? summary.products.length.toString() : '--'}
+          </div>
+          <div className="text-xs text-neutral-500 mt-1">Distinct SKUs in analytics</div>
+        </div>
       </div>
 
       {error && (
@@ -55,6 +111,37 @@ export const Dashboard: React.FC = () => {
           Set your admin API token in <strong>Settings</strong> to load live data.
         </div>
       )}
+
+      <section className="mb-6">
+        <h2 className="text-lg font-semibold mb-3">Stripe Prices Self-Test</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-sm">
+            <div className="text-xs text-neutral-400 mb-1">Monthly</div>
+            <div className="text-lg font-medium" id="price-monthly-amount">
+              —
+            </div>
+            <div className="text-xs text-neutral-500" id="price-monthly-currency">
+              —
+            </div>
+          </div>
+          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-sm">
+            <div className="text-xs text-neutral-400 mb-1">Annual</div>
+            <div className="text-lg font-medium" id="price-annual-amount">
+              —
+            </div>
+            <div className="text-xs text-neutral-500" id="price-annual-currency">
+              —
+            </div>
+          </div>
+          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-sm">
+            <div className="text-xs text-neutral-400 mb-1">Overall Status</div>
+            <div className="text-lg font-medium" id="price-overall-status">
+              —
+            </div>
+            <div className="text-xs text-neutral-500">/api/stripe/prices</div>
+          </div>
+        </div>
+      </section>
 
       <section className="mb-6">
         <h2 className="text-lg font-semibold mb-3">Product Breakdown</h2>
@@ -98,7 +185,7 @@ export const Dashboard: React.FC = () => {
                   <td className="px-3 py-2 text-xs text-neutral-400">
                     {new Date(s.timestamp).toLocaleString()}
                   </td>
-                  <td className="px-3 py-2">{s.email || "N/A"}</td>
+                  <td className="px-3 py-2">{s.email || 'N/A'}</td>
                   <td className="px-3 py-2 text-xs">
                     <div>{s.productName}</div>
                     <div className="text-neutral-500">{s.productId}</div>
@@ -120,9 +207,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </section>
 
-      {loading && (
-        <div className="mt-3 text-xs text-neutral-500">Loading latest metrics…</div>
-      )}
+      {loading && <div className="mt-3 text-xs text-neutral-500">Loading latest metrics…</div>}
     </div>
   );
 };

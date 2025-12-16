@@ -14,10 +14,10 @@ You're **very close**! Here's what still needs to be done, in practical terms:
 
 1. **Verify build output**:
 
-    ```bash
-    # Check if assets exist in the correct location
-    ls -la apps/website/dist-website/assets/
-    ```
+   ```bash
+   # Check if assets exist in the correct location
+   ls -la apps/website/dist-website/assets/
+   ```
 
 2. **Confirm Cloudflare Pages configuration**:
    - Ensure "Build output directory" in Cloudflare Pages points to `dist-website`
@@ -25,10 +25,10 @@ You're **very close**! Here's what still needs to be done, in practical terms:
 
 3. **Test with health check script**:
 
-    ```bash
-    export ADMIN_SECRET="HUNTrina12122"
-    ./scripts/tools/validation/verify_production_health.sh
-    ```
+   ```bash
+   export ADMIN_SECRET="HUNTrina12122"
+   ./scripts/tools/validation/verify_production_health.sh
+   ```
 
    **Expected Results**:
    - CSS should return `Content-Type: text/css`
@@ -64,10 +64,10 @@ You're **very close**! Here's what still needs to be done, in practical terms:
 
 1. **Set ADMIN_API_SECRET in Cloudflare**:
 
-    ```bash
-    # For Cloudflare Workers
-    wrangler secret put ADMIN_API_SECRET --name admin-api
-    ```
+   ```bash
+   # For Cloudflare Workers
+   wrangler secret put ADMIN_API_SECRET --name admin-api
+   ```
 
 2. **Verify Admin UI functionality**:
    - ✅ Login with admin secret works
@@ -77,13 +77,13 @@ You're **very close**! Here's what still needs to be done, in practical terms:
 
 3. **Test with health check**:
 
-    ```bash
-    # Should return 200
-    curl -H "x-admin-secret: $ADMIN_SECRET" https://rinawarptech.com/api/admin/billing-summary
+   ```bash
+   # Should return 200
+   curl -H "x-admin-secret: $ADMIN_SECRET" https://rinawarptech.com/api/admin/billing-summary
 
-    # Should return 401
-    curl https://rinawarptech.com/api/admin/billing-summary
-    ```
+   # Should return 401
+   curl https://rinawarptech.com/api/admin/billing-summary
+   ```
 
 ---
 
@@ -97,12 +97,12 @@ You're **very close**! Here's what still needs to be done, in practical terms:
 
 2. **Upload to public downloads**:
 
-    ```bash
-    # Example structure
-    mkdir -p public-downloads/terminal-pro/v1.0.0
-    cp RinaWarp-Terminal-Pro-1.0.0-Windows.exe public-downloads/terminal-pro/v1.0.0/
-    cp RinaWarp-Terminal-Pro-1.0.0-Mac.dmg public-downloads/terminal-pro/v1.0.0/
-    ```
+   ```bash
+   # Example structure
+   mkdir -p public-downloads/terminal-pro/v1.0.0
+   cp RinaWarp-Terminal-Pro-1.0.0-Windows.exe public-downloads/terminal-pro/v1.0.0/
+   cp RinaWarp-Terminal-Pro-1.0.0-Mac.dmg public-downloads/terminal-pro/v1.0.0/
+   ```
 
 3. **Update download buttons**:
    - Point to correct URLs in website
@@ -128,10 +128,10 @@ You're **very close**! Here's what still needs to be done, in practical terms:
 
 1. **Check DNS records**:
 
-    ```bash
-    nslookup rinawarptech.com
-    nslookup www.rinawarptech.com
-    ```
+   ```bash
+   nslookup rinawarptech.com
+   nslookup www.rinawarptech.com
+   ```
 
    **Expected**: Should return Cloudflare nameservers, not Netlify
 
@@ -142,10 +142,10 @@ You're **very close**! Here's what still needs to be done, in practical terms:
 
 3. **Test HTTPS**:
 
-    ```bash
-    curl -I https://rinawarptech.com
-    # Should return HTTP/2 200 with proper SSL
-    ```
+   ```bash
+   curl -I https://rinawarptech.com
+   # Should return HTTP/2 200 with proper SSL
+   ```
 
 ---
 

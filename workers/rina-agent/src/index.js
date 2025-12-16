@@ -8,8 +8,8 @@ function jsonResponse(status, body) {
   return new Response(JSON.stringify(body, null, 2), {
     status,
     headers: {
-      "content-type": "application/json; charset=utf-8",
-      "access-control-allow-origin": "*",
+      'content-type': 'application/json; charset=utf-8',
+      'access-control-allow-origin': '*',
     },
   });
 }
@@ -18,22 +18,22 @@ function jsonResponse(status, body) {
 // Emoji tone indicator
 // -------------------------
 function toneEmoji(intent, emotion) {
-  if (emotion === "frustrated" || emotion === "overwhelmed") return "💛";
-  if (emotion === "angry") return "🔥";
-  if (emotion === "excited") return "⚡";
-  if (emotion === "sad") return "🫧";
+  if (emotion === 'frustrated' || emotion === 'overwhelmed') return '💛';
+  if (emotion === 'angry') return '🔥';
+  if (emotion === 'excited') return '⚡';
+  if (emotion === 'sad') return '🫧';
 
   switch (intent) {
-    case "technical":
-      return "🛠️";
-    case "creative":
-      return "🎨";
-    case "support":
-      return "💛";
-    case "playful":
-      return "😏";
+    case 'technical':
+      return '🛠️';
+    case 'creative':
+      return '🎨';
+    case 'support':
+      return '💛';
+    case 'playful':
+      return '😏';
     default:
-      return "✨";
+      return '✨';
   }
 }
 
@@ -99,11 +99,11 @@ YOU ARE RINA.
 // -------------------------
 // Intent classifier (lightweight)
 // -------------------------
-function classifyIntent(message, mode = "auto") {
+function classifyIntent(message, mode = 'auto') {
   const text = message.toLowerCase();
 
-  if (mode === "dev") return "technical";
-  if (mode === "creative") return "creative";
+  if (mode === 'dev') return 'technical';
+  if (mode === 'creative') return 'creative';
 
   let score = {
     technical: 0,
@@ -118,98 +118,98 @@ function classifyIntent(message, mode = "auto") {
 
   const frustratedKeywords = [
     "i'm stuck",
-    "im stuck",
-    "wtf",
-    "what the fuck",
-    "i hate this",
+    'im stuck',
+    'wtf',
+    'what the fuck',
+    'i hate this',
     "i'm losing it",
-    "im losing it",
+    'im losing it',
     "this won't work",
-    "this wont work",
-    "erroring",
+    'this wont work',
+    'erroring',
     "i'm overwhelmed",
-    "im overwhelmed",
-    "losing my mind",
-    "about to cry",
+    'im overwhelmed',
+    'losing my mind',
+    'about to cry',
   ];
-  if (frustratedKeywords.some(k => text.includes(k))) add("support", 3);
+  if (frustratedKeywords.some((k) => text.includes(k))) add('support', 3);
 
   const techSignals = [
-    "cloudflare",
-    "dns",
-    "worker",
-    "api",
-    "endpoint",
-    "nginx",
-    "ci",
-    "cd",
-    "deploy",
-    "deployment",
-    "server",
-    "logs",
-    "error",
-    "stack trace",
-    "node",
-    "typescript",
-    "javascript",
-    "wrangler",
-    "docker",
-    "stripe",
-    "auth",
-    "billing",
-    "license",
-    "kv",
-    "terminal",
-    "linux",
-    "kali",
-    "vscode",
-    "react",
-    "html",
-    "css",
+    'cloudflare',
+    'dns',
+    'worker',
+    'api',
+    'endpoint',
+    'nginx',
+    'ci',
+    'cd',
+    'deploy',
+    'deployment',
+    'server',
+    'logs',
+    'error',
+    'stack trace',
+    'node',
+    'typescript',
+    'javascript',
+    'wrangler',
+    'docker',
+    'stripe',
+    'auth',
+    'billing',
+    'license',
+    'kv',
+    'terminal',
+    'linux',
+    'kali',
+    'vscode',
+    'react',
+    'html',
+    'css',
   ];
-  techSignals.forEach(k => text.includes(k) && add("technical", 2));
+  techSignals.forEach((k) => text.includes(k) && add('technical', 2));
 
-  if (text.includes("terminal pro") || text.includes("rina warp terminal")) {
-    add("technical", 2);
+  if (text.includes('terminal pro') || text.includes('rina warp terminal')) {
+    add('technical', 2);
   }
 
   const creativeSignals = [
-    "song",
-    "lyrics",
-    "chorus",
-    "hook",
-    "verse",
-    "bridge",
-    "vocal",
-    "write a song",
-    "vibe",
-    "music video",
-    "brand",
-    "copywriting",
-    "slogan",
-    "ad script",
-    "creative direction",
-    "unicorn",
-    "mermaid",
-    "rina vex",
+    'song',
+    'lyrics',
+    'chorus',
+    'hook',
+    'verse',
+    'bridge',
+    'vocal',
+    'write a song',
+    'vibe',
+    'music video',
+    'brand',
+    'copywriting',
+    'slogan',
+    'ad script',
+    'creative direction',
+    'unicorn',
+    'mermaid',
+    'rina vex',
   ];
-  creativeSignals.forEach(k => text.includes(k) && add("creative", 2));
+  creativeSignals.forEach((k) => text.includes(k) && add('creative', 2));
 
   const playfulSignals = [
-    "roast me",
-    "make it savage",
-    "talk shit",
-    "be funny",
-    "go wild",
-    "unhinged",
-    "give attitude",
-    "drag him",
+    'roast me',
+    'make it savage',
+    'talk shit',
+    'be funny',
+    'go wild',
+    'unhinged',
+    'give attitude',
+    'drag him',
   ];
-  playfulSignals.forEach(k => text.includes(k) && add("playful", 2));
+  playfulSignals.forEach((k) => text.includes(k) && add('playful', 2));
 
   const winner = Object.entries(score).sort((a, b) => b[1] - a[1])[0][0];
 
-  return winner || "general";
+  return winner || 'general';
 }
 
 // -------------------------
@@ -217,23 +217,23 @@ function classifyIntent(message, mode = "auto") {
 // -------------------------
 async function analyzeEmotion(env, message) {
   try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4.1-mini",
+        model: 'gpt-4.1-mini',
         temperature: 0,
         messages: [
           {
-            role: "system",
+            role: 'system',
             content:
-              "You are an emotion classifier. Respond with a JSON object containing tone and emotion fields."
+              'You are an emotion classifier. Respond with a JSON object containing tone and emotion fields.',
           },
           {
-            role: "user",
+            role: 'user',
             content: message,
           },
         ],
@@ -241,28 +241,30 @@ async function analyzeEmotion(env, message) {
     });
 
     if (!res.ok) {
-      return { tone: "neutral", emotion: "neutral" };
+      return { tone: 'neutral', emotion: 'neutral' };
     }
 
     const data = await res.json();
-    const raw = data.choices?.[0]?.message?.content?.trim() || "{}";
+    const raw = data.choices?.[0]?.message?.content?.trim() || '{}';
 
     let parsed;
     try {
       parsed = JSON.parse(raw);
     } catch {
       // Sometimes the model may wrap JSON in code fences
-      const cleaned = raw.replace(/```json/gi, "").replace(/```/g, "").trim();
+      const cleaned = raw
+        .replace(/```json/gi, '')
+        .replace(/```/g, '')
+        .trim();
       parsed = JSON.parse(cleaned);
     }
 
-    const tone = typeof parsed.tone === "string" ? parsed.tone : "neutral";
-    const emotion =
-      typeof parsed.emotion === "string" ? parsed.emotion : "neutral";
+    const tone = typeof parsed.tone === 'string' ? parsed.tone : 'neutral';
+    const emotion = typeof parsed.emotion === 'string' ? parsed.emotion : 'neutral';
 
     return { tone, emotion };
   } catch (e) {
-    return { tone: "neutral", emotion: "neutral" };
+    return { tone: 'neutral', emotion: 'neutral' };
   }
 }
 
@@ -272,27 +274,23 @@ async function analyzeEmotion(env, message) {
 function detectProject(message, memory) {
   const t = message.toLowerCase();
 
-  if (t.includes("terminal pro") || t.includes("terminal-pro") || t.includes("shell")) {
-    return "terminal-pro";
+  if (t.includes('terminal pro') || t.includes('terminal-pro') || t.includes('shell')) {
+    return 'terminal-pro';
   }
 
-  if (t.includes("music video") || t.includes("mvc") || t.includes("unicorn")) {
-    return "music-video-creator";
+  if (t.includes('music video') || t.includes('mvc') || t.includes('unicorn')) {
+    return 'music-video-creator';
   }
 
-  if (
-    t.includes("website") ||
-    t.includes("landing page") ||
-    t.includes("rinawarptech.com")
-  ) {
-    return "website";
+  if (t.includes('website') || t.includes('landing page') || t.includes('rinawarptech.com')) {
+    return 'website';
   }
 
-  if (t.includes("admin api") || t.includes("license") || t.includes("checkout")) {
-    return "admin-api";
+  if (t.includes('admin api') || t.includes('license') || t.includes('checkout')) {
+    return 'admin-api';
   }
 
-  return memory.lastProject || "general";
+  return memory.lastProject || 'general';
 }
 
 // -------------------------
@@ -300,38 +298,37 @@ function detectProject(message, memory) {
 // -------------------------
 function chooseBackend(intent, emotion) {
   // Higher temperature if excited / playful
-  const excited =
-    emotion === "excited" || intent === "creative" || intent === "playful";
+  const excited = emotion === 'excited' || intent === 'creative' || intent === 'playful';
 
-  if (intent === "technical") {
-    return { backend: "openai", model: "gpt-4.1", temperature: excited ? 0.35 : 0.2 };
+  if (intent === 'technical') {
+    return { backend: 'openai', model: 'gpt-4.1', temperature: excited ? 0.35 : 0.2 };
   }
-  if (intent === "creative" || intent === "playful") {
+  if (intent === 'creative' || intent === 'playful') {
     return {
-      backend: "anthropic",
-      model: "claude-3-5-sonnet-latest",
+      backend: 'anthropic',
+      model: 'claude-3-5-sonnet-latest',
       temperature: excited ? 0.75 : 0.6,
     };
   }
-  if (intent === "support") {
+  if (intent === 'support') {
     return {
-      backend: "anthropic",
-      model: "claude-3-5-sonnet-latest",
+      backend: 'anthropic',
+      model: 'claude-3-5-sonnet-latest',
       temperature: 0.45,
     };
   }
-  return { backend: "openai", model: "gpt-4.1-mini", temperature: 0.3 };
+  return { backend: 'openai', model: 'gpt-4.1-mini', temperature: 0.3 };
 }
 
 // -------------------------
 // OpenAI Chat
 // -------------------------
 async function callOpenAI(env, messages, model, temperature) {
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       model,
@@ -346,7 +343,7 @@ async function callOpenAI(env, messages, model, temperature) {
   }
 
   const data = await res.json();
-  const content = data.choices?.[0]?.message?.content ?? "";
+  const content = data.choices?.[0]?.message?.content ?? '';
   const usage = data.usage || null;
   return { content, usage };
 }
@@ -356,20 +353,20 @@ async function callOpenAI(env, messages, model, temperature) {
 // -------------------------
 async function callAnthropic(env, messages, model, temperature) {
   const mappedMessages = messages
-    .map(m => {
-      if (m.role === "system") return null;
+    .map((m) => {
+      if (m.role === 'system') return null;
       return { role: m.role, content: m.content };
     })
     .filter(Boolean);
 
-  const systemMessage = messages.find(m => m.role === "system")?.content ?? "";
+  const systemMessage = messages.find((m) => m.role === 'system')?.content ?? '';
 
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
     headers: {
-      "x-api-key": env.ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-      "content-type": "application/json",
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
     },
     body: JSON.stringify({
       model,
@@ -386,7 +383,7 @@ async function callAnthropic(env, messages, model, temperature) {
   }
 
   const data = await res.json();
-  const content = data.content?.map(part => part.text).join("\n") ?? "";
+  const content = data.content?.map((part) => part.text).join('\n') ?? '';
   const usage = data.usage || null;
   return { content, usage };
 }
@@ -395,14 +392,14 @@ async function callAnthropic(env, messages, model, temperature) {
 // Embeddings via OpenAI
 // -------------------------
 async function embed(env, text) {
-  const res = await fetch("https://api.openai.com/v1/embeddings", {
-    method: "POST",
+  const res = await fetch('https://api.openai.com/v1/embeddings', {
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: "text-embedding-3-small",
+      model: 'text-embedding-3-small',
       input: text,
     }),
   });
@@ -436,7 +433,7 @@ async function vectorStore(env, licenseKey, text) {
     ]);
   } catch (err) {
     // Non-fatal memory failure
-    console.error("Vector store error:", err);
+    console.error('Vector store error:', err);
   }
 }
 
@@ -451,9 +448,9 @@ async function vectorSearch(env, licenseKey, query) {
       filter: { license: licenseKey },
     });
 
-    return results.matches?.map(m => m.metadata.content) || [];
+    return results.matches?.map((m) => m.metadata.content) || [];
   } catch (err) {
-    console.error("Vector search error:", err);
+    console.error('Vector search error:', err);
     return [];
   }
 }
@@ -462,62 +459,62 @@ async function vectorSearch(env, licenseKey, query) {
 // License validation helper
 // -------------------------
 async function validateLicense(env, key) {
-  const MASTER_KEY = "RINA-MASTER-0001";
+  const MASTER_KEY = 'RINA-MASTER-0001';
 
   if (!key) {
-    return { ok: false, status: "missing", message: "License key required." };
+    return { ok: false, status: 'missing', message: 'License key required.' };
   }
 
   if (key === MASTER_KEY) {
     return {
       ok: true,
-      status: "master",
+      status: 'master',
       record: {
-        status: "master",
-        type: "creator",
-        createdAt: "2025-12-12T00:00:00Z",
+        status: 'master',
+        type: 'creator',
+        createdAt: '2025-12-12T00:00:00Z',
       },
     };
   }
 
   const kvKey = `license:${key}`;
-  const record = await env.LICENSES_KV.get(kvKey, "json");
+  const record = await env.LICENSES_KV.get(kvKey, 'json');
 
   if (!record) {
     return {
       ok: false,
-      status: "invalid",
-      message: "License key not recognized.",
+      status: 'invalid',
+      message: 'License key not recognized.',
     };
   }
 
   const now = Date.now();
   const expiresAt = record.expiresAt ? Date.parse(record.expiresAt) : null;
-  let status = record.status || "active";
+  let status = record.status || 'active';
 
-  if (expiresAt && expiresAt < now) status = "expired";
+  if (expiresAt && expiresAt < now) status = 'expired';
 
-  if (status === "revoked") {
+  if (status === 'revoked') {
     return {
       ok: false,
-      status: "revoked",
-      message: "This license has been revoked. Contact support if needed.",
+      status: 'revoked',
+      message: 'This license has been revoked. Contact support if needed.',
       record,
     };
   }
 
-  if (status === "expired") {
+  if (status === 'expired') {
     return {
       ok: false,
-      status: "expired",
-      message: "This license has expired. Please renew.",
+      status: 'expired',
+      message: 'This license has expired. Please renew.',
       record,
     };
   }
 
   return {
     ok: true,
-    status: "valid",
+    status: 'valid',
     record,
   };
 }
@@ -527,7 +524,7 @@ async function validateLicense(env, key) {
 // -------------------------
 async function loadMemory(env, licenseKey) {
   if (!licenseKey) return {};
-  const raw = await env.RINA_MEMORY_KV.get(licenseKey, "json");
+  const raw = await env.RINA_MEMORY_KV.get(licenseKey, 'json');
   return raw || {};
 }
 
@@ -540,20 +537,20 @@ async function saveMemory(env, licenseKey, mem) {
 // Core handler: /api/rina-agent
 // -------------------------
 async function handleRinaAgent(request, env) {
-  if (request.method !== "POST") {
+  if (request.method !== 'POST') {
     return jsonResponse(405, {
       ok: false,
-      error: "Method not allowed. Use POST.",
+      error: 'Method not allowed. Use POST.',
     });
   }
 
-  const contentType = request.headers.get("content-type") || "";
+  const contentType = request.headers.get('content-type') || '';
   let body = {};
 
   try {
-    if (contentType.includes("application/json")) {
+    if (contentType.includes('application/json')) {
       body = await request.json();
-    } else if (contentType.includes("application/x-www-form-urlencoded")) {
+    } else if (contentType.includes('application/x-www-form-urlencoded')) {
       const form = await request.formData();
       body = Object.fromEntries(form.entries());
     } else {
@@ -562,19 +559,16 @@ async function handleRinaAgent(request, env) {
   } catch (e) {
     return jsonResponse(400, {
       ok: false,
-      error: "Invalid JSON or form body.",
+      error: 'Invalid JSON or form body.',
     });
   }
 
-  const rawMessage = (body.message || body.prompt || "").toString();
+  const rawMessage = (body.message || body.prompt || '').toString();
   const message = rawMessage.trim();
-  const licenseKey = (body.licenseKey || body.license || "").toString().trim();
-  const mode = ((body.mode || "auto").toString().toLowerCase());
+  const licenseKey = (body.licenseKey || body.license || '').toString().trim();
+  const mode = (body.mode || 'auto').toString().toLowerCase();
   const offline =
-    body.offline === true ||
-    body.offline === "true" ||
-    body.offline === "1" ||
-    body.offline === 1;
+    body.offline === true || body.offline === 'true' || body.offline === '1' || body.offline === 1;
 
   if (!message) {
     return jsonResponse(400, {
@@ -610,18 +604,18 @@ async function handleRinaAgent(request, env) {
     };
     await saveMemory(env, licenseKey, newMemory);
 
-    await vectorStore(env, licenseKey, message + "\n" + decorated);
+    await vectorStore(env, licenseKey, message + '\n' + decorated);
 
     return jsonResponse(200, {
       ok: true,
-      agent: "Rina",
+      agent: 'Rina',
       intent,
       tone,
       emotion,
       project,
-      backend: "offline",
+      backend: 'offline',
       model: null,
-      licenseStatus: licenseKey ? "valid-or-master-offline" : "unknown",
+      licenseStatus: licenseKey ? 'valid-or-master-offline' : 'unknown',
       message: decorated,
       usage: null,
     });
@@ -632,7 +626,7 @@ async function handleRinaAgent(request, env) {
   if (!license.ok) {
     return jsonResponse(401, {
       ok: false,
-      status: "license_error",
+      status: 'license_error',
       licenseStatus: license.status,
       message: license.message,
     });
@@ -640,11 +634,11 @@ async function handleRinaAgent(request, env) {
 
   // Load vector memory relevant to this message
   const memories = await vectorSearch(env, licenseKey, message);
-  let memoryContext = "";
+  let memoryContext = '';
   if (memories.length > 0) {
     memoryContext =
-      "\n\nRelevant past context (from this user/license):\n" +
-      memories.map(m => `• ${m}`).join("\n");
+      '\n\nRelevant past context (from this user/license):\n' +
+      memories.map((m) => `• ${m}`).join('\n');
   }
 
   const dynamicEmotionBlock = `
@@ -668,28 +662,28 @@ GUIDANCE:
 
   const messages = [
     {
-      role: "system",
+      role: 'system',
       content: RINA_SYSTEM_PROMPT + dynamicEmotionBlock + memoryContext,
     },
-    { role: "user", content: message },
+    { role: 'user', content: message },
   ];
 
   let result;
   let usage = null;
 
   try {
-    if (backend === "openai") {
+    if (backend === 'openai') {
       result = await callOpenAI(env, messages, model, temperature);
-    } else if (backend === "anthropic") {
+    } else if (backend === 'anthropic') {
       result = await callAnthropic(env, messages, model, temperature);
     } else {
-      throw new Error("Unsupported backend");
+      throw new Error('Unsupported backend');
     }
     usage = result.usage;
   } catch (e) {
     return jsonResponse(500, {
       ok: false,
-      error: "Upstream model error",
+      error: 'Upstream model error',
       detail: e.message,
     });
   }
@@ -708,11 +702,11 @@ GUIDANCE:
   };
   await saveMemory(env, licenseKey, newMemory);
 
-  await vectorStore(env, licenseKey, message + "\n" + decoratedMessage);
+  await vectorStore(env, licenseKey, message + '\n' + decoratedMessage);
 
   return jsonResponse(200, {
     ok: true,
-    agent: "Rina",
+    agent: 'Rina',
     intent,
     tone,
     emotion,
@@ -732,13 +726,13 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    if (url.pathname === "/api/rina-agent") {
+    if (url.pathname === '/api/rina-agent') {
       return handleRinaAgent(request, env);
     }
 
     return jsonResponse(404, {
       ok: false,
-      error: "Not found",
+      error: 'Not found',
     });
   },
 };

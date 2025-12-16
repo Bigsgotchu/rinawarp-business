@@ -8,52 +8,56 @@ export default {
     const { pathname } = url;
 
     // Simple health check
-    if (pathname === "/api/live-session/health") {
-      return addCORS(json({ ok: true, service: "live-session-worker" }));
+    if (pathname === '/api/live-session/health') {
+      return addCORS(json({ ok: true, service: 'live-session-worker' }));
     }
 
     // WebSocket endpoint
-    if (pathname.startsWith("/ws/live-session/")) {
+    if (pathname.startsWith('/ws/live-session/')) {
       return handleWebSocket(request, env, ctx);
     }
 
     // REST: create a new shared session (host)
-    if (pathname === "/api/live-session/create" && request.method === "POST") {
+    if (pathname === '/api/live-session/create' && request.method === 'POST') {
       return addCORS(await handleCreateSession(request, env));
     }
 
     // REST: join an existing session (guest)
-    if (pathname === "/api/live-session/join" && request.method === "POST") {
+    if (pathname === '/api/live-session/join' && request.method === 'POST') {
       return addCORS(await handleJoinSession(request, env));
     }
 
     // REST: get session summary
-    if (pathname.startsWith("/api/live-session/") && request.method === "GET") {
-      const [, , , sessionId] = pathname.split("/");
-      if (!sessionId) return addCORS(json({ error: "Missing sessionId" }, 400));
+    if (pathname.startsWith('/api/live-session/') && request.method === 'GET') {
+      const [, , , sessionId] = pathname.split('/');
+      if (!sessionId) return addCORS(json({ error: 'Missing sessionId' }, 400));
       return addCORS(await handleGetSession(sessionId, env));
     }
 
     // REST: get replayable events
-    if (pathname.startsWith("/api/live-session-events/") && request.method === "GET") {
-      const [, , , sessionId] = pathname.split("/");
-      if (!sessionId) return addCORS(json({ error: "Missing sessionId" }, 400));
+    if (pathname.startsWith('/api/live-session-events/') && request.method === 'GET') {
+      const [, , , sessionId] = pathname.split('/');
+      if (!sessionId) return addCORS(json({ error: 'Missing sessionId' }, 400));
       return addCORS(await handleGetSessionEvents(sessionId, request, env));
     }
 
     // REST: get session logs for Mission Control
-    if (pathname.startsWith("/api/live-session/") && pathname.endsWith("/logs") && request.method === "GET") {
-      const [, , , sessionId] = pathname.split("/");
-      if (!sessionId) return addCORS(json({ error: "Missing sessionId" }, 400));
+    if (
+      pathname.startsWith('/api/live-session/') &&
+      pathname.endsWith('/logs') &&
+      request.method === 'GET'
+    ) {
+      const [, , , sessionId] = pathname.split('/');
+      if (!sessionId) return addCORS(json({ error: 'Missing sessionId' }, 400));
       return addCORS(await handleGetSessionLogs(sessionId, request, env));
     }
 
-    return new Response("Not found", { status: 404 });
+    return new Response('Not found', { status: 404 });
   },
 
   async scheduled(event, env, ctx) {
     await cleanupStaleSessions(env);
-  }
+  },
 };
 
 /* ──────────────────────────────────────────────
@@ -63,7 +67,7 @@ export default {
 function json(body, status = 200) {
   return new Response(JSON.stringify(body, null, 2), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
   });
 }
 
@@ -74,30 +78,30 @@ function nowMs() {
 class AuthError extends Error {}
 
 function parseAuthOrThrow(request) {
-  const auth = request.headers.get("Authorization") || "";
-  if (!auth.startsWith("Bearer ")) {
-    throw new AuthError("Missing bearer token");
+  const auth = request.headers.get('Authorization') || '';
+  if (!auth.startsWith('Bearer ')) {
+    throw new AuthError('Missing bearer token');
   }
-  const token = auth.slice("Bearer ".length).trim();
-  const parts = token.split(".");
-  if (parts.length < 2) throw new AuthError("Invalid token");
+  const token = auth.slice('Bearer '.length).trim();
+  const parts = token.split('.');
+  if (parts.length < 2) throw new AuthError('Invalid token');
 
   try {
-    const payloadStr = atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"));
+    const payloadStr = atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'));
     const payload = JSON.parse(payloadStr);
 
     if (!payload.sub || !payload.teamId) {
-      throw new AuthError("Missing user/team claims");
+      throw new AuthError('Missing user/team claims');
     }
 
     return {
       userId: payload.sub,
       teamId: payload.teamId,
-      name: payload.name || "Unknown",
+      name: payload.name || 'Unknown',
       raw: payload,
     };
   } catch (err) {
-    throw new AuthError("Failed to decode token");
+    throw new AuthError('Failed to decode token');
   }
 }
 
@@ -115,8 +119,8 @@ async function handleCreateSession(request, env) {
   }
 
   const body = await safeJson(request);
-  const title = body.title || "Shared Terminal Session";
-  const description = body.description || "";
+  const title = body.title || 'Shared Terminal Session';
+  const description = body.description || '';
   const settings = body.settings || {};
   const sessionId = crypto.randomUUID();
   const ts = nowMs();
@@ -128,18 +132,9 @@ async function handleCreateSession(request, env) {
       status, title, description, created_at, last_activity_at
     )
     VALUES (?, ?, ?, ?, 'active', ?, ?, ?, ?)
-  `
+  `,
   )
-    .bind(
-      sessionId,
-      user.teamId,
-      user.userId,
-      user.name,
-      title,
-      description,
-      ts,
-      ts
-    )
+    .bind(sessionId, user.teamId, user.userId, user.name, title, description, ts, ts)
     .run();
 
   await env.DB.prepare(
@@ -148,7 +143,7 @@ async function handleCreateSession(request, env) {
       session_id, user_id, name, role, joined_at, last_seen_at
     )
     VALUES (?, ?, ?, 'host', ?, ?)
-  `
+  `,
   )
     .bind(sessionId, user.userId, user.name, ts, ts)
     .run();
@@ -160,30 +155,35 @@ async function handleCreateSession(request, env) {
       teamId: user.teamId,
       hostUserId: user.userId,
       hostName: user.name,
-      status: "active",
+      status: 'active',
       lastActivityAt: ts,
     }),
-    { expirationTtl: 60 * 60 }
+    { expirationTtl: 60 * 60 },
   );
 
   await logEvent(env, sessionId, {
-    kind: "meta",
+    kind: 'meta',
     actorUserId: user.userId,
     actorName: user.name,
     payload: {
-      type: "session_created",
+      type: 'session_created',
       title,
       description,
       settings,
     },
   });
 
-  const wsUrl = buildWsUrl(request, sessionId, "host", request.headers.get("Authorization")?.replace("Bearer ", ""));
+  const wsUrl = buildWsUrl(
+    request,
+    sessionId,
+    'host',
+    request.headers.get('Authorization')?.replace('Bearer ', ''),
+  );
 
   return json({
     ok: true,
     sessionId,
-    role: "host",
+    role: 'host',
     wsUrl,
   });
 }
@@ -203,20 +203,17 @@ async function handleJoinSession(request, env) {
 
   const body = await safeJson(request);
   const sessionId = body.sessionId;
-  if (!sessionId) return json({ error: "Missing sessionId" }, 400);
+  if (!sessionId) return json({ error: 'Missing sessionId' }, 400);
 
-  const session = await env.DB.prepare(
-    `SELECT * FROM live_sessions WHERE id = ?`
-  )
+  const session = await env.DB.prepare(`SELECT * FROM live_sessions WHERE id = ?`)
     .bind(sessionId)
     .first();
 
-  if (!session) return json({ error: "Session not found" }, 404);
-  if (session.status !== "active")
-    return json({ error: "Session is not active" }, 400);
+  if (!session) return json({ error: 'Session not found' }, 404);
+  if (session.status !== 'active') return json({ error: 'Session is not active' }, 400);
 
   if (session.team_id !== user.teamId) {
-    return json({ error: "Not authorized for this team session" }, 403);
+    return json({ error: 'Not authorized for this team session' }, 403);
   }
 
   const ts = nowMs();
@@ -227,14 +224,12 @@ async function handleJoinSession(request, env) {
       session_id, user_id, name, role, joined_at, last_seen_at
     )
     VALUES (?, ?, ?, 'guest', ?, ?)
-  `
+  `,
   )
     .bind(sessionId, user.userId, user.name, ts, ts)
     .run();
 
-  await env.DB.prepare(
-    `UPDATE live_sessions SET last_activity_at = ? WHERE id = ?`
-  )
+  await env.DB.prepare(`UPDATE live_sessions SET last_activity_at = ? WHERE id = ?`)
     .bind(ts, sessionId)
     .run();
 
@@ -245,25 +240,30 @@ async function handleJoinSession(request, env) {
       teamId: session.team_id,
       hostUserId: session.host_user_id,
       hostName: session.host_name,
-      status: "active",
+      status: 'active',
       lastActivityAt: ts,
     }),
-    { expirationTtl: 60 * 60 }
+    { expirationTtl: 60 * 60 },
   );
 
   await logEvent(env, sessionId, {
-    kind: "join",
+    kind: 'join',
     actorUserId: user.userId,
     actorName: user.name,
-    payload: { role: "guest" },
+    payload: { role: 'guest' },
   });
 
-  const wsUrl = buildWsUrl(request, sessionId, "guest", request.headers.get("Authorization")?.replace("Bearer ", ""));
+  const wsUrl = buildWsUrl(
+    request,
+    sessionId,
+    'guest',
+    request.headers.get('Authorization')?.replace('Bearer ', ''),
+  );
 
   return json({
     ok: true,
     sessionId,
-    role: "guest",
+    role: 'guest',
     wsUrl,
   });
 }
@@ -273,13 +273,11 @@ async function handleJoinSession(request, env) {
  * ─────────────────────────────────────────── */
 
 async function handleGetSession(sessionId, env) {
-  const session = await env.DB.prepare(
-    `SELECT * FROM live_sessions WHERE id = ?`
-  )
+  const session = await env.DB.prepare(`SELECT * FROM live_sessions WHERE id = ?`)
     .bind(sessionId)
     .first();
 
-  if (!session) return json({ error: "Session not found" }, 404);
+  if (!session) return json({ error: 'Session not found' }, 404);
 
   const participants = await env.DB.prepare(
     `
@@ -287,7 +285,7 @@ async function handleGetSession(sessionId, env) {
     FROM live_session_participants
     WHERE session_id = ?
     ORDER BY joined_at ASC
-  `
+  `,
   )
     .bind(sessionId)
     .all();
@@ -305,8 +303,8 @@ async function handleGetSession(sessionId, env) {
 
 async function handleGetSessionEvents(sessionId, request, env) {
   const url = new URL(request.url);
-  const limit = Math.min(parseInt(url.searchParams.get("limit") || "200", 10), 1000);
-  const beforeTs = parseInt(url.searchParams.get("beforeTs") || "0", 10);
+  const limit = Math.min(parseInt(url.searchParams.get('limit') || '200', 10), 1000);
+  const beforeTs = parseInt(url.searchParams.get('beforeTs') || '0', 10);
 
   let query = `
     SELECT id, ts, actor_user_id, actor_name, kind, payload
@@ -316,14 +314,16 @@ async function handleGetSessionEvents(sessionId, request, env) {
   const params = [sessionId];
 
   if (beforeTs > 0) {
-    query += " AND ts < ? ";
+    query += ' AND ts < ? ';
     params.push(beforeTs);
   }
 
-  query += " ORDER BY ts DESC LIMIT ? ";
+  query += ' ORDER BY ts DESC LIMIT ? ';
   params.push(limit);
 
-  const events = await env.DB.prepare(query).bind(...params).all();
+  const events = await env.DB.prepare(query)
+    .bind(...params)
+    .all();
 
   return json({
     ok: true,
@@ -345,7 +345,7 @@ async function handleGetSessionEvents(sessionId, request, env) {
 
 async function handleGetSessionLogs(sessionId, request, env) {
   const url = new URL(request.url);
-  const limit = parseInt(url.searchParams.get("limit") || "200", 10);
+  const limit = parseInt(url.searchParams.get('limit') || '200', 10);
 
   const logs = await listRecentLogs(env, sessionId, limit);
 
@@ -370,29 +370,29 @@ function getSessionState(sessionId) {
 }
 
 function handleWebSocket(request, env, ctx) {
-  const upgradeHeader = request.headers.get("Upgrade") || "";
-  if (upgradeHeader.toLowerCase() !== "websocket") {
-    return new Response("Expected WebSocket", { status: 426 });
+  const upgradeHeader = request.headers.get('Upgrade') || '';
+  if (upgradeHeader.toLowerCase() !== 'websocket') {
+    return new Response('Expected WebSocket', { status: 426 });
   }
 
   const url = new URL(request.url);
-  const [, , , sessionId] = url.pathname.split("/");
-  if (!sessionId) return new Response("Missing sessionId", { status: 400 });
+  const [, , , sessionId] = url.pathname.split('/');
+  if (!sessionId) return new Response('Missing sessionId', { status: 400 });
 
-  const role = url.searchParams.get("role") || "guest";
+  const role = url.searchParams.get('role') || 'guest';
 
   let user;
   try {
-    const token = url.searchParams.get("token");
-    if (!token) throw new AuthError("Missing auth token");
+    const token = url.searchParams.get('token');
+    if (!token) throw new AuthError('Missing auth token');
 
     const fakeAuthHeader = new Request(request.url, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     user = parseAuthOrThrow(fakeAuthHeader);
   } catch (err) {
-    return new Response("Unauthorized WebSocket", { status: 401 });
+    return new Response('Unauthorized WebSocket', { status: 401 });
   }
 
   const pair = new WebSocketPair();
@@ -405,10 +405,10 @@ function handleWebSocket(request, env, ctx) {
 
   const state = getSessionState(sessionId);
 
-  if (role === "host") {
+  if (role === 'host') {
     if (state.host) {
-      server.send(JSON.stringify({ type: "error", message: "Host already connected" }));
-      server.close(1013, "Host already connected");
+      server.send(JSON.stringify({ type: 'error', message: 'Host already connected' }));
+      server.close(1013, 'Host already connected');
       return new Response(null, { status: 101, webSocket: client });
     }
     state.host = server;
@@ -416,15 +416,13 @@ function handleWebSocket(request, env, ctx) {
     state.guests.add(server);
   }
 
-  server.send(JSON.stringify({ type: "hello", sessionId, role, ts }));
+  server.send(JSON.stringify({ type: 'hello', sessionId, role, ts }));
 
-  server.addEventListener("message", (event) =>
-    handleWsMessage(event, { server, role, sessionId, env })
+  server.addEventListener('message', (event) =>
+    handleWsMessage(event, { server, role, sessionId, env }),
   );
 
-  server.addEventListener("close", () =>
-    handleWsClose({ server, role, sessionId })
-  );
+  server.addEventListener('close', () => handleWsClose({ server, role, sessionId }));
 
   ctx.waitUntil(
     (async () => {
@@ -432,12 +430,12 @@ function handleWebSocket(request, env, ctx) {
         await env.LIVE_SESSIONS.put(
           `session:${sessionId}`,
           JSON.stringify({ sessionId, lastPing: nowMs() }),
-          { expirationTtl: 60 * 60 }
+          { expirationTtl: 60 * 60 },
         );
       } catch (err) {
-        console.error("KV keepalive error", err);
+        console.error('KV keepalive error', err);
       }
-    })()
+    })(),
   );
 
   return new Response(null, { status: 101, webSocket: client });
@@ -448,98 +446,94 @@ async function handleWsMessage(event, { server, role, sessionId, env }) {
   try {
     msg = JSON.parse(event.data);
   } catch {
-    server.send(JSON.stringify({ type: "error", message: "Invalid JSON" }));
+    server.send(JSON.stringify({ type: 'error', message: 'Invalid JSON' }));
     return;
   }
 
   const kind = msg.type;
 
-  if (kind === "pty_output" && role === "host") {
-    const data = msg.data || "";
+  if (kind === 'pty_output' && role === 'host') {
+    const data = msg.data || '';
     const state = getSessionState(sessionId);
 
     for (const guest of state.guests) {
       try {
-        guest.send(JSON.stringify({ type: "pty_output", data }));
+        guest.send(JSON.stringify({ type: 'pty_output', data }));
       } catch (err) {
-        console.error("Broadcast to guest failed", err);
+        console.error('Broadcast to guest failed', err);
       }
     }
 
     await logEvent(env, sessionId, {
-      kind: "pty_output",
+      kind: 'pty_output',
       actorUserId: msg.actorUserId || null,
       actorName: msg.actorName || null,
       payload: { data },
     });
 
-    await env.DB.prepare(
-      `UPDATE live_sessions SET last_activity_at = ? WHERE id = ?`
-    )
+    await env.DB.prepare(`UPDATE live_sessions SET last_activity_at = ? WHERE id = ?`)
       .bind(nowMs(), sessionId)
       .run();
 
     return;
   }
 
-  if (kind === "pty_input" && role === "guest") {
-    const data = msg.data || "";
+  if (kind === 'pty_input' && role === 'guest') {
+    const data = msg.data || '';
     const state = getSessionState(sessionId);
 
     if (state.host) {
       try {
         state.host.send(
           JSON.stringify({
-            type: "pty_input",
+            type: 'pty_input',
             data,
             fromUserId: msg.actorUserId || null,
             fromUserName: msg.actorName || null,
-          })
+          }),
         );
       } catch (err) {
-        console.error("Forward to host failed", err);
+        console.error('Forward to host failed', err);
       }
 
       await logEvent(env, sessionId, {
-        kind: "pty_input",
+        kind: 'pty_input',
         actorUserId: msg.actorUserId || null,
         actorName: msg.actorName || null,
         payload: { data },
       });
 
-      await env.DB.prepare(
-        `UPDATE live_sessions SET last_activity_at = ? WHERE id = ?`
-      )
+      await env.DB.prepare(`UPDATE live_sessions SET last_activity_at = ? WHERE id = ?`)
         .bind(nowMs(), sessionId)
         .run();
     } else {
       server.send(
         JSON.stringify({
-          type: "error",
-          message: "Host is not connected",
-        })
+          type: 'error',
+          message: 'Host is not connected',
+        }),
       );
     }
 
     return;
   }
 
-  if (kind === "meta") {
+  if (kind === 'meta') {
     const state = getSessionState(sessionId);
     const payload = msg.payload || {};
 
-    if (role === "host") {
+    if (role === 'host') {
       for (const guest of state.guests) {
         try {
           guest.send(
             JSON.stringify({
-              type: "meta",
+              type: 'meta',
               payload,
-              from: "host",
-            })
+              from: 'host',
+            }),
           );
         } catch (err) {
-          console.error("Meta to guest failed", err);
+          console.error('Meta to guest failed', err);
         }
       }
     } else {
@@ -547,19 +541,19 @@ async function handleWsMessage(event, { server, role, sessionId, env }) {
         try {
           state.host.send(
             JSON.stringify({
-              type: "meta",
+              type: 'meta',
               payload,
-              from: "guest",
-            })
+              from: 'guest',
+            }),
           );
         } catch (err) {
-          console.error("Meta to host failed", err);
+          console.error('Meta to host failed', err);
         }
       }
     }
 
     await logEvent(env, sessionId, {
-      kind: "meta",
+      kind: 'meta',
       actorUserId: msg.actorUserId || null,
       actorName: msg.actorName || null,
       payload,
@@ -570,15 +564,15 @@ async function handleWsMessage(event, { server, role, sessionId, env }) {
 
   server.send(
     JSON.stringify({
-      type: "error",
+      type: 'error',
       message: `Unknown message type: ${kind}`,
-    })
+    }),
   );
 }
 
 function handleWsClose({ server, role, sessionId }) {
   const state = getSessionState(sessionId);
-  if (role === "host") {
+  if (role === 'host') {
     if (state.host === server) {
       state.host = null;
     }
@@ -605,7 +599,7 @@ async function logEvent(env, sessionId, { kind, actorUserId, actorName, payload 
       session_id, ts, actor_user_id, actor_name, kind, payload
     )
     VALUES (?, ?, ?, ?, ?, ?)
-  `
+  `,
   )
     .bind(sessionId, ts, actorUserId || null, actorName || null, kind, payloadJson)
     .run();
@@ -633,6 +627,6 @@ function safeParseJson(str) {
 
 function buildWsUrl(request, sessionId, role, token) {
   const url = new URL(request.url);
-  const wsProto = url.protocol === "https:" ? "wss:" : "ws:";
+  const wsProto = url.protocol === 'https:' ? 'wss:' : 'ws:';
   return `${wsProto}//${url.host}/ws/live-session/${sessionId}?role=${role}&token=${token}`;
 }

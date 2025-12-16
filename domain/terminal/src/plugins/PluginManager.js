@@ -182,55 +182,55 @@ export class PluginManager {
 
     // Execute plugin-specific hook logic
     switch (pluginId) {
-    case 'git-enhanced':
-      return this.executeGitEnhancedHook(hook, data);
-    case 'docker-tools':
-      return this.executeDockerToolsHook(hook, data);
-    case 'vscode-integration':
-      return this.executeVSCodeIntegrationHook(hook, data);
-    default:
-      return null;
+      case 'git-enhanced':
+        return this.executeGitEnhancedHook(hook, data);
+      case 'docker-tools':
+        return this.executeDockerToolsHook(hook, data);
+      case 'vscode-integration':
+        return this.executeVSCodeIntegrationHook(hook, data);
+      default:
+        return null;
     }
   }
 
   executeGitEnhancedHook(hook, data) {
     switch (hook) {
-    case 'beforeCommand':
-      if (data.command.startsWith('git ')) {
-        return this.enhanceGitCommand(data.command);
-      }
-      break;
-    case 'afterCommand':
-      if (data.command.startsWith('git ')) {
-        return this.postProcessGitCommand(data);
-      }
-      break;
+      case 'beforeCommand':
+        if (data.command.startsWith('git ')) {
+          return this.enhanceGitCommand(data.command);
+        }
+        break;
+      case 'afterCommand':
+        if (data.command.startsWith('git ')) {
+          return this.postProcessGitCommand(data);
+        }
+        break;
     }
     return null;
   }
 
   executeDockerToolsHook(hook, data) {
     switch (hook) {
-    case 'beforeCommand':
-      if (data.command.startsWith('docker ')) {
-        return this.enhanceDockerCommand(data.command);
-      }
-      break;
-    case 'afterCommand':
-      if (data.command.startsWith('docker ')) {
-        return this.postProcessDockerCommand(data);
-      }
-      break;
+      case 'beforeCommand':
+        if (data.command.startsWith('docker ')) {
+          return this.enhanceDockerCommand(data.command);
+        }
+        break;
+      case 'afterCommand':
+        if (data.command.startsWith('docker ')) {
+          return this.postProcessDockerCommand(data);
+        }
+        break;
     }
     return null;
   }
 
   executeVSCodeIntegrationHook(hook, data) {
     switch (hook) {
-    case 'onTerminalReady':
-      return this.setupVSCodeIntegration();
-    case 'onUserAction':
-      return this.handleVSCodeUserAction(data);
+      case 'onTerminalReady':
+        return this.setupVSCodeIntegration();
+      case 'onUserAction':
+        return this.handleVSCodeUserAction(data);
     }
     return null;
   }

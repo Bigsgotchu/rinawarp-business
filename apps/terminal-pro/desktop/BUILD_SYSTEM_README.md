@@ -1,0 +1,180 @@
+# RinaWarp Terminal Pro - Build System
+
+This directory contains the complete build and distribution system for RinaWarp Terminal Pro desktop application.
+
+## Quick Start
+
+### 1. Load Environment Variables
+
+```bash
+# Option 1: Use the helper script
+./load-env.sh
+
+# Option 2: Export manually
+export FEEDS_ORIGIN="https://rinawarp-updates.pages.dev"
+export ARTIFACTS_ORIGIN="https://updates-worker.rinawarptech.workers.dev"
+```
+
+### 2. Check Environment Health
+
+```bash
+# From project root
+pnpm env:doctor:local
+```
+
+### 3. Build for All Platforms
+
+```bash
+cd apps/terminal-pro/desktop
+
+# Build individual platforms
+pnpm build:linux
+pnpm build:win
+pnpm build:mac
+
+# Build all platforms
+pnpm build:all
+```
+
+### 4. Complete Release Process
+
+```bash
+# One-shot release to R2 + Pages
+pnpm release:r2
+
+# This will:
+# 1. Build all platforms
+# 2. Upload artifacts to R2
+# 3. Generate update feeds
+# 4. Verify release integrity
+```
+
+## Build Scripts
+
+| Script        | Description                              |
+| ------------- | ---------------------------------------- |
+| `build:linux` | Build Linux AppImage (x64)               |
+| `build:win`   | Build Windows installer + blockmap (x64) |
+| `build:mac`   | Build macOS zip + dmg (x64, arm64)       |
+| `build:all`   | Build for all platforms                  |
+| `feeds:gen`   | Generate electron-updater feeds          |
+| `r2:sync`     | Upload artifacts to Cloudflare R2        |
+| `release:r2`  | Complete release process                 |
+
+## Environment Variables
+
+### Required for Local Development
+
+- `FEEDS_ORIGIN`: URL where update feeds are served (Pages)
+- `ARTIFACTS_ORIGIN`: URL where artifacts are served (R2 Worker)
+
+### Required for GitHub Actions
+
+See `.github/workflows/release-r2.yml` for complete list:
+
+- `CF_API_TOKEN`: Cloudflare API token
+- `CF_ACCOUNT_ID`: Cloudflare account ID
+- `CF_ZONE_ID`: Cloudflare zone ID
+- `RINAWARP_PUBKEY`: Code signing public key
+- `MAC_APPLE_ID`: Apple ID for notarization
+- `MAC_APPLE_ID_PASSWORD`: Apple ID password
+- `MAC_TEAM_ID`: Apple Developer Team ID
+- `WIN_CSC_LINK`: Windows code signing certificate link
+- `WIN_CSC_KEY_PASSWORD`: Windows cert key password
+- `NPM_AUTH_TOKEN`: NPM publish token
+- `SUPPORT_API_TOKEN`: Support system API token
+
+## Release Process
+
+### Local Testing
+
+```bash
+# 1. Build artifacts
+pnpm build:all
+
+# 2. Upload to R2 (requires Cloudflare credentials)
+pnpm r2:sync
+
+# 3. Generate feeds
+pnpm feeds:gen
+
+# 4. Verify release
+REQUIRED_PLATFORMS=linux,win,mac pnpm prepublish:verify
+```
+
+### Production Release
+
+1. **Trigger GitHub Action**: Go to Actions → "Release to R2 + Pages" → Run workflow
+2. **Specify Version**: Enter version number (e.g., "0.5.0")
+3. **Monitor Progress**: The workflow will:
+   - Build on Ubuntu, Windows, and macOS
+   - Upload all artifacts to R2
+   - Generate update feeds
+   - Deploy feeds to Pages
+   - Verify release integrity
+
+## Configuration Files
+
+- `electron-builder-config.js`: Electron Builder configuration
+- `scripts/generate-feeds.cjs`: Feed generation script
+- `scripts/r2-sync.cjs`: R2 upload script
+- `.env`: Local environment variables
+- `required-env.json`: Environment requirements specification
+- `.github/workflows/release-r2.yml`: CI/CD pipeline
+
+## Artifacts Generated
+
+After build, the `dist/` directory contains:
+
+### Windows
+
+- `RinaWarp-Terminal-Pro-{version}-win-x64.exe`
+- `RinaWarp-Terminal-Pro-{version}-win-x64.exe.blockmap`
+
+### macOS
+
+- `RinaWarp-Terminal-Pro-{version}-mac-x64.zip`
+- `RinaWarp-Terminal-Pro-{version}-mac-arm64.zip`
+- `RinaWarp-Terminal-Pro-{version}-mac-x64.dmg`
+- `RinaWarp-Terminal-Pro-{version}-mac-arm64.dmg`
+
+### Linux
+
+- `RinaWarp-Terminal-Pro-{version}-linux-x64.AppImage`
+
+### Feeds
+
+- `dist/updates/stable/latest.yml` (Windows)
+- `dist/updates/stable/latest-mac.yml` (macOS)
+- `dist/updates/stable/latest-linux.yml` (Linux)
+
+## Success Criteria
+
+✅ All platform builds complete successfully  
+✅ R2 uploads artifacts to `releases/{version}/`  
+✅ Pages serves feeds from `/stable/`  
+✅ Verifier confirms all platforms available  
+✅ Auto-update works in application
+
+## Troubleshooting
+
+### Build Issues
+
+- Ensure Node.js 20+ and pnpm 9+ are installed
+- Run `pnpm rebuild` if native modules fail
+- Check that all environment variables are set
+
+### Upload Issues
+
+- Verify Cloudflare API token has R2 permissions
+- Ensure R2 bucket `rinawarp-updates` exists
+- Check that `CF_ACCOUNT_ID` is correct
+
+### Feed Issues
+
+- Verify `FEEDS_ORIGIN` points to Pages deployment
+- Verify `ARTIFACTS_ORIGIN` points to R2 Worker
+- Ensure feeds have correct MIME types:
+  - `content-type: text/yaml; charset=utf-8`
+  - `cache-control: no-store`
+  - `x-content-type-options: nosniff`

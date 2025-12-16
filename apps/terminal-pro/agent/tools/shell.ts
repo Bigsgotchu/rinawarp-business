@@ -1,6 +1,6 @@
-import { spawn } from "child_process";
-import { stateManager } from "../state";
-import { markUserIntent } from "../session/sessionState";
+import { spawn } from 'child_process';
+import { stateManager } from '../state';
+import { markUserIntent } from '../session/sessionState';
 
 export function runShell({ command, cwd }: any) {
   // Update working directory in state
@@ -13,35 +13,35 @@ export function runShell({ command, cwd }: any) {
 
   const proc = spawn(command, {
     cwd: cwd || stateManager.getWorkingDirectory() || process.cwd(),
-    shell: true
+    shell: true,
   });
 
   markUserIntent();
 
-  proc.stdout.on("data", (data) => {
+  proc.stdout.on('data', (data) => {
     process.send?.({
-      type: "shell:stdout",
+      type: 'shell:stdout',
       data: data.toString(),
     });
   });
 
-  proc.stderr.on("data", (data) => {
+  proc.stderr.on('data', (data) => {
     process.send?.({
-      type: "shell:stderr",
+      type: 'shell:stderr',
       data: data.toString(),
     });
   });
 
-  proc.on("exit", (code) => {
+  proc.on('exit', (code) => {
     process.send?.({
-      type: "shell:exit",
+      type: 'shell:exit',
       code,
     });
   });
 
-  proc.on("error", (err) => {
+  proc.on('error', (err) => {
     process.send?.({
-      type: "shell:error",
+      type: 'shell:error',
       error: err.message,
     });
   });

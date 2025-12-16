@@ -14,7 +14,7 @@ export async function updateLicensePlan(licenseKey, licenseData) {
   licenses[licenseKey] = {
     ...licenseData,
     updatedAt: new Date().toISOString(),
-    licenseKey
+    licenseKey,
   };
 
   return licenses[licenseKey];
@@ -30,7 +30,7 @@ export const saveProcessedEvent = {
   store: async (eventId) => {
     processedEvents.add(eventId);
     return true;
-  }
+  },
 };
 
 // Mock function to simulate real database operations

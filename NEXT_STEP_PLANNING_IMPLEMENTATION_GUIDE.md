@@ -16,20 +16,21 @@ I've implemented four major components:
 ### 1. Agent Integration
 
 #### Update Agent Entry Point
+
 ```typescript
 // apps/terminal-pro/agent/index-enhanced.ts
-import { setupSupervisor } from "./supervisor";
-import { handleMessage } from "./protocol-nextstep"; // Use enhanced protocol
+import { setupSupervisor } from './supervisor';
+import { handleMessage } from './protocol-nextstep'; // Use enhanced protocol
 
-console.log("[RinaAgent] Enhanced version with next step planning starting…");
+console.log('[RinaAgent] Enhanced version with next step planning starting…');
 
-process.on("message", async (msg) => {
+process.on('message', async (msg) => {
   try {
     await handleMessage(msg);
   } catch (err) {
-    console.error("[RinaAgent] Error handling message:", err);
+    console.error('[RinaAgent] Error handling message:', err);
     process.send?.({
-      type: "agent:error",
+      type: 'agent:error',
       error: String(err),
     });
   }
@@ -38,26 +39,27 @@ process.on("message", async (msg) => {
 setupSupervisor();
 
 process.send?.({
-  type: "agent:ready",
+  type: 'agent:ready',
   pid: process.pid,
-  version: "enhanced-with-planning",
+  version: 'enhanced-with-planning',
   tools: [
-    "shell",
-    "ai", 
-    "process",
-    "network",
-    "system",
-    "fs",
-    "git",
-    "planning" // New planning tool
-  ]
+    'shell',
+    'ai',
+    'process',
+    'network',
+    'system',
+    'fs',
+    'git',
+    'planning', // New planning tool
+  ],
 });
 ```
 
 #### Enhanced Shell Tool Integration
+
 ```typescript
 // Update apps/terminal-pro/agent/tools/shell.ts
-import { stateManager } from "../state-enhanced"; // Use enhanced state
+import { stateManager } from '../state-enhanced'; // Use enhanced state
 
 export function runShell({ command, cwd }: any) {
   // Update working directory in enhanced state
@@ -69,42 +71,42 @@ export function runShell({ command, cwd }: any) {
   const startTime = Date.now();
   stateManager.setLastCommand(command);
 
-  const proc = spawn(command, { 
-    cwd: cwd || stateManager.getWorkingDirectory() || process.cwd(), 
-    shell: true 
+  const proc = spawn(command, {
+    cwd: cwd || stateManager.getWorkingDirectory() || process.cwd(),
+    shell: true,
   });
 
-  let stdoutData = "";
-  let stderrData = "";
+  let stdoutData = '';
+  let stderrData = '';
 
-  proc.stdout.on("data", (data) => {
+  proc.stdout.on('data', (data) => {
     stdoutData += data.toString();
     process.send?.({
-      type: "shell:stdout",
+      type: 'shell:stdout',
       data: data.toString(),
     });
   });
 
-  proc.stderr.on("data", (data) => {
+  proc.stderr.on('data', (data) => {
     stderrData += data.toString();
     process.send?.({
-      type: "shell:stderr",
+      type: 'shell:stderr',
       data: data.toString(),
     });
   });
 
-  proc.on("exit", (code) => {
+  proc.on('exit', (code) => {
     const durationMs = Date.now() - startTime;
-    
+
     // Store shell event for planning heuristics
     stateManager.setLastShellEvent({
       cmd: command,
       exitCode: code || 0,
       stdoutTail: stdoutData.slice(-500), // Last 500 chars
       stderrTail: stderrData.slice(-500),
-      durationMs
+      durationMs,
     });
-    
+
     // Track npm commands specifically
     if (command.includes('npm')) {
       stateManager.setLastNpmCommand(command);
@@ -112,7 +114,7 @@ export function runShell({ command, cwd }: any) {
     }
 
     process.send?.({
-      type: "shell:exit",
+      type: 'shell:exit',
       code,
     });
   });
@@ -122,6 +124,7 @@ export function runShell({ command, cwd }: any) {
 ### 2. Frontend Integration
 
 #### Command Line Component
+
 ```typescript
 // apps/terminal-pro/desktop/src/renderer/components/CommandLine.tsx
 import { attachGhostText } from './GhostTextRenderer';
@@ -129,10 +132,10 @@ import { attachGhostText } from './GhostTextRenderer';
 export function CommandLine() {
   const [command, setCommand] = useState('');
   const [suggestion, setSuggestion] = useState('');
-  
+
   const inputRef = useRef<HTMLInputElement>(null);
   const ghostLayerRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     if (!inputRef.current || !ghostLayerRef.current) return;
 
@@ -145,7 +148,7 @@ export function CommandLine() {
           type: 'planning:nextStep',
           context: { prefix: command }
         });
-        
+
         return result?.nextStep?.acceptText || '';
       },
       onAccept: (fullText) => {
@@ -173,7 +176,7 @@ export function CommandLine() {
           placeholder="Type a command..."
           className="command-input"
         />
-        <div 
+        <div
           ref={ghostLayerRef}
           className="ghost-layer"
           aria-hidden="true"
@@ -185,6 +188,7 @@ export function CommandLine() {
 ```
 
 #### CSS Styles
+
 ```css
 /* apps/terminal-pro/desktop/src/renderer/styles/ghost-text.css */
 .cmdline {
@@ -226,6 +230,7 @@ export function CommandLine() {
 ### 3. API Integration
 
 #### Main Process Bridge
+
 ```javascript
 // apps/terminal-pro/desktop/src/shared/preload.js
 const { contextBridge, ipcRenderer } = require('electron');
@@ -234,11 +239,12 @@ contextBridge.exposeInMainWorld('rinaAgent', {
   sendMessage: (message) => ipcRenderer.invoke('agent:message', message),
   on: (event, callback) => ipcRenderer.on(event, callback),
   runShell: (params) => ipcRenderer.invoke('shell:run', params),
-  getNextStep: (context) => ipcRenderer.invoke('planning:nextStep', context)
+  getNextStep: (context) => ipcRenderer.invoke('planning:nextStep', context),
 });
 ```
 
 #### Main Process Handler
+
 ```javascript
 // apps/terminal-pro/desktop/src/main/main.js
 const { ipcMain } = require('electron');
@@ -249,7 +255,7 @@ ipcMain.handle('planning:nextStep', async (event, context) => {
     // Forward to agent process
     const result = await agentProcess.sendMessage({
       type: 'planning:nextStep',
-      context
+      context,
     });
     return result;
   } catch (error) {
@@ -282,6 +288,7 @@ docs/
 ## 🎯 Key Features Implemented
 
 ### 1. planNextStep() Heuristics
+
 - **Error Detection**: Common Node/Electron errors (whenReady, EADDRINUSE, MODULE_NOT_FOUND)
 - **Build/Test Failures**: Automatically suggests fixes for failed builds
 - **Git Workflows**: Handles dirty repos, ahead/behind branches
@@ -289,6 +296,7 @@ docs/
 - **Agent Health**: Monitors crashes and suggests recovery steps
 
 ### 2. Ghost-Text Renderer
+
 - **Tab to Accept**: Standard UX pattern for accepting suggestions
 - **Esc to Dismiss**: Clear dismissal mechanism
 - **Debounced Updates**: 120ms debounce for performance
@@ -296,23 +304,25 @@ docs/
 - **Production Safe**: No external dependencies, minimal footprint
 
 ### 3. Tool Registry Integration
+
 ```typescript
 // Example of adding planning tool to existing registry
-import { registerTool } from "./tools/registry";
+import { registerTool } from './tools/registry';
 
 registerTool({
-  name: "planning",
-  description: "Next step planning heuristics",
+  name: 'planning',
+  description: 'Next step planning heuristics',
   handler: async (ctx) => {
     const context = await buildPlanningContext();
     return planNextStep(context);
-  }
+  },
 });
 ```
 
 ## 🧪 Testing
 
 ### Unit Tests
+
 ```typescript
 // test/planNextStep.test.ts
 import { planNextStep } from '../agent/planNextStep';
@@ -323,11 +333,11 @@ describe('planNextStep heuristics', () => {
       lastShell: {
         cmd: 'npm run build',
         exitCode: 1,
-        stderrTail: 'Cannot find module express'
+        stderrTail: 'Cannot find module express',
       },
-      node: { hasPackageJson: true }
+      node: { hasPackageJson: true },
     });
-    
+
     expect(result.kind).toBe('suggestion');
     expect(result.acceptText).toBe('npm install');
   });
@@ -335,6 +345,7 @@ describe('planNextStep heuristics', () => {
 ```
 
 ### Integration Tests
+
 ```javascript
 // test/ghost-text-integration.js
 const { attachGhostText } = require('../desktop/src/renderer/components/GhostTextRenderer');
@@ -342,16 +353,16 @@ const { attachGhostText } = require('../desktop/src/renderer/components/GhostTex
 test('ghost text accepts with Tab', () => {
   const input = document.createElement('input');
   const layer = document.createElement('div');
-  
+
   const ghost = attachGhostText({
     inputEl: input,
     ghostLayerEl: layer,
-    getSuggestion: () => 'npm run dev'
+    getSuggestion: () => 'npm run dev',
   });
-  
+
   input.value = 'npm';
   input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
-  
+
   expect(input.value).toBe('npm run dev');
 });
 ```
@@ -359,6 +370,7 @@ test('ghost text accepts with Tab', () => {
 ## 🚀 Deployment
 
 ### Development
+
 ```bash
 # Start Terminal Pro with enhanced agent
 cd apps/terminal-pro/desktop
@@ -368,6 +380,7 @@ npm start
 ```
 
 ### Production Build
+
 ```bash
 # Build desktop app
 cd apps/terminal-pro/desktop
@@ -386,6 +399,7 @@ npm run build
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```bash
 # Agent configuration
 RINA_AGENT_PLANNING_ENABLED=true
@@ -397,6 +411,7 @@ RINA_GHOST_TEXT_ENABLED=true
 ```
 
 ### User Preferences
+
 ```typescript
 // Stored in localStorage
 interface UserPreferences {
@@ -426,6 +441,7 @@ interface UserPreferences {
 ## 📞 Support
 
 For implementation questions:
+
 1. Check the code comments in each file
 2. Review the test examples for usage patterns
 3. Open issues in the project repository

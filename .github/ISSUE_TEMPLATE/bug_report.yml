@@ -1,0 +1,45 @@
+name: "🐛 Bug report"
+description: Report a problem with the app or build pipeline
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before filing:** run `pnpm healthcheck` and attach `.debug/healthcheck.json`.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Clear, concise description of the bug.
+      placeholder: |
+        Steps to reproduce:
+        1. ...
+        Expected:
+        Actual:
+    validations:
+      required: true
+  - type: textarea
+    id: healthcheck
+    attributes:
+      label: Paste healthcheck summary (optional)
+      description: Paste the contents of `.debug/healthcheck.json` or attach the file.
+      render: json
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      placeholder: e.g. 1.2.3
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      options:
+        - macOS
+        - Windows
+        - Linux
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste any stack traces or CI logs.
+      render: text
