@@ -9,31 +9,104 @@
     "dev": "cross-env NODE_ENV=development sh -c 'unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && node ./scripts/preflight.js && ./node_modules/.bin/electron .'",
     "start": "sh -c 'unset ELECTRON_RUN_AS_NODE 2>/dev/null || set ELECTRON_RUN_AS_NODE= && ./node_modules/.bin/electron .'",
     "build": "electron-builder -mwl",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "build:win": "electron-builder --win --x64 --config electron-builder-config.js",
+    "build:mac": "electron-builder --mac --x64 --arm64 --config electron-builder-config.js",
+    "build:linux": "electron-builder --linux --x64 --config electron-builder-config.js",
+    "build:all": "pnpm build:linux && pnpm build:win && pnpm build:mac",
+    "feeds:gen": "node ./scripts/generate-feeds.cjs",
+    "r2:sync": "node ./scripts/r2-sync.cjs",
+    "release:r2": "pnpm build:all && pnpm r2:sync && pnpm feeds:gen && pnpm prepublish:verify",
+    "postinstall": "electron-builder install-app-deps -m",
+    "rebuild": "electron-rebuild -f -w node-pty",
+    "electron:abi": "node -e \"console.log(process.versions.electron, process.versions.modules)\"",
+    "prepack": "pnpm rebuild && pnpm lint && pnpm test",
     "test": "vitest run",
     "test:ui": "playwright test",
-    "lint": "node ./scripts/lint.js || true",
-    "release:prod": "bash ./scripts/smoke.sh && bash ./scripts/audit.sh && ./scripts/release-r2.sh $VERSION && wrangler pages deploy ../site/public --project-name=rinawarptech --branch=prod && bash ./scripts/pages-verify.sh https://rinawarptech.com"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix && prettier -w .",
+    "smoke:security": "grep -R \"\\b(require\\(|process\\.|from 'electron'|from \\\"electron\\\")\\b\" src/renderer && echo 'Found disallowed usage' && exit 1 || echo 'Renderer clean ✅'",
+    "preflight": "node ./scripts/preflight.js",
+    "monitor": "node ./scripts/post-release-monitor.js",
+    "monitor:check": "node ./scripts/post-release-monitor.js --check",
+    "monitor:health": "node ./scripts/post-release-monitor.js --health",
+    "prepublish": "pnpm smoke:security && pnpm test tests/security.test.js && pnpm test:ui && pnpm prepack",
+    "prepublish:guard": "node ./scripts/pre-publish-guard.js",
+    "prepublish:hash": "node ./scripts/pre-publish-guard-hash.js",
+    "prepublish:feeds": "node ./scripts/validate-feeds.js",
+    "prepublish:verify": "node ./scripts/prepublish-verify.js",
+    "prepublish:verify:linux": "REQUIRED_PLATFORMS=linux node ./scripts/prepublish-verify.js",
+    "prepublish:verify:prod": "FEEDS_ORIGIN=https://rinawarptech.pages.dev ARTIFACTS_ORIGIN=https://rinawarp-updates.rinawarptech.workers.dev node ./scripts/prepublish-verify.js",
+    "prepublish:verify:individual": "pnpm prepublish:guard && pnpm prepublish:hash && pnpm prepublish:feeds",
+    "prepublish:signatures": "node ./scripts/verify-signatures.js",
+    "prepublish:version": "node ./scripts/check-monotonic-version.js",
+    "prepublish:blockmap": "node ./scripts/verify-blockmap.js",
+    "prepublish:signing": "node ./scripts/verify-signing.js",
+    "prepublish:provenance": "node ./scripts/verify-provenance.js",
+    "sbom": "node ./scripts/generate-sbom.js",
+    "release:checklist": "node ./scripts/release-checklist.js",
+    "build:all": "electron-builder -l AppImage --publish never",
+    "release:stage": "node scripts/prepare-updates-tree.js",
+    "deploy:pages": "wrangler pages deploy dist/updates/stable --project-name=rinawarp-updates --branch=production",
+    "release:pages": "pnpm build:all && pnpm release:stage && pnpm sbom && pnpm release:checklist && pnpm prepublish:verify && pnpm deploy:pages",
+    "release:prod": "bash ./scripts/smoke.sh && bash ./scripts/audit.sh && ./scripts/release-r2.sh $VERSION && wrangler pages deploy ../site/public --project-name=rinawarptech --branch=prod && bash ./scripts/pages-verify.sh https://rinawarptech.com",
+    "cache:purge": "node ./scripts/cache-purge.js",
+    "worker:deploy": "wrangler deploy",
+    "release:atomic": "pnpm build:all && pnpm release:stage && pnpm prepublish:verify && pnpm deploy:pages && pnpm cache:purge",
+    "smoke:test": "bash ./scripts/go-live-smoke-test.sh",
+    "electron:heal": "ELECTRON_CACHE=\"${PWD}/.cache/electron\" pnpm install --force && pnpm exec electron-rebuild -f -w node-pty"
   },
   "dependencies": {
     "electron-store": "^8.2.0",
     "electron-updater": "^6.3.9",
+    "node-pty": "^1.0.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0",
+    "xterm-addon-search": "^0.13.0",
+    "xterm-addon-unicode11": "^0.6.0",
+    "xterm-addon-web-links": "^0.9.0",
     "yaml": "^2.6.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "archiver": "^7.0.1",
     "cross-env": "^7.0.3",
-    "electron": "^31.7.0",
+    "electron": "20.3.12",
     "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.6.0",
+    "eslint-plugin-security": "^2.1.0",
+    "eslint-plugin-security-node": "^1.1.0",
+    "execa": "^5.1.1",
+    "globals": "^15.11.0",
+    "mime": "^4.0.4",
     "node-fetch": "^3.3.2",
     "playwright": "^1.48.2",
+    "prettier": "^3.3.3",
     "vitest": "^2.0.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "electron": "20.3.12",
+      "node-pty": "1.0.0"
+    }
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
   },
   "build": {
     "publish": [
       {
-        "provider": "github",
-        "owner": "rinawarptech",
-        "repo": "terminal-pro"
+        "provider": "generic",
+        "url": "https://updates.rinawarp.dev/stable"
       }
     ],
     "artifactName": "${productName}-${version}-${arch}.${ext}",
@@ -60,8 +133,7 @@
       "target": [
         "nsis",
         "zip"
-      ],
-      "publisherName": "Your Company"
+      ]
     },
     "linux": {
       "target": [
@@ -74,5 +146,8 @@
     "directories": {
       "buildResources": "build"
     }
+  },
+  "overrides": {
+    "eslint": "^9.13.0"
   }
 }

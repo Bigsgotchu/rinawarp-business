@@ -6,6 +6,7 @@
     "dev": "wrangler dev",
     "build": "vite build --config vite.website.config.js",
     "deploy": "wrangler deploy",
+    "pages:deploy": "wrangler pages deploy ./dist/updates --project-name rinawarptech",
     "db:migrate": "wrangler d1 execute licenses --file=d1-schema.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
