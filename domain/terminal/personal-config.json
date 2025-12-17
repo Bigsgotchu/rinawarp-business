@@ -1,0 +1,30 @@
+{
+  "license": {
+    "type": "Personal Lifetime (Unlocked)",
+    "key": "RINAWARP-PERSONAL-LIFETIME-001",
+    "features": [
+      "Unlimited AI requests",
+      "Voice control and TTS",
+      "All premium themes",
+      "Advanced commands",
+      "Priority support",
+      "Data export capabilities",
+      "Full API access",
+      "Custom integrations",
+      "Lifetime access",
+      "All premium features"
+    ]
+  },
+  "environment": {
+    "mode": "personal",
+    "development": true,
+    "unlocked": true,
+    "features": "all"
+  },
+  "workspace": {
+    "type": "personal",
+    "setup": "complete",
+    "access": "full",
+    "restrictions": "none"
+  }
+}

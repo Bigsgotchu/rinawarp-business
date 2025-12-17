@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RinaWarp Terminal Pro - Downloads</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        color: white;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .header h1 {
+        font-size: 3rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .download-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+      .download-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+      .download-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(102, 126, 234, 0.5);
+      }
+      .download-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+      .download-card p {
+        color: #a0a0a0;
+        margin-bottom: 20px;
+      }
+      .btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+      .status {
+        background: #2ecc71;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🧜‍♀️ RinaWarp Terminal Pro</h1>
+        <p>Download for your platform</p>
+      </div>
+
+      <div class="status">✅ Downloads are now working! All files have been uploaded to S3.</div>
+
+      <div class="download-grid">
+        <div class="download-card">
+          <h3>🖥️ macOS</h3>
+          <p>Native macOS application bundle</p>
+          <a
+            href="https://rinawarp-downloads.s3.amazonaws.com/macos/RinaWarp Terminal Pro.app"
+            class="btn"
+            download
+            >Download for macOS</a
+          >
+        </div>
+
+        <div class="download-card">
+          <h3>🪟 Windows</h3>
+          <p>Windows web application package</p>
+          <a
+            href="https://rinawarp-downloads.s3.amazonaws.com/windows/dist/index.html"
+            class="btn"
+            target="_blank"
+            >Open Windows App</a
+          >
+        </div>
+
+        <div class="download-card">
+          <h3>🐧 Linux</h3>
+          <p>Linux web application package</p>
+          <a
+            href="https://rinawarp-downloads.s3.amazonaws.com/linux/dist/index.html"
+            class="btn"
+            target="_blank"
+            >Open Linux App</a
+          >
+        </div>
+
+        <div class="download-card">
+          <h3>🌐 Web App</h3>
+          <p>Run in your browser</p>
+          <a
+            href="https://rinawarp-downloads.s3.amazonaws.com/web/dist/index.html"
+            class="btn"
+            target="_blank"
+            >Open Web App</a
+          >
+        </div>
+      </div>
+
+      <div
+        style="
+          text-align: center;
+          margin-top: 40px;
+          padding: 20px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 15px;
+        "
+      >
+        <h2>💰 Pricing & Payment</h2>
+        <p>Choose your plan and start using RinaWarp Terminal Pro</p>
+        <a
+          href="https://d2sy53x39vfp1b.cloudfront.net/pricing.html"
+          class="btn"
+          style="margin-top: 20px"
+          >View Pricing Plans</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

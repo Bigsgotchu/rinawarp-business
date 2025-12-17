@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Downloads - RinaWarp Terminal Pro</title>
+    <!-- GA4: RinaWarp main property -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SZK23HMCVP', {
+        send_page_view: true
+      });
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div>RinaWarp</div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/contact">Support</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>📥 Download RinaWarp Terminal Pro</h1>
+      <p>Get the AI-powered terminal that revolutionizes your development workflow.</p>
+
+      <div id="download-section" style="margin-top: 3rem">
+        <div
+          style="
+            background: #111;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid #222;
+            margin: 2rem auto;
+            max-width: 600px;
+          "
+        >
+          <h2 style="color: var(--teal); margin-bottom: 1rem">🚀 Ready to Download?</h2>
+          <p style="margin-bottom: 1.5rem">
+            First, activate your license to unlock all Pro features.
+          </p>
+
+          <div style="text-align: center">
+            <a href="/activate" class="btn btn-primary">Activate License</a>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc">
+              Don't have a license? <a href="/#pricing" style="color: var(--teal)">Get one here</a>
+            </p>
+          </div>
+        </div>
+
+        <div
+          style="
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid #222;
+            margin: 2rem auto;
+            max-width: 600px;
+          "
+        >
+          <h3 style="color: var(--pink)">📋 System Requirements</h3>
+          <ul style="text-align: left; max-width: 400px; margin: 0 auto; color: #ccc">
+            <li>✅ macOS 10.15+ / Windows 10+ / Linux (Ubuntu 18.04+)</li>
+            <li>✅ 4GB RAM minimum (8GB recommended)</li>
+            <li>✅ 500MB free disk space</li>
+            <li>✅ Internet connection for AI features</li>
+          </ul>
+        </div>
+
+        <div
+          style="
+            background: #111;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid #222;
+            margin: 2rem auto;
+            max-width: 600px;
+          "
+        >
+          <h3 style="color: var(--teal)">🎯 Pro Features Unlocked</h3>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+              gap: 1rem;
+              margin-top: 1rem;
+            "
+          >
+            <div style="text-align: center">
+              <div style="font-size: 2rem; margin-bottom: 0.5rem">🎤</div>
+              <strong>Voice Control</strong>
+              <p style="font-size: 0.9rem; color: #ccc">Natural language commands</p>
+            </div>
+            <div style="text-align: center">
+              <div style="font-size: 2rem; margin-bottom: 0.5rem">🤖</div>
+              <strong>AI Intelligence</strong>
+              <p style="font-size: 0.9rem; color: #ccc">Smart code suggestions</p>
+            </div>
+            <div style="text-align: center">
+              <div style="font-size: 2rem; margin-bottom: 0.5rem">🔗</div>
+              <strong>Plugin Ecosystem</strong>
+              <p style="font-size: 0.9rem; color: #ccc">Extensible architecture</p>
+            </div>
+            <div style="text-align: center">
+              <div style="font-size: 2rem; margin-bottom: 0.5rem">📊</div>
+              <strong>Advanced Analytics</strong>
+              <p style="font-size: 0.9rem; color: #ccc">Usage insights & reporting</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 RinaWarp Technologies LLC. All rights reserved.</p>
+      <p>
+        <a href="/terms">Terms of Service</a> • <a href="/privacy">Privacy Policy</a> •
+        <a href="/refunds">Refund Policy</a> •
+        <a href="/contact">Contact</a>
+      </p>
+    </footer>
+
+    <script>
+      // Check if user has activated license and show downloads
+      document.addEventListener('DOMContentLoaded', function () {
+        const license = localStorage.getItem('rina_license');
+        const email = localStorage.getItem('rina_email');
+        const plan = localStorage.getItem('rina_plan');
+
+        if (license && email && plan) {
+          // User has activated license, show download options
+          document.getElementById('download-section').innerHTML = `
+          <div style="background: var(--teal); color: var(--black); padding: 2rem; border-radius: 16px; margin: 2rem auto; max-width: 600px;">
+            <h2 style="margin-bottom: 1rem;">🎉 License Activated!</h2>
+            <p style="margin-bottom: 1.5rem;">Welcome ${email}! Your ${plan} plan is ready.</p>
+
+            <div style="text-align: center;">
+              <a href="https://github.com/RinaWarp-Terminal/RinaWarp-Terminal-Pro/releases/download/v1.0.0/RinaWarp-Terminal-Pro-1.0.0.dmg"
+                 class="btn btn-primary"
+                 style="background: var(--pink); color: white; margin: 0.5rem; display: inline-block;">
+                🍎 Download for macOS
+              </a>
+              <a href="https://github.com/RinaWarp-Terminal/RinaWarp-Terminal-Pro/releases/download/v1.0.0/RinaWarp-Terminal-Pro-Setup-1.0.0.exe"
+                 class="btn btn-primary"
+                 style="background: var(--blue); color: white; margin: 0.5rem; display: inline-block;">
+                🪟 Download for Windows
+              </a>
+              <a href="https://github.com/RinaWarp-Terminal/RinaWarp-Terminal-Pro/releases/download/v1.0.0/rinawarp-terminal-pro_1.0.0_amd64.deb"
+                 class="btn btn-primary"
+                 style="background: var(--coral); color: white; margin: 0.5rem; display: inline-block;">
+                🐧 Download for Linux
+              </a>
+            </div>
+
+            <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+              Your license (${license}) is stored securely and will activate automatically when you first run the app.
+            </p>
+
+            <div style="margin-top: 2rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+              <h4 style="color: var(--pink); margin-bottom: 0.5rem;">📝 Installation Instructions:</h4>
+              <ol style="color: #ccc; text-align: left;">
+                <li>Download the appropriate file for your operating system</li>
+                <li>Run the installer and follow the setup wizard</li>
+                <li>Launch RinaWarp Terminal Pro</li>
+                <li>Your license will activate automatically on first run</li>
+              </ol>
+            </div>
+          </div>
+        `;
+        } else {
+          // User hasn't activated license yet
+          console.log('No activated license found, showing activation prompt');
+        }
+      });
+
+      // Track download clicks for analytics
+      function trackDownload(platform) {
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'download', {
+            event_category: 'Software',
+            event_label: platform,
+            value: 1,
+          });
+        }
+        console.log(`Download tracked: ${platform}`);
+      }
+
+      // Add download tracking when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function () {
+        const downloadLinks = document.querySelectorAll('a[href*="download"]');
+        downloadLinks.forEach((link) => {
+          link.addEventListener('click', function () {
+            const href = this.getAttribute('href');
+            if (href.includes('.dmg')) trackDownload('macOS');
+            else if (href.includes('.exe')) trackDownload('Windows');
+            else if (href.includes('.deb')) trackDownload('Linux');
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

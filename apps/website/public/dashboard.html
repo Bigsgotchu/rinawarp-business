@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RinaWarp License Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        color: #fff;
+        margin-top: 2rem;
+        background: #111;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      thead {
+        background: #222;
+      }
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #333;
+      }
+      th {
+        color: var(--teal);
+        font-weight: 600;
+      }
+      .status-active {
+        color: var(--teal);
+      }
+      .status-pending {
+        color: var(--pink);
+      }
+      .refresh-btn {
+        background: var(--teal);
+        color: var(--black);
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>RinaWarp</div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/contact">Support</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>📊 RinaWarp License Dashboard</h1>
+      <p>Real-time view of all active licenses and subscriptions.</p>
+
+      <button class="refresh-btn" onclick="loadLicenses()">🔄 Refresh Data</button>
+
+      <div
+        id="stats"
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1rem;
+          margin: 2rem 0;
+        "
+      >
+        <div style="background: #111; padding: 1.5rem; border-radius: 8px; text-align: center">
+          <h3 style="color: var(--teal); margin-bottom: 0.5rem" id="total-licenses">0</h3>
+          <p>Total Licenses</p>
+        </div>
+        <div style="background: #111; padding: 1.5rem; border-radius: 8px; text-align: center">
+          <h3 style="color: var(--pink); margin-bottom: 0.5rem" id="active-licenses">0</h3>
+          <p>Active Licenses</p>
+        </div>
+        <div style="background: #111; padding: 1.5rem; border-radius: 8px; text-align: center">
+          <h3 style="color: var(--blue); margin-bottom: 0.5rem" id="pending-licenses">0</h3>
+          <p>Pending Activation</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>License Key</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Activated</th>
+          </tr>
+        </thead>
+        <tbody id="licenseTable">
+          <tr>
+            <td colspan="6" style="text-align: center; color: #ccc">Loading licenses...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      <p>© 2025 RinaWarp Technologies LLC. All rights reserved.</p>
+      <p>
+        <a href="/terms">Terms of Service</a> • <a href="/privacy">Privacy Policy</a> •
+        <a href="/contact">Contact</a>
+      </p>
+    </footer>
+
+    <script>
+      async function loadLicenses() {
+        try {
+          const res = await fetch('https://api.rinawarptech.com/dashboard/licenses');
+          const data = await res.json();
+
+          const table = document.getElementById('licenseTable');
+          const totalEl = document.getElementById('total-licenses');
+          const activeEl = document.getElementById('active-licenses');
+          const pendingEl = document.getElementById('pending-licenses');
+
+          if (data.length === 0) {
+            table.innerHTML =
+              '<tr><td colspan="6" style="text-align: center; color: #ccc;">No licenses found</td></tr>';
+            totalEl.textContent = '0';
+            activeEl.textContent = '0';
+            pendingEl.textContent = '0';
+            return;
+          }
+
+          const activatedCount = data.filter((l) => l.activated).length;
+          const pendingCount = data.filter((l) => !l.activated).length;
+
+          totalEl.textContent = data.length;
+          activeEl.textContent = activatedCount;
+          pendingEl.textContent = pendingCount;
+
+          table.innerHTML = data
+            .map(
+              (license) => `
+          <tr>
+            <td>${license.email}</td>
+            <td>${license.plan}</td>
+            <td><code style="background: #000; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">${license.licenseKey}</code></td>
+            <td><span class="status-${license.activated ? 'active' : 'pending'}">${license.activated ? '✅ Activated' : '⏳ Pending'}</span></td>
+            <td>${new Date(license.createdAt).toLocaleDateString()}</td>
+            <td>${license.activated ? new Date(license.activatedAt).toLocaleDateString() : 'Not yet'}</td>
+          </tr>
+        `,
+            )
+            .join('');
+        } catch (error) {
+          console.error('Error loading licenses:', error);
+          document.getElementById('licenseTable').innerHTML =
+            '<tr><td colspan="6" style="text-align: center; color: var(--coral);">Error loading licenses</td></tr>';
+        }
+      }
+
+      // Load licenses on page load
+      document.addEventListener('DOMContentLoaded', loadLicenses);
+
+      // Auto-refresh every 30 seconds
+      setInterval(loadLicenses, 30000);
+    </script>
+
+  </body>
+</html>

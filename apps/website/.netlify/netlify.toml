@@ -1,0 +1,239 @@
+headersOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/home/karina/Documents/rinawarp-business/apps/website/dist-website"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "/home/karina/Documents/rinawarp-business/apps/website"
+command = "npm run build"
+
+[build.environment]
+NODE_VERSION = "20"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[headers]]
+for = "/*.css:"
+
+[headers.values]
+"- Content-Type" = "text/css"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.js:"
+
+[headers.values]
+"- Content-Type" = "application/javascript"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.js:"
+
+[headers.values]
+"- Content-Type" = "application/javascript"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.css:"
+
+[headers.values]
+"- Content-Type" = "text/css"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.html:"
+
+[headers.values]
+"- Content-Type" = "text/html"
+"- Cache-Control" = "public, max-age=300"
+
+[[headers]]
+for = "/*.woff2:"
+
+[headers.values]
+"- Content-Type" = "font/woff2"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.png:"
+
+[headers.values]
+"- Content-Type" = "image/png"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.jpg:"
+
+[headers.values]
+"- Content-Type" = "image/jpeg"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.svg:"
+
+[headers.values]
+"- Content-Type" = "image/svg+xml"
+"- Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.AppImage:"
+
+[headers.values]
+"- Content-Type" = "application/octet-stream"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.deb:"
+
+[headers.values]
+"- Content-Type" = "application/vnd.debian.binary-package"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.rpm:"
+
+[headers.values]
+"- Content-Type" = "application/x-rpm"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.dmg:"
+
+[headers.values]
+"- Content-Type" = "application/x-apple-diskimage"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.exe:"
+
+[headers.values]
+"- Content-Type" = "application/x-msdownload"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.zip:"
+
+[headers.values]
+"- Content-Type" = "application/zip"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.json:"
+
+[headers.values]
+"- Content-Type" = "application/json"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.yml:"
+
+[headers.values]
+"- Content-Type" = "text/yaml"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*.yaml:"
+
+[headers.values]
+"- Content-Type" = "text/yaml"
+"- Cache-Control" = "public, max-age=3600"
+
+[[headers]]
+for = "/*"
+
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+for = "/*.css"
+
+[headers.values]
+Content-Type = "text/css; charset=utf-8"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.js"
+
+[headers.values]
+Content-Type = "application/javascript; charset=utf-8"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.js"
+
+[headers.values]
+Content-Type = "application/javascript; charset=utf-8"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/assets/*.css"
+
+[headers.values]
+Content-Type = "text/css; charset=utf-8"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.woff2"
+
+[headers.values]
+Content-Type = "font/woff2"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.png"
+
+[headers.values]
+Content-Type = "image/png"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.jpg"
+
+[headers.values]
+Content-Type = "image/jpeg"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.svg"
+
+[headers.values]
+Content-Type = "image/svg+xml"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.json"
+
+[headers.values]
+Content-Type = "application/json; charset=utf-8"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

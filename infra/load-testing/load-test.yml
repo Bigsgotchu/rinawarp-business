@@ -1,0 +1,27 @@
+config:
+  target: 'http://localhost:3000' # Assuming the terminal runs on port 3000
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: 'Warm up phase'
+    - duration: 120
+      arrivalRate: 10
+      name: 'Main load phase'
+    - duration: 60
+      arrivalRate: 20
+      name: 'Peak load phase'
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+
+scenarios:
+  - name: 'Agent Task Execution'
+    requests:
+      - post:
+          url: '/api/agent/run'
+          json:
+            mode: 'chat'
+            goal: 'Test task for load testing'
+            context: {}
+          expect:
+            - statusCode: [200, 201]

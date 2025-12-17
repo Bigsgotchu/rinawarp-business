@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=RinaWarp Terminal Pro
+Comment=Cross-platform AI terminal assistant
+Exec=/opt/rinawarp-terminal-pro/rinawarp-terminal-pro
+Icon=rinawarp-terminal-pro
+Terminal=false
+Type=Application
+Categories=Development;Utility;
+StartupNotify=true

@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RinaWarp Terminal Pro | AI-Powered Developer Terminal</title>
+    <meta
+      name="description"
+      content="RinaWarp Terminal Pro — the next-generation AI-powered terminal for developers. Voice control, intelligent code completion, and 3x productivity boost."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      :root {
+        --pink: #ff1ead;
+        --teal: #2af5d0;
+        --coral: #ff6f61;
+        --blue: #7ed6ff;
+        --black: #0a0a0a;
+        --white: #ffffff;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--black);
+        color: var(--white);
+        margin: 0;
+        line-height: 1.6;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem;
+        background: linear-gradient(90deg, var(--pink), var(--teal));
+        color: var(--black);
+        font-weight: 600;
+      }
+      nav a {
+        margin: 0 1rem;
+        color: var(--black);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .hero {
+        text-align: center;
+        padding: 5rem 2rem;
+        background: linear-gradient(180deg, var(--black) 0%, #141414 100%);
+      }
+      .hero h1 {
+        font-size: 3.2rem;
+        background: linear-gradient(90deg, var(--pink), var(--blue), var(--teal));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+      }
+      .hero p {
+        color: #ccc;
+        max-width: 700px;
+        margin: 1rem auto;
+      }
+      .cta-buttons {
+        margin-top: 2rem;
+      }
+      .btn {
+        padding: 0.9rem 2rem;
+        border-radius: 30px;
+        margin: 0.5rem;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background: linear-gradient(90deg, var(--pink), var(--teal));
+        color: var(--black);
+      }
+      .btn-secondary {
+        background: var(--coral);
+        color: var(--white);
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 3rem 2rem;
+        background: #111;
+      }
+      .feature {
+        background: #1a1a1a;
+        padding: 2rem;
+        border-radius: 16px;
+        border: 1px solid #222;
+        transition: 0.3s;
+      }
+      .feature:hover {
+        border-color: var(--teal);
+        transform: translateY(-4px);
+      }
+      footer {
+        padding: 3rem 2rem;
+        text-align: center;
+        font-size: 0.9rem;
+        background: #0d0d0d;
+        color: #aaa;
+      }
+      footer a {
+        color: var(--teal);
+        text-decoration: none;
+        margin: 0 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>RinaWarp</div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#downloads">Downloads</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>AI-Powered Terminal Revolution</h1>
+      <p>
+        RinaWarp Terminal Pro combines voice integration, intelligent automation, and advanced
+        productivity features to supercharge your development workflow. Code faster. Deploy smarter.
+        Work better.
+      </p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary" onclick="startCheckout('professional')">
+          Download Now
+        </button>
+        <button class="btn btn-secondary" onclick="startCheckout('student')">
+          Start Free Trial
+        </button>
+      </div>
+      <p>Available for macOS • Windows • Linux</p>
+    </section>
+
+    <section id="features" class="features">
+      <div class="feature">
+        <h3>AI Code Intelligence</h3>
+        <p>
+          Context-aware suggestions, smart refactoring, and AI pattern recognition for
+          lightning-fast coding.
+        </p>
+      </div>
+      <div class="feature">
+        <h3>Voice Integration</h3>
+        <p>
+          Control your terminal hands-free with natural voice commands. Execute tasks and manage
+          your workflow effortlessly.
+        </p>
+      </div>
+      <div class="feature">
+        <h3>Git Intelligence</h3>
+        <p>
+          AI-powered commits, conflict resolution, and automatic branch management built right into
+          your workflow.
+        </p>
+      </div>
+      <div class="feature">
+        <h3>Enterprise Security</h3>
+        <p>
+          Bank-grade encryption, secure credentials, and compliance-ready audit logging for every
+          action.
+        </p>
+      </div>
+    </section>
+
+    <section id="pricing" class="features" style="background: #141414">
+      <div class="feature">
+        <h3>Student / Developer</h3>
+        <p>$4.99/mo • 50 AI requests/day • 3 projects • Voice commands • Community support</p>
+        <button class="btn btn-primary" onclick="startCheckout('student')">
+          Start Student Plan
+        </button>
+      </div>
+      <div class="feature">
+        <h3>Professional</h3>
+        <p>
+          $29/mo • Unlimited AI requests • Advanced themes • Plugins • Team collaboration • API
+          access
+        </p>
+        <button class="btn btn-primary" onclick="startCheckout('professional')">
+          Start Pro Plan
+        </button>
+      </div>
+      <div class="feature">
+        <h3>Enterprise</h3>
+        <p>
+          $99/mo • Custom integrations • SSO • Dedicated support • SLA guarantee • On-premise
+          options
+        </p>
+        <button class="btn btn-primary" onclick="startCheckout('enterprise')">Contact Sales</button>
+      </div>
+    </section>
+
+    <section id="downloads" class="features" style="background: #0d0d0d">
+      <div class="feature">
+        <h3>📥 Download RinaWarp Terminal Pro</h3>
+        <p>Get the AI-powered terminal that revolutionizes your development workflow.</p>
+
+        <div id="download-section" style="margin-top: 2rem">
+          <div
+            style="
+              background: #111;
+              padding: 2rem;
+              border-radius: 16px;
+              border: 1px solid #222;
+              margin: 2rem auto;
+              max-width: 600px;
+            "
+          >
+            <h4 style="color: var(--teal); margin-bottom: 1rem">🚀 Ready to Download?</h4>
+            <p style="margin-bottom: 1.5rem">
+              First, activate your license to unlock all Pro features.
+            </p>
+
+            <div style="text-align: center">
+              <a href="/activate" class="btn btn-primary">Activate License</a>
+              <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc">
+                Don't have a license? <a href="#pricing" style="color: var(--teal)">Get one here</a>
+              </p>
+            </div>
+          </div>
+
+          <div
+            style="
+              background: #1a1a1a;
+              padding: 2rem;
+              border-radius: 16px;
+              border: 1px solid #222;
+              margin: 2rem auto;
+              max-width: 600px;
+            "
+          >
+            <h4 style="color: var(--pink)">📋 System Requirements</h4>
+            <ul style="text-align: left; max-width: 400px; margin: 0 auto; color: #ccc">
+              <li>✅ macOS 10.15+ / Windows 10+ / Linux (Ubuntu 18.04+)</li>
+              <li>✅ 4GB RAM minimum (8GB recommended)</li>
+              <li>✅ 500MB free disk space</li>
+              <li>✅ Internet connection for AI features</li>
+            </ul>
+          </div>
+
+          <div
+            style="
+              background: #111;
+              padding: 2rem;
+              border-radius: 16px;
+              border: 1px solid #222;
+              margin: 2rem auto;
+              max-width: 600px;
+            "
+          >
+            <h4 style="color: var(--teal)">🎯 Pro Features Unlocked</h4>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+                margin-top: 1rem;
+              "
+            >
+              <div style="text-align: center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem">🎤</div>
+                <strong>Voice Control</strong>
+                <p style="font-size: 0.9rem; color: #ccc">Natural language commands</p>
+              </div>
+              <div style="text-align: center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem">🤖</div>
+                <strong>AI Intelligence</strong>
+                <p style="font-size: 0.9rem; color: #ccc">Smart code suggestions</p>
+              </div>
+              <div style="text-align: center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem">🔗</div>
+                <strong>Plugin Ecosystem</strong>
+                <p style="font-size: 0.9rem; color: #ccc">Extensible architecture</p>
+              </div>
+              <div style="text-align: center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem">📊</div>
+                <strong>Advanced Analytics</strong>
+                <p style="font-size: 0.9rem; color: #ccc">Usage insights & reporting</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="features">
+      <div class="feature">
+        <p>
+          "RinaWarp has completely transformed my workflow — it's like having a senior dev
+          pair-programming with you 24/7."
+        </p>
+        <p>— Sarah Chen, Senior Engineer</p>
+      </div>
+      <div class="feature">
+        <p>"Voice commands and AI code generation save me hours daily. Absolute game-changer."</p>
+        <p>— Marcus Rodriguez, DevOps Engineer</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 RinaWarp Technologies LLC. All rights reserved.</p>
+      <p>
+        <a href="/terms">Terms of Service</a> • <a href="/privacy">Privacy Policy</a> •
+        <a href="/refunds">Refund Policy</a> •
+        <a href="/contact">Contact</a>
+      </p>
+      <p>Made with ❤️ for developers worldwide</p>
+    </footer>
+
+    <script src="/checkout.js"></script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+{
+  "name": "Neon Ocean",
+  "description": "Deep ocean vibes with glowing blue waves and aquatic animations",
+  "version": "1.0.0",
+  "author": "RinaWarp Technologies",
+  "colors": {
+    "background": "#001122",
+    "foreground": "#00aaff",
+    "cursor": "#ff6600",
+    "selection": "#0066cc",
+    "black": "#000011",
+    "red": "#ff3366",
+    "green": "#00ffaa",
+    "yellow": "#ffff66",
+    "blue": "#0066ff",
+    "magenta": "#ff66aa",
+    "cyan": "#00ffff",
+    "white": "#aaffff",
+    "brightBlack": "#112233",
+    "brightRed": "#ff6699",
+    "brightGreen": "#66ffcc",
+    "brightYellow": "#ffff99",
+    "brightBlue": "#6699ff",
+    "brightMagenta": "#ff99cc",
+    "brightCyan": "#66ffff",
+    "brightWhite": "#ccffff"
+  },
+  "ui": {
+    "accentColor": "#00aaff",
+    "warningColor": "#ffaa00",
+    "successColor": "#00ffaa",
+    "errorColor": "#ff3366",
+    "infoColor": "#0066ff",
+    "borderColor": "#00aaff",
+    "shadowColor": "rgba(0, 170, 255, 0.3)"
+  },
+  "fonts": {
+    "primary": "Source Code Pro, 'Monaco', monospace",
+    "secondary": "Inter, 'Arial', sans-serif",
+    "size": 14,
+    "lineHeight": 1.4
+  },
+  "effects": {
+    "waveAnimation": true,
+    "bubbleEffect": true,
+    "oceanGlow": true,
+    "depthLayers": true,
+    "coralAccents": true,
+    "waveIntensity": 0.6
+  },
+  "animations": {
+    "waveSpeed": 1.2,
+    "bubbleRise": true,
+    "typingEffect": "flow",
+    "cursorBlink": "medium"
+  },
+  "sounds": {
+    "keyClick": "water-drop",
+    "enterSound": "wave-crash",
+    "errorSound": "storm-warning",
+    "successSound": "dolphin-chirp"
+  },
+  "layout": {
+    "borderWidth": 2,
+    "cornerRadius": 12,
+    "padding": 20,
+    "waveHeight": 30
+  }
+}

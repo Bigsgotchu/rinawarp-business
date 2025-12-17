@@ -1,0 +1,89 @@
+name: RinaWarp Monorepo CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+
+jobs:
+  node-ci:
+    name: Build & Test Node Apps
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - apps/website
+          - apps/ai-music-video
+          - apps/terminal-pro
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: |
+            ${{ matrix.app }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.app }}
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "No package.json in ${{ matrix.app }}, skipping"
+          fi
+
+      - name: Lint (if available)
+        working-directory: ${{ matrix.app }}
+        run: |
+          if npm run | grep -q "lint"; then
+            npm run lint
+          else
+            echo "No lint script in ${{ matrix.app }}, skipping"
+          fi
+
+      - name: Test (if available)
+        working-directory: ${{ matrix.app }}
+        run: |
+          if npm run | grep -q "test"; then
+            npm test
+          else
+            echo "No test script in ${{ matrix.app }}, skipping"
+          fi
+
+      - name: Build (if available)
+        working-directory: ${{ matrix.app }}
+        run: |
+          if npm run | grep -q "build"; then
+            npm run build
+          else
+            echo "No build script in ${{ matrix.app }}, skipping"
+          fi
+
+  functions-typecheck:
+    name: Typecheck Cloudflare Functions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install TypeScript (local)
+        run: npm install --save-dev typescript @cloudflare/workers-types
+
+      - name: Typecheck functions
+        run: npx tsc --noEmit --pretty --allowJs false --strict --module esnext --target es2022 functions/*.ts

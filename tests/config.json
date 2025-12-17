@@ -1,0 +1,33 @@
+{
+  "apiBase": "https://api.rinawarptech.com",
+  "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ0ZXN0LXVzZXItMTIzIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicGxhbiI6InBybyIsImlhdCI6MTc2NTM0NDkwOX0.BcSl5pZGifta2sfudWanfLZW7uoGFkJDlojuAgh_TQs",
+  "licenseKey": "DEV-LIFETIME-TEST-KEY",
+  "timeoutMs": 15000,
+  "endpoints": {
+    "ping": "/health",
+    "authVerify": "/auth/verify",
+    "licenseCheck": "/license/check",
+    "chat": "/ai/chat",
+    "command": "/ai/command"
+  },
+  "payloads": {
+    "chatTest": {
+      "prompt": "Say 'RinaWarp AI test OK' in one short sentence.",
+      "licenseKey": "DEV-LIFETIME-TEST-KEY"
+    },
+    "chatTestRina": {
+      "prompt": "Briefly say 'RinaWarp AI test OK' in your own style.",
+      "mode": "rina",
+      "licenseKey": "DEV-LIFETIME-TEST-KEY",
+      "context": {
+        "moodHint": "playful",
+        "userSkillLevel": "intermediate",
+        "projectType": "terminal-pro"
+      }
+    },
+    "commandTest": {
+      "command": "ls",
+      "args": []
+    }
+  }
+}

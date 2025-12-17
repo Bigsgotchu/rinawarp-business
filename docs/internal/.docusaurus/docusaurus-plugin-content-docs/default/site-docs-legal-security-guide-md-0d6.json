@@ -1,0 +1,24 @@
+{
+  "id": "legal/SECURITY_GUIDE",
+  "title": "RinaWarp Technologies, LLC - Security & IP Protection Guide",
+  "description": "🛡️ INTELLECTUAL PROPERTY PROTECTION",
+  "source": "@site/docs/legal/SECURITY_GUIDE.md",
+  "sourceDirName": "legal",
+  "slug": "/legal/SECURITY_GUIDE",
+  "permalink": "/docs/legal/SECURITY_GUIDE",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/RinaWarpTech/RinaWarp-Platforms/tree/main/docs/docs/legal/SECURITY_GUIDE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "🔍 RinaWarp Technologies Monitoring System",
+    "permalink": "/docs/legal/MONITORING_SYSTEM"
+  },
+  "next": {
+    "title": "🛡️ RinaWarp Technologies Security Implementation Summary",
+    "permalink": "/docs/legal/SECURITY_SUMMARY"
+  }
+}

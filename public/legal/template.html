@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="[DOCUMENT_DESCRIPTION]">
+    <title>[DOCUMENT_TITLE] | RinaWarp Technologies LLC</title>
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #6c757d;
+            --light-bg: #f8f9fa;
+            --dark-bg: #1a1a1a;
+            --light-text: #333;
+            --dark-text: #f8f9fa;
+            --border-color: #e0e0e0;
+            --dark-border-color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: var(--dark-bg);
+                --text-color: var(--dark-text);
+                --card-bg: #2a2a2a;
+                --border: var(--dark-border-color);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: var(--light-bg);
+                --text-color: var(--light-text);
+                --card-bg: white;
+                --border: var(--border-color);
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo::before {
+            content: "🚀";
+            margin-right: 10px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .document-header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--primary-color), #6a4aff);
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .document-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .document-header .document-meta {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .document-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .document-content h1,
+        .document-content h2,
+        .document-content h3,
+        .document-content h4 {
+            color: var(--primary-color);
+        }
+
+        .document-content h2 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        .document-content h3 {
+            margin-top: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .document-content ul,
+        .document-content ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .document-content li {
+            margin-bottom: 8px;
+        }
+
+        .document-content p {
+            margin-bottom: 15px;
+        }
+
+        .document-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .document-content a:hover {
+            text-decoration: underline;
+        }
+
+        .document-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .document-content th,
+        .document-content td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .document-content th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .document-content tr:nth-child(even) {
+            background-color: rgba(74, 107, 255, 0.1);
+        }
+
+        .back-to-hub {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .back-to-hub:hover {
+            background-color: #6a4aff;
+        }
+
+        .table-of-contents {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .table-of-contents h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .table-of-contents ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .table-of-contents li {
+            margin-bottom: 5px;
+        }
+
+        .table-of-contents a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+        }
+
+        .table-of-contents a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .document-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .table-of-contents ul {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table-of-contents ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">RinaWarp Technologies LLC</div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/legal/">Legal Hub</a>
+                <a href="/privacy.html">Privacy</a>
+                <a href="/terms.html">Terms</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </header>
+
+    <section class="document-header">
+        <div class="container">
+            <h1>[DOCUMENT_TITLE]</h1>
+            <div class="document-meta">
+                Effective Date: [EFFECTIVE_DATE] | Last Updated: [LAST_UPDATED]
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <a href="/legal/" class="back-to-hub">← Back to Legal Hub</a>
+
+        <div class="table-of-contents">
+            <h3>Table of Contents</h3>
+            <ul>
+                [TABLE_OF_CONTENTS]
+            </ul>
+        </div>
+
+        <div class="document-content">
+            [DOCUMENT_CONTENT]
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="refund-policy.html">Refund Policy</a></li>
+                    <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Compliance</h3>
+                <ul>
+                    <li><a href="security-policy.html">Security</a></li>
+                    <li><a href="data-processing-agreement.html">Data Processing Agreement</a></li>
+                    <li><a href="ai-ethical-policy.html">AI Ethics</a></li>
+                    <li><a href="dmca-policy.html">DMCA</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="/contact.html">Contact Support</a></li>
+                    <li><a href="mailto:support@rinawarptech.com">Email Support</a></li>
+                    <li><a href="mailto:legal@rinawarptech.com">Legal Inquiries</a></li>
+                    <li><a href="mailto:privacy@rinawarptech.com">Privacy Requests</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/legal/">Legal Hub</a></li>
+                    <li><a href="/privacy.html">Privacy Center</a></li>
+                    <li><a href="/terms.html">Terms Center</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 RinaWarp Technologies LLC. All rights reserved.</p>
+            <p>RinaWarp Technologies LLC is a registered company in Utah, USA.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // Check for saved theme preference or use system preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-theme');
+            themeToggle.textContent = '☀️';
+        }
+
+        // Theme toggle click handler
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('dark-theme')) {
+                document.body.classList.remove('dark-theme');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.add('dark-theme');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Listen for system theme changes
+        prefersDarkScheme.addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.body.classList.add('dark-theme');
+                    themeToggle.textContent = '☀️';
+                } else {
+                    document.body.classList.remove('dark-theme');
+                    themeToggle.textContent = '🌙';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

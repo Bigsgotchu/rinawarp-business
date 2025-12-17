@@ -1,0 +1,468 @@
+{
+  "timestamp": "2025-12-17T07:15:03.885Z",
+  "vulnerabilities": [
+    {
+      "type": "dependency",
+      "package": "node-pty",
+      "current": "^1.0.0",
+      "vulnerable": "<1.0.0",
+      "severity": "high",
+      "description": "Package node-pty has known vulnerabilities"
+    },
+    {
+      "type": "dependency",
+      "package": "xterm",
+      "current": "^5.3.0",
+      "vulnerable": "<5.3.0",
+      "severity": "high",
+      "description": "Package xterm has known vulnerabilities"
+    },
+    {
+      "type": "dependency",
+      "package": "electron",
+      "current": "^28.3.3",
+      "vulnerable": "<28.0.0",
+      "severity": "high",
+      "description": "Package electron has known vulnerabilities"
+    },
+    {
+      "type": "npm-audit",
+      "package": "electron",
+      "severity": "moderate",
+      "fix": {
+        "name": "electron",
+        "version": "39.2.7",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "type": "npm-audit",
+      "package": "electron-mocha",
+      "severity": "high",
+      "fix": {
+        "name": "electron-mocha",
+        "version": "13.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "type": "npm-audit",
+      "package": "js-yaml",
+      "severity": "moderate",
+      "fix": {
+        "name": "electron-mocha",
+        "version": "13.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "type": "npm-audit",
+      "package": "minimatch",
+      "severity": "high",
+      "fix": {
+        "name": "electron-mocha",
+        "version": "13.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "type": "npm-audit",
+      "package": "mocha",
+      "severity": "high",
+      "fix": {
+        "name": "electron-mocha",
+        "version": "13.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "type": "npm-audit",
+      "package": "nanoid",
+      "severity": "moderate",
+      "fix": {
+        "name": "electron-mocha",
+        "version": "13.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/shared/websocket-client.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 7,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/shared/preload.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 18,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/testing/user-testing-integration.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 3,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/testing/user-testing-integration.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 17,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/testing/friction-observer.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 18,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/testing/feedback-collector.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 2,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/testing/feedback-collector.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 9,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/testing/analytics-tracker.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 1,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ui.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 3,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ui.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ui.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 16,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 3,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 31,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal-optimized.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 2,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/terminal-optimized.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 11,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/performance-monitor.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 4,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/onboarding.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 1,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/onboarding-academy.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 2,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/memory-leak-detector.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 3,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/main.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 30,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/live-session.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 14,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/license.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 4,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/license.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 24,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/feedback.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 5,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/feature-gate.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 3,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/feature-gate.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 3,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/conversation-ui.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 3,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/command-palette.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 1,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/command-palette.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 12,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 6,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai.js",
+      "severity": "medium",
+      "description": "Potential sensitive data in localStorage",
+      "count": 1,
+      "recommendation": "Encrypt sensitive data before storage"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/ai.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 56,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/UpdateBanner.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 2,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/LicenseGate.js",
+      "severity": "high",
+      "description": "Direct innerHTML assignment detected",
+      "count": 1,
+      "recommendation": "Use textContent or DOM methods instead"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/renderer/js/LicenseGate.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 18,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/main/main.js",
+      "severity": "medium",
+      "description": "Potential hardcoded credentials",
+      "count": 72,
+      "recommendation": "Move sensitive data to environment variables"
+    },
+    {
+      "type": "code-pattern",
+      "file": "src/main/main.js",
+      "severity": "medium",
+      "description": "Insecure HTTP protocol detected",
+      "count": 3,
+      "recommendation": "Use HTTPS for all external connections"
+    },
+    {
+      "type": "electron-security",
+      "file": "/home/karina/Documents/rinawarp-business/apps/terminal-pro/desktop/src/main/main.js",
+      "severity": "medium",
+      "description": "Sandbox mode should be enabled",
+      "recommendation": "Add sandbox: true to webPreferences"
+    },
+    {
+      "type": "electron-security",
+      "file": "/home/karina/Documents/rinawarp-business/apps/terminal-pro/desktop/src/main/main.js",
+      "severity": "medium",
+      "description": "Remote module should be disabled",
+      "recommendation": "Add enableRemoteModule: false to webPreferences"
+    },
+    {
+      "type": "configuration",
+      "severity": "medium",
+      "description": "Content Security Policy not configured",
+      "recommendation": "Add CSP meta tag to index.html"
+    },
+    {
+      "type": "electron-builder",
+      "severity": "medium",
+      "description": "Windows code signing not configured",
+      "recommendation": "Configure certificateFile for Windows builds"
+    }
+  ],
+  "warnings": [],
+  "recommendations": [
+    {
+      "priority": "high",
+      "title": "Update Vulnerable Dependencies",
+      "description": "Found 9 vulnerable dependencies",
+      "actions": [
+        "Run npm audit fix to apply security patches",
+        "Update to latest secure versions",
+        "Consider using npm-check-updates",
+        "Implement dependency scanning in CI/CD"
+      ]
+    },
+    {
+      "priority": "high",
+      "title": "Fix Code Security Issues",
+      "description": "Found 38 code security patterns",
+      "actions": [
+        "Replace eval() with safer alternatives",
+        "Use DOM methods instead of innerHTML",
+        "Implement proper input validation",
+        "Review all external data handling"
+      ]
+    }
+  ],
+  "codeSigning": {
+    "status": "partial",
+    "certificates": {
+      "macos": {
+        "entitlements": "/home/karina/Documents/rinawarp-business/apps/terminal-pro/desktop/entitlements.plist",
+        "configured": true
+      }
+    },
+    "signedFiles": [],
+    "platforms": {
+      "windows": false,
+      "macos": true,
+      "linux": false
+    }
+  },
+  "compliance": {},
+  "summary": {
+    "totalVulnerabilities": 51,
+    "criticalIssues": 0,
+    "highIssues": 19,
+    "mediumIssues": 29,
+    "lowIssues": 0,
+    "codeSigningReady": true
+  }
+}

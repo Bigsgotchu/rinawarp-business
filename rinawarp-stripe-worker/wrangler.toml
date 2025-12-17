@@ -1,0 +1,18 @@
+name = "rinawarp-stripe-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[vars]
+RINA_PRICE_MAP = '{"basic-monthly":"price_1SdxksGZrRdZy3W9NSDRHfes","starter-monthly":"price_1Sdxl7GZrRdZy3W9INQvidPf","creator-monthly":"price_1SdxlKGZrRdZy3W9TvaLugc7","pro-monthly":"price_1SdxlXGZrRdZy3W9Wr1XLBIe","founder-lifetime":"price_1SdxlmGZrRdZy3W9ncwPfgFr","pioneer-lifetime":"price_1Sdxm2GZrRdZy3W9C5tQcWiW"}'
+DOMAIN = "https://rinawarptech.com"
+STRIPE_SECRET_KEY = "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"
+STRIPE_WEBHOOK_SECRET = "whsec_k6SWU7KCMT4vdPL7ZUNpxFiK4SQk8nPi"
+
+[[custom_domains]]
+domain = "rinawarptech.com"
+
+[triggers]
+crons = ["0 */6 * * *"]  # Every 6 hours
+
+[observability.logs]
+enabled = true

@@ -1,0 +1,243 @@
+export const themes = {
+  // Ocean Themes
+  mermaid: {
+    '--bg-color': '#0b132b',
+    '--primary-color': '#ff66cc',
+    '--secondary-color': '#ff7f50',
+    '--accent-color': '#20c997',
+    '--highlight-color': '#4dabf7',
+    '--text-color': '#e0f7fa',
+  },
+  'deep-ocean': {
+    '--bg-color': '#000814',
+    '--primary-color': '#00f5ff',
+    '--secondary-color': '#00d4aa',
+    '--accent-color': '#ff6b35',
+    '--highlight-color': '#f7931e',
+    '--text-color': '#caf0f8',
+  },
+  'coral-reef': {
+    '--bg-color': '#001d3d',
+    '--primary-color': '#ff006e',
+    '--secondary-color': '#8338ec',
+    '--accent-color': '#3a86ff',
+    '--highlight-color': '#06ffa5',
+    '--text-color': '#ffffff',
+  },
+
+  // Dark Themes
+  matrix: {
+    '--bg-color': '#000000',
+    '--primary-color': '#00ff00',
+    '--secondary-color': '#008f11',
+    '--accent-color': '#00ff41',
+    '--highlight-color': '#39ff14',
+    '--text-color': '#00ff00',
+  },
+  cyberpunk: {
+    '--bg-color': '#0a0a0a',
+    '--primary-color': '#ff0080',
+    '--secondary-color': '#00ffff',
+    '--accent-color': '#ffff00',
+    '--highlight-color': '#ff8000',
+    '--text-color': '#ffffff',
+  },
+  'neon-dark': {
+    '--bg-color': '#0d1117',
+    '--primary-color': '#58a6ff',
+    '--secondary-color': '#f85149',
+    '--accent-color': '#a5a5a5',
+    '--highlight-color': '#7c3aed',
+    '--text-color': '#f0f6fc',
+  },
+  hacker: {
+    '--bg-color': '#011627',
+    '--primary-color': '#22d3ee',
+    '--secondary-color': '#fbbf24',
+    '--accent-color': '#f472b6',
+    '--highlight-color': '#34d399',
+    '--text-color': '#e2e8f0',
+  },
+
+  // Gaming Themes
+  racecar: {
+    '--bg-color': '#111',
+    '--primary-color': '#ff0000',
+    '--secondary-color': '#00ff00',
+    '--accent-color': '#ffff00',
+    '--highlight-color': '#ffffff',
+    '--text-color': '#f1f1f1',
+  },
+  'retro-gaming': {
+    '--bg-color': '#1a1a2e',
+    '--primary-color': '#16213e',
+    '--secondary-color': '#0f3460',
+    '--accent-color': '#e94560',
+    '--highlight-color': '#f39c12',
+    '--text-color': '#ecf0f1',
+  },
+  arcade: {
+    '--bg-color': '#2c1810',
+    '--primary-color': '#ff6b35',
+    '--secondary-color': '#f7931e',
+    '--accent-color': '#ffd23f',
+    '--highlight-color': '#06ffa5',
+    '--text-color': '#ffffff',
+  },
+
+  // Professional Themes
+  corporate: {
+    '--bg-color': '#1e293b',
+    '--primary-color': '#3b82f6',
+    '--secondary-color': '#64748b',
+    '--accent-color': '#10b981',
+    '--highlight-color': '#f59e0b',
+    '--text-color': '#f8fafc',
+  },
+  minimal: {
+    '--bg-color': '#ffffff',
+    '--primary-color': '#000000',
+    '--secondary-color': '#6b7280',
+    '--accent-color': '#3b82f6',
+    '--highlight-color': '#ef4444',
+    '--text-color': '#111827',
+  },
+  monochrome: {
+    '--bg-color': '#f8f9fa',
+    '--primary-color': '#212529',
+    '--secondary-color': '#6c757d',
+    '--accent-color': '#495057',
+    '--highlight-color': '#343a40',
+    '--text-color': '#212529',
+  },
+
+  // Colorful Themes
+  rainbow: {
+    '--bg-color': '#1a1a2e',
+    '--primary-color': '#ff0080',
+    '--secondary-color': '#00ff80',
+    '--accent-color': '#8000ff',
+    '--highlight-color': '#ff8000',
+    '--text-color': '#ffffff',
+  },
+  sunset: {
+    '--bg-color': '#2d1b69',
+    '--primary-color': '#ff6b6b',
+    '--secondary-color': '#4ecdc4',
+    '--accent-color': '#45b7d1',
+    '--highlight-color': '#f9ca24',
+    '--text-color': '#ffffff',
+  },
+  aurora: {
+    '--bg-color': '#0c0c0c',
+    '--primary-color': '#00ff88',
+    '--secondary-color': '#0088ff',
+    '--accent-color': '#8800ff',
+    '--highlight-color': '#ff0088',
+    '--text-color': '#ffffff',
+  },
+
+  // Special Effects Themes
+  glitch: {
+    '--bg-color': '#0a0a0a',
+    '--primary-color': '#ff0040',
+    '--secondary-color': '#00ff40',
+    '--accent-color': '#4000ff',
+    '--highlight-color': '#ffff00',
+    '--text-color': '#ffffff',
+  },
+  synthwave: {
+    '--bg-color': '#0f0f23',
+    '--primary-color': '#ff0066',
+    '--secondary-color': '#00ffff',
+    '--accent-color': '#ff6600',
+    '--highlight-color': '#ffff00',
+    '--text-color': '#ffffff',
+  },
+  vaporwave: {
+    '--bg-color': '#2d1b69',
+    '--primary-color': '#ff0066',
+    '--secondary-color': '#00ffff',
+    '--accent-color': '#ff6600',
+    '--highlight-color': '#ffff00',
+    '--text-color': '#ffffff',
+  },
+
+  // Nature Themes
+  forest: {
+    '--bg-color': '#0d2818',
+    '--primary-color': '#4ade80',
+    '--secondary-color': '#22c55e',
+    '--accent-color': '#16a34a',
+    '--highlight-color': '#84cc16',
+    '--text-color': '#f0fdf4',
+  },
+  'sunset-beach': {
+    '--bg-color': '#1e3a8a',
+    '--primary-color': '#f59e0b',
+    '--secondary-color': '#ef4444',
+    '--accent-color': '#8b5cf6',
+    '--highlight-color': '#06b6d4',
+    '--text-color': '#ffffff',
+  },
+  mountain: {
+    '--bg-color': '#1e293b',
+    '--primary-color': '#64748b',
+    '--secondary-color': '#94a3b8',
+    '--accent-color': '#3b82f6',
+    '--highlight-color': '#10b981',
+    '--text-color': '#f1f5f9',
+  },
+
+  // Space Themes
+  space: {
+    '--bg-color': '#000000',
+    '--primary-color': '#ffffff',
+    '--secondary-color': '#c0c0c0',
+    '--accent-color': '#ffd700',
+    '--highlight-color': '#00bfff',
+    '--text-color': '#ffffff',
+  },
+  nebula: {
+    '--bg-color': '#0a0a0a',
+    '--primary-color': '#ff69b4',
+    '--secondary-color': '#9370db',
+    '--accent-color': '#00bfff',
+    '--highlight-color': '#ffd700',
+    '--text-color': '#ffffff',
+  },
+  galaxy: {
+    '--bg-color': '#0c0c0c',
+    '--primary-color': '#8a2be2',
+    '--secondary-color': '#4b0082',
+    '--accent-color': '#ff1493',
+    '--highlight-color': '#00bfff',
+    '--text-color': '#ffffff',
+  },
+
+  // Retro Themes
+  '80s': {
+    '--bg-color': '#1a1a2e',
+    '--primary-color': '#ff0080',
+    '--secondary-color': '#00ffff',
+    '--accent-color': '#ffff00',
+    '--highlight-color': '#ff8000',
+    '--text-color': '#ffffff',
+  },
+  '90s': {
+    '--bg-color': '#2d1b69',
+    '--primary-color': '#ff6b6b',
+    '--secondary-color': '#4ecdc4',
+    '--accent-color': '#45b7d1',
+    '--highlight-color': '#f9ca24',
+    '--text-color': '#ffffff',
+  },
+  vintage: {
+    '--bg-color': '#2c1810',
+    '--primary-color': '#d4af37',
+    '--secondary-color': '#cd7f32',
+    '--accent-color': '#b87333',
+    '--highlight-color': '#ffd700',
+    '--text-color': '#f5f5dc',
+  },
+};

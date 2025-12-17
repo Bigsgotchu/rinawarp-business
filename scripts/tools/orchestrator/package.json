@@ -1,0 +1,17 @@
+{
+  "name": "rina-starter",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "rina": "bin/rina-cli.js"
+  },
+  "scripts": {
+    "start:main": "electron ./dist/main/index.js",
+    "synthetic-checkout": "node scripts/synthetic-checkout.js",
+    "audit:full": "bash scripts/audit/full.sh"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {}
+}

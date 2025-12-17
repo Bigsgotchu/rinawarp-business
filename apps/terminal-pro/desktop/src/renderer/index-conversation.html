@@ -1,0 +1,630 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>RinaWarp Terminal Pro</title>
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        color: #e5e7eb;
+        line-height: 1.6;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Main Layout */
+      .app-container {
+        height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 0;
+      }
+
+      /* Header - Minimal and Clean */
+      .app-header {
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .app-title {
+        font-size: 18px;
+        font-weight: 600;
+        background: linear-gradient(135deg, #ff3fae, #74d1ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .header-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #e5e7eb;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+      }
+
+      .header-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #ff3fae;
+      }
+
+      /* Main Content - Conversation First */
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 24px;
+        padding: 24px;
+        overflow: hidden;
+      }
+
+      /* Conversation Area - Primary Layer */
+      .conversation-area {
+        display: flex;
+        flex-direction: column;
+        background: rgba(26, 26, 46, 0.3);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+      }
+
+      .conversation-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .conversation-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #e5e7eb;
+        margin-bottom: 4px;
+      }
+
+      .conversation-subtitle {
+        font-size: 14px;
+        color: #9ca3af;
+      }
+
+      .conversation-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Message Styles */
+      .message {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .message.user {
+        align-items: flex-end;
+      }
+
+      .message.rina {
+        align-items: flex-start;
+      }
+
+      .message-bubble {
+        max-width: 80%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .message.user .message-bubble {
+        background: linear-gradient(135deg, #ff3fae, #a02bff);
+        color: white;
+        border-bottom-right-radius: 4px;
+      }
+
+      .message.rina .message-bubble {
+        background: rgba(255, 255, 255, 0.08);
+        color: #e5e7eb;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom-left-radius: 4px;
+      }
+
+      .message-time {
+        font-size: 12px;
+        color: #6b7280;
+        margin: 0 8px;
+      }
+
+      /* Intent/Action Cards - Secondary Layer */
+      .intent-section {
+        padding: 20px 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .intent-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+        color: #e5e7eb;
+        font-size: 14px;
+        resize: none;
+        min-height: 60px;
+        font-family: inherit;
+        transition: all 0.2s ease;
+      }
+
+      .intent-input:focus {
+        outline: none;
+        border-color: #ff3fae;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .intent-input::placeholder {
+        color: #6b7280;
+      }
+
+      .intent-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+
+      .intent-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #e5e7eb;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .intent-btn.primary {
+        background: linear-gradient(135deg, #ff3fae, #74d1ff);
+        border: none;
+        color: white;
+      }
+
+      .intent-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 63, 174, 0.3);
+      }
+
+      .intent-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #ff3fae;
+      }
+
+      /* Action Proposals */
+      .action-proposals {
+        margin-top: 16px;
+        display: none;
+      }
+
+      .action-proposal {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        transition: all 0.2s ease;
+      }
+
+      .action-proposal:hover {
+        border-color: #ff3fae;
+        background: rgba(255, 63, 174, 0.1);
+      }
+
+      .action-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #e5e7eb;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .action-description {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-bottom: 12px;
+      }
+
+      .action-consequences {
+        font-size: 12px;
+        color: #6b7280;
+        font-style: italic;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .confirm-btn,
+      .cancel-btn {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .confirm-btn {
+        background: #10b981;
+        color: white;
+        border: none;
+      }
+
+      .confirm-btn:hover {
+        background: #059669;
+      }
+
+      .cancel-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: #9ca3af;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .cancel-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #e5e7eb;
+      }
+
+      /* Terminal Area - Tertiary Layer (De-emphasized) */
+      .terminal-sidebar {
+        display: flex;
+        flex-direction: column;
+        background: rgba(26, 26, 46, 0.3);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+      }
+
+      .terminal-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .terminal-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #9ca3af;
+      }
+
+      .terminal-toggle {
+        background: none;
+        border: none;
+        color: #6b7280;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        transition: all 0.2s ease;
+      }
+
+      .terminal-toggle:hover {
+        color: #e5e7eb;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .terminal-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .terminal-output {
+        flex: 1;
+        padding: 16px 20px;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #9ca3af;
+        background: rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+
+      .terminal-output.collapsed {
+        display: none;
+      }
+
+      .terminal-controls {
+        padding: 12px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .terminal-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #6b7280;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 11px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .terminal-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #9ca3af;
+      }
+
+      /* Status Bar */
+      .status-bar {
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 24px;
+        font-size: 12px;
+        color: #6b7280;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .status-left,
+      .status-right {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #10b981;
+      }
+
+      .status-dot.warning {
+        background: #f59e0b;
+      }
+
+      .status-dot.error {
+        background: #ef4444;
+      }
+
+      /* Capabilities Section */
+      .capabilities {
+        padding: 16px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .capabilities-title {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .capability-chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .capability-chip {
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        color: #9ca3af;
+      }
+
+      .capability-chip.active {
+        background: rgba(16, 185, 129, 0.2);
+        border-color: #10b981;
+        color: #10b981;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message {
+        animation: fadeInUp 0.3s ease-out;
+      }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr auto;
+        }
+
+        .terminal-sidebar {
+          max-height: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="app-title">RinaWarp</div>
+        <div class="header-actions">
+          <button class="header-btn" id="btnLicense">License</button>
+          <button class="header-btn" id="btnSettings">Settings</button>
+          <button class="header-btn" id="btnHelp">Help</button>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Conversation Area - Primary Layer -->
+        <section class="conversation-area">
+          <div class="conversation-header">
+            <div class="conversation-title">Chat with Rina</div>
+            <div class="conversation-subtitle">Your AI coding assistant</div>
+          </div>
+
+          <div class="conversation-messages" id="conversationMessages">
+            <!-- Messages will be dynamically added here -->
+            <div class="message rina">
+              <div class="message-bubble">
+                Hi there! 👋 I'm Rina, your AI coding assistant. I can help you plan, build, and
+                deploy applications. What would you like to work on today?
+              </div>
+              <div class="message-time">Just now</div>
+            </div>
+          </div>
+
+          <!-- Intent/Action Section - Secondary Layer -->
+          <div class="intent-section">
+            <textarea
+              class="intent-input"
+              id="intentInput"
+              placeholder="Tell Rina what you want to build or do... (e.g., 'Create a React app with authentication')"
+            ></textarea>
+
+            <div class="intent-actions">
+              <button class="intent-btn primary" id="btnPlan">💭 Plan it out</button>
+              <button class="intent-btn secondary" id="btnDryRun">🔍 Try it safely</button>
+              <button class="intent-btn secondary" id="btnExecute">🚀 Make it happen</button>
+            </div>
+
+            <!-- Action Proposals (hidden by default) -->
+            <div class="action-proposals" id="actionProposals">
+              <!-- Proposals will be dynamically added here -->
+            </div>
+          </div>
+
+          <!-- Capabilities -->
+          <div class="capabilities">
+            <div class="capabilities-title">Available Tools</div>
+            <div class="capability-chips">
+              <span class="capability-chip active">Git</span>
+              <span class="capability-chip active">Node.js</span>
+              <span class="capability-chip active">Docker</span>
+              <span class="capability-chip">AWS</span>
+              <span class="capability-chip">Kubernetes</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Terminal Sidebar - Tertiary Layer (De-emphasized) -->
+        <aside class="terminal-sidebar">
+          <div class="terminal-header">
+            <div class="terminal-title">Terminal Output</div>
+            <button class="terminal-toggle" id="terminalToggle">▼</button>
+          </div>
+
+          <div class="terminal-content">
+            <div class="terminal-output" id="terminalOutput">
+              Welcome to RinaWarp Terminal Pro Ready to help you build amazing things!
+            </div>
+
+            <div class="terminal-controls">
+              <button class="terminal-btn" id="btnClear">Clear</button>
+              <button class="terminal-btn" id="btnExport">Export</button>
+              <button class="terminal-btn" id="btnDiagnostics">Diagnostics</button>
+            </div>
+          </div>
+        </aside>
+      </main>
+
+      <!-- Status Bar -->
+      <footer class="status-bar">
+        <div class="status-left">
+          <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Ready</span>
+          </div>
+          <div>Press Enter to plan • F9 for dry-run • F10 to execute</div>
+        </div>
+        <div class="status-right">
+          <div>Local-only • No data leaves your machine</div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="./testing/friction-observer.js"></script>
+    <script src="./testing/feedback-collector.js"></script>
+    <script src="./testing/analytics-tracker.js"></script>
+    <script src="./testing/user-testing-integration.js"></script>
+
+    <script src="./renderer.js"></script>
+    <script src="./js/conversation-ui.js" defer></script>
+  </body>
+</html>

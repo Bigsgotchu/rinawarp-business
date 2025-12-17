@@ -1,0 +1,308 @@
+# AI OUTPUT & MODEL USE POLICY — RINAWARP TECHNOLOGIES LLC
+
+**Effective Date:** [Auto-fill]
+**Last Updated:** [Auto-fill]
+
+---
+
+## 1. Introduction
+
+This **AI Output & Model Use Policy** governs the use of **RinaWarp AI Music Video Creator** (“**AMVC**”) and related AI technologies provided by **RinaWarp Technologies LLC** (“**RinaWarp**,” “**we**,” “**our**,” “**us**”).
+
+By using our AI services, you agree to comply with this policy regarding:
+
+- Input materials
+- AI model usage
+- Output content
+- Ethical considerations
+- Legal compliance
+
+---
+
+## 2. Ownership & Rights
+
+### 2.1 User Ownership
+
+**You retain ownership** of:
+
+- **Input materials** you upload (images, audio, video, text)
+- **AI-generated outputs** created using your inputs
+- **Creative works** derived from your use of AMVC
+
+### 2.2 RinaWarp Rights
+
+RinaWarp retains:
+
+- **Ownership** of AI models and algorithms
+- **Control** over model parameters and training data
+- **Right** to modify or update models
+- **No claim** to your input materials or outputs
+
+### 2.3 License to RinaWarp
+
+By using AMVC, you grant RinaWarp a **limited, non-exclusive, worldwide, royalty-free license** to:
+
+- Process your inputs through our AI models
+- Store temporary copies for processing
+- Analyze usage patterns (non-content)
+- Improve system performance
+
+**This license does NOT include rights to:**
+
+- Use your inputs for model training
+- Redistribute your inputs or outputs
+- Claim ownership of your content
+
+---
+
+## 3. Input Requirements
+
+### 3.1 Legal Compliance
+
+Your inputs **must**:
+
+- Be legally obtained
+- Not violate copyright or IP rights
+- Comply with all applicable laws
+- Not contain illegal or harmful content
+
+### 3.2 Content Restrictions
+
+Your inputs **must NOT** include:
+
+- **Copyrighted material** without authorization
+- **Personal data** of others without consent
+- **Explicit or violent content**
+- **Hate speech or harassment**
+- **Medical or legal advice**
+- **Financial or sensitive information**
+
+### 3.3 Quality Standards
+
+For best results, inputs should:
+
+- Be properly formatted
+- Meet technical specifications
+- Not contain malicious code
+- Be appropriate for the intended output
+
+---
+
+## 4. AI Model Usage
+
+### 4.1 Authorized Use
+
+You may use AMVC for:
+
+- **Personal creative projects**
+- **Business marketing content**
+- **Educational purposes**
+- **Non-commercial experimentation**
+- **Authorized commercial use**
+
+### 4.2 Prohibited Use
+
+You may **NOT** use AMVC for:
+
+- **Illegal activities** of any kind
+- **Copyright infringement** or piracy
+- **Deepfake creation** without consent
+- **Misinformation campaigns**
+- **Hate speech or harassment**
+- **Medical or legal advice**
+- **Financial fraud or scams**
+
+---
+
+## 5. Output Responsibilities
+
+### 5.1 User Responsibilities
+
+You are **solely responsible** for:
+
+- **Legal compliance** of your outputs
+- **Ethical use** of generated content
+- **Accuracy verification** of factual claims
+- **Copyright clearance** for commercial use
+- **Consent requirements** for personal data
+
+### 5.2 Prohibited Outputs
+
+AMVC outputs **must NOT** be used for:
+
+- **Non-consensual deepfakes** of real individuals
+- **Political manipulation** or propaganda
+- **Medical misinformation** or false diagnoses
+- **Legal deception** or forged documents
+- **Financial scams** or fraudulent schemes
+- **Hate speech** or discriminatory content
+
+### 5.3 Commercial Use
+
+For **commercial use** of outputs, you must:
+
+- Ensure no copyright infringement
+- Obtain necessary model releases
+- Comply with advertising regulations
+- Disclose AI generation where required
+- Maintain records of consent
+
+---
+
+## 6. Ethical Guidelines
+
+### 6.1 Transparency
+
+You should:
+
+- Disclose AI generation when appropriate
+- Avoid misleading representations
+- Maintain honesty about content origin
+- Respect intellectual property rights
+
+### 6.2 Consent
+
+You must:
+
+- Obtain consent for personal likenesses
+- Respect privacy rights
+- Avoid unauthorized use of identities
+- Comply with right of publicity laws
+
+### 6.3 Social Responsibility
+
+You should avoid:
+
+- Creating harmful or dangerous content
+- Promoting violence or hatred
+- Spreading misinformation
+- Exploiting vulnerable populations
+
+---
+
+## 7. Content Moderation
+
+### 7.1 Automated Systems
+
+RinaWarp uses automated systems to:
+
+- Detect prohibited content patterns
+- Flag potential policy violations
+- Monitor usage anomalies
+- Enforce rate limits
+
+### 7.2 Human Review
+
+Our team conducts:
+
+- Manual reviews of flagged content
+- Investigation of reported violations
+- Assessment of ethical concerns
+- Continuous policy improvement
+
+### 7.3 Enforcement Actions
+
+For policy violations, RinaWarp may:
+
+- **Remove** prohibited content
+- **Suspend** account access
+- **Terminate** licenses
+- **Report** illegal activities
+- **Block** future access
+
+---
+
+## 8. Reporting & Appeals
+
+### 8.1 Reporting Violations
+
+To report policy violations:
+
+**Email:** abuse@rinawarptech.com
+**Include:** Evidence, timestamps, and detailed description
+
+### 8.2 Appeals Process
+
+If your content was removed, you may appeal by:
+
+1. **Emailing** support@rinawarptech.com
+2. **Explaining** the context
+3. **Providing** evidence of compliance
+4. **Committing** to ethical use
+
+---
+
+## 9. Legal Compliance
+
+### 9.1 Copyright Law
+
+You must comply with:
+
+- **Digital Millennium Copyright Act (DMCA)**
+- **Berne Convention** standards
+- **Local copyright laws**
+- **Fair use** principles
+
+### 9.2 Privacy Laws
+
+You must comply with:
+
+- **GDPR** (for EU users)
+- **CCPA** (for California users)
+- **Utah Consumer Privacy Act**
+- **Right of publicity** laws
+
+### 9.3 Industry Regulations
+
+You must comply with:
+
+- **FTC guidelines** (for advertising)
+- **Platform-specific rules** (where applicable)
+- **Professional standards** (for regulated industries)
+
+---
+
+## 10. AI Model Transparency
+
+### 10.1 Model Limitations
+
+AMVC models:
+
+- May produce inaccurate or biased results
+- Do not guarantee factual accuracy
+- Should not be relied upon for critical decisions
+- May reflect training data limitations
+
+### 10.2 User Acknowledgement
+
+By using AMVC, you acknowledge:
+
+- AI outputs may contain errors
+- Results may vary between generations
+- Models evolve over time
+- RinaWarp is not liable for output quality
+
+---
+
+## 11. Policy Updates
+
+RinaWarp may update this policy to:
+
+- Address new ethical concerns
+- Comply with evolving regulations
+- Improve content moderation
+- Enhance user protection
+
+**Updates take effect immediately upon posting.**
+
+---
+
+## 12. Contact Information
+
+**Policy Questions:** legal@rinawarptech.com
+**Violation Reports:** abuse@rinawarptech.com
+**Support:** support@rinawarptech.com
+
+---
+
+**© 2025 RinaWarp Technologies LLC. All rights reserved.**

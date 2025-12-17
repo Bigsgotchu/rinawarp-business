@@ -1,0 +1,252 @@
+{
+  "appId": "com.rinawarptech.terminalpro",
+  "productName": "RinaWarp Terminal Pro",
+  "copyright": "Copyright © 2025 RinaWarp Technologies",
+  "directories": {
+    "output": "release",
+    "buildResources": "assets"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "server.js",
+    "package.json",
+    "node_modules/**/*",
+    "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+    "!**/node_modules/*/{test,__tests__,tests}/**/*",
+    "!**/node_modules/**/*.{md,MD}",
+    "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+    "!.editorconfig",
+    "!**/._*",
+    "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore}"
+  ],
+  "extraResources": [
+    {
+      "from": "assets",
+      "to": "assets",
+      "filter": ["**/*"]
+    }
+  ],
+  "mac": {
+    "category": "public.app-category.developer-tools",
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      },
+      {
+        "target": "zip",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "icon": "assets/icon.icns",
+    "publish": {
+      "provider": "github",
+      "owner": "rinawarptech",
+      "repo": "terminal-pro"
+    },
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "entitlements": "electron/entitlements.mac.plist",
+    "entitlementsInherit": "electron/entitlements.mac.plist",
+    "extendInfo": {
+      "NSMicrophoneUsageDescription": "RinaWarp Terminal Pro needs microphone access for voice features",
+      "NSCameraUsageDescription": "RinaWarp Terminal Pro needs camera access for video features",
+      "NSDocumentsFolderUsageDescription": "RinaWarp Terminal Pro needs access to documents for file operations",
+      "NSDownloadsFolderUsageDescription": "RinaWarp Terminal Pro needs access to downloads for file operations",
+      "NSDesktopFolderUsageDescription": "RinaWarp Terminal Pro needs access to desktop for file operations"
+    }
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64", "ia32"]
+      }
+    ],
+    "icon": "assets/icon.ico",
+    "publish": {
+      "provider": "github",
+      "owner": "rinawarptech",
+      "repo": "terminal-pro"
+    },
+    "verifyUpdateCodeSignature": false,
+    "signtool": "signtool",
+    "certificateFile": "certificates/certificate.p12",
+    "certificatePassword": "certificate-password",
+    "signDlls": true,
+    "requestedExecutionLevel": "asInvoker"
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      },
+      {
+        "target": "deb",
+        "arch": ["x64"]
+      },
+      {
+        "target": "rpm",
+        "arch": ["x64"]
+      },
+      {
+        "target": "tar.gz",
+        "arch": ["x64"]
+      }
+    ],
+    "category": "Development",
+    "icon": "assets/icon.png",
+    "publish": {
+      "provider": "github",
+      "owner": "rinawarptech",
+      "repo": "terminal-pro"
+    },
+    "synopsis": "Cross-platform AI terminal assistant",
+    "description": "RinaWarp Terminal Pro is an advanced AI-powered terminal assistant with voice synthesis, project analysis, and intelligent command execution capabilities."
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false,
+    "include": "electron/installer.nsh",
+    "language": "1033",
+    "installerIcon": "assets/icon.ico",
+    "uninstallerIcon": "assets/icon.ico",
+    "installerHeaderIcon": "assets/icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "RinaWarp Terminal Pro"
+  },
+  "deb": {
+    "priority": "optional",
+    "depends": [
+      "libgtk-3-0",
+      "libnotify4",
+      "libnss3",
+      "libxss1",
+      "libgconf-2-4",
+      "libxrandr2",
+      "libasound2",
+      "libpangocairo-1.0-0",
+      "libatk1.0-0",
+      "libcairo-gobject2",
+      "libgtk-3-0",
+      "libgdk-pixbuf2.0-0"
+    ]
+  },
+  "rpm": {
+    "depends": [
+      "gtk3",
+      "libnotify",
+      "nss",
+      "libXss",
+      "GConf2",
+      "libXrandr",
+      "alsa-lib",
+      "pango",
+      "atk",
+      "cairo",
+      "gtk3",
+      "gdk-pixbuf2"
+    ]
+  },
+  "appImage": {
+    "category": "development",
+    "license": "ISC"
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "rinawarptech",
+    "repo": "terminal-pro",
+    "vPrefixedTagName": true,
+    "publishAutoUpdate": true
+  },
+  "buildVersion": "1.0.0",
+  "compression": "maximum",
+  "nodeGypRebuild": false,
+  "npmRebuild": true,
+  "beforeBuild": "./scripts/before-build.js",
+  "afterBuild": "./scripts/after-build.js",
+  "afterSign": "./scripts/after-sign.js",
+  "afterAllArtifactBuild": "./scripts/after-all-artifacts.js",
+  "asar": {
+    "smartUnpack": true
+  },
+  "protocols": [
+    {
+      "name": "RinaWarp Terminal Pro",
+      "schemes": ["rinawarp"]
+    }
+  ],
+  "fileAssociations": [
+    {
+      "ext": "rwp",
+      "name": "RinaWarp Project",
+      "description": "RinaWarp Terminal Pro Project File",
+      "role": "Editor",
+      "icon": "assets/icon.ico"
+    }
+  ],
+  "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}",
+  "extraMetadata": {
+    "main": "electron/main.mjs",
+    "homepage": "https://rinawarptech.com",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/rinawarptech/terminal-pro.git"
+    },
+    "bugs": {
+      "url": "https://github.com/rinawarptech/terminal-pro/issues"
+    },
+    "engines": {
+      "node": ">=18.0.0",
+      "npm": ">=9.0.0"
+    }
+  },
+  "dmg": {
+    "background": null,
+    "icon": "assets/icon.icns",
+    "iconSize": 128,
+    "contents": [
+      {
+        "x": 380,
+        "y": 240,
+        "type": "link",
+        "path": "/Applications"
+      },
+      {
+        "x": 122,
+        "y": 240,
+        "type": "file"
+      }
+    ],
+    "window": {
+      "width": 540,
+      "height": 380
+    }
+  },
+  "appx": {
+    "applicationId": "RinaWarpTechnologies.RinaWarpTerminalPro",
+    "publisher": "CN=Karina",
+    "publisherDisplayName": "RinaWarp Technologies",
+    "identityName": "RinaWarpTechnologies.RinaWarpTerminalPro",
+    "languages": ["en-US"]
+  },
+  "flatpak": {
+    "runtimeVersion": "21.08",
+    "baseVersion": "21.08",
+    "permissions": [
+      "file-access",
+      "network-access",
+      "microphone-access",
+      "camera-access"
+    ]
+  }
+}

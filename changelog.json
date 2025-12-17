@@ -1,0 +1,63 @@
+{
+  "versions": [
+    {
+      "version": "0.9.0",
+      "date": "2025-12-10",
+      "changes": [
+        "Initial stable release",
+        "Added glowing unicorn avatar branding",
+        "CLI installer script added",
+        "Cross-platform AppImage support",
+        "AI-powered command suggestions",
+        "Neon glow effects for all UI elements",
+        "Mobile-responsive download portal",
+        "Automatic OS detection",
+        "QR code mobile download support",
+        "Comprehensive changelog system"
+      ],
+      "downloads": {
+        "windows": "https://downloads.rinawarptech.com/terminal-pro/0.9.0/RinaWarp-Terminal-Pro-Windows.exe",
+        "mac": "https://downloads.rinawarptech.com/terminal-pro/0.9.0/RinaWarp-Terminal-Pro-Mac.dmg",
+        "linux": "https://downloads.rinawarptech.com/terminal-pro/0.9.0/RinaWarp-Terminal-Pro-Linux.AppImage"
+      },
+      "checksums": {
+        "windows": "a1b2c3d4e5f6...",
+        "mac": "f6e5d4c3b2a1...",
+        "linux": "1a2b3c4d5e6f..."
+      }
+    },
+    {
+      "version": "0.8.5",
+      "date": "2025-11-15",
+      "changes": [
+        "Beta release with core functionality",
+        "Basic terminal emulation",
+        "File system integration",
+        "Initial branding assets",
+        "Command history support",
+        "Customizable color schemes"
+      ],
+      "downloads": {
+        "windows": "https://downloads.rinawarptech.com/terminal-pro/0.8.5/RinaWarp-Terminal-Pro-Windows.exe",
+        "mac": "https://downloads.rinawarptech.com/terminal-pro/0.8.5/RinaWarp-Terminal-Pro-Mac.dmg",
+        "linux": "https://downloads.rinawarptech.com/terminal-pro/0.8.5/RinaWarp-Terminal-Pro-Linux.AppImage"
+      }
+    },
+    {
+      "version": "0.8.0",
+      "date": "2025-10-01",
+      "changes": [
+        "Alpha release for early testers",
+        "Basic terminal functionality",
+        "Minimal UI",
+        "Windows and Linux support only"
+      ]
+    }
+  ],
+  "latest": "0.9.0",
+  "api": {
+    "endpoint": "https://downloads.rinawarptech.com/changelog.json",
+    "cache": 3600,
+    "format": "json"
+  }
+}

@@ -1,0 +1,99 @@
+.ts-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #02030a;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+}
+
+/* Header */
+.ts-header {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(135deg, #050814, #0a1222);
+}
+
+.ts-title {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9fb3ff;
+}
+
+.ts-rina-toggle {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: transparent;
+  color: #ffb3e0;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease-out;
+}
+
+.ts-rina-toggle.active {
+  background: linear-gradient(135deg, #ff2a6d, #0ff0fc);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255,42,109,0.7);
+  border-color: transparent;
+}
+
+.ts-rina-toggle:hover {
+  transform: translateY(-1px);
+}
+
+/* Body layout */
+.ts-body {
+  flex: 1;
+  position: relative;
+  display: flex;
+  height: calc(100vh - 38px);
+}
+
+.ts-main {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sidebar wrapper */
+.ts-rina-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  display: flex;
+  transition: width 0.25s ease-out, transform 0.25s ease-out, opacity 0.25s;
+}
+
+.ts-rina-wrapper.closed {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Splitter */
+.ts-splitter {
+  width: 5px;
+  cursor: col-resize;
+  background: transparent;
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+
+.ts-splitter:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* Panel */
+.ts-rina-panel {
+  height: 100%;
+  width: 100%;
+}

@@ -1,0 +1,13 @@
+{
+  "description": "Central environment variable schema for RinaWarp monorepo",
+  "type": "object",
+  "properties": {
+    "APP_ENV": { "type": "string", "enum": ["development", "staging", "production"] },
+    "STRIPE_SECRET_KEY": { "type": "string" },
+    "STRIPE_WEBHOOK_SECRET": { "type": "string" },
+    "RINAWARP_LICENSE_SERVER_URL": { "type": "string" },
+    "RINAWARP_API_BASE_URL": { "type": "string" }
+  },
+  "required": ["APP_ENV"]
+}
+

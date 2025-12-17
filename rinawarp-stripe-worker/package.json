@@ -1,0 +1,20 @@
+{
+  "name": "rinawarp-stripe-worker",
+  "version": "1.0.0",
+  "description": "Stripe integration worker for RinaWarp",
+  "main": "src/index.ts",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "test": "node test-deployment.js"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "stripe": "^14.0.0"
+  }
+}

@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>RinaWarp Terminal Pro</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'none'; form-action 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none';"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      .wrap {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        height: 100%;
+      }
+      header,
+      footer {
+        padding: 8px 12px;
+        border-bottom: 1px solid #333;
+        background: #111;
+        color: #eee;
+      }
+      footer {
+        border-top: 1px solid #333;
+        border-bottom: none;
+        font-size: 12px;
+      }
+      main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 8px;
+        background: #0b0b0b;
+        color: #ddd;
+      }
+      .card {
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 8px;
+        background: #161616;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      button {
+        background: #2a2a2a;
+        color: #fff;
+        border: 1px solid #444;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      button:hover {
+        filter: brightness(1.1);
+      }
+      textarea,
+      input {
+        width: 100%;
+        background: #0f0f0f;
+        color: #ddd;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 8px;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+      }
+      .muted {
+        color: #aaa;
+      }
+      .chip {
+        padding: 2px 8px;
+        border: 1px solid #444;
+        border-radius: 999px;
+      }
+      .tag-on {
+        background: #0a2;
+      }
+      .tag-off {
+        background: #222;
+        color: #aaa;
+      }
+      .small {
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="row">
+          <strong>RinaWarp — Intent → Execution</strong>
+          <span class="muted"
+            >&nbsp;|&nbsp; LLM planner (opt-in) · DAG · Idempotence · Rollback</span
+          >
+          <span class="chip tag-on">Local-only</span>
+          <span class="chip tag-off">No GPS</span>
+          <button id="btnLicense">Enter License</button>
+          <button id="btnBilling">Manage Billing</button>
+          <button id="btnUpdater">Check Updates</button>
+          <button id="btn-run-cs" class="rw-button-outline">Run C# Smoke</button>
+        </div>
+      </header>
+      <main>
+        <div class="card">
+          <div class="row">
+            <input id="cwd" placeholder="Working directory (defaults to app dir)" />
+            <button id="btnCwd">Use app dir</button>
+          </div>
+          <div class="row small">
+            <span>Capabilities:</span>
+            <button class="chip tag-off" id="cap-docker">docker</button>
+            <button class="chip tag-on" id="cap-git">git</button>
+            <button class="chip tag-on" id="cap-npm">npm</button>
+            <button class="chip tag-off" id="cap-network">network</button>
+            <button id="saveCaps">Save</button>
+          </div>
+          <textarea
+            id="intent"
+            rows="5"
+            placeholder='e.g., "Init a Python app and run tests"'
+          ></textarea>
+          <div class="row">
+            <button id="btnPlan">Plan (Enter)</button>
+            <button id="btnDry">Dry-run (F9)</button>
+            <button id="btnExec">Execute (F10)</button>
+            <button id="btnRerun">Rerun Failed Only</button>
+            <button id="btnRollback">Rollback last run</button>
+          </div>
+          <div class="row">
+            <button id="btnDrySel">Dry-run Selected</button>
+            <button id="btnExecSel">Execute Selected</button>
+            <span id="selSummary" class="muted small"></span>
+          </div>
+          <div class="row">
+            <button id="btnDiag">Diagnostics</button>
+            <button id="btnExport">Export Report</button>
+            <button id="btnFixPolicy">Fix Policy</button>
+            <button id="btnShowGraph">Show Graph</button>
+            <span id="diagStatus" class="muted small"></span>
+          </div>
+          <p class="muted small">
+            LLM off by default. Enable with environment vars (see commands below).
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Plan</h3>
+          <ul id="plan"></ul>
+          <h3>Output</h3>
+          <pre id="output"></pre>
+          <h3 class="muted">Errors</h3>
+          <pre id="errors" class="muted"></pre>
+        </div>
+      </main>
+      <footer>Enter=Plan · F9=Dry-run · F10=Execute · Esc=Clear · Click a step to "Explain"</footer>
+    </div>
+    <div
+      id="diagModal"
+      style="
+        display: none;
+        position: fixed;
+        inset: 10%;
+        background: #121212;
+        border: 1px solid #333;
+        padding: 12px;
+        border-radius: 8px;
+        overflow: auto;
+      "
+    >
+      <div class="row"><strong>Diagnostics</strong><button id="diagClose">Close</button></div>
+      <pre id="diagOut" style="white-space: pre-wrap"></pre>
+
+      <!-- C# Formatter Debug Panel -->
+      <div
+        class="debug-card"
+        style="margin-top: 1rem; padding: 1rem; border: 1px solid #333; border-radius: 8px"
+      >
+        <div class="row" style="gap: 0.5rem; align-items: center; margin-bottom: 0.5rem">
+          <strong>CS-Script Formatter</strong>
+          <button id="btn-format-cs" class="rw-button-outline">Format</button>
+        </div>
+        <textarea id="cs-input" rows="6" style="width: 100%; font-family: monospace"></textarea>
+        <pre id="cs-output" style="white-space: pre-wrap; margin-top: 0.5rem"></pre>
+      </div>
+    </div>
+    <!-- Graph modal -->
+    <div
+      id="graphModal"
+      style="
+        display: none;
+        position: fixed;
+        inset: 6%;
+        background: #121212;
+        border: 1px solid #333;
+        padding: 12px;
+        border-radius: 8px;
+        overflow: auto;
+      "
+    >
+      <div class="row"><strong>Plan Graph</strong><button id="graphClose">Close</button></div>
+      <svg
+        id="graphSvg"
+        width="2000"
+        height="1000"
+        style="border: 1px solid #333; background: #0d0d0d; border-radius: 8px"
+      ></svg>
+    </div>
+
+    <!-- License Modal -->
+    <div
+      id="licenseModal"
+      style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5)"
+    >
+      <div
+        style="
+          max-width: 480px;
+          margin: 10% auto;
+          background: #16161a;
+          border: 1px solid #2e2e36;
+          border-radius: 12px;
+          padding: 16px;
+        "
+      >
+        <h3>Enter License</h3>
+        <input
+          id="licEmail"
+          placeholder="you@example.com"
+          style="width: 100%; margin: 6px 0; padding: 10px"
+        />
+        <input
+          id="licKey"
+          placeholder="RWP-XXXX-XXXX-XXXX"
+          style="width: 100%; margin: 6px 0; padding: 10px"
+        />
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px">
+          <button id="licCancel">Cancel</button>
+          <button id="licVerify">Verify</button>
+        </div>
+        <div id="licMsg"></div>
+      </div>
+    </div>
+
+    <!-- What's New Modal -->
+    <div
+      id="whatsNewModal"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 9999;
+      "
+    >
+      <div
+        style="
+          max-width: 620px;
+          margin: 8% auto;
+          background: #16161a;
+          border: 1px solid #2e2e36;
+          border-radius: 12px;
+          padding: 18px;
+        "
+      >
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h3 id="wnTitle" style="margin: 0">What's new</h3>
+          <button
+            id="wnClose"
+            style="
+              background: #2a2a2a;
+              color: #fff;
+              border: 1px solid #444;
+              padding: 6px 10px;
+              border-radius: 6px;
+              cursor: pointer;
+            "
+          >
+            Close
+          </button>
+        </div>
+        <div id="wnBody" style="margin-top: 10px; white-space: pre-wrap; line-height: 1.5"></div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px">
+          <a
+            id="wnChecksums"
+            style="
+              background: #2a2a2a;
+              color: #fff;
+              border: 1px solid #444;
+              padding: 6px 10px;
+              border-radius: 6px;
+              text-decoration: none;
+            "
+            href="#"
+            target="_blank"
+            rel="noreferrer"
+            >Checksums</a
+          >
+          <button
+            id="wnOk"
+            style="
+              background: #2a2a2a;
+              color: #fff;
+              border: 1px solid #444;
+              padding: 6px 10px;
+              border-radius: 6px;
+              cursor: pointer;
+            "
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+name = "rina-live-session"
+main = "src/index.js"
+compatibility_date = "2025-01-21"
+compatibility_flags = ["nodejs_compat"]
+
+# ------------ ROUTING ------------
+routes = [
+  { pattern = "https://api.rinawarptech.com/api/live-session/*", zone_id = "2a5d9b9e9bb3675812dda0d66d1f2c3b" },
+  { pattern = "https://api.rinawarptech.com/ws/live-session/*", zone_id = "2a5d9b9e9bb3675812dda0d66d1f2c3b" }
+]
+
+# ------------ D1 DATABASE ------------
+[[d1_databases]]
+binding = "DB"
+database_name = "rina_live_sessions"
+database_id = "8f25b237-7127-455f-81e5-7f1707dfc3ca"
+
+# ------------ KV NAMESPACE ------------
+[[kv_namespaces]]
+binding = "LIVE_SESSIONS"
+id = "beedf66dd00a4ba8973fe5fc422b9ade"
+
+# ------------ CRON TRIGGERS ------------
+[triggers]
+crons = ["*/10 * * * *"]  # every 10 minutes → GC stale sessions
+
+# ------------ ENVIRONMENT VARIABLES ------------
+[vars]
+ENVIRONMENT = "production"
+SESSION_TTL_SECONDS = "3600"
+MAX_GUESTS_PER_SESSION = "20"
+
+# ------------ DEV CONFIG ------------
+[dev]
+port = 8787
+local_protocol = "http"

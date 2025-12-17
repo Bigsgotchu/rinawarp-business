@@ -1,0 +1,45 @@
+{
+  "provider": "github",
+  "owner": "rinawarp",
+  "repo": "terminal-pro",
+  "updaterCacheDirName": "rinawarp-terminal-pro-updater",
+  "url": "https://api.github.com/repos/rinawarp/terminal-pro/releases/latest",
+  "private": false,
+  "publish": {
+    "provider": "github",
+    "owner": "rinawarp",
+    "repo": "terminal-pro",
+    "vPrefixedTagName": true,
+    "releaseType": "release",
+    "publishAutoUpdate": true
+  },
+  "updateProvider": {
+    "name": "github",
+    "owner": "rinawarp",
+    "repo": "terminal-pro"
+  },
+  "github": {
+    "owner": "rinawarp",
+    "repo": "terminal-pro",
+    "token": "${GITHUB_TOKEN}",
+    "release": true,
+    "draft": false,
+    "prerelease": false
+  },
+  "autoUpdater": {
+    "enabled": true,
+    "checkForUpdatesOnStart": true,
+    "checkForUpdatesOnExit": false,
+    "interval": 3600000,
+    "notifyUser": true,
+    "allowDowngrade": false,
+    "allowPrerelease": false
+  },
+  "updater": {
+    "enabled": true,
+    "autoDownload": true,
+    "autoInstallOnAppQuit": true,
+    "allowPrerelease": false,
+    "allowDowngrade": false
+  }
+}

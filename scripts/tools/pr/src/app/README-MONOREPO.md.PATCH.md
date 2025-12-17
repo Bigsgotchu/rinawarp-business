@@ -1,0 +1,9 @@
+# Monorepo App Map (Updated)
+
+> **Deprecation:** The following components were archived. Use the `archive/app/` paths.
+
+- `archive/app/revenue/` (was `src/app/revenue/`)
+- `archive/app/marketing/` (was `src/app/marketing/`)
+- `archive/app/production/` (was `src/app/production/`)
+
+See `CHANGELOG.md` for timeline and migration details.

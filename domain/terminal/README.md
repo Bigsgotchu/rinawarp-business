@@ -1,0 +1,25 @@
+# RinaWarp Terminal Pro
+
+AI-Powered Terminal Emulator - Core Application
+
+This is the main RinaWarp Terminal Pro application with all core features:
+
+- AI Integration (OpenAI, Groq, Claude, Gemini, Ollama)
+- Voice Synthesis (ElevenLabs)
+- Cross-platform support (macOS, Windows, Linux)
+- Beautiful terminal themes
+- Real-time AI assistance
+
+## Quick Start
+
+```bash
+npm install
+npm start
+```
+
+## Structure
+
+- `src/` - Core application source
+- `frontend/` - React web interface
+- `electron/` - Desktop application
+- `unified-backend/` - Backend server

@@ -1,0 +1,20 @@
+{
+  "id": "legal/TRADEMARK_REGISTRATION_GUIDE",
+  "title": "🏷️ RinaWarp Technologies Trademark Registration Guide",
+  "description": "🎯 TRADEMARKS TO REGISTER",
+  "source": "@site/docs/legal/TRADEMARK_REGISTRATION_GUIDE.md",
+  "sourceDirName": "legal",
+  "slug": "/legal/TRADEMARK_REGISTRATION_GUIDE",
+  "permalink": "/docs/legal/TRADEMARK_REGISTRATION_GUIDE",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/RinaWarpTech/RinaWarp-Platforms/tree/main/docs/docs/legal/TRADEMARK_REGISTRATION_GUIDE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "RinaWarp Terminal Pro - Security Implementation",
+    "permalink": "/docs/legal/TERMINAL_PRO_SECURITY_TEMPLATE"
+  }
+}

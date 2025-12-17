@@ -1,0 +1,88 @@
+# FINAL Stripe Configuration - Exact Solution
+
+## Root Cause Identified 🔍
+
+The checkout API fails because the `RINA_PRICE_MAP` in Cloudflare Pages doesn't match the actual Stripe plan codes.
+
+## Exact Stripe Plan Codes Found ✅
+
+Retrieved from live Stripe account:
+
+```json
+{
+  "enterprise-yearly": "price_1SVRVMGZrRdZy3W9094r1F5B",      // $3000/year
+  "founder-lifetime": "price_1SVRVLGZrRdZy3W976aXrw0g",      // $999 one-time  
+  "pioneer-lifetime": "price_1SVRVLGZrRdZy3W9LoPVNyem",      // $700 one-time
+  "pro-monthly": "price_1SVRVKGZrRdZy3W9wFO3QPw6",            // $49.99/month
+  "creator-monthly": "price_1SVRVJGZrRdZy3W9tRX5tsaH",        // $29.99/month
+  "starter-monthly": "price_1SVRVJGZrRdZy3W9q6u9L82y"         // $9.99/month
+}
+```
+
+## CORRECT Environment Variable Configuration
+
+**Location**: Cloudflare Pages → rinawarptech → Settings → Variables & Secrets
+
+**Set this EXACT value for RINA_PRICE_MAP:**
+
+```bash
+RINA_PRICE_MAP={"enterprise-yearly":"price_1SVRVMGZrRdZy3W9094r1F5B","founder-lifetime":"price_1SVRVLGZrRdZy3W976aXrw0g","pioneer-lifetime":"price_1SVRVLGZrRdZy3W9LoPVNyem","pro-monthly":"price_1SVRVKGZrRdZy3W9wFO3QPw6","creator-monthly":"price_1SVRVJGZrRdZy3W9tRX5tsaH","starter-monthly":"price_1SVRVJGZrRdZy3W9q6u9L82y"}
+```
+
+**Complete Environment Variables Required:**
+
+```bash
+STRIPE_SECRET_KEY=STRIPE_SECRET_KEY_EXPOSED_REMOVED
+
+STRIPE_WEBHOOK_SECRET=STRIPE_WEBHOOK_SECRET_EXPOSED_REMOVED
+
+DOMAIN=https://rinawarptech.com
+
+RINA_PRICE_MAP={"enterprise-yearly":"price_1SVRVMGZrRdZy3W9094r1F5B","founder-lifetime":"price_1SVRVLGZrRdZy3W976aXrw0g","pioneer-lifetime":"price_1SVRVLGZrRdZy3W9LoPVNyem","pro-monthly":"price_1SVRVKGZrRdZy3W9wFO3QPw6","creator-monthly":"price_1SVRVJGZrRdZy3W9tRX5tsaH","starter-monthly":"price_1SVRVJGZrRdZy3W9q6u9L82y"}
+```
+
+## Testing Commands
+
+After setting the environment variables, test with:
+
+```bash
+# Test founder lifetime plan
+curl -i https://rinawarptech.com/api/checkout-v2 \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "plan": "founder-lifetime",
+    "successUrl": "https://rinawarptech.com/success.html",
+    "cancelUrl": "https://rinawarptech.com/cancel.html"
+  }'
+
+# Expected success response:
+# {"sessionId": "cs_xxx..."}
+```
+
+## Plan Codes for Frontend
+
+**Use these EXACT plan codes in frontend:**
+
+- `founder-lifetime` → $999 (Founder Lifetime)
+- `creator-monthly` → $29.99/month (Creator Monthly)  
+- `pro-monthly` → $49.99/month (Pro Monthly)
+- `enterprise-yearly` → $3000/year (Enterprise Yearly)
+- `pioneer-lifetime` → $700 (Pioneer Lifetime)
+- `starter-monthly` → $9.99/month (Starter Monthly)
+
+## What Was Fixed via CLI ✅
+
+1. **Webhook Endpoint**: Created new webhook with correct URL
+2. **Stripe Verification**: Confirmed all 6 Terminal Pro prices are active
+3. **Plan Code Mapping**: Identified exact plan codes from Stripe metadata
+
+## What Needs Manual Fix 🔧
+
+**ONLY**: Update the `RINA_PRICE_MAP` environment variable in Cloudflare Pages with the exact JSON above.
+
+---
+
+**Critical**: The plan keys sent from frontend must match exactly with the keys in `RINA_PRICE_MAP`.
+
+**Status**: Ready for final testing once environment variables are updated.

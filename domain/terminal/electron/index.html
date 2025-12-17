@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RinaWarp Terminal Pro</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        text-align: center;
+        color: white;
+        max-width: 600px;
+        padding: 2rem;
+      }
+
+      .logo {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+      }
+
+      .status {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .feature {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .feature-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .feature-desc {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">🧜‍♀️</div>
+      <div class="title">RinaWarp Terminal Pro</div>
+      <div class="subtitle">AI-Powered Terminal Emulator</div>
+
+      <div class="status">
+        <div class="loading"></div>
+        <div>Loading terminal interface...</div>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🤖</div>
+          <div class="feature-title">AI Integration</div>
+          <div class="feature-desc">
+            Multiple AI providers with intelligent suggestions
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🎨</div>
+          <div class="feature-title">Beautiful Themes</div>
+          <div class="feature-desc">20+ stunning themes and customizations</div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-title">High Performance</div>
+          <div class="feature-desc">Optimized for speed and efficiency</div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🔧</div>
+          <div class="feature-title">Advanced Features</div>
+          <div class="feature-desc">Split panes, tabs, workflows, and more</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Check if we're in Electron
+      if (window.electronAPI) {
+        console.log('🔒 Electron API available');
+
+        // Get app version
+        window.electronAPI.getAppVersion().then((version) => {
+          console.log('📱 App version:', version);
+        });
+
+        // Listen for update status
+        window.electronAPI.onUpdateStatus((data) => {
+          console.log('🔄 Update status:', data);
+        });
+      } else {
+        console.log('🌐 Running in browser mode');
+      }
+
+      // Simulate loading
+      setTimeout(() => {
+        const status = document.querySelector('.status');
+        status.innerHTML =
+          '<div style="color: #4ade80;">✅ Terminal ready!</div>';
+      }, 2000);
+    </script>
+  </body>
+</html>

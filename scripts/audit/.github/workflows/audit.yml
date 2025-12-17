@@ -1,0 +1,30 @@
+name: Audit (Deps & SBOM)
+
+on:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  deps-sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install jq, curl, ripgrep
+        run: sudo apt-get update && sudo apt-get install -y jq curl ripgrep
+      - name: Run deps audit & SBOM
+        run: bash scripts/audit/deps.sh
+      - name: Aggregate
+        run: node scripts/audit/aggregate.mjs
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deps-audit
+          path: |
+            reports/npm-audit.json
+            reports/depcheck.json
+            reports/sbom.cyclonedx.json
+            reports/summary.deps.json

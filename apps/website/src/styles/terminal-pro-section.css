@@ -1,0 +1,110 @@
+.tp-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 3rem;
+  padding: 5rem 0;
+  align-items: center;
+}
+
+.tp-hero-left h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.tp-subtitle {
+  font-size: 1.15rem;
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+}
+
+.tp-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.75rem;
+}
+
+.tp-bullets li {
+  margin-bottom: 0.45rem;
+}
+
+.tp-cta-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.tp-btn {
+  border-radius: 999px;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.tp-btn-primary {
+  background: linear-gradient(120deg, #18a4ff, #22e0c9);
+  color: #050816;
+}
+
+.tp-btn-ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.tp-meta {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.tp-hero-right .tp-window {
+  border-radius: 1rem;
+  overflow: hidden;
+  background: radial-gradient(circle at top left, #1f3b5b, #050816);
+  color: #e5f4ff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.tp-window-header {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  gap: 0.35rem;
+}
+
+.tp-window-header .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.tp-window-header .dot.red { background: #ff5f57; }
+.tp-window-header .dot.yellow { background: #ffbd2e; }
+.tp-window-header .dot.green { background: #28c840; }
+
+.tp-window-title {
+  margin-left: auto;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.tp-window-body {
+  padding: 1.25rem 1.5rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+}
+
+.tp-demo {
+  padding: 3rem 0 4rem;
+}
+
+.tp-demo-list {
+  padding-left: 1.2rem;
+}
+
+.tp-demo-note {
+  margin-top: 1rem;
+  opacity: 0.75;
+}

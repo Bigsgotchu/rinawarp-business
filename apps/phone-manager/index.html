@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RinaWarp Phone Manager</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" href="styles.css">
+    </head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 RinaWarp Phone Manager</h1>
+            <div class="status">
+                <span class="badge" id="currentDeviceDisplay">No Device Selected</span>
+            </div>
+        </header>
+
+        <main class="dual-layout">
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h2>🔍 Devices</h2>
+                    <button id="scanBtn" class="btn btn-primary btn-full-width">Scan for Devices</button>
+                    <div id="deviceList" class="device-list">
+                        <p>Click "Scan" to begin.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-section navigation-links">
+                    <h2>Features</h2>
+                    <nav>
+                        <a href="#" class="nav-link active" data-view="file-manager">📂 File Manager</a>
+                        <a href="#" class="nav-link" data-view="app-manager">📦 App Manager</a>
+                        <a href="#" class="nav-link" data-view="backup-restore">🗂️ Backup & Restore</a>
+                        <a href="#" class="nav-link" data-view="system-toolkit">🛠️ System Toolkit</a>
+                        <a href="#" class="nav-link" data-view="recovery-wizard">💔 Data Recovery</a>
+                        <a href="#" class="nav-link" data-view="advanced-shell">💣 Advanced Shell</a>
+                        <a href="#" class="nav-link" data-view="health-monitor">📊 Health Monitor</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <section class="content-area">
+
+                <div id="file-manager" class="feature-view active-view">
+                    <h3>📂 File Manager / Remote Shell</h3>
+                    <p class="section-description">Browse device file system and send basic shell commands.</p>
+
+                    <div class="action-bar">
+                        <button id="upFolderBtn" class="btn btn-secondary" disabled>⬆️ Up Folder</button>
+                        <input type="password" id="remoteInputText" placeholder="Enter password or text here..." class="form-control" disabled style="width: 200px;">
+                        <button id="sendInputBtn" class="btn btn-secondary" disabled>🔑 Send Input</button>
+                    </div>
+
+                    <div id="fileBrowserDisplay" class="log-block" style="height: 400px;">
+                        <p>Select a connected device to start browsing.</p>
+                    </div>
+                </div>
+
+                <div id="app-manager" class="feature-view">
+                    <h3>📦 App Manager</h3>
+                    <p class="section-description">View, install, and uninstall applications.</p>
+                    <div class="action-bar">
+                        <button id="listAppsBtn" class="btn btn-primary" disabled>List Installed Apps</button>
+                        <button id="installAppBtn" class="btn btn-secondary" disabled>Install App (.apk/.ipa)</button>
+                    </div>
+                    <div id="appListDisplay" class="log-block" style="height: 400px;">
+                        <p>Click "List Installed Apps" to populate.</p>
+                    </div>
+                </div>
+
+                <div id="backup-restore" class="feature-view">
+                    <h3>🗂️ Backup & Restore</h3>
+                    <p class="section-description">Orchestrate full or selective device backups and restorations.</p>
+
+                    <div class="action-bar">
+                        <select id="backupTypeSelect" style="padding: 8px; border-radius: 4px; margin-right: 10px;">
+                            <option value="full">Full Device Backup</option>
+                            <option value="/sdcard/DCIM">Photos (/sdcard/DCIM)</option>
+                            <option value="/sdcard/Download">Downloads</option>
+                        </select>
+                        <button id="selectLocalFolderBtn" class="btn btn-secondary">Select Local Folder</button>
+                        <button id="startBackupBtn" class="btn btn-primary" disabled>Start Backup</button>
+                    </div>
+
+                    <p id="backupFolderStatus" class="status-text">Local backup path: **None Selected**</p>
+
+                    <h4 style="margin-top: 20px;">Restore Operation</h4>
+                    <div class="action-bar">
+                        <button id="selectRestoreFolderBtn" class="btn btn-secondary">Select Backup Archive</button>
+                        <button id="startRestoreBtn" class="btn btn-primary" disabled>Restore to Device</button>
+                    </div>
+
+                    <div id="backupRestoreLog" class="log-block">
+                        <p>Backup and restore status will appear here.</p>
+                    </div>
+                </div>
+
+                <div id="system-toolkit" class="feature-view">
+                    <h3>🛠️ System Toolkit</h3>
+                    <p class="section-description">Access advanced reboot options and system diagnostics.</p>
+
+                    <div class="toolkit-grid">
+                        <div class="toolkit-section">
+                            <h4>Reboot Modes</h4>
+                            <button id="rebootStandard" class="btn btn-secondary" disabled>Standard Reboot</button>
+                            <button id="rebootBootloader" class="btn btn-secondary" disabled>Bootloader / Fastboot</button>
+                            <button id="rebootDownload" class="btn btn-secondary" disabled>Download Mode</button>
+                            <button id="rebootRecovery" class="btn btn-secondary" disabled>Recovery Mode</button>
+                            <button id="shutdownDeviceBtn" class="btn btn-danger" disabled>⚠️ Power Off</button>
+                        </div>
+                        <div class="toolkit-section">
+                            <h4>Diagnostics</h4>
+                            <button id="diagBattery" class="btn btn-primary" disabled>Battery Info</button>
+                            <button id="diagSystem" class="btn btn-primary" disabled>System Info</button>
+                        </div>
+                    </div>
+
+                    <div id="toolkitLog" class="log-block">
+                        <p>Diagnostic output and command status will appear here.</p>
+                    </div>
+                </div>
+
+                <div id="recovery-wizard" class="feature-view">
+                    <h3>💔 Data Recovery Wizard</h3>
+                    <p class="section-description">Initiate deep scans to find lost or deleted data.</p>
+
+                    <div class="action-bar">
+                        <select id="dataTypeSelect" style="padding: 8px; border-radius: 4px; margin-right: 10px;" disabled>
+                            <option value="" disabled selected>Select Data Type</option>
+                            <option value="Photos">Photos</option>
+                            <option value="Videos">Videos</option>
+                            <option value="Contacts">Contacts</option>
+                            <option value="Messages">Messages</option>
+                        </select>
+                        <button id="startScanBtn" class="btn btn-danger" disabled>🚀 Start Recovery Scan</button>
+                    </div>
+
+                    <div id="recoveryResultsDisplay" class="log-block" style="height: 400px;">
+                        <p>Select a device and data type to start a scan.</p>
+                    </div>
+                </div>
+
+                <div id="advanced-shell" class="feature-view">
+                    <h3>💣 Advanced Shell (Privileged Execution)</h3>
+                    <p class="warning-text">⚠️ **USE WITH CAUTION:** This is for rooted Android or jailbroken iOS devices only. Incorrect commands may damage your device.</p>
+                    <p class="section-description">Execute privileged commands (e.g., to run custom recovery binaries like `testdisk`).</p>
+
+                    <div class="action-bar">
+                        <input type="text" id="privilegedCommandInput" placeholder="Enter privileged ADB shell command here (e.g., /data/local/tmp/testdisk -scan)" class="form-control" style="width: 70%;" disabled>
+                        <button id="executePrivilegedCommandBtn" class="btn btn-danger" disabled>Execute as Root</button>
+                    </div>
+
+                    <div id="advancedShellLog" class="log-block" style="height: 400px;">
+                        <p>Command output will be streamed here.</p>
+                    </div>
+                </div>
+
+                <div id="health-monitor" class="feature-view">
+                    <h3>📊 Device Health Monitor</h3>
+                    <p class="section-description">Run advanced diagnostics and predict component failure. Powered by RinaWarp AI.</p>
+                    <div class="action-bar" style="margin-bottom: 20px;">
+                        <button id="runHealthScanBtn" class="btn btn-primary" disabled>Start Deep Scan & Analysis</button>
+                        <span id="healthScoreDisplay" class="badge" style="background-color: #89CFF0; font-size: 1em;">Health Score: --</span>
+                    </div>
+                    <div class="health-grid">
+                        <div class="health-card">
+                            <h4>🔋 Battery Health</h4>
+                            <p id="batteryStatus">--</p>
+                        </div>
+                        <div class="health-card">
+                            <h4>💾 Storage Wear</h4>
+                            <p id="storageStatus">--</p>
+                        </div>
+                        <div class="health-card">
+                            <h4>🌡️ Thermal Integrity</h4>
+                            <p id="thermalStatus">--</p>
+                        </div>
+                    </div>
+                    <h4 style="color: #FF69B4;">⚠️ Predictive Failure Analysis</h4>
+                    <div id="predictionLog" class="log-block" style="height: 150px;">
+                        <p>Prediction results will appear here after scan...</p>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 RinaWarp</p>
+        </footer>
+    </div>
+
+    <script src="./renderer_ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Build / generated artifacts
+dist/
+build/
+coverage/
+
+# Status / report artifacts
+*_COMPLETE.md
+*_REPORT.md
+*_LOG.md
+
+# Vendor docs
+node_modules/

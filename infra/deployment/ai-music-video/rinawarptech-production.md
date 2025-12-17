@@ -1,0 +1,328 @@
+# RinaWarp Technologies - Production Deployment Guide
+
+## Domain Configuration: rinawarptech.com
+
+### 1. Production Environment Setup
+
+#### Frontend Configuration
+
+- **Domain**: `https://rinawarptech.com`
+- **Subdomain**: `https://ai-music-creator.rinawarptech.com` (recommended)
+- **Alternative**: `https://rinawarptech.com/ai-music-creator`
+
+#### Backend Configuration
+
+- **API Domain**: `https://api.rinawarptech.com`
+- **Alternative**: `https://rinawarptech.com/api`
+
+### 2. Environment Variables for Production
+
+Create `.env.production` files:
+
+#### Frontend (.env.production)
+
+```env
+VITE_API_BASE_URL=https://api.rinawarptech.com
+VITE_WS_URL=wss://api.rinawarptech.com
+VITE_APP_NAME=RinaWarp AI Music Creator
+VITE_APP_DOMAIN=rinawarptech.com
+VITE_STRIPE_PUBLISHABLE_KEY=pk_live_your_stripe_publishable_key
+```
+
+#### Backend (.env.production)
+
+```env
+NODE_ENV=production
+PORT=3001
+FRONTEND_URL=https://rinawarptech.com
+CORS_ORIGIN=https://rinawarptech.com
+
+# AWS Production
+AWS_ACCESS_KEY_ID=your_production_aws_key
+AWS_SECRET_ACCESS_KEY=your_production_aws_secret
+AWS_REGION=us-east-1
+S3_BUCKET=rinawarp-production
+
+# AI Services (Production Keys)
+OPENAI_API_KEY=your_production_openai_key
+PIXVERSE_API_KEY=your_production_pixverse_key
+STABLE_DIFFUSION_API_KEY=your_production_stable_diffusion_key
+RUNWAY_API_KEY=your_production_runway_key
+
+# Stripe Production
+STRIPE_SECRET_KEY=sk_live_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+
+# SSL Configuration
+SSL_CERT_PATH=/path/to/ssl/cert.pem
+SSL_KEY_PATH=/path/to/ssl/private.key
+```
+
+### 3. Build Commands for Production
+
+```bash
+# Build frontend for production
+cd frontend
+npm run build
+
+# Build backend for production
+cd backend
+npm run build
+
+# The built files will be in:
+# - frontend/dist/ (for web hosting)
+# - backend/dist/ (for Node.js server)
+```
+
+### 4. Server Configuration Options
+
+#### Option A: VPS/Cloud Server (Recommended)
+
+- **Server**: Ubuntu 20.04+ or CentOS 8+
+- **Node.js**: v18+
+- **Nginx**: Reverse proxy
+- **PM2**: Process manager
+- **SSL**: Let's Encrypt or commercial certificate
+
+#### Option B: AWS EC2 + S3
+
+- **EC2**: Backend API server
+- **S3**: Static frontend hosting
+- **CloudFront**: CDN for global performance
+- **Route 53**: DNS management
+
+#### Option C: Vercel/Netlify (Frontend) + Railway/Heroku (Backend)
+
+- **Frontend**: Deploy to Vercel/Netlify
+- **Backend**: Deploy to Railway/Heroku
+- **Custom Domain**: Point to your services
+
+### 5. Nginx Configuration (if using VPS)
+
+```nginx
+# /etc/nginx/sites-available/rinawarptech.com
+server {
+    listen 80;
+    server_name rinawarptech.com www.rinawarptech.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name rinawarptech.com www.rinawarptech.com;
+
+    ssl_certificate /path/to/ssl/cert.pem;
+    ssl_certificate_key /path/to/ssl/private.key;
+
+    # Frontend (React App)
+    location / {
+        root /var/www/rinawarptech.com/frontend/dist;
+        try_files $uri $uri/ /index.html;
+
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+    }
+
+    # Backend API
+    location /api/ {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # WebSocket support
+    location /ws {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # File uploads
+    client_max_body_size 100M;
+}
+```
+
+### 6. PM2 Configuration
+
+Create `ecosystem.config.js`:
+
+```javascript
+module.exports = {
+  apps: [
+    {
+      name: 'rinawarp-backend',
+      script: './backend/dist/index.js',
+      instances: 1,
+      exec_mode: 'cluster',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3001,
+      },
+      error_file: './logs/err.log',
+      out_file: './logs/out.log',
+      log_file: './logs/combined.log',
+      time: true,
+    },
+  ],
+};
+```
+
+### 7. SSL Certificate Setup
+
+#### Option A: Let's Encrypt (Free)
+
+```bash
+# Install Certbot
+sudo apt install certbot python3-certbot-nginx
+
+# Get certificate
+sudo certbot --nginx -d rinawarptech.com -d www.rinawarptech.com
+
+# Auto-renewal
+sudo crontab -e
+# Add: 0 12 * * * /usr/bin/certbot renew --quiet
+```
+
+#### Option B: Commercial SSL Certificate
+
+- Purchase from your domain registrar
+- Upload certificate files to server
+- Configure Nginx with certificate paths
+
+### 8. DNS Configuration
+
+Point your domain to your server:
+
+```
+A Record: rinawarptech.com → YOUR_SERVER_IP
+A Record: www.rinawarptech.com → YOUR_SERVER_IP
+CNAME: api.rinawarptech.com → rinawarptech.com (if using subdomain)
+```
+
+### 9. Deployment Script
+
+Create `deploy.sh`:
+
+```bash
+#!/bin/bash
+echo "🚀 Deploying RinaWarp to rinawarptech.com..."
+
+# Build frontend
+cd frontend
+npm run build
+echo "✅ Frontend built"
+
+# Build backend
+cd ../backend
+npm run build
+echo "✅ Backend built"
+
+# Copy files to production directory
+sudo cp -r ../frontend/dist/* /var/www/rinawarptech.com/frontend/
+sudo cp -r dist/* /var/www/rinawarptech.com/backend/
+
+# Restart services
+sudo systemctl reload nginx
+pm2 restart rinawarp-backend
+
+echo "🎉 Deployment complete! Visit https://rinawarptech.com"
+```
+
+### 10. Monitoring & Maintenance
+
+#### Health Checks
+
+- Frontend: `https://rinawarptech.com`
+- Backend: `https://rinawarptech.com/api/health`
+- WebSocket: `wss://rinawarptech.com/ws`
+
+#### Log Monitoring
+
+```bash
+# View logs
+pm2 logs rinawarp-backend
+tail -f /var/log/nginx/access.log
+tail -f /var/log/nginx/error.log
+```
+
+#### Backup Strategy
+
+- Database backups (if using database)
+- File uploads backup
+- SSL certificate backup
+- Configuration backup
+
+### 11. Performance Optimization
+
+#### Frontend
+
+- Enable gzip compression in Nginx
+- Set up CDN (CloudFlare recommended)
+- Optimize images and assets
+- Enable browser caching
+
+#### Backend
+
+- Use PM2 cluster mode
+- Set up Redis for session storage
+- Implement rate limiting
+- Monitor memory usage
+
+### 12. Security Checklist
+
+- [ ] SSL certificate installed and working
+- [ ] HTTPS redirects configured
+- [ ] Security headers set
+- [ ] File upload limits configured
+- [ ] API rate limiting enabled
+- [ ] Environment variables secured
+- [ ] Database credentials protected
+- [ ] Regular security updates
+- [ ] Firewall configured
+- [ ] Backup strategy in place
+
+### 13. Go Live Checklist
+
+- [ ] Domain DNS pointing to server
+- [ ] SSL certificate active
+- [ ] Frontend accessible at rinawarptech.com
+- [ ] Backend API responding
+- [ ] File uploads working
+- [ ] Video generation functional
+- [ ] Payment processing tested
+- [ ] Email notifications working
+- [ ] Analytics tracking active
+- [ ] Error monitoring set up
+
+---
+
+## Quick Start Commands
+
+```bash
+# 1. Build for production
+npm run build:production
+
+# 2. Deploy to server
+./deploy.sh
+
+# 3. Check status
+curl https://rinawarptech.com/api/health
+
+# 4. Monitor logs
+pm2 logs rinawarp-backend
+```
+
+**Your RinaWarp AI Music Creator will be live at: <https://rinawarptech.com>**

@@ -1,0 +1,24 @@
+{
+  "id": "README",
+  "title": "Documentation Directory",
+  "description": "This directory contains all project documentation organized by category:",
+  "source": "@site/docs/README.md",
+  "sourceDirName": ".",
+  "slug": "/",
+  "permalink": "/docs/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/RinaWarpTech/RinaWarp-Platforms/tree/main/docs/docs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Introduction",
+    "permalink": "/docs/intro"
+  },
+  "next": {
+    "title": "🚨 CRITICAL SECURITY EXECUTION GUIDE",
+    "permalink": "/docs/deployment/EXECUTION_GUIDE"
+  }
+}

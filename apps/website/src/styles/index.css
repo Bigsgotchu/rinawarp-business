@@ -1,0 +1,471 @@
+@import 'tailwindcss';
+@import './branding.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ===========================================
+   RinaWarp Global Stylesheet
+   Theme: Mermaid Pulse
+   Author: RinaWarp Technologies LLC
+   Last updated: October 2025
+   =========================================== */
+
+/* ---------- ROOT COLOR SYSTEM ---------- */
+:root {
+  --pink: #ff1ead;
+  --teal: #2af5d0;
+  --coral: #ff6f61;
+  --blue: #7ed6ff;
+  --black: #0a0a0a;
+  --gray: #181818;
+  --light-gray: #ccc;
+  --white: #ffffff;
+
+  --gradient-main: linear-gradient(90deg, var(--pink), var(--teal));
+  --gradient-accent: linear-gradient(90deg, var(--coral), var(--blue));
+}
+
+/* ---------- GLOBAL RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  background-color: var(--black);
+  color: var(--white);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- LINKS ---------- */
+a {
+  color: var(--teal);
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+a:hover {
+  color: var(--pink);
+}
+
+/* ---------- HEADER / NAV ---------- */
+header {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  background: var(--gradient-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  color: var(--black);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header h1,
+header div {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+nav a {
+  color: var(--black);
+  margin: 0 1rem;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--white);
+}
+
+/* ---------- HERO SECTION ---------- */
+.hero {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: radial-gradient(circle at top, #111 0%, #000 80%);
+}
+
+.hero h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: 0 auto;
+  color: var(--light-gray);
+  font-size: 1.1rem;
+}
+
+.cta-buttons {
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.9rem 2rem;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0.5rem;
+  transition:
+    transform 0.2s,
+    box-shadow 0.3s;
+}
+
+.btn-primary {
+  background: var(--gradient-main);
+  color: var(--black);
+}
+.btn-secondary {
+  background: var(--coral);
+  color: var(--white);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 10px var(--teal);
+}
+
+/* ---------- FEATURE CARDS ---------- */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 4rem 2rem;
+  background-color: var(--gray);
+}
+
+.feature {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 18px;
+  padding: 2rem;
+  transition: 0.3s ease;
+}
+.feature:hover {
+  transform: translateY(-5px);
+  border-color: var(--teal);
+  box-shadow: 0 0 10px rgba(42, 245, 208, 0.4);
+}
+
+.feature h3 {
+  color: var(--teal);
+  margin-bottom: 1rem;
+}
+
+.feature p {
+  color: #bbb;
+}
+
+/* ---------- TESTIMONIALS ---------- */
+.testimonial {
+  text-align: center;
+  max-width: 600px;
+  margin: 3rem auto;
+  background: #111;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #1e1e1e;
+}
+.testimonial p {
+  font-style: italic;
+  color: #ccc;
+}
+.testimonial strong {
+  display: block;
+  margin-top: 1rem;
+  color: var(--teal);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  background-color: #0d0d0d;
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: var(--teal);
+  margin: 0 0.5rem;
+}
+footer a:hover {
+  color: var(--pink);
+}
+
+/* ---------- LEGAL PAGES (Terms, Privacy, Refund, Contact) ---------- */
+main {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #111;
+  border-radius: 16px;
+  border: 1px solid #1f1f1f;
+}
+
+main h1 {
+  font-size: 2rem;
+  text-align: center;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+}
+
+main h2 {
+  color: var(--pink);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+main p,
+main li {
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+strong {
+  color: var(--blue);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CSS Reset and Base Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  line-height: 1.6;
+  color: #1f2937;
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus styles for accessibility */
+*:focus {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+}
+
+/* Remove focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Selection styles */
+::selection {
+  background-color: #14b8a6;
+  color: white;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Utility classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Animation utilities */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass morphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Custom button styles */
+.btn-primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(20, 184, 166, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #14b8a6;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  border: 2px solid #14b8a6;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-secondary:hover {
+  background: #14b8a6;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(20, 184, 166, 0.2);
+}
+
+/* Card styles */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Terminal-style code blocks */
+.terminal-code {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}

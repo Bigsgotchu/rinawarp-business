@@ -1,0 +1,27 @@
+name = "rinawarp-website"
+account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
+workers_dev = true
+compatibility_date = "2025-11-17"
+
+# Environment variables
+[vars]
+STRIPE_SECRET_KEY = "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"
+STRIPE_WEBHOOK_SECRET = "whsec_k6SWU7KCMT4vdPL7ZUNpxFiK4SQk8nPi"
+DOMAIN = "https://rinawarptech.com"
+RINA_PRICE_MAP = "{\"starter-monthly\": \"price_1SW3RxGZrRdZy3W9tGHTuxrH\", \"creator-monthly\": \"price_1SW3SBGZrRdZy3W9HOVsW7wQ\", \"pro-monthly\": \"price_1SW3SQGZrRdZy3W9i7agMkRb\", \"founder-lifetime\": \"price_1SW3SeGZrRdZy3W9qLVKoXWS\", \"pioneer-lifetime\": \"price_1SW3SpGZrRdZy3W9CkEEO7Oz\"}"
+
+# D1 Database for licenses
+[[d1_databases]]
+binding = "DB"
+database_name = "licenses"
+database_id = "YOUR_DATABASE_ID"
+
+# R2 Bucket for downloads
+[[r2_buckets]]
+binding = "DOWNLOADS"
+bucket_name = "rinawarp-downloads"
+
+# Service binding for Stripe worker
+[[services]]
+binding = "STRIPE_WORKER"
+service = "rinawarp-stripe-worker"

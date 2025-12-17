@@ -1,0 +1,24 @@
+app.whenReady().then(() => {
+  ensureHistory();
+  hardenSession();
+  session.defaultSession.webRequest.onHeadersReceived((d, cb) =>
+    cb({ responseHeaders: { ...d.responseHeaders, 'Content-Security-Policy': [cspHeader()] } }),
+  );
+  createWindow();
+  session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
+    const url = details.url;
+    // Block any http(s) request that isn't localhost or app asset
+    if (/^https?:\/\/(?!localhost|127\.0\.0\.1)/i.test(url)) {
+      return cb({ cancel: true });
+    }
+    cb({});
+  });
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+
+  // Initialize auto-updater (only in production)
+  if (!IS_DEV) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+});

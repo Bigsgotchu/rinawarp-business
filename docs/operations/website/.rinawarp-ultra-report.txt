@@ -1,0 +1,1 @@
+/home/karina/Documents/RinaWarp/scripts/ultra_guardian.sh:13:  "/home/karina/Documents/RinaWarp-Terminal-Pro"

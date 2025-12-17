@@ -1,0 +1,228 @@
+# DATA RETENTION POLICY — RINAWARP TECHNOLOGIES LLC
+
+**Effective Date:** [Auto-fill]
+**Last Updated:** [Auto-fill]
+
+---
+
+## 1. Introduction
+
+This **Data Retention Policy** describes how **RinaWarp Technologies LLC** (“**RinaWarp**,” “**we**,” “**our**,” “**us**”) collects, stores, and retains user data in compliance with legal requirements and business needs.
+
+---
+
+## 2. Data Retention Principles
+
+### 2.1 Minimal Retention
+
+- We retain **only necessary** data
+- We **delete data** when no longer needed
+- We **anonymize data** where possible
+- We **comply with** legal requirements
+
+### 2.2 Purpose-Based Retention
+
+- Data retained **only for intended purpose**
+- Different retention **per data type**
+- Regular **review and purging**
+- User **deletion requests** honored
+
+---
+
+## 3. Retention Schedule
+
+### 3.1 Account Information
+
+| Data Type | Retention Period | Purpose |
+|-----------|------------------|---------|
+| Email address | Active account + 1 year | Account management, communication |
+| License keys | Active license + 30 days | License validation, fraud prevention |
+| Billing information | 7 years | Tax compliance, financial records |
+| Support tickets | 2 years | Customer service, issue tracking |
+
+### 3.2 Usage Data
+
+| Data Type | Retention Period | Purpose |
+|-----------|------------------|---------|
+| Login sessions | 90 days | Security, fraud detection |
+| API logs | 30 days | Debugging, performance monitoring |
+| Feature usage | 12 months | Product improvement, analytics |
+| Error reports | 6 months | Bug fixing, quality assurance |
+
+### 3.3 AI Content
+
+| Data Type | Retention Period | Purpose |
+|-----------|------------------|---------|
+| Input files | Processing + 7 days | Temporary processing only |
+| Output files | User-controlled | Stored until user deletion |
+| Generation metadata | 90 days | Abuse detection, quality control |
+| Model interactions | 30 days | System improvement (non-content) |
+
+### 3.4 System Logs
+
+| Data Type | Retention Period | Purpose |
+|-----------|------------------|---------|
+| Server logs | 30 days | Security, performance monitoring |
+| Security events | 1 year | Incident investigation, compliance |
+| Admin actions | 2 years | Audit trail, accountability |
+| Backup logs | 90 days | Disaster recovery, system integrity |
+
+---
+
+## 4. Data Deletion
+
+### 4.1 User Requests
+
+Users may request deletion by:
+
+- **Email:** support@rinawarptech.com
+- **Account settings:** Self-service deletion
+- **Subject:** "Data Deletion Request"
+
+### 4.2 Deletion Process
+
+1. **Verification** of identity
+2. **Confirmation** of request
+3. **Backup** of critical data (if needed)
+4. **Permanent deletion** from systems
+5. **Confirmation** to user
+
+### 4.3 Exceptions
+
+Data may be retained if:
+
+- **Legal requirement** (tax, compliance)
+- **Ongoing dispute** or investigation
+- **Fraud prevention** necessity
+- **Contractual obligation**
+
+---
+
+## 5. Backup & Archival
+
+### 5.1 Backup Policy
+
+- **Daily backups** for critical systems
+- **30-day retention** for operational backups
+- **Encrypted storage** for all backups
+- **Secure deletion** after retention period
+
+### 5.2 Archival Policy
+
+- **Long-term archives** for legal compliance
+- **7-year retention** for financial records
+- **Secure offline storage** for archives
+- **Limited access** to archived data
+
+---
+
+## 6. Legal Compliance
+
+### 6.1 Tax & Financial Records
+
+- **7-year retention** for IRS compliance
+- **Secure storage** of financial data
+- **Audit-ready** documentation
+- **Encrypted** sensitive information
+
+### 6.2 Litigation Holds
+
+- **Suspend deletion** during legal proceedings
+- **Preserve evidence** as required
+- **Document chain** of custody
+- **Comply with** court orders
+
+---
+
+## 7. User Rights
+
+### 7.1 Right to Access
+
+Users may request:
+
+- **Copy of their data**
+- **Usage history**
+- **Account information**
+- **Support records**
+
+### 7.2 Right to Correction
+
+Users may request:
+
+- **Update personal information**
+- **Correct inaccurate data**
+- **Modify account details**
+- **Fix billing information**
+
+### 7.3 Right to Portability
+
+Users may request:
+
+- **Data export** in standard formats
+- **Transfer to another service**
+- **Machine-readable** formats
+- **Structured data** where applicable
+
+---
+
+## 8. Security During Retention
+
+### 8.1 Data Protection
+
+- **Encryption** of sensitive data
+- **Access controls** for all systems
+- **Regular audits** of data storage
+- **Monitoring** for unauthorized access
+
+### 8.2 Secure Deletion
+
+- **Cryptographic erasure** where possible
+- **Multiple overwrite** passes
+- **Verification** of deletion
+- **Documentation** of process
+
+---
+
+## 9. Third-Party Data
+
+### 9.1 Vendor Retention
+
+Third-party vendors:
+
+- **Stripe**: 7-year financial records
+- **Cloudflare**: 30-day logs
+- **AI Providers**: Processing only
+
+### 9.2 Data Sharing
+
+We ensure vendors:
+
+- **Comply with** our retention policy
+- **Delete data** when requested
+- **Secure data** during retention
+- **Provide transparency** about practices
+
+---
+
+## 10. Policy Updates
+
+RinaWarp may update this policy to:
+
+- **Comply with** new regulations
+- **Improve** data management
+- **Enhance** user privacy
+- **Address** business needs
+
+**Updates take effect immediately upon posting.**
+
+---
+
+## 11. Contact Information
+
+**Data Requests:** privacy@rinawarptech.com
+**Deletion Requests:** support@rinawarptech.com
+**Legal Questions:** legal@rinawarptech.com
+
+---
+
+**© 2025 RinaWarp Technologies LLC. All rights reserved.**

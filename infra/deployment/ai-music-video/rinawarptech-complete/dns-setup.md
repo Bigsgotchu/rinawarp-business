@@ -1,0 +1,158 @@
+# RinaWarp Technologies - DNS Configuration Guide
+
+## Complete DNS Setup for rinawarptech.com
+
+### Required DNS Records
+
+Configure these DNS records with your domain registrar or DNS provider:
+
+#### A Records (Point to your server IP)
+
+```
+rinawarptech.com → YOUR_SERVER_IP
+www.rinawarptech.com → YOUR_SERVER_IP
+terminal.rinawarptech.com → YOUR_SERVER_IP
+ai-music-creator.rinawarptech.com → YOUR_SERVER_IP
+admin.rinawarptech.com → YOUR_SERVER_IP
+api.rinawarptech.com → YOUR_SERVER_IP
+```
+
+#### CNAME Records (Optional - for CDN)
+
+```
+cdn.rinawarptech.com → your-cdn-provider.com
+```
+
+### DNS Configuration Examples
+
+#### CloudFlare Configuration
+
+1. Add your domain to CloudFlare
+2. Set DNS records:
+   - Type: A, Name: @, Content: YOUR_SERVER_IP, Proxy: ✅
+   - Type: A, Name: www, Content: YOUR_SERVER_IP, Proxy: ✅
+   - Type: A, Name: terminal, Content: YOUR_SERVER_IP, Proxy: ✅
+   - Type: A, Name: ai-music-creator, Content: YOUR_SERVER_IP, Proxy: ✅
+   - Type: A, Name: admin, Content: YOUR_SERVER_IP, Proxy: ✅
+   - Type: A, Name: api, Content: YOUR_SERVER_IP, Proxy: ✅
+
+#### GoDaddy Configuration
+
+1. Log into GoDaddy DNS Management
+2. Add A records:
+   - Host: @, Points to: YOUR_SERVER_IP, TTL: 600
+   - Host: www, Points to: YOUR_SERVER_IP, TTL: 600
+   - Host: terminal, Points to: YOUR_SERVER_IP, TTL: 600
+   - Host: ai-music-creator, Points to: YOUR_SERVER_IP, TTL: 600
+   - Host: admin, Points to: YOUR_SERVER_IP, TTL: 600
+   - Host: api, Points to: YOUR_SERVER_IP, TTL: 600
+
+#### Namecheap Configuration
+
+1. Go to Advanced DNS
+2. Add A records:
+   - Host: @, Value: YOUR_SERVER_IP, TTL: 5 min
+   - Host: www, Value: YOUR_SERVER_IP, TTL: 5 min
+   - Host: terminal, Value: YOUR_SERVER_IP, TTL: 5 min
+   - Host: ai-music-creator, Value: YOUR_SERVER_IP, TTL: 5 min
+   - Host: admin, Value: YOUR_SERVER_IP, TTL: 5 min
+   - Host: api, Value: YOUR_SERVER_IP, TTL: 5 min
+
+### DNS Propagation
+
+After adding DNS records:
+
+1. **Wait for propagation**: 5 minutes to 48 hours
+2. **Test with dig**: `dig rinawarptech.com`
+3. **Test with nslookup**: `nslookup rinawarptech.com`
+4. **Check online**: Use DNS checker tools
+
+### Verification Commands
+
+```bash
+# Check DNS resolution
+dig rinawarptech.com
+dig terminal.rinawarptech.com
+dig ai-music-creator.rinawarptech.com
+dig admin.rinawarptech.com
+dig api.rinawarptech.com
+
+# Check from your server
+nslookup rinawarptech.com
+nslookup terminal.rinawarptech.com
+nslookup ai-music-creator.rinawarptech.com
+nslookup admin.rinawarptech.com
+nslookup api.rinawarptech.com
+```
+
+### Troubleshooting DNS Issues
+
+#### Common Issues
+
+1. **DNS not propagating**: Wait longer, check TTL settings
+2. **Wrong IP address**: Verify server IP is correct
+3. **Caching issues**: Clear DNS cache, use different DNS servers
+4. **TTL too high**: Lower TTL to 300 seconds (5 minutes)
+
+#### Solutions
+
+```bash
+# Clear DNS cache (Linux)
+sudo systemctl flush-dns
+
+# Clear DNS cache (Windows)
+ipconfig /flushdns
+
+# Use different DNS servers
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+echo "nameserver 1.1.1.1" | sudo tee -a /etc/resolv.conf
+```
+
+### SSL Certificate Requirements
+
+After DNS is configured, you can set up SSL certificates:
+
+```bash
+# Run the SSL setup script
+./setup-ssl.sh
+
+# Or manually with Let's Encrypt
+sudo certbot certonly --manual --preferred-challenges dns \
+    -d "*.rinawarptech.com" \
+    -d "rinawarptech.com"
+```
+
+### Final Verification
+
+Once DNS is configured, test all URLs:
+
+- ✅ <https://rinawarptech.com> (Main website)
+- ✅ <https://terminal.rinawarptech.com> (Terminal Pro)
+- ✅ <https://ai-music-creator.rinawarptech.com> (Music Creator)
+- ✅ <https://admin.rinawarptech.com> (Admin Dashboard)
+- ✅ <https://api.rinawarptech.com/health> (API Health)
+
+### DNS Management Tips
+
+1. **Use CloudFlare**: Free CDN and DNS management
+2. **Set low TTL**: 300 seconds for faster changes
+3. **Monitor propagation**: Use online DNS checker tools
+4. **Backup DNS settings**: Export configuration
+5. **Document changes**: Keep track of DNS modifications
+
+---
+
+## Quick DNS Setup Checklist
+
+- [ ] Add A record for rinawarptech.com
+- [ ] Add A record for <www.rinawarptech.com>
+- [ ] Add A record for terminal.rinawarptech.com
+- [ ] Add A record for ai-music-creator.rinawarptech.com
+- [ ] Add A record for admin.rinawarptech.com
+- [ ] Add A record for api.rinawarptech.com
+- [ ] Wait for DNS propagation (5-48 hours)
+- [ ] Test all subdomains
+- [ ] Set up SSL certificates
+- [ ] Verify all applications work
+
+**Your RinaWarp Technologies multi-application ecosystem will be live once DNS propagates!**

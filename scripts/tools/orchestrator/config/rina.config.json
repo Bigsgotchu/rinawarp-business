@@ -1,0 +1,72 @@
+{
+  "providers": {
+    "openai": {
+      "apiKeyEnv": "OPENAI_API_KEY",
+      "baseURL": null
+    },
+    "anthropic": {
+      "apiKeyEnv": "ANTHROPIC_API_KEY"
+    },
+    "ollama": {
+      "hostEnv": "OLLAMA_HOST",
+      "defaultModel": "llama3.1"
+    },
+    "fallback": ["openai:gpt-4o-mini", "anthropic:claude-3-5-sonnet", "ollama:llama3.1"]
+  },
+  "modes": {
+    "ask": {
+      "model": "openai:gpt-4o-mini",
+      "tools": ["project.read", "help.search"]
+    },
+    "architect": {
+      "model": "anthropic:claude-3-5-sonnet",
+      "tools": ["project.read", "fs.read", "planner.write"]
+    },
+    "code": {
+      "model": "openai:o3-mini",
+      "tools": ["fs.read", "fs.write", "apply.diff"]
+    },
+    "orchestrator": {
+      "model": "openai:o4-mini",
+      "tools": ["fs.*", "ffmpeg.*", "avatar.queue", "browser.fetch", "shell.safe"]
+    },
+    "debug": {
+      "model": "ollama:llama3.1",
+      "tools": ["logs.search", "tests.run"]
+    }
+  },
+  "autoApproval": {
+    "enabled": true,
+    "read": {
+      "enabled": true,
+      "outside": false
+    },
+    "write": {
+      "enabled": true,
+      "outside": false,
+      "protected": false
+    },
+    "execute": {
+      "enabled": true,
+      "allowed": ["ffmpeg", "git", "npm"],
+      "denied": ["rm -rf", "sudo"]
+    },
+    "browser": {
+      "enabled": false
+    },
+    "mcp": {
+      "enabled": true
+    },
+    "question": {
+      "enabled": false,
+      "timeout": 60
+    },
+    "retry": {
+      "enabled": true,
+      "delay": 10
+    },
+    "todo": {
+      "enabled": true
+    }
+  }
+}

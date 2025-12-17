@@ -1,0 +1,33 @@
+=========================
+Run started at: Tue Oct 28 02:32:20 PM MDT 2025
+
+🔍 Checking environment files...
+✅ Found .env.production
+STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY_EXPOSED_REMOVED
+STRIPE_SECRET_KEY=STRIPE_SECRET_KEY_EXPOSED_REMOVED
+STRIPE_WEBHOOK_SECRET=
+✅ Found .env.local
+STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+STRIPE_PRICE_PRO_MONTH=price_test_your_price_id
+STRIPE_PRICE_PRO_YEAR=price_test_your_price_id
+
+🧹 Cleaning old build artifacts...
+npm warn using --force Recommended protections disabled.
+
+🔨 Rebuilding project...
+
+up to date, audited 634 packages in 1s
+
+178 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+Killed

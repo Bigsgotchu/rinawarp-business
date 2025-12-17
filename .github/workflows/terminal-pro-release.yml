@@ -1,0 +1,57 @@
+name: Terminal Pro Release
+
+on:
+  push:
+    tags:
+      - "terminal-pro-v*"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/terminal-pro/desktop
+
+    env:
+      NODE_ENV: production
+      RELEASE_CHANNEL: stable
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: "apps/terminal-pro/desktop/package-lock.json"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run tests
+        run: |
+          npm run test:basic
+          npm run test:comprehensive
+
+      - name: Build installers
+        run: npm run dist
+        # electron-builder will use ./dist by default
+
+      - name: Upload to R2
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+        run: ./scripts/upload-to-r2.sh dist
+
+      - name: Upload artifacts (debug)
+        uses: actions/upload-artifact@v4
+        with:
+          name: terminal-pro-dist
+          path: apps/terminal-pro/desktop/dist
+          retention-days: 7

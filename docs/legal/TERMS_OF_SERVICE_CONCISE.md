@@ -1,0 +1,261 @@
+# TERMS OF SERVICE (TOS)
+
+**RinaWarp Technologies, LLC** – Utah, USA
+**Effective Date:** January 2025
+
+**Applies To:**
+- RinaWarp Terminal Pro
+- AI Music Video Creator (AMVC)
+- RinaWarp Billing System & Credit System
+- RinaWarp Admin Console
+- RinaWarp Cloudflare-Based APIs
+- All websites, downloads, and services under rinawarptech.com
+
+---
+
+## 1. ACCEPTANCE OF TERMS
+
+By accessing, installing, downloading, purchasing, or using any RinaWarp Technologies, LLC (“**RinaWarp**”, “**we**”, “**our**”, “**us**”) product or service, you agree to these Terms of Service.
+
+**If you do not agree, do not use our services.**
+
+---
+
+## 2. ELIGIBILITY
+
+To use RinaWarp products, you must:
+
+- Be at least **13 years old**
+- Have legal authority to enter agreements
+- Not be prohibited by law from using AI or encryption-based tools
+- Enterprise users must affirm they are authorized employees of the purchasing company.
+
+---
+
+## 3. SERVICES PROVIDED
+
+RinaWarp offers:
+
+### 3.1 Terminal Pro (Desktop App)
+A local desktop environment with AI features, secure terminal operations, and licensed enhancements.
+
+### 3.2 AI Music Video Creator (AMVC)
+A cloud-connected AI generation system for producing images, music videos, motion sequences, and multimedia assets.
+
+### 3.3 Subscription & Credit System
+Credits may be consumed for:
+- Video generation
+- Image generation
+- Advanced AI outputs
+- Cloud compute usage
+
+**Credits do not expire unless stated otherwise.**
+
+### 3.4 RinaWarp Cloud APIs (Cloudflare Workers, KV, Pages)
+APIs for analytics, licensing, billing, and AI interactions.
+
+### 3.5 Admin Console
+An authenticated dashboard for internal use, not for customers.
+
+---
+
+## 4. ACCOUNTS & LICENSING
+
+### 4.1 Account Information
+You must provide accurate information.
+We reserve the right to suspend accounts created using:
+- Fake emails
+- Temporary inboxes
+- Identity obfuscation
+- Violations of subscription terms
+
+### 4.2 License Keys
+Terminal Pro and AMVC may require license activation.
+- You may not share or redistribute license keys.
+- License keys may be limited by device.
+- Unauthorized license access will result in termination.
+
+### 4.3 License Abuse Detection
+We may detect and restrict:
+- Automated activation attempts
+- VPN-based rapid region switching
+- Key sharing with multiple users
+- Cracked or modified binaries
+
+---
+
+## 5. PAYMENTS, SUBSCRIPTIONS & REFUNDS
+
+### 5.1 Payments
+- All payments are processed securely via Stripe.
+- We do NOT store full card numbers.
+
+### 5.2 Subscription Terms
+- Subscriptions automatically renew unless canceled.
+- You may cancel at any time via:
+  - Email support
+  - Account dashboard
+  - Stripe customer portal
+
+### 5.3 Refund Policy
+RinaWarp provides **Standard SaaS refunds**, meaning:
+- Refunds only for failed service
+- No refunds for:
+  - Used credits
+  - Delivered AI generations
+  - Month(s) already billed
+  - Customer misuse or misunderstanding
+  - "I didn't like the AI output"
+
+Refunds beyond policy are at our discretion.
+
+### 5.4 Chargebacks
+If a chargeback occurs:
+- Your license may be revoked
+- Credits removed
+- Account suspended
+- Future purchases blocked
+
+---
+
+## 6. ACCEPTABLE USE POLICY (AUP)
+
+You may **NOT** use RinaWarp products for:
+
+### 6.1 Illegal or Harmful Use
+- Child exploitation
+- Violence, terrorism, or extremist content
+- Financial fraud or identity theft
+- Harassment, hate speech, or targeted abuse
+
+### 6.2 Technical Abuse
+- Reverse engineering
+- Circumventing licensing or subscription checks
+- Automated scraping
+- Overloading or attacking RinaWarp systems
+- Using AI outputs for large-scale fake media
+- Redistributing our software or models
+
+### 6.3 AI Misuse
+You may not use AI outputs for:
+- Malicious impersonation
+- Misleading political manipulation
+- Deepfake harassment
+- Copyright theft at commercial scale
+
+### 6.4 Business Protection Rules
+You may not:
+- Sell access to our API without a license
+- Rehost our models or software
+- Offer a competitive service using our outputs or code
+- Interfere with our billing or credit tracking
+
+---
+
+## 7. INTELLECTUAL PROPERTY (IP)
+
+### 7.1 Our IP
+All software, designs, branding, UI, algorithms, AI configurations, and systems remain the sole property of RinaWarp Technologies, LLC.
+
+### 7.2 User Content
+You own your input and output content unless:
+- It violates laws
+- It violates terms
+- It uses copyrighted material without permission
+
+### 7.3 AI Output Clarification
+We do not guarantee exclusive rights to AI outputs.
+
+---
+
+## 8. SERVICE AVAILABILITY
+
+RinaWarp may modify, update, or temporarily disable services for:
+- Maintenance
+- Security fixes
+- Cloudflare service changes
+- Stripe outages
+- Abuse mitigation
+
+We are **not liable** for:
+- Downtime
+- Lost profits
+- Productivity loss
+
+---
+
+## 9. TERMINATION OF ACCOUNTS
+
+We may suspend or terminate accounts for:
+- Violations of these Terms
+- Fraud or chargebacks
+- Abuse of AI systems
+- License tampering
+- Unauthorized redistribution
+
+Upon termination:
+- Access may be revoked
+- Credits may be forfeited
+- No refunds apply
+
+---
+
+## 10. DISCLAIMERS
+
+RinaWarp products are provided **“AS IS”** without warranties.
+
+We do not guarantee:
+- 100% uptime
+- Specific AI output quality
+- Compatibility with all devices
+- Zero bugs or interruptions
+
+**You agree that your use is at your own risk.**
+
+---
+
+## 11. LIMITATION OF LIABILITY
+
+To the fullest extent permitted by law:
+
+RinaWarp is **NOT liable** for:
+- Loss of data
+- Loss of revenue
+- Loss of business
+- Damages from AI outputs
+- Copyright issues from user-submitted inputs
+- Unauthorized account access due to weak passwords
+
+**Maximum liability:** the total amount you paid to RinaWarp in the last 3 months.
+
+---
+
+## 12. GOVERNING LAW
+
+This agreement is governed by:
+- The Laws of the State of Utah (USA)
+- Venue: Salt Lake County, Utah
+
+---
+
+## 13. CHANGES TO TERMS
+
+We may update these terms periodically.
+**Continued use = acceptance of updated terms.**
+
+---
+
+## 14. CONTACT INFORMATION
+
+**RinaWarp Technologies, LLC**
+Salt Lake City, Utah, USA
+
+**Support:** 📧 **support@rinawarptech.com**
+**Legal:** 📧 **legal@rinawarptech.com**
+**Business:** 📧 **karina@rinawarptech.com**
+
+---
+
+**✅ Terms of Service Completed.**
+
+All legal foundations are now in place.

@@ -1,0 +1,29 @@
+Rinawarp Go-Live Repair Plan (Kali/Linux)
+
+1) Run diagnostics inside each project:
+   chmod +x rinawarp-doctor.sh && ./rinawarp-doctor.sh
+
+2) Fix missing packages printed by the doctor (apt install ...).
+
+3) Terminal Pro build:
+   chmod +x terminalpro-build.sh && ./terminalpro-build.sh
+   - If it fails on native modules (node-pty, etc.): ensure 'npx electron-rebuild -f -w' runs clean.
+
+4) AI-MVC build:
+   chmod +x aimvc-build.sh && ./aimvc-build.sh
+   - Ensure FFmpeg is installed and accessible.
+
+5) If builds succeed, you’ll have:
+   - Terminal Pro: release/*.AppImage and *.deb
+   - AI-MVC: dist/ server output; start with: node dist/server.js
+
+6) Stripe licensing (if using Worker):
+   - Deploy Worker for /api/license/verify.
+   - In app, call verify at startup; allow 14-day offline grace.
+
+7) If something fails, copy the failing command and error text; fix the highest-level issue first:
+   - Electron ABI mismatch → delete node_modules, run npm ci, then electron-rebuild.
+   - GLIBCXX / OpenSSL mismatch → update system packages (apt full-upgrade) or use Node LTS (nvm).
+   - Types not found → check tsconfig 'baseUrl' and 'paths'.
+
+Goal: get to a packaged build and a working trial/activation flow today.

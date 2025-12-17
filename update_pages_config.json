@@ -1,0 +1,72 @@
+{
+  "deployment_configs": {
+    "production": {
+      "env_vars": {
+        "ADMIN_API_SECRET": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "ANALYTICS_PASSWORD": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CURRENCY": {
+          "type": "plain_text",
+          "value": "usd"
+        },
+        "DOMAIN": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "GROQ_API_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "OPENAI_API_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "PRICE_LOOKUP_KEYS": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "PRODUCT_NAME_FILTER": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "R2_PUBLIC_BASE": {
+          "type": "plain_text",
+          "value": "https://downloads.rinawarptech.com"
+        },
+        "RINA_AMVC_PRICE_MAP": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "RINA_BUNDLE_PRICE_MAP": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "RINA_PRICE_MAP": {
+          "type": "plain_text",
+          "value": "{\"enterprise-yearly\":\"price_1SVRVMGZrRdZy3W9094r1F5B\",\"founder-lifetime\":\"price_1SVRVLGZrRdZy3W976aXrw0g\",\"pioneer-lifetime\":\"price_1SVRVLGZrRdZy3W9LoPVNyem\",\"pro-monthly\":\"price_1SVRVKGZrRdZy3W9wFO3QPw6\",\"creator-monthly\":\"price_1SVRVJGZrRdZy3W9tRX5tsaH\",\"starter-monthly\":\"price_1SVRVJGZrRdZy3W9q6u9L82y\"}"
+        },
+        "SITE_BASE": {
+          "type": "plain_text",
+          "value": "https://rinawarptech.com"
+        },
+        "STRIPE_PUBLISHABLE_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_SECRET": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_WEBHOOK_SECRET": {
+          "type": "secret_text",
+          "value": ""
+        }
+      }
+    }
+  }
+}

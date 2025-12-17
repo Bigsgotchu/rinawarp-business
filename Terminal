@@ -1,0 +1,41 @@
+dist-website/pricing/index.html:              <div class="pricing-label">Free</div>
+dist-website/pricing/index.html-              <div class="pricing-price">$0</div>
+dist-website/pricing/index.html-              <div class="pricing-period">forever</div>
+dist-website/pricing/index.html-              <ul class="pricing-list">
+dist-website/pricing/index.html-                <li>
+dist-website/pricing/index.html-                  <span class="pricing-bullet"></span>
+--
+dist-website/pricing/index.html:              <div class="pricing-label">Basic</div>
+dist-website/pricing/index.html-              <div class="pricing-price">$9.99</div>
+dist-website/pricing/index.html-              <div class="pricing-period">/month</div>
+dist-website/pricing/index.html-              <ul class="pricing-list">
+dist-website/pricing/index.html-                <li>
+dist-website/pricing/index.html-                  <span class="pricing-bullet"></span>
+--
+dist-website/pricing/index.html:              <div class="pricing-label">Starter</div>
+dist-website/pricing/index.html-              <div class="pricing-price">$29</div>
+dist-website/pricing/index.html-              <div class="pricing-period">/month</div>
+dist-website/pricing/index.html-              <ul class="pricing-list">
+dist-website/pricing/index.html-                <li>
+dist-website/pricing/index.html-                  <span class="pricing-bullet"></span>
+--
+dist-website/pricing/index.html:              <div class="pricing-label">Terminal Pro</div>
+dist-website/pricing/index.html-              <div class="pricing-price">$49</div>
+dist-website/pricing/index.html-              <div class="pricing-period">one-time license</div>
+dist-website/pricing/index.html-              <ul class="pricing-list">
+dist-website/pricing/index.html-                <li>
+dist-website/pricing/index.html-                  <span class="pricing-bullet"></span>
+--
+dist-website/pricing/index.html:              <div class="pricing-label">AI Music Video Creator</div>
+dist-website/pricing/index.html-              <div class="pricing-price">$19</div>
+dist-website/pricing/index.html-              <div class="pricing-period">/month</div>
+dist-website/pricing/index.html-              <ul class="pricing-list">
+dist-website/pricing/index.html-                <li>
+dist-website/pricing/index.html-                  <span class="pricing-bullet"></span>
+--
+dist-website/pricing/index.html:                <div class="pricing-label">RinaWarp Bundle</div>
+dist-website/pricing/index.html-                <div class="pricing-price">$79</div>
+dist-website/pricing/index.html-                <div class="pricing-period">best value</div>
+dist-website/pricing/index.html-                <ul class="pricing-list">
+dist-website/pricing/index.html-                  <li>
+dist-website/pricing/index.html-                    <span class="pricing-bullet"></span>

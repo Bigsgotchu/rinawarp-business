@@ -1,0 +1,44 @@
+appId: com.rinawarp.terminalpro
+productName: Rinawarp Terminal Pro
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**
+  - package.json
+
+linux:
+  target: [AppImage, deb]
+  category: Development
+  artifactName: '${productName}-${version}-${arch}.${ext}'
+
+win:
+  target: [nsis, portable]
+  artifactName: '${productName}-${version}-win-${arch}.${ext}'
+  publisherName: 'Rinawarptech LLC'
+  certificateFile: 'path/to/certificate.p12'
+  certificatePassword: '${env.CERT_PASSWORD}'
+  rfc3161TimeStampServer: 'http://timestamp.digicert.com'
+  verifyUpdateCodeSignature: false
+  sign: true
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+
+mac:
+  target: [dmg, zip]
+  category: public.app-category.developer-tools
+  artifactName: '${productName}-${version}-mac-${arch}.${ext}'
+  hardenedRuntime: true
+  entitlements: build/entitlements.plist
+  entitlementsInherit: build/entitlements.plist
+  gatekeeperAssess: false
+
+asar: true
+asarUnpack:
+  - '**/node-pty/**'
+publish:
+  provider: s3
+  bucket: rinawarp-terminal-releases
+  path: releases
+  region: us-east-1

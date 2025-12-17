@@ -1,0 +1,69 @@
+{
+  "name": "Galaxy Warp",
+  "description": "Space exploration theme with stars, nebulas, and AI as ship computer",
+  "version": "1.0.0",
+  "author": "RinaWarp Technologies",
+  "colors": {
+    "background": "#000011",
+    "foreground": "#aaccff",
+    "cursor": "#ffaa00",
+    "selection": "#6600cc",
+    "black": "#000000",
+    "red": "#ff3366",
+    "green": "#66ff99",
+    "yellow": "#ffff66",
+    "blue": "#3366ff",
+    "magenta": "#cc66ff",
+    "cyan": "#66ffff",
+    "white": "#ffffff",
+    "brightBlack": "#112244",
+    "brightRed": "#ff6699",
+    "brightGreen": "#99ffcc",
+    "brightYellow": "#ffff99",
+    "brightBlue": "#6699ff",
+    "brightMagenta": "#dd99ff",
+    "brightCyan": "#99ffff",
+    "brightWhite": "#ffffff"
+  },
+  "ui": {
+    "accentColor": "#ffaa00",
+    "warningColor": "#ff6600",
+    "successColor": "#66ff99",
+    "errorColor": "#ff3366",
+    "infoColor": "#3366ff",
+    "borderColor": "#6600cc",
+    "shadowColor": "rgba(170, 204, 255, 0.3)"
+  },
+  "fonts": {
+    "primary": "Fira Code, 'Consolas', monospace",
+    "secondary": "Orbitron, 'Arial', sans-serif",
+    "size": 14,
+    "lineHeight": 1.3
+  },
+  "effects": {
+    "starField": true,
+    "nebulaBackground": true,
+    "warpSpeed": true,
+    "hologramDisplay": true,
+    "shipComputer": true,
+    "starDensity": 0.8
+  },
+  "animations": {
+    "starSpeed": 2.0,
+    "warpIntensity": 0.7,
+    "typingEffect": "hologram",
+    "cursorBlink": "fast"
+  },
+  "sounds": {
+    "keyClick": "beep-tone",
+    "enterSound": "warp-drive",
+    "errorSound": "warning-alert",
+    "successSound": "mission-complete"
+  },
+  "layout": {
+    "borderWidth": 1,
+    "cornerRadius": 8,
+    "padding": 18,
+    "starCount": 200
+  }
+}

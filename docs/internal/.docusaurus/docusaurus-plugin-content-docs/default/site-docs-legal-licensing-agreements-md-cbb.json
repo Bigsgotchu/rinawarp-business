@@ -1,0 +1,24 @@
+{
+  "id": "legal/LICENSING_AGREEMENTS",
+  "title": "📜 RinaWarp Technologies Licensing Agreements",
+  "description": "🎯 COMPREHENSIVE LICENSING FRAMEWORK",
+  "source": "@site/docs/legal/LICENSING_AGREEMENTS.md",
+  "sourceDirName": "legal",
+  "slug": "/legal/LICENSING_AGREEMENTS",
+  "permalink": "/docs/legal/LICENSING_AGREEMENTS",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/RinaWarpTech/RinaWarp-Platforms/tree/main/docs/docs/legal/LICENSING_AGREEMENTS.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "⚖️ RinaWarp Technologies Legal Action Plan",
+    "permalink": "/docs/legal/LEGAL_ACTION_PLAN"
+  },
+  "next": {
+    "title": "🔍 RinaWarp Technologies Monitoring System",
+    "permalink": "/docs/legal/MONITORING_SYSTEM"
+  }
+}

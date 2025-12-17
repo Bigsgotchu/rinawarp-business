@@ -1,0 +1,115 @@
+# RinaWarp Technologies Website
+
+## Overview
+Complete static website for RinaWarp Technologies, designed for deployment on Cloudflare Pages.
+
+## Structure
+```
+public/
+├── index.html                 # Home page (not yet created)
+├── terminal-pro.html          # Terminal Pro product page (not yet created)
+├── music-video-creator.html   # Music Video Creator product page (not yet created)
+├── pricing.html              # Pricing page
+├── download.html             # Download page with license validation
+├── about.html                # About page
+├── contact.html              # Contact page
+├── terms.html                # Terms of service
+├── privacy.html              # Privacy policy
+├── dmca.html                 # DMCA policy
+├── 404.html                  # Not found page
+├── sitemap.xml               # XML sitemap for search engines
+├── robots.txt                # Search engine crawling instructions
+├── _headers                  # Cloudflare Pages headers for MIME types
+├── _redirects                # Cloudflare Pages redirects for routing
+├── css/
+│   └── shared.css           # Shared stylesheet with RinaWarp design
+└── assets/
+    └── logo/                # Logo assets directory
+        └── company.png      # Company logo (placeholder)
+```
+
+## Features
+- **Responsive Design**: Mobile-first, works on all devices
+- **Modern UI**: Clean, professional design with gradients and animations
+- **SEO Optimized**: Proper meta tags, sitemap, and robots.txt
+- **Cloudflare Pages Ready**: Includes _headers and _redirects files
+- **Stripe Integration**: Checkout forms ready for payment processing
+- **License Validation**: Form ready for API integration
+
+## Pages Created
+1. **pricing.html** - Three-tier pricing (Free, Terminal Pro $99, MVC $14/month)
+2. **download.html** - Download links for Windows, macOS, Linux + license validation
+3. **about.html** - Company information
+4. **contact.html** - Contact information
+5. **terms.html** - Terms of service (placeholder)
+6. **privacy.html** - Privacy policy (placeholder)
+7. **dmca.html** - DMCA policy (placeholder)
+8. **404.html** - Not found page
+
+## Deployment to Cloudflare Pages
+
+### Option 1: GUI Method
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. Select your account → Pages
+3. Click "Create Project" → "Connect to Git"
+4. Connect your GitHub repository
+5. Build settings:
+   - Framework preset: None
+   - Build command: (leave empty)
+   - Build output directory: `public`
+6. Deploy
+
+### Option 2: CLI Method
+```bash
+# Install Wrangler CLI
+npm install -g wrangler
+
+# Deploy
+./deploy-pages.sh
+```
+
+### Option 3: Manual Upload
+1. Zip the `public` directory
+2. Go to Cloudflare Pages dashboard
+3. Click "Create Project" → "Upload assets"
+4. Upload the zip file
+
+## Domain Setup
+After deployment:
+1. Go to your Cloudflare Pages project
+2. Click "Custom Domains"
+3. Add `rinawarptech.com` and `www.rinawarptech.com`
+4. Follow the setup wizard
+
+## API Integration
+The website is configured to work with your existing API:
+- `/api/*` requests redirect to `https://api.rinawarptech.com/:splat`
+- License validation form points to your Admin API
+- Stripe checkout forms ready for payment processing
+
+## Styling
+All pages use the shared stylesheet (`/css/shared.css`) which includes:
+- Modern dark theme with gradients
+- Responsive navigation
+- Professional button styles
+- Pricing card layouts
+- Footer with social links
+- Mobile-responsive design
+
+## Notes
+- Replace placeholder content in legal pages (terms, privacy, DMCA)
+- Update logo path to actual logo file
+- Test Stripe integration before going live
+- Configure environment variables in Cloudflare dashboard if needed
+
+## Browser Support
+- Chrome/Edge: Latest
+- Firefox: Latest
+- Safari: Latest
+- Mobile browsers: iOS Safari, Chrome Mobile
+
+## Performance
+- Optimized CSS with minimal external dependencies
+- Uses Google Fonts with display=swap
+- Proper caching headers configured
+- Compressed assets ready
