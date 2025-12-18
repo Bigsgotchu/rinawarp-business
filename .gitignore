@@ -20,3 +20,23 @@ coverage/
 # Netlify / tooling cache
 .netlify/
 .cache/
+
+# NEVER COMMIT BUILDS
+node_modules/
+dist/
+build/
+release/
+linux-unpacked/
+win-unpacked/
+*.exe
+*.zip
+*.AppImage
+*.asar
+
+# DOWNLOADS
+public-downloads/
+downloads/
+
+# AUDITS / LOGS
+audit/
+*.log
