@@ -2,13 +2,127 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>RinaWarp Pricing | Free Tier, Pro, and Teams</title>
+    <title>RinaWarp Pricing | Terminal Pro Plans</title>
     <meta
       name="description"
-      content="Simple, transparent pricing for RinaWarp Terminal Pro and AI Music Video Creator. Start with the free tier, then upgrade when you're ready."
+      content="Simple, transparent pricing for RinaWarp Terminal Pro. Choose from monthly, annual, or lifetime plans."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/css/shared.css" />
+    <style>
+      .coming-soon-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e5e7eb;
+      }
+      .coming-soon-card {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        border: 2px dashed rgba(168, 85, 247, 0.5);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .coming-soon-label {
+        display: inline-block;
+        background: linear-gradient(135deg, #a855f7, #3b82f6);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+      }
+      .coming-soon-card h3 {
+        color: #1f2937;
+        font-size: 1.875rem;
+        font-weight: 700;
+        margin: 1rem 0;
+      }
+      .coming-soon-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        margin: 1.5rem 0;
+      }
+      .feature-pill {
+        background: rgba(168, 85, 247, 0.1);
+        color: #7c3aed;
+        padding: 0.375rem 0.75rem;
+        border-radius: 16px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: 1px solid rgba(168, 85, 247, 0.2);
+      }
+      .coming-soon-card button {
+        margin-top: 1rem;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .coming-soon-card button:disabled {
+        background: #f3f4f6;
+        color: #9ca3af;
+        border-color: #e5e7eb;
+        cursor: not-allowed;
+      }
+      .feature-led-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e5e7eb;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      .feature-item h3 {
+        color: #1f2937;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .feature-item p {
+        color: #6b7280;
+        line-height: 1.6;
+      }
+      .trust-section {
+        background: #f9fafb;
+        padding: 3rem 0;
+        margin-top: 3rem;
+      }
+      .trust-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .trust-content h2 {
+        color: #1f2937;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+      }
+      .trust-points {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+      .trust-point strong {
+        display: block;
+        color: #1f2937;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .trust-point p {
+        color: #6b7280;
+        line-height: 1.6;
+      }
+    </style>
   </head>
   <body class="mermaid">
     <div class="main-shell">
@@ -33,96 +147,263 @@
       <main>
         <section class="section">
           <div class="section-header">
-            <h1 class="section-title">Start free. Upgrade when it pays for itself.</h1>
+            <h1 class="section-title">Simple pricing. Serious power. No surprises.</h1>
             <p class="section-subtitle">
-              Every plan includes secure licensing, AI usage tracking, and access to the RinaWarp ecosystem.
-              Exact pricing and discounts are managed in the Admin API and may change as we launch new features.
+              Choose the plan that fits how deeply you live in your terminal.
+              Upgrade, downgrade, or cancel anytime.
             </p>
           </div>
 
           <div class="pricing-grid">
             <article class="pricing-card">
-              <div class="pricing-label">Free tier</div>
-              <div class="pricing-price">$0</div>
-              <div class="pricing-period">No card required</div>
+              <div class="pricing-label">Starter</div>
+              <div class="pricing-price">$9.99</div>
+              <div class="pricing-period">/month</div>
               <ul class="pricing-list">
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Limited AI requests in Terminal Pro</span>
+                  <span>Basic Terminal features</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Core terminal features & updates</span>
+                  <span>Community support</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Single-device license</span>
+                  <span>Email support</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
                   <span>Cross-platform: Windows, macOS, Linux</span>
                 </li>
               </ul>
-              <a href="/download.html" class="rw-button-outline">Start free</a>
-              <p class="pricing-meta">Great if you're just trying RinaWarp out.</p>
+              <a href="/api/checkout-v2?plan=starter-monthly" class="rw-button-outline" data-checkout>Subscribe</a>
+              <p class="pricing-trust">30-day money-back guarantee • Stripe-secured</p>
+              <p class="pricing-meta">Great for casual users.</p>
             </article>
 
             <article class="pricing-card highlight">
-              <div class="pricing-label">Pro</div>
-              <div class="pricing-price">$ •••</div>
-              <div class="pricing-period">Pricing managed via Admin API</div>
+              <div class="pricing-label">Creator</div>
+              <div class="pricing-price">$29.99</div>
+              <div class="pricing-period">/month</div>
               <ul class="pricing-list">
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Unlocks full AI usage in Terminal Pro</span>
+                  <span>Everything in Starter</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Advanced voice automation & workflows</span>
+                  <span>Advanced Terminal features</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Priority support & faster updates</span>
+                  <span>AI Integration</span>
+                </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Priority support</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
                   <span>Cross-platform: Windows, macOS, Linux</span>
                 </li>
               </ul>
-              <a href="/api/checkout-v2?product=terminal-pro" class="rw-button" data-checkout>Upgrade to Pro</a>
+              <a href="/api/checkout-v2?plan=creator-monthly" class="rw-button-outline" data-checkout>Subscribe</a>
               <p class="pricing-trust">30-day money-back guarantee • Stripe-secured</p>
-              <p class="pricing-meta">
-                License creation, billing, and receipts are processed securely via Stripe.
-              </p>
+              <p class="pricing-meta">Most popular choice.</p>
             </article>
 
             <article class="pricing-card">
-              <div class="pricing-label">Teams & Studio</div>
-              <div class="pricing-price">Custom</div>
-              <div class="pricing-period">For teams, labels & orgs</div>
+              <div class="pricing-label">Pro</div>
+              <div class="pricing-price">$49.99</div>
+              <div class="pricing-period">/month</div>
               <ul class="pricing-list">
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Multiple seats for Terminal Pro</span>
+                  <span>Everything in Creator</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Options for AI Music Video Creator usage</span>
+                  <span>Pro Terminal features</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
-                  <span>Custom onboarding & SSO options</span>
+                  <span>Full AI Suite</span>
+                </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Live Sessions</span>
+                </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Priority support</span>
                 </li>
                 <li>
                   <span class="pricing-bullet"></span>
                   <span>Cross-platform: Windows, macOS, Linux</span>
                 </li>
               </ul>
-              <a href="/contact.html" class="rw-button-outline">Talk to us</a>
-              <p class="pricing-meta">
-                We'll configure pricing using the Admin API so it matches how you actually work.
-              </p>
+              <a href="/api/checkout-v2?plan=pro-monthly" class="rw-button" data-checkout>Subscribe</a>
+              <p class="pricing-trust">30-day money-back guarantee • Stripe-secured</p>
+              <p class="pricing-meta">For power users.</p>
             </article>
+
+            <article class="pricing-card">
+              <div class="pricing-label">Enterprise</div>
+              <div class="pricing-price">$3,000</div>
+              <div class="pricing-period">/year</div>
+              <ul class="pricing-list">
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Everything in Pro</span>
+                </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Enterprise Suite</span>
+                </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Custom Integration</span>
+                </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Dedicated support</span>
+                </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Cross-platform: Windows, macOS, Linux</span>
+                </li>
+              </ul>
+              <a href="/api/checkout-v2?plan=enterprise-yearly" class="rw-button-outline" data-checkout>Contact Sales</a>
+              <p class="pricing-trust">30-day money-back guarantee • Stripe-secured</p>
+              <p class="pricing-meta">For teams and businesses.</p>
+            </article>
+          </div>
+
+          <div class="pricing-lifetime">
+            <h2>Lifetime Options</h2>
+            <div class="pricing-lifetime-grid">
+              <article class="pricing-card">
+                <div class="pricing-label">Pioneer Lifetime</div>
+                <div class="pricing-price">$700</div>
+                <div class="pricing-period">one-time</div>
+                <ul class="pricing-list">
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Lifetime access to all features</span>
+                  </li>
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Pioneer badge</span>
+                  </li>
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Exclusive community access</span>
+                  </li>
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Cross-platform: Windows, macOS, Linux</span>
+                  </li>
+                </ul>
+                <a href="/api/checkout-v2?plan=pioneer-lifetime" class="rw-button-outline" data-checkout>Buy Now</a>
+                <p class="pricing-trust">30-day money-back guarantee • Stripe-secured</p>
+              </article>
+
+              <article class="pricing-card">
+                <div class="pricing-label">Founder Lifetime</div>
+                <div class="pricing-price">$999</div>
+                <div class="pricing-period">one-time</div>
+                <ul class="pricing-list">
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Lifetime access to all features</span>
+                  </li>
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Founder benefits</span>
+                  </li>
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Founder badge</span>
+                  </li>
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Early access to new features</span>
+                  </li>
+                  <li>
+                    <span class="pricing-bullet"></span>
+                    <span>Cross-platform: Windows, macOS, Linux</span>
+                  </li>
+                </ul>
+                <a href="/api/checkout-v2?plan=founder-lifetime" class="rw-button-outline" data-checkout>Buy Now</a>
+                <p class="pricing-trust">30-day money-back guarantee • Stripe-secured</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="coming-soon-section">
+            <h2>AI Music Video Creator</h2>
+            <div class="coming-soon-card">
+              <div class="coming-soon-label">Coming Soon</div>
+              <h3>AI Music Video Creator</h3>
+              <p class="lead">
+                Turn your songs into AI-generated videos with customizable visuals and motion art.
+                Built for artists, producers, and creators who want scroll-stopping video without a studio budget.
+              </p>
+              <div class="coming-soon-features">
+                <span class="feature-pill">Credit-based system</span>
+                <span class="feature-pill">Creator-friendly plans</span>
+                <span class="feature-pill">Export optimized for socials</span>
+              </div>
+              <button class="rw-button-outline" disabled>Notify Me When Available</button>
+              <p class="pricing-meta">Launching 2025 • Join waitlist for early access</p>
+            </div>
+          </div>
+
+          <div class="feature-led-section">
+            <h2>What you unlock with RinaWarp Terminal Pro</h2>
+            <div class="features-grid">
+              <div class="feature-item">
+                <h3>🧠 Work without friction</h3>
+                <p>RinaWarp removes the small annoyances that slow you down — cluttered output, lost context, and tools that fight your flow instead of supporting it.</p>
+              </div>
+              <div class="feature-item">
+                <h3>⚡ Ship faster with fewer mistakes</h3>
+                <p>Rich command context and structured output help you understand what's happening at a glance, so you spend less time debugging and more time building.</p>
+              </div>
+              <div class="feature-item">
+                <h3>🎨 Built for long sessions</h3>
+                <p>The Mermaid theme isn't cosmetic — it's engineered to reduce eye strain and mental fatigue during extended work.</p>
+              </div>
+              <div class="feature-item">
+                <h3>🔐 Never lose access mid-project</h3>
+                <p>Your license works offline and stays reliable. No surprise lockouts. No broken workflows when you're on a deadline.</p>
+              </div>
+              <div class="feature-item">
+                <h3>🚀 Grows with you</h3>
+                <p>Start simple. Unlock advanced workflows as your needs grow. Upgrade when it makes sense — not before.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="trust-section">
+          <div class="trust-content">
+            <h2>🔒 Secure & Reliable</h2>
+            <div class="trust-points">
+              <div class="trust-point">
+                <strong>30-day money-back guarantee</strong>
+                <p>Not satisfied? Get a full refund, no questions asked.</p>
+              </div>
+              <div class="trust-point">
+                <strong>Stripe-secured payments</strong>
+                <p>Your payment is processed securely by Stripe. We never store your card details.</p>
+              </div>
+              <div class="trust-point">
+                <strong>Cancel anytime</strong>
+                <p>No long-term commitments. Upgrade, downgrade, or cancel with one click.</p>
+              </div>
+            </div>
           </div>
         </section>
       </main>
