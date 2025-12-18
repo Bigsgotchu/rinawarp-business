@@ -58,6 +58,10 @@
                   <span class="pricing-bullet"></span>
                   <span>Single-device license</span>
                 </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Cross-platform: Windows, macOS, Linux</span>
+                </li>
               </ul>
               <a href="/download.html" class="rw-button-outline">Start free</a>
               <p class="pricing-meta">Great if you're just trying RinaWarp out.</p>
@@ -80,8 +84,13 @@
                   <span class="pricing-bullet"></span>
                   <span>Priority support & faster updates</span>
                 </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Cross-platform: Windows, macOS, Linux</span>
+                </li>
               </ul>
-              <a href="/api/checkout-v2?product=terminal-pro" class="rw-button">Upgrade to Pro</a>
+              <a href="/api/checkout-v2?product=terminal-pro" class="rw-button" data-checkout>Upgrade to Pro</a>
+              <p class="pricing-trust">30-day money-back guarantee • Stripe-secured</p>
               <p class="pricing-meta">
                 License creation, billing, and receipts are processed securely via Stripe.
               </p>
@@ -104,6 +113,10 @@
                   <span class="pricing-bullet"></span>
                   <span>Custom onboarding & SSO options</span>
                 </li>
+                <li>
+                  <span class="pricing-bullet"></span>
+                  <span>Cross-platform: Windows, macOS, Linux</span>
+                </li>
               </ul>
               <a href="/contact.html" class="rw-button-outline">Talk to us</a>
               <p class="pricing-meta">
@@ -124,5 +137,20 @@
         </div>
       </footer>
     </div>
+    <div id="mock-checkout-modal" hidden>
+      <div class="mock-backdrop"></div>
+      <div class="mock-card">
+        <h3>Checkout Preview</h3>
+        <p>
+          This is a preview environment. Real purchases are disabled here.
+          Visit the live site to complete checkout.
+        </p>
+        <a class="btn-primary" href="https://rinawarptech.com/pricing/">
+          Go to Live Site
+        </a>
+        <button class="btn-outline" id="mock-close">Close</button>
+      </div>
+    </div>
+    <script src="/js/pricing.js"></script>
   </body>
 </html>

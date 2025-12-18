@@ -453,6 +453,12 @@ h1 {
   background: radial-gradient(circle at 30% 10%, var(--brand-3), var(--brand-1));
 }
 
+.pricing-trust {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0.5rem 0 0;
+}
+
 /* Download card */
 
 .download-card {
@@ -495,6 +501,78 @@ h1 {
 }
 
 /* Responsive */
+
+/* Mock Checkout Modal */
+#mock-checkout-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+.mock-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+}
+.mock-card {
+  position: relative;
+  max-width: 420px;
+  margin: 12vh auto;
+  background: #0b0f19;
+  color: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+.mock-card h3 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+.mock-card p {
+  margin: 0 0 1.5rem;
+  color: #9ca3af;
+}
+.btn-primary,
+.btn-outline {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 0.5rem;
+  text-decoration: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-3));
+  color: #020617;
+}
+.btn-outline {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+/* Disabled Checkout Buttons */
+.btn-disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  position: relative;
+}
+.btn-disabled:hover::after {
+  content: "Checkout available on live site";
+  position: absolute;
+  top: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+}
 
 @media (max-width: 900px) {
   .grid-hero {
