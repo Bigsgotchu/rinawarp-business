@@ -40,3 +40,11 @@ downloads/
 # AUDITS / LOGS
 audit/
 *.log
+
+# Electron / native builds
+apps/**/build-output/
+apps/**/dist/
+apps/**/linux-unpacked/
+apps/**/win-unpacked/
+domain/**/release/
+workers/**/node_modules/
