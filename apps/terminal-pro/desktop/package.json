@@ -73,8 +73,7 @@
           "arch": [ "x64" ]
         }
       ],
-      "icon": "assets/icons/icon.ico",
-      "publisherName": "RinaWarp Technologies, LLC"
+      "icon": "assets/icons/icon.ico"
     },
     "mac": {
       "target": [
@@ -118,14 +117,12 @@
       "icon": "assets/icons/icon.png",
       "category": "Development",
       "desktop": {
-        "Name": "RinaWarp Terminal Pro",
-        "Name[en_US]": "RinaWarp Terminal Pro",
-        "GenericName": "AI-Powered Terminal",
-        "GenericName[en_US]": "AI-Powered Terminal",
-        "Comment": "Conversation-first terminal with AI assistant",
-        "Comment[en_US]": "Conversation-first terminal with AI assistant",
-        "Keywords": "terminal;ai;developer;",
-        "Keywords[en_US]": "terminal;ai;developer;"
+        "entry": {
+          "Name": "RinaWarp Terminal Pro",
+          "GenericName": "AI-Powered Terminal",
+          "Comment": "Conversation-first terminal with AI assistant",
+          "Keywords": "terminal;ai;developer;"
+        }
       },
       "maintainer": "RinaWarp Technologies <contact@rinawarptech.com>",
       "vendor": "RinaWarp Technologies",

@@ -57,8 +57,8 @@ fi
 print_status "Detected Linux x86_64 system"
 
 # Download URLs
-APPIMAGE_URL="https://rinawarp-downloads.r2.cloudflarestorage.com/terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Linux.AppImage"
-SHA256_URL="https://rinawarp-downloads.r2.cloudflarestorage.com/terminal-pro/1.0.0/SHA256SUMS.txt"
+APPIMAGE_URL="https://pub-c2347bcc10154afa8509bf6d312036b1.r2.dev/terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Linux.AppImage"
+SHA256_URL="https://pub-c2347bcc10154afa8509bf6d312036b1.r2.dev/terminal-pro/1.0.0/SHA256SUMS.txt"
 
 # Installation directory
 INSTALL_DIR="$HOME/.local/share/applications"
