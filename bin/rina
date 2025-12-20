@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# RinaWarp Command-Line Companion
+# Usage:
+#   rina "your message"
+#   rina -m dev "help me debug a worker"
+#   rina -m creative "write a chorus"
+#   rina --speak "hello"
+
+API_URL="https://rina-agent.rinawarptech.workers.dev/api/rina-agent"
+LICENSE_KEY="CREATOR-RINA-0001"
+MODE="auto"
+VOICE="false"
+
+# Parse flags
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    -m|--mode)
+      MODE="$2"
+      shift 2
+      ;;
+    -s|--speak|--voice)
+      VOICE="true"
+      shift
+      ;;
+    *)
+      MESSAGE="$1"
+      shift
+      ;;
+  esac
+done
+
+if [ -z "$MESSAGE" ]; then
+  echo "❌ No message provided."
+  echo "Usage: rina \"your message\""
+  exit 1
+fi
+
+# Build request payload
+JSON_PAYLOAD=$(jq -n \
+  --arg msg "$MESSAGE" \
+  --arg lic "$LICENSE_KEY" \
+  --arg mode "$MODE" \
+  --argjson voice $([ "$VOICE" = "true" ] && echo "true" || echo "false") \
+  '{message: $msg, licenseKey: $lic, mode: $mode, voice: $voice}')
+
+# Send request
+RESPONSE=$(curl -s -X POST "$API_URL" \
+  -H "Content-Type: application/json" \
+  -d "$JSON_PAYLOAD")
+
+# Extract message via jq
+OUTPUT=$(echo "$RESPONSE" | jq -r '.message')
+
+echo -e "\n🧬 Rina:\n$OUTPUT\n"

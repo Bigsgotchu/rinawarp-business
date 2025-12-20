@@ -1,0 +1,37 @@
+# RinaWarp Terminal Pro (Desktop)
+
+- Local-first, offline by default.
+- No GPS, no remote network calls.
+- Any location/GPS features live in a separate web service (see consent-gps-tracker-pages).
+
+# RinaWarp Terminal Pro (Electron)
+
+## What You Are Building (Plain English)
+A terminal-first desktop app with an agent that understands **intent** and safely executes real steps. Local-first, guardrails on by default.
+
+## Run
+```bash
+npm install
+npm run dev
+
+Use
+
+Type a goal (e.g., Init a Python app and run tests).
+
+Plan → review steps.
+
+Dry-run → see what would run.
+
+Execute → confirm → actions run with allowlist + denials.
+
+Safety
+
+Allowlist commands: echo, git, docker, npm, npx, bash, python, python3, pip, node
+
+Denied patterns: rm -rf /, fork bombs, shutdown/reboot, destructive dd
+
+Execute requires confirmation.
+
+
+**a.** Want a packaged build via `electron-builder` (dmg/exe/AppImage) next?  
+**b.** Add a pluggable LLM planner (off by default) behind `RINA_LLM=1`?

@@ -1,0 +1,266 @@
+#!/usr/bin/env node
+
+// Simple demo version of the fix-missing-blocks script
+// This demonstrates the functionality without requiring external dependencies
+
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+console.log('🔧 RinaWarp Missing Block Fix - Demo Version\n');
+
+// Demo configuration
+const CONFIG_FILE = './test-config.yaml';
+const BLOCKS_ROOT = './blocks';
+
+// Check if config exists
+if (!fs.existsSync(CONFIG_FILE)) {
+  console.error(`❌ Config not found: ${CONFIG_FILE}`);
+  process.exit(1);
+}
+
+console.log(`📁 Config file: ${CONFIG_FILE}`);
+console.log(`📁 Blocks root: ${BLOCKS_ROOT}\n`);
+
+// Read and parse the YAML manually (simple parser for demo)
+function simpleYamlParse(yamlText) {
+  const lines = yamlText.split('\n');
+  const result = {};
+  let currentSection = result;
+  const stack = [result];
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    
+    const indent = line.match(/^(\s*)/)[1].length;
+    const colonIndex = trimmed.indexOf(':');
+    
+    if (colonIndex !== -1) {
+      const key = trimmed.substring(0, colonIndex).trim();
+      const value = trimmed.substring(colonIndex + 1).trim();
+      
+      // Adjust stack based on indentation
+      while (stack.length > indent / 2 + 1) {
+        stack.pop();
+      }
+      
+      currentSection = stack[stack.length - 1];
+      
+      if (value) {
+        currentSection[key] = value;
+      } else {
+        currentSection[key] = {};
+        stack.push(currentSection[key]);
+      }
+    }
+  }
+  
+  return result;
+}
+
+// Find GitHub slugs in the config
+function findSlugs(obj, found = new Set()) {
+  const stack = [obj];
+  
+  while (stack.length) {
+    const current = stack.pop();
+    
+    if (typeof current === 'string') {
+      // Match owner/repo pattern
+      const match = current.match(/\b([A-Za-z0-9._-]+\/[A-Za-z0-9._-]+)\b/);
+      if (match && !current.match(/^https?:\/\//)) {
+        found.add(match[1]);
+      }
+    } else if (Array.isArray(current)) {
+      stack.push(...current);
+    } else if (current && typeof current === 'object') {
+      stack.push(...Object.values(current));
+    }
+  }
+  
+  return found;
+}
+
+// Check if local block exists
+function localBlockExists(slug) {
+  const blockPath = path.join(BLOCKS_ROOT, slug, 'block.json');
+  return fs.existsSync(blockPath);
+}
+
+// Check if remote GitHub repo exists
+function checkRemote(slug) {
+  try {
+    execSync(`git ls-remote --exit-code https://github.com/${slug}.git`, {
+      stdio: 'ignore',
+      timeout: 4000
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Replace slugs in config
+function replaceSlugs(obj, replacements) {
+  if (typeof obj === 'string') {
+    let result = obj;
+    for (const [oldSlug, newSlug] of Object.entries(replacements)) {
+      const regex = new RegExp(`\\b${oldSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+      result = result.replace(regex, newSlug);
+    }
+    return result;
+  }
+  
+  if (Array.isArray(obj)) {
+    return obj.map(item => replaceSlugs(item, replacements));
+  }
+  
+  if (obj && typeof obj === 'object') {
+    const result = {};
+    for (const [key, value] of Object.entries(obj)) {
+      result[key] = replaceSlugs(value, replacements);
+    }
+    return result;
+  }
+  
+  return obj;
+}
+
+// Scaffold a local block
+function scaffoldBlock(slug) {
+  const blockDir = path.join(BLOCKS_ROOT, slug);
+  fs.mkdirSync(blockDir, { recursive: true });
+  
+  const blockJson = {
+    name: slug.split('/')[1],
+    version: '0.0.0-local',
+    description: `Scaffolded stub for ${slug}`,
+    entry: './index.md',
+    meta: { source: 'scaffold' }
+  };
+  
+  fs.writeFileSync(
+    path.join(blockDir, 'block.json'),
+    JSON.stringify(blockJson, null, 2) + '\n'
+  );
+  
+  const readme = `# ${slug}\n\n> Local scaffold. Replace with your block content.\n`;
+  fs.writeFileSync(path.join(blockDir, 'index.md'), readme);
+  
+  console.log(`📦 Scaffolded: ${slug}`);
+}
+
+// Main execution
+try {
+  // Read config
+  const configContent = fs.readFileSync(CONFIG_FILE, 'utf8');
+  const config = simpleYamlParse(configContent);
+  
+  console.log('🔍 Scanning for GitHub slugs...');
+  const slugs = Array.from(findSlugs(config));
+  
+  if (slugs.length === 0) {
+    console.log('✅ No GitHub slugs found in config.');
+    process.exit(0);
+  }
+  
+  console.log(`📋 Found ${slugs.length} slug(s):`);
+  slugs.forEach(slug => console.log(`   - ${slug}`));
+  console.log('');
+  
+  // Check each slug
+  const missing = [];
+  const found = [];
+  
+  for (const slug of slugs) {
+    const hasLocal = localBlockExists(slug);
+    const hasRemote = checkRemote(slug);
+    
+    console.log(`🔍 ${slug}:`);
+    console.log(`   Local: ${hasLocal ? '✅' : '❌'}`);
+    console.log(`   Remote: ${hasRemote ? '✅' : '❌'}`);
+    
+    if (!hasLocal && !hasRemote) {
+      missing.push(slug);
+      console.log(`   Status: ❌ MISSING`);
+    } else {
+      found.push(slug);
+      console.log(`   Status: ✅ OK`);
+    }
+    console.log('');
+  }
+  
+  // Apply fixes
+  if (missing.length > 0) {
+    console.log('🔧 Applying fixes...');
+    
+    // Default replacement for the specific slug mentioned in the task
+    const replacements = {
+      'rinawarptech/Rinawarptech': 'local/rinawarp-default'
+    };
+    
+    // Apply replacements
+    const fixedConfig = replaceSlugs(config, replacements);
+    const replacedSlugs = Object.keys(replacements).filter(old => 
+      slugs.includes(old) && missing.includes(old)
+    );
+    
+    if (replacedSlugs.length > 0) {
+      console.log('🔄 Replacements made:');
+      for (const oldSlug of replacedSlugs) {
+        console.log(`   ${oldSlug} → ${replacements[oldSlug]}`);
+      }
+      console.log('');
+    }
+    
+    // Scaffold any remaining missing slugs
+    const toScaffold = missing.filter(slug => !replacements[slug]);
+    if (toScaffold.length > 0) {
+      console.log('📦 Scaffolding local blocks:');
+      for (const slug of toScaffold) {
+        scaffoldBlock(slug);
+      }
+      console.log('');
+    }
+    
+    // Write fixed config
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const backupFile = `${CONFIG_FILE}.bak.${timestamp}`;
+    fs.copyFileSync(CONFIG_FILE, backupFile);
+    
+    // Simple YAML writer (for demo)
+    function simpleYamlStringify(obj, indent = '') {
+      let yaml = '';
+      for (const [key, value] of Object.entries(obj)) {
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          yaml += `${indent}${key}:\n`;
+          yaml += simpleYamlStringify(value, indent + '  ');
+        } else if (Array.isArray(value)) {
+          yaml += `${indent}${key}:\n`;
+          for (const item of value) {
+            yaml += `${indent}  - ${item}\n`;
+          }
+        } else {
+          yaml += `${indent}${key}: ${value}\n`;
+        }
+      }
+      return yaml;
+    }
+    
+    fs.writeFileSync(CONFIG_FILE, simpleYamlStringify(fixedConfig));
+    
+    console.log(`✅ Fixed config written to: ${CONFIG_FILE}`);
+    console.log(`💾 Backup saved to: ${backupFile}`);
+    console.log(`📦 Blocks directory: ${BLOCKS_ROOT}`);
+    
+  } else {
+    console.log('✅ All slugs are available. No fixes needed.');
+  }
+  
+} catch (error) {
+  console.error('❌ Error:', error.message);
+  process.exit(1);
+}
+
+console.log('\n🎉 Done!');

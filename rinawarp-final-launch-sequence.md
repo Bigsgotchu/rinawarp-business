@@ -1,0 +1,70 @@
+# RinaWarp Terminal Pro - Final Launch Sequence
+
+## 🚦 FINAL PRE-LAUNCH CHECK (DO THESE IN ORDER)
+
+### 1️⃣ Run the Windows smoke test once (clean VM)
+
+If any of these fail → fix before launch:
+- Agent process not spawning
+- Ghost text inconsistent  
+- License activation brittle
+- Offline regression
+
+If all pass → **lock the build hash.**
+
+### 2️⃣ Lock v1 scope (important)
+
+**DO NOT ADD before launch:**
+- More AI tools
+- More agent autonomy  
+- More pricing tiers
+- More UI polish
+
+**Your v1 promise is already strong:**
+Local-first terminal with a real agent process and optional AI reasoning.
+
+That's enough.
+
+### 3️⃣ Launch sequence (recommended)
+
+**Day 0 (morning)**
+- Publish Windows installer
+- Update homepage CTA → Download for Windows
+
+**Day 0 (afternoon)**
+- Post Show HN
+- Be present for replies (technical, calm, honest)
+
+**Day 1**
+- Post short X thread:
+  "Built a terminal with a local agent process"
+  1 GIF (ghost text → Tab accept)
+  No ads. No hype.
+
+## 💡 What success looks like (realistic, healthy)
+
+**In first 7 days:**
+- 1–3 Agent Pro conversions/day
+- 2–5 thoughtful HN comments
+- 1–2 "this is actually interesting" replies
+- Zero Stripe/license incidents
+
+**That's a win.**
+
+---
+
+## 📊 Validation Status
+
+- [x] Agent Pro upsell respects devs
+- [x] Never blocks core workflow  
+- [x] Clearly separates local-first vs cloud AI value
+- [x] Pricing framed correctly (Terminal Pro = ownership, Agent Pro = acceleration)
+- [x] Windows smoke test is binary (ship/don't ship)
+- [x] Focused on real failure modes
+- [x] Protective against "silent broken" launches
+- [x] Clean uninstall + offline guarantees = trust multiplier
+- [x] Show HN draft explains architecture honestly
+- [x] Anticipates criticism
+- [x] Invites technical discussion (not hype)
+
+**LAUNCH PACKAGE STATUS — GREEN ✅**

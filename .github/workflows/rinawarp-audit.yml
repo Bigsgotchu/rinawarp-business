@@ -1,0 +1,26 @@
+name: RinaWarp Security & Smoke Audit
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: sudo apt-get install -y jq
+
+      - name: Run Deep Audit
+        run: bash scripts/rinawarp-deep-audit.sh
+
+      - name: Block live Stripe keys
+        run: |
+          if grep -R "sk_live_" -n .; then
+            echo "::error::Live Stripe keys detected"
+            exit 1
+          fi

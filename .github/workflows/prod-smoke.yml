@@ -1,0 +1,16 @@
+name: Prod Smoke
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*.*.*']
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y jq
+      - run: chmod +x scripts/smoke/prod_full.sh
+      - env:
+          SITE_BASE: https://rinawarptech.com
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: bash scripts/smoke/prod_full.sh

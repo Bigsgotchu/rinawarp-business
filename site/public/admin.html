@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>RinaWarp · Admin Metrics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="/css/shared.css"/>
+  <style>
+    body{background:#0d0d10;color:#eaeaea}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .card{background:#15151a;border:1px solid #24242a;border-radius:12px;padding:16px;margin:12px 0}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border-bottom:1px solid #2a2a33;text-align:left}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    .btn{display:inline-block;padding:8px 12px;border-radius:10px;border:1px solid #2a2a33;text-decoration:none;color:#eaeaea;background:#1b1b22}
+    .small{font-size:12px;color:#9aa0a6}
+    .pill{border:1px solid #2a2a33;padding:2px 8px;border-radius:999px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Admin · Metrics</h1>
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label for="range">Range</label><br/>
+        <select id="range" class="pill">
+          <option value="7d">Last 7 days</option>
+          <option value="30d">Last 30 days</option>
+        </select>
+        <button id="refresh" class="btn">Refresh</button>
+      </div>
+      <div><div class="small">API</div><code>/api/trk/summary?range=<span id="qRange">7d</span></code></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Last smoke</h3>
+    <div id="smokeTiles" class="grid">
+      <div class="card" id="smk-staging"><div class="small">Staging</div><div class="val" style="font-size:20px">—</div></div>
+      <div class="card" id="smk-prod"><div class="small">Prod</div><div class="val" style="font-size:20px">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Totals</h3>
+    <div id="totals" class="grid"></div>
+  </div>
+
+  <div class="card">
+    <h3>Clicks trend</h3>
+    <div id="sparkWrap" style="height:80px;display:flex;align-items:center;">
+      <svg id="spark" viewBox="0 0 300 60" width="100%" height="60" preserveAspectRatio="none"
+           style="background:transparent;border:1px solid #2a2a33;border-radius:8px"></svg>
+    </div>
+    <div class="small">Last N days (range selector applies)</div>
+  </div>
+
+  <div class="card">
+    <h3>Clicks per day</h3>
+    <table id="perDay"><thead><tr><th>Day</th><th>Clicks</th><th>CSV</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="card">
+    <h3>Top buttons</h3>
+    <table id="topBtn"><thead><tr><th>Button</th><th>Count</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="card">
+    <h3>Top UTM combos</h3>
+    <table id="topUtm"><thead><tr><th>source | medium | campaign</th><th>Count</th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<script>
+  const $ = (sel)=>document.querySelector(sel);
+
+  function renderSpark(byDay, days) {
+    const svg = $('#spark');
+    if (!svg) return;
+    const w = 300, h = 60, pad = 6;
+    const values = days.map(d => byDay[d] || 0);
+    const max = Math.max(1, ...values);
+    const stepX = (w - pad*2) / Math.max(1, days.length - 1);
+
+    // Build polyline points
+    const pts = values.map((v, i) => {
+      const x = pad + i * stepX;
+      const y = h - pad - (v / max) * (h - pad*2);
+      return `${x},${y}`;
+    }).join(' ');
+
+    // Build area under the line (for a soft fill)
+    const areaPts = `${pad},${h-pad} ${pts} ${w-pad},${h-pad}`;
+
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-opacity="0.35"/>
+          <stop offset="100%" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2"/>
+      <polygon points="${areaPts}" fill="url(#g)"/>
+    `;
+  }
+
+  async function load() {
+    const range = $('#range').value;
+    $('#qRange').textContent = range;
+
+    const r = await fetch(`/api/trk/summary?range=${encodeURIComponent(range)}`);
+    const j = await r.json();
+
+    // Totals
+    $('#totals').innerHTML = `
+      <div class="card"><div class="small">Total clicks</div><div style="font-size:22px">${j.totals.count||0}</div></div>
+      <div class="card"><div class="small">Days</div><div style="font-size:22px">${(j.days||[]).length}</div></div>
+    `;
+
+    // Sparkline
+    renderSpark(j.byDay||{}, j.days||[]);
+
+    // Per day
+    const tb = $('#perDay tbody'); tb.innerHTML = '';
+    (j.days||[]).forEach(d=>{
+      const c = j.byDay?.[d] || 0;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${d}</td><td>${c}</td>
+        <td><a class="btn" href="/api/trk/export?day=${encodeURIComponent(d)}">CSV</a></td>`;
+      tb.appendChild(tr);
+    });
+
+    // Top buttons
+    const btn = Object.entries(j.byBtn||{}).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    const tb2 = $('#topBtn tbody'); tb2.innerHTML='';
+    btn.forEach(([k,v])=>{
+      const tr=document.createElement('tr'); tr.innerHTML=`<td>${k||'unknown'}</td><td>${v}</td>`; tb2.appendChild(tr);
+    });
+
+    // Top UTM
+    const utm = Object.entries(j.byUtm||{}).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    const tb3 = $('#topUtm tbody'); tb3.innerHTML='';
+    utm.forEach(([k,v])=>{
+      const tr=document.createElement('tr'); tr.innerHTML=`<td>${k}</td><td>${v}</td>`; tb3.appendChild(tr);
+    });
+  }
+
+  async function loadSmoke() {
+    try{
+      const r = await fetch('/api/smoke/status', { cache:'no-store' });
+      if (!r.ok) return;
+      const j = await r.json();
+      const now = new Date(j.now || Date.now());
+      const set = (id, iso) => {
+        const el = document.querySelector(id+' .val'); if (!el) return;
+        if (!iso) { el.textContent = '—'; return; }
+        const d = new Date(iso);
+        el.textContent = d.toLocaleString();
+        const hrs = Math.abs(now - d) / 36e5;
+        const wrapper = document.querySelector(id);
+        if (wrapper) wrapper.style.borderColor = hrs <= 24 ? '#2e6b4a' : '#704040';
+      };
+      set('#smk-staging', j.staging);
+      set('#smk-prod', j.prod);
+    }catch{}
+  }
+
+  $('#refresh').onclick = load;
+  document.addEventListener('DOMContentLoaded', () => { load(); loadSmoke(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My Account – RinaWarp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+<div class="wrapper theme-mermaid">
+
+<header class="site-header">
+  <div class="container">
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="logo-mark"><span>RW</span></div>
+        <div class="brand-text"><strong>RINAWARP</strong><span>Account</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="download.html">Download</a>
+        <a href="account.html" class="active">My Account</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+<section class="section">
+  <div class="section-header">
+    <div class="section-kicker">Your License</div>
+    <h1 class="section-title">Manage Your RinaWarp License</h1>
+    <p class="section-description">Enter your license key below to view details and manage billing.</p>
+  </div>
+
+  <div class="hero-card" style="max-width:600px;margin:auto;">
+
+    <label class="admin-label">License Key</label>
+    <input id="licenseKey" class="admin-input" placeholder="RW-XXXX-XXXX-XXXX">
+
+    <button class="btn btn-primary" style="width:100%;margin-top:1rem;" onclick="checkLicense()">
+      Verify License
+    </button>
+
+    <p id="errorMsg" style="color:#ff2d92;display:none;margin-top:1rem;">Invalid license key</p>
+
+    <div id="licenseDetails" style="display:none;margin-top:1.5rem;">
+      <h3>License Details</h3>
+      <p><strong>Email:</strong> <span id="ld-email"></span></p>
+      <p><strong>Name:</strong> <span id="ld-name"></span></p>
+      <p><strong>Plan:</strong> <span id="ld-plan"></span></p>
+      <p><strong>Status:</strong> <span id="ld-status"></span></p>
+      <p><strong>Created:</strong> <span id="ld-created"></span></p>
+
+      <button class="btn btn-ghost" style="margin-top:1rem;" onclick="openBillingPortal()">
+        Manage Billing
+      </button>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<script>
+let verifiedKey = null;
+
+async function checkLicense() {
+  const key = document.getElementById("licenseKey").value.trim();
+  if (!key) return;
+
+  const res = await fetch(`/api/license/verify?key=${key}`);
+  if (!res.ok) {
+    showError();
+    return;
+  }
+
+  const data = await res.json();
+  if (!data.valid) {
+    showError();
+    return;
+  }
+
+  verifiedKey = key;
+
+  document.getElementById("errorMsg").style.display = "none";
+  document.getElementById("licenseDetails").style.display = "block";
+
+  document.getElementById("ld-email").textContent = data.data.email;
+  document.getElementById("ld-name").textContent = data.data.name || "—";
+  document.getElementById("ld-plan").textContent = data.data.plan;
+  document.getElementById("ld-status").textContent = data.data.status;
+  document.getElementById("ld-created").textContent =
+    new Date(data.data.created_at).toLocaleString();
+}
+
+async function openBillingPortal() {
+  if (!verifiedKey) return;
+
+  const res = await fetch("/api/billing/portal", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ licenseKey: verifiedKey })
+  });
+
+  if (!res.ok) {
+    alert("Unable to open billing portal.");
+    return;
+  }
+
+  const data = await res.json();
+  window.location.href = data.url;
+}
+
+function showError() {
+  document.getElementById("errorMsg").style.display = "block";
+  document.getElementById("licenseDetails").style.display = "none";
+}
+</script>
+
+</body>
+</html>

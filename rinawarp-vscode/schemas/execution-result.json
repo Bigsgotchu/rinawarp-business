@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RinaWarp Execution Result",
+  "description": "Result returned from RinaWarp after executing a plan",
+  "type": "object",
+  "required": ["status", "checks", "output", "confidence"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["SUCCESS", "FAILED"],
+      "description": "Overall execution status"
+    },
+    "checks": {
+      "type": "array",
+      "description": "List of validation checks that were performed",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output": {
+      "type": "string",
+      "description": "Console output or logs from the execution"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "RinaWarp's confidence level in the execution result"
+    }
+  }
+}

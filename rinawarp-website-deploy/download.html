@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Download RinaWarp Terminal Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="wrapper theme-mermaid">
+      <header class="site-header">
+        <div class="container">
+          <nav class="navbar">
+            <div class="nav-left">
+              <div class="logo-mark"><span>RW</span></div>
+              <div class="brand-text">
+                <strong>RINAWARP</strong>
+                <span>Download</span>
+              </div>
+            </div>
+            <div class="nav-links">
+              <a href="index.html">Home</a>
+              <a href="terminal-pro.html">Terminal Pro</a>
+              <a href="music-video-creator.html">Music Video Creator</a>
+              <a href="pricing.html">Pricing</a>
+              <a href="download.html" class="active">Download</a>
+              <a href="login.html">Sign In</a>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-kicker">Download</div>
+            <h1 class="section-title">Get RinaWarp Terminal Pro.</h1>
+            <p class="section-description">
+              Download the installer for your platform. If you purchased a lifetime license, your
+              activation will be handled securely inside the app.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-title">Linux (install.sh)</div>
+              <p class="feature-text">
+                Recommended for Kali / Ubuntu-based systems. Run the script from your terminal.
+              </p>
+              <code style="font-size: 0.8rem; display: block; margin: 0.5rem 0">
+                curl -fsSL https://rinawarptech.com/install.sh | bash
+              </code>
+              <a href="https://rinawarptech.com/install.sh" class="btn btn-ghost">
+                Download script
+              </a>
+            </article>
+
+            <!-- Placeholder cards for other OSes once you have installers -->
+            <article class="feature-card">
+              <div class="feature-title">Windows</div>
+              <p class="feature-text">
+                MSI / EXE installer coming soon. Join the waitlist and we’ll email you when it’s
+                ready.
+              </p>
+              <a href="contact.html" class="btn btn-ghost">Join Windows waitlist</a>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-title">macOS</div>
+              <p class="feature-text">
+                macOS build planned after initial Linux launch. Ideal for creative workflows.
+              </p>
+              <a href="contact.html" class="btn btn-ghost">Join macOS waitlist</a>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-flex">
+          <div>
+            ©
+            <span id="year"></span>
+            RinaWarp Technologies, LLC.
+          </div>
+          <div class="footer-links">
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="dmca.html">DMCA</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

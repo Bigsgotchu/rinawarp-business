@@ -1,0 +1,36 @@
+# RinaWarp Terminal Pro v1.0.1
+
+## 🎉 What's New
+
+Test release notes generation
+
+## 📦 Installation
+
+### Linux
+- **AppImage**: Download and run the AppImage file
+- **Debian/Ubuntu**: Install the .deb package
+
+### Windows
+- Download and run the Setup.exe installer
+
+### macOS  
+- Download the .dmg file and drag to Applications
+
+## 🔧 System Requirements
+
+- **Linux**: Ubuntu 18.04+ or equivalent
+- **Windows**: Windows 10 or later
+- **macOS**: macOS 10.15+ (Catalina)
+
+## 📋 Release Checklist
+
+- [ ] Security audit passed
+- [ ] All platform builds successful  
+- [ ] Artifact validation passed
+- [ ] Release notes generated
+- [ ] Git tag created
+- [ ] GitHub release published
+
+---
+
+**Built with ❤️ by RinaWarp Technologies**

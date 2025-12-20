@@ -1,0 +1,13 @@
+name = "rinawarp-api"
+main = "index.js"
+compatibility_date = "2023-12-18"
+
+# KV Namespace for lifetime sales tracking
+[[kv_namespaces]]
+binding = "LIFETIME_SALES"
+id = "84d0fc93567e432d94b04b30e0b89e85"  # BILLING_KV
+
+# Environment variables (will be set via wrangler secret)
+[vars]
+DOMAIN = "https://rinawarptech.com"
+ENVIRONMENT = "production"

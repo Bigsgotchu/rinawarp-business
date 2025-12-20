@@ -1,0 +1,26 @@
+name = "rina-agent"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+RINA_DEFAULT_MODEL = "router"
+
+# Licensing
+[[kv_namespaces]]
+binding = "LICENSES_KV"
+id = "ecb5fdb68fdb4ce3a2d72220901e617f"
+
+# Per-license memory
+[[kv_namespaces]]
+binding = "RINA_MEMORY_KV"
+id = "490dd12d97dc419480ac816f80de813e"
+
+# You'll set these via Cloudflare dashboard or wrangler secret
+# OPENAI_API_KEY, ANTHROPIC_API_KEY should be secrets, not plain vars
+#[[ai]]
+#binding = "AI"
+
+
+[[vectorize]]
+binding = "RINA_VECTOR"
+index_name = "rina_memory"

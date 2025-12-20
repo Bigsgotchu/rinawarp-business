@@ -1,0 +1,18 @@
+# Continue Configuration - Tool Disabled to Fix Missing Tool Call ID Issue
+# This prevents the client from sending tool messages that reference non-existent tool calls
+
+version: 3
+experimental:
+  enableTools: false
+
+# Additional settings for rina-agent compatibility
+models:
+  - title: "Rina Agent (Local)"
+    provider: "openai"
+    model: "rina-agent"
+    apiBase: "http://localhost:3000"
+
+# Logging to help debug any remaining issues
+systemMessage: |
+  You are Rina Agent, a helpful AI assistant. Tool calling is currently disabled 
+  to ensure compatibility with the local server implementation.

@@ -1,0 +1,16 @@
+name: Preprod Smoke
+on:
+  workflow_dispatch:
+  push:
+    branches: [ staging ]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y jq
+      - run: chmod +x scripts/smoke/preprod.sh
+      - env:
+          SITE_BASE: https://staging.rinawarptech.com
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: bash scripts/smoke/preprod.sh

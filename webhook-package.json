@@ -1,0 +1,22 @@
+{
+  "name": "stripe-webhook-example",
+  "version": "1.0.0",
+  "description": "Example webhook endpoint for Stripe CLI monitoring",
+  "main": "webhook-example.js",
+  "scripts": {
+    "start": "node webhook-example.js",
+    "dev": "nodemon webhook-example.js",
+    "test": "node test-webhook.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "stripe": "^14.0.0",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["stripe", "webhook", "monitoring"],
+  "author": "RinaWarp Business",
+  "license": "MIT"
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RinaWarp Intent Request",
+  "description": "Request sent from VS Code to RinaWarp when user describes what they want to do",
+  "type": "object",
+  "required": ["intent", "context"],
+  "properties": {
+    "intent": {
+      "type": "string",
+      "description": "Plain English description of what the user wants to accomplish",
+      "examples": [
+        "Safely refactor auth flow without breaking prod",
+        "Add user authentication to the API",
+        "Fix the database connection timeout issue"
+      ]
+    },
+    "context": {
+      "type": "object",
+      "description": "Current workspace and editor context",
+      "required": ["workspace", "openFiles", "gitBranch", "editor", "buildChannel"],
+      "properties": {
+        "workspace": {
+          "type": "string",
+          "description": "Absolute path to the current workspace directory"
+        },
+        "openFiles": {
+          "type": "array",
+          "description": "List of currently open file paths",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selection": {
+          "type": ["string", "null"],
+          "description": "Currently selected text in the active editor, if any"
+        },
+        "gitBranch": {
+          "type": "string",
+          "description": "Current git branch name"
+        },
+        "editor": {
+          "type": "string",
+          "enum": ["vscode"],
+          "description": "The editor making the request"
+        },
+        "buildChannel": {
+          "type": "string",
+          "enum": ["dev", "stable"],
+          "description": "Current build channel for safety enforcement"
+        }
+      }
+    }
+  }
+}
