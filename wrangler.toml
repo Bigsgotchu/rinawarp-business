@@ -1,5 +1,5 @@
 name = "rinawarptech"
-pages_build_output_dir = "rinawarp-website/public"
+pages_build_output_dir = "dist-website"
 
 [vars]
 COMMIT_DIRTY = "true"

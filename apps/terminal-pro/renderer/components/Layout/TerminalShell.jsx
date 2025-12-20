@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import RinaChatPanel from "../RinaChat/RinaChatPanel";
 import "./terminal-shell.css";
 
@@ -6,6 +6,9 @@ export default function TerminalShell({ TerminalView }) {
   const [isRinaOpen, setIsRinaOpen] = useState(true);
   const [sidebarWidth, setSidebarWidth] = useState(360);
   const [isDragging, setIsDragging] = useState(false);
+  
+  // Build channel indicator - informational only
+  const buildChannel = __RINAWARP_DEV_BUILD__ === true ? "Dev Build" : "Stable";
 
   // Load layout from main via preload
   useEffect(() => {
@@ -86,6 +89,9 @@ export default function TerminalShell({ TerminalView }) {
       <div className="ts-header">
         <div className="ts-left">
           <span className="ts-title">RinaWarp Terminal Pro</span>
+          <span className="build-channel-indicator">
+            {buildChannel}
+          </span>
         </div>
         <div className="ts-right">
           <button

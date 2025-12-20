@@ -3,6 +3,8 @@
   "version": "0.4.0",
   "private": true,
   "description": "RinaWarp Terminal Pro — local-first intent → execution desktop app",
+  "author": "RinaWarp Tech <hello@rinawarptech.com>",
+  "homepage": "https://rinawarptech.com",
   "main": "src/main.js",
   "type": "commonjs",
   "scripts": {
@@ -39,6 +41,7 @@
     "artifactName": "${productName}-${version}-${arch}.${ext}",
     "appId": "com.rinawarp.terminalpro",
     "productName": "RinaWarp Terminal Pro",
+    "forceCodeSigning": false,
     "files": [
       "src/**/*",
       "node_modules/**/*",
@@ -58,10 +61,13 @@
     },
     "win": {
       "target": [
-        "nsis",
-        "zip"
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
       ],
-      "publisherName": "Your Company"
+      "artifactName": "RinaWarp-Terminal-Pro-${version}-win.exe",
+      "publisherName": "RinaWarp Technologies, LLC"
     },
     "linux": {
       "target": [

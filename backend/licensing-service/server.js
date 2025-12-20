@@ -1,7 +1,8 @@
-import express from 'express';
+import axios from 'axios';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import express from 'express';
+import jwt from 'jsonwebtoken';
 
 // Load environment variables
 dotenv.config();
@@ -115,67 +116,358 @@ app.post("/license/check", optionalAuth, express.json(), (req, res) => {
   const { licenseKey } = req.body || {};
 
   if (!licenseKey) {
-    return res.status(400).json({ error: "Missing 'licenseKey' field" });
+    return res.status(400).json({ 
+      error: "INVALID_INPUT",
+      message: "Missing 'licenseKey' field",
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  // Input validation
+  if (typeof licenseKey !== 'string') {
+    return res.status(400).json({
+      error: "INVALID_FORMAT",
+      message: "License key must be a string",
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  const sanitizedKey = licenseKey.trim().toUpperCase();
+  if (!/^[A-Z0-9-]{10,100}$/.test(sanitizedKey)) {
+    return res.status(400).json({
+      error: "INVALID_FORMAT",
+      message: "License key format is invalid. Must contain only uppercase letters, numbers, and hyphens (10-100 characters)",
+      timestamp: new Date().toISOString()
+    });
   }
 
   // 🔐 TODO: replace this stub with real DB / Supabase lookup
   // For now, simple pattern-based logic:
   let status = "invalid";
   let plan = null;
+  let expiresAt = null;
   let features = {
     premiumMode: false,
     maxDailyMessages: 0
   };
 
-  if (licenseKey.startsWith("DEV-LIFETIME")) {
+  if (sanitizedKey.startsWith("DEV-LIFETIME")) {
     status = "valid";
     plan = "lifetime";
+    expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(); // 1 year from now
     features = {
       premiumMode: true,
       maxDailyMessages: 2000
     };
-  } else if (licenseKey.startsWith("DEV-PRO")) {
+  } else if (sanitizedKey.startsWith("DEV-PRO")) {
     status = "valid";
     plan = "pro";
+    expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
     features = {
       premiumMode: true,
       maxDailyMessages: 999
     };
-  } else if (licenseKey.startsWith("DEV-CREATOR")) {
+  } else if (sanitizedKey.startsWith("DEV-CREATOR")) {
     status = "valid";
     plan = "creator";
+    expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
     features = {
       premiumMode: true,
       maxDailyMessages: 500
     };
-  } else if (licenseKey.startsWith("DEV-STARTER")) {
+  } else if (sanitizedKey.startsWith("DEV-STARTER")) {
     status = "valid";
     plan = "starter";
+    expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
     features = {
       premiumMode: true,
       maxDailyMessages: 150
     };
-  } else if (licenseKey.startsWith("DEV-BASIC")) {
+  } else if (sanitizedKey.startsWith("DEV-BASIC")) {
     status = "valid";
     plan = "basic";
+    expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
     features = {
       premiumMode: false,
       maxDailyMessages: 50
     };
-  } else if (licenseKey.startsWith("DEV-FREE")) {
+  } else if (sanitizedKey.startsWith("DEV-FREE")) {
     status = "valid";
     plan = "free";
+    expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
     features = {
       premiumMode: false,
       maxDailyMessages: 20
     };
   }
 
-  return res.json({
-    status,
+  // Apply grace period logic
+  const now = Date.now();
+  const expiry = expiresAt ? new Date(expiresAt).getTime() : 0;
+  const gracePeriodMs = 72 * 60 * 60 * 1000; // 72 hours
+  const graceExpiry = expiry + gracePeriodMs;
+  
+  let finalStatus = status;
+  let withinGrace = false;
+  let daysRemaining = 0;
+  
+  if (status === "valid" && now > expiry) {
+    if (now <= graceExpiry) {
+      finalStatus = "grace_period";
+      withinGrace = true;
+      daysRemaining = Math.ceil((graceExpiry - now) / (24 * 60 * 60 * 1000));
+    } else {
+      finalStatus = "expired";
+    }
+  }
+
+  const response = {
+    status: finalStatus,
     plan,
-    features
-  });
+    features,
+    expiresAt,
+    timestamp: new Date().toISOString()
+  };
+
+  // Add grace period information if applicable
+  if (withinGrace) {
+    response.gracePeriodDays = daysRemaining;
+    response.message = `License expired but within ${daysRemaining}-day grace period. Please renew to continue full access.`;
+  }
+
+  return res.json(response);
+});
+
+// License activation endpoint
+app.post("/license/activate", express.json(), async (req, res) => {
+  try {
+    const { licenseKey, deviceInfo, ip, userAgent } = req.body;
+    
+    // Input validation
+    if (!licenseKey) {
+      return res.status(400).json({
+        error: "INVALID_INPUT",
+        message: "License key is required",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    if (typeof licenseKey !== 'string') {
+      return res.status(400).json({
+        error: "INVALID_FORMAT",
+        message: "License key must be a string",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    const sanitizedKey = licenseKey.trim().toUpperCase();
+    if (!/^[A-Z0-9-]{10,100}$/.test(sanitizedKey)) {
+      return res.status(400).json({
+        error: "INVALID_FORMAT",
+        message: "License key format is invalid",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Log activation attempt (in production, store in database)
+    console.log(`License activation attempt: ${sanitizedKey} from IP: ${ip}`);
+    
+    // Simulate activation logic (replace with real DB lookup)
+    // For now, just return the same check result
+    const checkResponse = await axios.post(`http://localhost:${PORT}/license/check`, {
+      licenseKey: sanitizedKey
+    });
+    
+    if (checkResponse.data.status === "expired") {
+      return res.status(401).json({
+        error: "LICENSE_EXPIRED",
+        message: "Cannot activate expired license. Please renew your subscription.",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    if (checkResponse.data.status === "invalid") {
+      return res.status(404).json({
+        error: "LICENSE_NOT_FOUND",
+        message: "License key not found or invalid",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Success - return activation details
+    res.json({
+      success: true,
+      activation: {
+        licenseKey: sanitizedKey,
+        plan: checkResponse.data.plan,
+        status: checkResponse.data.status,
+        expiresAt: checkResponse.data.expiresAt,
+        features: checkResponse.data.features,
+        activatedAt: new Date().toISOString(),
+        deviceInfo: deviceInfo || {},
+        withinGrace: checkResponse.data.gracePeriodDays ? true : false
+      },
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('License activation error:', error);
+    
+    if (error.code === 'ECONNABORTED') {
+      return res.status(503).json({
+        error: "SERVICE_UNAVAILABLE",
+        message: "License service is temporarily unavailable",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    res.status(500).json({
+      error: "ACTIVATION_FAILED",
+      message: "Failed to activate license",
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// License verification endpoint
+app.post("/license/verify", express.json(), async (req, res) => {
+  try {
+    const { licenseKey, ip } = req.body;
+    
+    // Input validation
+    if (!licenseKey) {
+      return res.status(400).json({
+        error: "INVALID_INPUT",
+        message: "License key is required",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    if (typeof licenseKey !== 'string') {
+      return res.status(400).json({
+        error: "INVALID_FORMAT",
+        message: "License key must be a string",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    const sanitizedKey = licenseKey.trim().toUpperCase();
+    if (!/^[A-Z0-9-]{10,100}$/.test(sanitizedKey)) {
+      return res.status(400).json({
+        error: "INVALID_FORMAT",
+        message: "License key format is invalid",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Log verification attempt
+    console.log(`License verification: ${sanitizedKey} from IP: ${ip}`);
+    
+    // Reuse the check logic
+    const checkResponse = await axios.post(`http://localhost:${PORT}/license/check`, {
+      licenseKey: sanitizedKey
+    });
+    
+    res.json({
+      success: true,
+      verification: {
+        licenseKey: sanitizedKey,
+        plan: checkResponse.data.plan,
+        status: checkResponse.data.status,
+        expiresAt: checkResponse.data.expiresAt,
+        features: checkResponse.data.features,
+        verifiedAt: new Date().toISOString(),
+        withinGrace: checkResponse.data.gracePeriodDays ? true : false
+      },
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('License verification error:', error);
+    
+    if (error.code === 'ECONNABORTED') {
+      return res.status(503).json({
+        error: "SERVICE_UNAVAILABLE",
+        message: "License service is temporarily unavailable",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    res.status(500).json({
+      error: "VERIFICATION_FAILED",
+      message: "Failed to verify license",
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// License status endpoint
+app.get("/license/status/:licenseKey", async (req, res) => {
+  try {
+    const { licenseKey } = req.params;
+    
+    // Input validation
+    if (!licenseKey) {
+      return res.status(400).json({
+        error: "INVALID_INPUT",
+        message: "License key is required",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    if (typeof licenseKey !== 'string') {
+      return res.status(400).json({
+        error: "INVALID_FORMAT",
+        message: "License key must be a string",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    const sanitizedKey = licenseKey.trim().toUpperCase();
+    if (!/^[A-Z0-9-]{10,100}$/.test(sanitizedKey)) {
+      return res.status(400).json({
+        error: "INVALID_FORMAT",
+        message: "License key format is invalid",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Reuse the check logic
+    const checkResponse = await axios.post(`http://localhost:${PORT}/license/check`, {
+      licenseKey: sanitizedKey
+    });
+    
+    res.json({
+      success: true,
+      status: {
+        licenseKey: sanitizedKey,
+        plan: checkResponse.data.plan,
+        status: checkResponse.data.status,
+        expiresAt: checkResponse.data.expiresAt,
+        features: checkResponse.data.features,
+        checkedAt: new Date().toISOString(),
+        withinGrace: checkResponse.data.gracePeriodDays ? true : false
+      },
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('License status error:', error);
+    
+    if (error.code === 'ECONNABORTED') {
+      return res.status(503).json({
+        error: "SERVICE_UNAVAILABLE",
+        message: "License service is temporarily unavailable",
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    res.status(500).json({
+      error: "STATUS_CHECK_FAILED",
+      message: "Failed to check license status",
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // Start server

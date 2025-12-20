@@ -48,6 +48,11 @@ function createWindow() {
 app.whenReady().then(() => {
   ensureHistory(); hardenSession();
   session.defaultSession.webRequest.onHeadersReceived((d, cb) => cb({ responseHeaders: { ...d.responseHeaders, 'Content-Security-Policy': [cspHeader()] } }));
+  
+  // Start brain server for VS Code integration
+  brainServer = startBrainServer();
+  process.env.RINAWARP_BRAIN_TOKEN = brainServer.token;
+  
   createWindow();
   session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
     const url = details.url;
@@ -59,8 +64,18 @@ app.whenReady().then(() => {
   });
   app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
-app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-process.on('SIGINT', () => app.quit()); process.on('SIGTERM', () => app.quit());
+app.on('window-all-closed', () => { 
+  if (brainServer) brainServer.stop();
+  if (process.platform !== 'darwin') app.quit(); 
+});
+process.on('SIGINT', () => { 
+  if (brainServer) brainServer.stop();
+  app.quit(); 
+}); 
+process.on('SIGTERM', () => { 
+  if (brainServer) brainServer.stop();
+  app.quit(); 
+});
 
 // Shared modules
 const { composePlanner } = require('./shared/planner_llm.js');
@@ -69,6 +84,10 @@ const { execGraph, rollbackLastRun, exportReportBundle } = require('./shared/exe
 const { explainStep } = require('./shared/explain.js');
 const { loadPolicy, validatePolicy } = require('./shared/policy.js');
 const { auditWrite } = require('./shared/audit.js');
+
+// Brain server for VS Code integration
+const { startBrainServer } = require('./brain/server.js');
+let brainServer = null;
 
 function policyTemplate() {
   return `# RinaWarp Workspace Policy — safe defaults

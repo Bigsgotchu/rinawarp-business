@@ -25,6 +25,16 @@
   color: #9fb3ff;
 }
 
+/* Build Channel Indicator - informational only */
+.build-channel-indicator {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 8px;
+  font-weight: 400;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
 .ts-rina-toggle {
   padding: 6px 12px;
   border-radius: 999px;

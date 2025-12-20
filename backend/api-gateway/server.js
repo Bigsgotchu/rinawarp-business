@@ -1,10 +1,8 @@
-import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import axios from 'axios';
 import dotenv from 'dotenv';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 import { dashboardAuth } from './middleware/dashboardAuth.js';
 
 // Load environment variables
@@ -108,6 +106,30 @@ const telemetryLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+// License-specific rate limiting
+const licenseActivationLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 3, // Max 3 license activations per IP per 5 minutes
+  message: { error: 'License activation rate limit exceeded' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const licenseVerifyLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // Max 10 license verifications per IP per minute
+  message: { error: 'License verification rate limit exceeded' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// License endpoints configuration
+const LICENSE_ENDPOINTS = {
+  activation: '/api/license/activate',
+  verification: '/api/license/verify',
+  status: '/api/license/status'
+};
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -253,6 +275,207 @@ app.use((req, res) => {
     method: req.method,
     timestamp: new Date().toISOString()
   });
+});
+
+// License endpoint rate limiting middleware
+function applyLicenseRateLimit(req, res, next) {
+  const path = req.path;
+  
+  if (path.includes('/activate')) {
+    return licenseActivationLimiter(req, res, next);
+  } else if (path.includes('/verify') || path.includes('/status')) {
+    return licenseVerifyLimiter(req, res, next);
+  }
+  
+  next();
+}
+
+// License activation endpoint
+app.post('/api/license/activate', applyLicenseRateLimit, async (req, res) => {
+  try {
+    const { licenseKey, deviceInfo } = req.body;
+    
+    // Input validation
+    if (!licenseKey || typeof licenseKey !== 'string') {
+      return res.status(400).json({
+        error: 'INVALID_INPUT',
+        message: 'License key is required and must be a string',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Sanitize license key
+    const sanitizedKey = licenseKey.trim().toUpperCase();
+    if (!/^[A-Z0-9-]{10,100}$/.test(sanitizedKey)) {
+      return res.status(400).json({
+        error: 'INVALID_FORMAT',
+        message: 'License key format is invalid',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Forward to licensing service
+    const response = await axios.post(`${LICENSING_SERVICE_URL}/license/activate`, {
+      licenseKey: sanitizedKey,
+      deviceInfo: deviceInfo || {},
+      ip: req.ip,
+      userAgent: req.get('User-Agent')
+    }, {
+      timeout: 5000,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    res.json({
+      success: true,
+      data: response.data,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('License activation error:', error);
+    
+    if (error.code === 'ECONNABORTED') {
+      return res.status(503).json({
+        error: 'SERVICE_UNAVAILABLE',
+        message: 'License service is temporarily unavailable. Please try again later.',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    const status = error.response?.status || 500;
+    const errorMessage = error.response?.data?.message || 'License activation failed';
+    
+    res.status(status).json({
+      error: 'ACTIVATION_FAILED',
+      message: errorMessage,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// License verification endpoint
+app.post('/api/license/verify', applyLicenseRateLimit, async (req, res) => {
+  try {
+    const { licenseKey } = req.body;
+    
+    // Input validation
+    if (!licenseKey || typeof licenseKey !== 'string') {
+      return res.status(400).json({
+        error: 'INVALID_INPUT',
+        message: 'License key is required and must be a string',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Sanitize license key
+    const sanitizedKey = licenseKey.trim().toUpperCase();
+    if (!/^[A-Z0-9-]{10,100}$/.test(sanitizedKey)) {
+      return res.status(400).json({
+        error: 'INVALID_FORMAT',
+        message: 'License key format is invalid',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Forward to licensing service
+    const response = await axios.post(`${LICENSING_SERVICE_URL}/license/verify`, {
+      licenseKey: sanitizedKey,
+      ip: req.ip
+    }, {
+      timeout: 5000,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    res.json({
+      success: true,
+      data: response.data,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('License verification error:', error);
+    
+    if (error.code === 'ECONNABORTED') {
+      return res.status(503).json({
+        error: 'SERVICE_UNAVAILABLE',
+        message: 'License service is temporarily unavailable. Please try again later.',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    const status = error.response?.status || 500;
+    const errorMessage = error.response?.data?.message || 'License verification failed';
+    
+    res.status(status).json({
+      error: 'VERIFICATION_FAILED',
+      message: errorMessage,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// License status endpoint
+app.get('/api/license/status/:licenseKey', applyLicenseRateLimit, async (req, res) => {
+  try {
+    const { licenseKey } = req.params;
+    
+    // Input validation
+    if (!licenseKey || typeof licenseKey !== 'string') {
+      return res.status(400).json({
+        error: 'INVALID_INPUT',
+        message: 'License key is required and must be a string',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Sanitize license key
+    const sanitizedKey = licenseKey.trim().toUpperCase();
+    if (!/^[A-Z0-9-]{10,100}$/.test(sanitizedKey)) {
+      return res.status(400).json({
+        error: 'INVALID_FORMAT',
+        message: 'License key format is invalid',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Forward to licensing service
+    const response = await axios.get(`${LICENSING_SERVICE_URL}/license/status/${sanitizedKey}`, {
+      timeout: 5000,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    res.json({
+      success: true,
+      data: response.data,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('License status error:', error);
+    
+    if (error.code === 'ECONNABORTED') {
+      return res.status(503).json({
+        error: 'SERVICE_UNAVAILABLE',
+        message: 'License service is temporarily unavailable. Please try again later.',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    const status = error.response?.status || 500;
+    const errorMessage = error.response?.data?.message || 'License status check failed';
+    
+    res.status(status).json({
+      error: 'STATUS_CHECK_FAILED',
+      message: errorMessage,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // Global error handler

@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+
+# RinaWarp CLI Status Command
+# Usage: rw status
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_DIR="$(dirname "$SCRIPT_DIR")"
+STATUS_REPORT="$WORKSPACE_DIR/RINAWARP_STATUS_REPORT.md"
+
+show_usage() {
+    echo "RinaWarp CLI - Status Command"
+    echo ""
+    echo "Usage:"
+    echo "  rw status        Show system status"
+    echo "  rw --help        Show this help"
+    echo ""
+}
+
+show_status() {
+    echo "🔍 Checking RinaWarp System Status..."
+    echo ""
+    
+    if [[ -f "$STATUS_REPORT" ]]; then
+        echo "📋 Status Report:"
+        echo "================="
+        echo ""
+        
+        # Extract key information from the status report
+        local status_line
+        status_line=$(grep -E "^\*\*Status\*\*:" "$STATUS_REPORT" | head -1)
+        if [[ -n "$status_line" ]]; then
+            echo "$status_line"
+            echo ""
+        fi
+        
+        # Show executive summary
+        local exec_summary
+        exec_summary=$(sed -n '/^## 🎯 EXECUTIVE SUMMARY/,/^##/p' "$STATUS_REPORT" | head -n -1)
+        if [[ -n "$exec_summary" ]]; then
+            echo "$exec_summary"
+            echo ""
+        fi
+        
+        # Show build channel status
+        local build_channel
+        build_channel=$(grep -E "^\*\*.*Build Channel\*\*:" "$STATUS_REPORT" | head -1)
+        if [[ -n "$build_channel" ]]; then
+            echo "$build_channel"
+        fi
+        
+        local ready_status
+        ready_status=$(grep -E "^\*\*.*Ready Status\*\*:" "$STATUS_REPORT" | head -1)
+        if [[ -n "$ready_status" ]]; then
+            echo "$ready_status"
+        fi
+        
+        local system_health
+        system_health=$(grep -E "^\*\*.*System Health\*\*:" "$STATUS_REPORT" | head -1)
+        if [[ -n "$system_health" ]]; then
+            echo "$system_health"
+        fi
+        
+        echo ""
+        echo "📊 Full report available at: RINAWARP_STATUS_REPORT.md"
+        echo ""
+        
+    else
+        echo "❌ Status report not found: $STATUS_REPORT"
+        echo ""
+        echo "Available status files:"
+        find "$WORKSPACE_DIR" -name "*STATUS*" -type f 2>/dev/null | head -10
+    fi
+}
+
+check_services() {
+    echo "🔧 Checking Services:"
+    echo "===================="
+    
+    # Check if agent server is running (port 3333)
+    if command -v curl >/dev/null 2>&1; then
+        if curl -s --connect-timeout 2 http://127.0.0.1:3333/health >/dev/null 2>&1; then
+            echo "✅ Agent Server: RUNNING (http://127.0.0.1:3333)"
+        else
+            echo "❌ Agent Server: NOT REACHABLE (http://127.0.0.1:3333)"
+        fi
+    else
+        echo "⚠️  curl not available - skipping service check"
+    fi
+    echo ""
+}
+
+show_builds() {
+    echo "📦 Recent Builds:"
+    echo "================"
+    
+    # Check for Windows build
+    if [[ -f "$WORKSPACE_DIR/WINDOWS_BUILD_SUCCESS.md" ]]; then
+        echo "✅ Windows Build: SUCCESS"
+    else
+        echo "❌ Windows Build: NOT FOUND"
+    fi
+    
+    # Check for Linux build
+    if [[ -f "$WORKSPACE_DIR/RinaWarp-Terminal-Pro-1.0.0-x86_64.AppImage.sha256" ]]; then
+        echo "✅ Linux Build: AVAILABLE"
+    else
+        echo "❌ Linux Build: NOT FOUND"
+    fi
+    
+    echo ""
+}
+
+show_completion_status() {
+    echo "🎯 Implementation Status:"
+    echo "========================"
+    
+    local completion_files=(
+        "LICENSE_STATE_MACHINE_HARDENED_COMPLETE.md"
+        "LAUNCH_COMPLETE.md"
+        "RINAWARP_FINAL_DEPLOYMENT_SUMMARY.md"
+        "FINAL_SUCCESS_REPORT.md"
+    )
+    
+    for file in "${completion_files[@]}"; do
+        if [[ -f "$WORKSPACE_DIR/$file" ]]; then
+            echo "✅ $(basename "$file" .md): COMPLETE"
+        else
+            echo "❌ $(basename "$file" .md): NOT FOUND"
+        fi
+    done
+    echo ""
+}
+
+main() {
+    case "${1:-}" in
+        "status"|"")
+            show_status
+            check_services
+            show_builds
+            show_completion_status
+            ;;
+        "--help"|"help"|"-h")
+            show_usage
+            ;;
+        *)
+            echo "❌ Unknown command: $1"
+            echo ""
+            show_usage
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
