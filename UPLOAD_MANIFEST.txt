@@ -1,0 +1,60 @@
+# RinaWarp Terminal Pro v1.0.0 - R2 Upload Manifest
+
+## Upload Directory Structure
+terminal-pro/
+└── 1.0.0/
+    ├── RinaWarp-Terminal-Pro-Linux.AppImage
+    ├── RinaWarp-Terminal-Pro-Windows.exe (TO BE ADDED)
+    └── SHA256SUMS.txt
+
+## File Details
+
+### Linux AppImage
+- Source: RinaWarp-Terminal-Pro.AppImage
+- Target: terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Linux.AppImage
+- Size: 103MB (estimated)
+- SHA256: $(sha256sum RinaWarp-Terminal-Pro.AppImage | cut -d' ' -f1)
+
+### Windows Installer (MISSING)
+- Source: NOT FOUND - NEEDS TO BE BUILT
+- Target: terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Windows.exe
+- Status: 🚨 REQUIRED FOR LAUNCH
+
+### Checksum File
+- Source: SHA256SUMS.txt
+- Target: terminal-pro/1.0.0/SHA256SUMS.txt
+- Contents: SHA256 checksums for all binaries
+
+## R2 Upload Commands
+
+# Using AWS CLI (recommended)
+aws s3 cp RinaWarp-Terminal-Pro.AppImage s3://rinawarp-downloads/terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Linux.AppImage --acl public-read
+aws s3 cp SHA256SUMS.txt s3://rinawarp-downloads/terminal-pro/1.0.0/SHA256SUMS.txt --acl public-read
+
+# After Windows installer is built:
+# aws s3 cp RinaWarp-Terminal-Pro-Windows.exe s3://rinawarp-downloads/terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Windows.exe --acl public-read
+
+## Alternative: Cloudflare R2 Console Upload
+
+1. Go to Cloudflare Dashboard → R2 Object Storage
+2. Navigate to rinawarp-downloads bucket
+3. Create folder: terminal-pro/1.0.0/
+4. Upload files with public-read ACL
+
+## Verification Commands
+
+# Test Linux download
+curl -I https://rinawarp-downloads.r2.cloudflarestorage.com/terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Linux.AppImage
+
+# Test Windows download (after upload)
+curl -I https://rinawarp-downloads.r2.cloudflarestorage.com/terminal-pro/1.0.0/RinaWarp-Terminal-Pro-Windows.exe
+
+## Post-Upload Checklist
+
+- [ ] Linux AppImage accessible via R2 URL
+- [ ] SHA256 checksum file accessible
+- [ ] Windows installer built and uploaded (REQUIRED)
+- [ ] All download links tested
+- [ ] install.sh script tested
+- [ ] Website download page updated with correct URLs
+
