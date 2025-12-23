@@ -87,9 +87,18 @@ install_linux() {
 
     echo -e "${GREEN}Installing RinaWarp Terminal Pro on Linux...${NC}"
 
-    # Download the AppImage
-    if ! download_file "$download_url" "$filename"; then
-        return 1
+    # Use locally built AppImage if available
+    local local_appimage="/home/karina/Documents/rinawarp-business/apps/terminal-pro/desktop/build-output/RinaWarp-Terminal-Pro-1.0.0-x86_64.AppImage"
+    
+    if [ -f "$local_appimage" ]; then
+        echo -e "${YELLOW}Using locally built AppImage...${NC}"
+        cp "$local_appimage" "$filename"
+        chmod +x "$filename"
+    else
+        # Download the AppImage
+        if ! download_file "$download_url" "$filename"; then
+            return 1
+        fi
     fi
 
     # Make it executable

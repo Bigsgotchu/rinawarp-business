@@ -6,6 +6,7 @@ import rateLimit from 'express-rate-limit';
 import fs from 'fs';
 import helmet from 'helmet';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import multer from 'multer';
 import path from 'path';
 import Stripe from 'stripe';
 
@@ -59,9 +60,13 @@ const SERVICE_REGISTRY = {
 const LICENSING_SERVICE_URL = process.env.LICENSING_SERVICE_URL || "http://localhost:3003";
 const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || "http://localhost:3001";
 const DOMAIN = process.env.DOMAIN || "http://localhost:3000";
-
 const app = express();
+
 const PORT = process.env.PORT || 3000;
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+const ongoingUploads = new Map();
 
 // Middleware
 app.use(helmet({
@@ -84,9 +89,9 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   }),
 );
+app.use(express.json({ limit: '500mb' }));
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '500mb' }));
 
 // Rate limiting with more specific rules
 const generalLimiter = rateLimit({
@@ -313,7 +318,7 @@ app.post('/api/stripe/webhook',
 
 // FIXED: Checkout endpoint with real Stripe integration
 app.post('/api/checkout-v2',
-  express.json({ limit: '1mb' }),
+  express.json({ limit: '10mb' }),
   async (req, res) => {
     try {
       const { plan, successUrl, cancelUrl } = req.body;
@@ -362,9 +367,65 @@ app.post('/api/checkout-v2',
   }
 );
 
+// Chunked upload endpoint
+app.post('/api/upload/chunk', authenticateToken, upload.single('chunk'), (req, res) => {
+  try {
+    const { fileName, chunkIndex, totalChunks } = req.body;
+    const chunk = req.file.buffer;
+    
+    if (!fileName || chunkIndex === undefined || !totalChunks) {
+      return res.status(400).json({ error: 'Missing required fields: fileName, chunkIndex, totalChunks' });
+    }
+    
+    const index = parseInt(chunkIndex);
+    const total = parseInt(totalChunks);
+    
+    if (index < 0 || index >= total) {
+      return res.status(400).json({ error: 'Invalid chunk index' });
+    }
+    
+    if (!ongoingUploads.has(fileName)) {
+      ongoingUploads.set(fileName, { chunks: new Array(total), received: 0, total });
+    }
+    
+    const uploadData = ongoingUploads.get(fileName);
+    
+    if (uploadData.chunks[index]) {
+      return res.status(400).json({ error: 'Chunk already received' });
+    }
+    
+    uploadData.chunks[index] = chunk;
+    uploadData.received++;
+    
+    if (uploadData.received === uploadData.total) {
+      // Assemble file
+      const fileBuffer = Buffer.concat(uploadData.chunks);
+      
+      // Ensure uploads directory exists
+      const uploadsDir = path.join(process.cwd(), 'uploads');
+      fs.mkdirSync(uploadsDir, { recursive: true });
+      
+      // Save file
+      const filePath = path.join(uploadsDir, fileName);
+      fs.writeFileSync(filePath, fileBuffer);
+      
+      // Clean up
+      ongoingUploads.delete(fileName);
+      
+      console.log(`File ${fileName} assembled and saved`);
+      res.json({ success: true, message: 'File uploaded successfully', filePath });
+    } else {
+      res.json({ success: true, message: `Chunk ${index + 1}/${total} received` });
+    }
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).json({ error: 'Upload failed' });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'Endpoint not found',
     path: req.path,
     method: req.method,

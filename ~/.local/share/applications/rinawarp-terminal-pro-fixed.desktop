@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RinaWarp Terminal Pro
+Comment=AI-Powered Developer Terminal
+Exec=bash -c "export DISPLAY=:0.0; export XAUTHORITY=/home/karina/.Xauthority; export XDG_SESSION_TYPE=x11; /home/karina/Applications/RinaWarp-Terminal-Pro.AppImage"
+Icon=utilities-terminal
+Terminal=false
+StartupNotify=true
+Categories=Development;Utility;TerminalEmulator;
+StartupWMClass=RinaWarp-Terminal-Pro
+X-Desktop-File-Install-Version=0.28
