@@ -1,11 +1,12 @@
-const path = require("path");
-const fs = require("fs");
-const os = require('os');
-const pty = require('node-pty');
-const recorder = require('node-record-lpcm16');
-const OpenAI = require("openai");
-const Sentry = require("@sentry/electron");
-const WebSocket = require('ws');
+import electron from 'electron';
+import fs from "fs";
+import pty from 'node-pty';
+import recorder from 'node-record-lpcm16';
+import OpenAI from "openai";
+import os from 'os';
+import path from "path";
+import WebSocket from 'ws';
+const { app, BrowserWindow, ipcMain, shell } = electron;
 // Only initialize OpenAI if API key is available
 const ai = process.env.OPENAI_API_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
@@ -21,6 +22,8 @@ async function initStore() {
 // ==== CONFIG STORAGE (license etc.) ==================================
 
 function getConfigPath() {
+  // Lazy initialization - app might not be available yet
+  if (!app) return path.join(os.homedir(), ".rinawarp-terminal-pro", "config.json");
   const userDir = app.getPath("userData");
   return path.join(userDir, "config.json");
 }
@@ -29,7 +32,7 @@ function getConfigPath() {
 // AUTO-UPDATER (VS Code Style)
 // =============================
 // Auto-updater will be initialized later when app is ready
-let autoUpdater;
+let autoUpdater = null;
 
 // Allow per-channel update feeds
 function getUpdateChannel() {
@@ -41,6 +44,7 @@ function getUpdateChannel() {
 }
 
 function configureAutoUpdater() {
+  if (!autoUpdater) return;
   const channel = getUpdateChannel();
 
   autoUpdater.setFeedURL({
@@ -51,6 +55,7 @@ function configureAutoUpdater() {
 
 // Emit events to renderer
 function setupAutoUpdaterIPC(mainWindow) {
+  if (!autoUpdater) return;
   autoUpdater.on("checking-for-update", () => {
     mainWindow.webContents.send("update:checking");
   });
@@ -353,7 +358,7 @@ function createMainWindow() {
   // Setup auto-updater
   setupAutoUpdaterIPC(mainWindow);
   configureAutoUpdater();
-  autoUpdater.checkForUpdatesAndNotify();
+  if (autoUpdater) autoUpdater.checkForUpdatesAndNotify();
 
   // Handle window closed
   mainWindow.on('closed', () => {
@@ -393,7 +398,7 @@ function createMainWindowWithLicenseGate() {
   // Setup auto-updater
   setupAutoUpdaterIPC(mainWindow);
   configureAutoUpdater();
-  autoUpdater.checkForUpdatesAndNotify();
+  if (autoUpdater) autoUpdater.checkForUpdatesAndNotify();
 
   // Handle window closed
   mainWindow.on('closed', () => {
@@ -748,7 +753,7 @@ function registerIPC() {
   });
   // Add IPC handler for restarting app
   ipcMain.handle("update:restart", () => {
-    autoUpdater.quitAndInstall();
+    if (autoUpdater) autoUpdater.quitAndInstall();
   });
 
   // Sync IPC handlers
@@ -1001,6 +1006,11 @@ function registerIPC() {
     const rows = options.rows || 24;
     const cwd = options.cwd || os.homedir();
 
+    // Guard PTY spawn by platform checks
+    if (process.platform === 'win32' && !shell.endsWith('.exe')) {
+      console.warn('[Terminal] PTY spawn: shell may not be executable on Windows');
+    }
+    
     const ptyProcess = pty.spawn(shell, [], {
       name: 'xterm-color',
       cols,
@@ -1266,6 +1276,7 @@ function registerIPC() {
 // Save terminal state before app quit
 function saveTerminalState() {
   try {
+    if (!store) return; // Store not initialized yet
     const state = {
       lastTerminalState: Array.from(terminals.entries()).map(([id, term]) => ({
         id,
@@ -1319,11 +1330,59 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // Main entry point
 (async () => {
-  // Import electron dynamically
-  const { app, BrowserWindow, ipcMain, shell } = await import('electron');
+  // Handle --diagnostics flag
+  if (process.argv.includes('--diagnostics')) {
+    console.log('\n=== RinaWarp Terminal Pro Diagnostics ===');
+    console.log('App Version:', app.getVersion());
+    console.log('Electron Version:', process.versions.electron);
+    console.log('Node Version:', process.versions.node);
+    console.log('Platform:', process.platform);
+    console.log('Architecture:', process.arch);
+    console.log('API Root:', API_ROOT);
+    console.log('Rina Agent URL:', RINA_AGENT_URL);
+    console.log('OpenAI API Key:', process.env.OPENAI_API_KEY ? '[SET]' : '[NOT SET]');
+    console.log('Stripe Secret Key:', process.env.STRIPE_SECRET_KEY ? '[SET]' : '[NOT SET]');
+    console.log('License Key:', store.get("licenseKey") ? '[SET]' : '[NOT SET]');
+    console.log('Auth Token:', store.get("authToken") ? '[SET]' : '[NOT SET]');
+    console.log('Update Channel:', store.get("updateChannel", "stable"));
+    console.log('=== End Diagnostics ===\n');
+    process.exit(0);
+  }
+
+  // Handle --headless-smoke flag
+  if (process.argv.includes('--headless-smoke')) {
+    console.log('[Smoke Test] Starting headless smoke test...');
+    
+    // Basic smoke test: verify dependencies
+    try {
+      // Test node-pty
+      const pty = require('node-pty');
+      console.log('[Smoke Test] ✓ node-pty loaded');
+      
+      // Test OpenAI
+      if (process.env.OPENAI_API_KEY) {
+        console.log('[Smoke Test] ✓ OpenAI API key configured');
+      } else {
+        console.log('[Smoke Test] ⚠ OpenAI API key not configured');
+      }
+      
+      // Test WebSocket server startup
+      const WebSocket = require('ws');
+      const server = new WebSocket.Server({ port: 0 });
+      console.log('[Smoke Test] ✓ WebSocket server started on port', server.address().port);
+      server.close();
+      
+      console.log('[Smoke Test] ✓ All smoke tests passed');
+      process.exit(0);
+    } catch (error) {
+      console.error('[Smoke Test] ✗ Smoke test failed:', error.message);
+      process.exit(1);
+    }
+  }
 
   // Initialize Sentry after electron is imported
   if (process.env.SENTRY_DSN) {
+    const Sentry = await import('@sentry/electron/main');
     Sentry.init({
       dsn: process.env.SENTRY_DSN,
       tracesSampleRate: 0.3,
@@ -1331,20 +1390,6 @@ process.on('unhandledRejection', (reason, promise) => {
       environment: process.env.NODE_ENV || "production",
     });
   }
-
-  // Initialize auto-updater after app is ready
-  const { autoUpdater } = await import('electron-updater');
-  const log = await import('electron-log');
-
-  // Logging
-  autoUpdater.logger = log;
-  autoUpdater.logger.transports.file.level = "info";
-
-  // Where updates are hosted
-  autoUpdater.setFeedURL({
-    provider: "generic",
-    url: "https://download.rinawarptech.com/releases/"
-  });
 
   // Initialize store first
   await initStore();
@@ -1354,6 +1399,22 @@ process.on('unhandledRejection', (reason, promise) => {
 
   // CRITICAL FIX: Wait for app to be ready before creating windows
   app.whenReady().then(async () => {
+    // Initialize auto-updater after app is ready
+    const { autoUpdater: updater } = await import('electron-updater');
+    const log = await import('electron-log');
+
+    // Assign to global variable
+    autoUpdater = updater;
+
+    // Logging
+    autoUpdater.logger = log;
+    autoUpdater.logger.transports.file.level = "info";
+
+    // Where updates are hosted
+    autoUpdater.setFeedURL({
+      provider: "generic",
+      url: "https://download.rinawarptech.com/releases/"
+    });
     // Check license status before creating main window
     const licenseKey = store.get("licenseKey");
 
@@ -1391,26 +1452,6 @@ process.on('unhandledRejection', (reason, promise) => {
     // Restore from crash if needed
     await restoreTerminalState();
   });
-      })
-      .catch(error => {
-        console.error("License verification failed, showing license gate:", error);
-        createMainWindowWithLicenseGate();
-        registerIPC();
-      });
-  } else {
-    // No license key, show license gate
-    createMainWindowWithLicenseGate();
-    registerIPC();
-  }
-
-  // Initial Agent health check + periodic pings (every 60s)
-  checkAgentHealth({ broadcast: true });
-  setInterval(() => {
-    checkAgentHealth({ broadcast: true });
-  }, 60_000);
-
-  // Restore from crash if needed
-  await restoreTerminalState();
 
   // Save state before quit
   app.on('before-quit', () => {

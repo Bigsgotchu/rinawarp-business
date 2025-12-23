@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "RinaWarp Terminal Pro - AI-powered terminal application with advanced features",
   "main": "src/main/main.js",
+  "type": "module",
   "author": {
     "name": "RinaWarp Technologies",
     "email": "contact@rinawarptech.com"
@@ -39,7 +40,10 @@
     "test:debug": "NODE_ENV=development node test-comprehensive.js",
     "test:coverage": "npm run test:comprehensive -- --coverage",
     "release:notes": "node scripts/generate-release-notes.mjs",
-    "qa:ai": "node scripts/ai-qa-summary.mjs"
+    "qa:ai": "node scripts/ai-qa-summary.mjs",
+    "check:arch": "node scripts/check-arch.js",
+    "gen:types": "node scripts/gen-types.js",
+    "check:runtime": "node scripts/check-runtime.js"
   },
   "keywords": [
     "terminal",
@@ -70,15 +74,29 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [ "x64" ]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "assets/icons/icon.ico"
     },
     "mac": {
       "target": [
-        { "target": "dmg", "arch": [ "x64", "arm64" ] },
-        { "target": "zip", "arch": [ "x64", "arm64" ] }
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
       ],
       "icon": "assets/icons/icon.icns",
       "category": "public.app-category.developer-tools",
@@ -181,6 +199,7 @@
     "node-record-lpcm16": "^1.0.1",
     "openai": "^4.20.1",
     "stripe": "^14.9.0",
+    "ws": "^8.17.1",
     "xterm": "^5.3.0"
   },
   "devDependencies": {
