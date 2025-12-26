@@ -7,7 +7,19 @@ mkdir -p ./logs
 handle_error() {
   local msg="$1"
   echo "❌ $msg" | tee -a "$LOG_FILE"
-  terminal-pro explain-error "$msg" | tee -a "$LOG_FILE"
+  
+  # Try Terminal Pro first, fall back to KiloCode, then to Continue
+  if command -v terminal-pro &> /dev/null; then
+    terminal-pro explain-error "$msg" | tee -a "$LOG_FILE"
+  elif command -v kilocode &> /dev/null; then
+    kilocode explain-error "$msg" | tee -a "$LOG_FILE"
+  elif command -v continue-cli &> /dev/null; then
+    continue-cli explain-error "$msg" | tee -a "$LOG_FILE"
+  else
+    echo "💡 Error details logged to: $LOG_FILE"
+    echo "💡 Manual intervention required: $msg"
+  fi
+  
   exit 1
 }
 
