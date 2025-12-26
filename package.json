@@ -1,6 +1,6 @@
 {
   "name": "rinawarp-terminal-pro",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "verify:project": "node scripts/phase1-analyze.js",
