@@ -17,7 +17,7 @@ interface AnalyticsData {
   }>;
 }
 
-let analyticsData: AnalyticsData = {
+const analyticsData: AnalyticsData = {
   totalRevenue: 0,
   totalSales: 0,
   totalCustomers: 0,

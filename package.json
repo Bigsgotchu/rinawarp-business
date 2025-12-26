@@ -1,6 +1,21 @@
 {
   "name": "rinawarp-terminal-pro",
   "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "verify:project": "node scripts/phase1-analyze.js",
+    "backend:health": "node scripts/phase4-backend-health.js",
+    "quick-health-check": "node scripts/quick-health-check.js",
+    "build:apps": "npm run build",
+    "deploy:staging": "npm run deploy:staging",
+    "deploy:production": "npm run deploy:production",
+    "test:smoke": "node production-smoke-test.js",
+    "verify:prod": "node scripts/verify-prod.js",
+    "lint": "eslint .",
+    "build": "echo 'Build placeholder - implement based on your build process'",
+    "deploy:staging": "echo 'Staging deploy placeholder'",
+    "deploy:production": "echo 'Production deploy placeholder'"
+  },
   "dependencies": {
     "chalk": "^5.6.2",
     "electron-store": "^11.0.2",
@@ -9,7 +24,10 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251209.0",
+    "@eslint/js": "^9.39.2",
     "electron-builder": "^26.0.12",
+    "eslint": "^9.39.2",
+    "typescript-eslint": "^8.50.1",
     "vitest": "^4.0.15"
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-env jest */
 // src/domain/terminal/test/payment.test.js
 // Example Jest (ESM) test skeleton; adjust imports to your project structure.
 import Stripe from 'stripe'; // will be auto-mocked via __mocks__/stripe.js if jest.mock('stripe')

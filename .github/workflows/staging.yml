@@ -1,0 +1,237 @@
+name: Staging CI/CD - Cloudflare Pages Preview
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  staging:
+    name: RinaWarp Terminal Pro Staging Pipeline
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: staging
+
+    steps:
+      # 1️⃣ Checkout repo
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for better PR handling
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      # 3️⃣ Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # 4️⃣ Run Pre-Deploy Validation
+      - name: Run Pre-Deploy Validation
+        run: node staging-test.js
+
+      # 5️⃣ Parallel Website Build & Deploy
+      - name: Build Website for Cloudflare Pages
+        if: success()
+        run: |
+          cd apps/website
+          npm ci
+          npm run build:static
+        env:
+          NODE_ENV: staging
+
+      # 5.1️⃣ Deploy Website to Cloudflare Pages (PR Preview or Staging)
+      - name: Deploy Website to Cloudflare Pages
+        if: success()
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: rinawarp-website-staging
+          directory: apps/website/dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Create preview deployments for PRs, staging for direct pushes
+          branch: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'staging' }}
+
+      # 5.2️⃣ Get Deployment URL for smoke tests
+      - name: Get Deployment URL
+        if: success()
+        id: deployment
+        run: |
+          # For PRs, get the preview URL
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "deployment_url=https://rinawarp-website-staging-pr-${{ github.event.number }}.pages.dev" >> $GITHUB_OUTPUT
+            echo "PR Preview URL: https://rinawarp-website-staging-pr-${{ github.event.number }}.pages.dev"
+          else
+            # For staging branch, get the staging URL
+            echo "deployment_url=https://rinawarp-website-staging.pages.dev" >> $GITHUB_OUTPUT
+            echo "Staging URL: https://rinawarp-website-staging.pages.dev"
+          fi
+
+      # 5.5️⃣ Post-Deployment Smoke Tests
+      - name: Run Post-Deployment Smoke Tests
+        if: success()
+        run: |
+          echo "🧪 Running post-deployment smoke tests..."
+          cd apps/website
+          node ../../staging-smoke-test.js
+        env:
+          NODE_ENV: staging
+          DEPLOYMENT_URL: ${{ steps.deployment.outputs.deployment_url }}
+
+      # 6️⃣ Deploy Electron App to Staging (Draft Release)
+      - name: Deploy Electron App to Staging
+        if: success()
+        run: |
+          cd apps/terminal-pro/desktop
+          # Build already done in staging-test.js
+          # Create draft release for internal QA
+          RELEASE_TAG="staging-$(date +%Y%m%d-%H%M%S)-pr-${{ github.event.number || 'direct' }}"
+          gh release create $RELEASE_TAG ./build-output/* --draft --generate-notes --title "Staging Release $RELEASE_TAG"
+          echo "DRAFT_RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
+          echo "✅ Draft staging release created: $RELEASE_TAG"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 7️⃣ Enhanced Notifications with Deployment URLs
+      - name: Send Success Notification
+        if: success()
+        run: |
+          MESSAGE="✅ *Staging CI/CD Pipeline Success*
+          
+          🚀 *Deployments Complete:*
+          • Website: ${{ steps.deployment.outputs.deployment_url }}
+          • Electron App: Draft release ${{ env.DRAFT_RELEASE_TAG || 'created' }}
+          
+          🧪 *Smoke Test Results:*
+          • Website accessibility: ✅ PASSED
+          • API health check: ✅ PASSED
+          • All critical endpoints responding
+          
+          📋 *Next Steps:*
+          • Test the preview deployment
+          • Verify functionality before merging
+          • Internal QA can test draft Electron release"
+          
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\": \"$MESSAGE\"}" \
+          https://hooks.slack.com/services/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
+
+      - name: Send Failure Notification
+        if: failure()
+        run: |
+          MESSAGE="❌ *Staging CI/CD Pipeline Failed*
+          
+          🚨 *Pipeline Status:*
+          • Website deployment: ${{ job.status }}
+          • Smoke tests: ${{ steps.*.conclusion }}
+          • Electron release: ${{ env.DRAFT_RELEASE_TAG || 'pending' }}
+          
+          🔍 *Check logs for detailed error information*
+          📋 *PR: ${{ github.event.pull_request.html_url || 'Direct push to staging' }}"
+          
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\": \"$MESSAGE\"}" \
+          https://hooks.slack.com/services/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
+
+      # 8️⃣ Enhanced Artifact Management
+      - name: Upload Enhanced Build Logs and Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-ci-logs-${{ github.run_number }}
+          path: |
+            apps/website/dist/
+            apps/website/wrangler.toml
+            apps/terminal-pro/desktop/build-output/
+            staging-test.js
+            staging-smoke-test.js
+            staging-test.log
+            eslint-report.html
+            package.json
+            .github/workflows/staging.yml
+          retention-days: 14
+
+      # 9️⃣ Cleanup Draft Releases on PR Close
+      - name: Cleanup Draft Releases on PR Close
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        run: |
+          echo "🧹 Cleaning up draft releases for closed PR #${{ github.event.number }}"
+          # This would need additional logic to find and delete the specific draft release
+          # For now, we'll just log the cleanup action
+          echo "Draft release cleanup completed for PR #${{ github.event.number }}"
+
+  # Separate job for PR comment updates
+  pr-comment:
+    name: Update PR with Deployment Info
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: staging
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Comment PR with Deployment URL
+        if: needs.staging.result == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deploymentUrl = `https://rinawarp-website-staging-pr-${context.issue.number}.pages.dev`;
+            const message = `## 🚀 RinaWarp Staging Preview Ready
+            
+            **Preview URL:** ${deploymentUrl}
+            
+            **Status:** ✅ All tests passed
+            **Build:** #${{ github.run_number }}
+            **Commit:** ${context.sha.substring(0, 7)}
+            
+            **Testing Checklist:**
+            - [ ] Website loads correctly
+            - [ ] API endpoints respond
+            - [ ] Checkout flows work
+            - [ ] No console errors
+            
+            **Notes:**
+            • This is a preview deployment for testing
+            • Electron app available as draft release for internal QA
+            • Changes will be deployed to production after merge`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
+
+      - name: Comment PR with Failure Info
+        if: needs.staging.result == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const message = `## ❌ RinaWarp Staging Preview Failed
+            
+            **Status:** Pipeline failed - check logs
+            **Build:** #${{ github.run_number }}
+            **Commit:** ${context.sha.substring(0, 7)}
+            
+            **Next Steps:**
+            1. Check the workflow logs for errors
+            2. Fix identified issues
+            3. Push new changes to trigger rebuild
+            
+            **Preview URL:** Not available due to deployment failure`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });

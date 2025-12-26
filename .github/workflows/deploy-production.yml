@@ -1,0 +1,47 @@
+name: Deploy Production
+
+on:
+    push:
+        branches: [main]
+        tags: ["v*"]
+
+jobs:
+    deploy-production:
+        runs-on: ubuntu-latest
+        environment: production
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run ship.sh (Guardrails Edition)
+              run: |
+                  # Ensure we're on main branch
+                  if [ "${{ github.ref }}" != "refs/heads/main" ] && [ "${{ github.ref_type }}" != "tag" ]; then
+                    echo "❌ Not on main branch or tag. Aborting."
+                    exit 1
+                  fi
+
+                  # Run the production ship script
+                  bash deploy/ship.sh
+              env:
+                  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+                  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+                  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+                  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+            - name: Notify deployment
+              if: success()
+              run: |
+                  echo "🎉 Production deployment successful"
+                  echo "Version: ${{ github.ref_name || github.sha }}"
+                  echo "Deployed: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"

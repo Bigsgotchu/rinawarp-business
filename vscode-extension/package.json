@@ -1,0 +1,58 @@
+{
+  "name": "rinasuperdeploy",
+  "displayName": "Rina Super Deploy",
+  "description": "AI-assisted production deployment, health verification, freeze system, and incident response",
+  "version": "1.0.0",
+  "publisher": "rinawarp",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:rinasuperdeploy.deployStaging",
+    "onCommand:rinasuperdeploy.deployProduction",
+    "onCommand:rinasuperdeploy.toggleFreeze",
+    "onCommand:rinasuperdeploy.triggerIncidentAI",
+    "onCommand:rinasuperdeploy.openAITerminal"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rinasuperdeploy.deployStaging",
+        "title": "Deploy: Staging"
+      },
+      {
+        "command": "rinasuperdeploy.deployProduction",
+        "title": "Deploy: Production"
+      },
+      {
+        "command": "rinasuperdeploy.toggleFreeze",
+        "title": "Toggle Production Freeze"
+      },
+      {
+        "command": "rinasuperdeploy.triggerIncidentAI",
+        "title": "Trigger AI Incident Response"
+      },
+      {
+        "command": "rinasuperdeploy.openAITerminal",
+        "title": "Open AI Terminal Panel"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "@types/node": "^20.5.6",
+    "@types/vscode": "^1.80.0",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}

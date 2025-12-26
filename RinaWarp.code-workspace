@@ -1,0 +1,67 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    // Your existing VS Code enhancements preserved
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange",
+    "workbench.editor.enablePreview": false,  // Prevent preview tabs
+    "kilocode.singleAIAgentMode": true,       // Single AI agent mode
+    "kilocode.hotkeys.runTask": "ctrl+alt+r", // Example hotkey
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "launch": "./.vscode/launch.json",
+  "extensions": {
+    "recommendations": [
+      "github.vscode-pull-request-github",
+      "github.vscode-github-actions",
+      "ms-vscode.vscode-markdown",
+      "yzhang.markdown-all-in-one",
+      "bierner.markdown-mermaid",
+      "shd101wyy.markdown-preview-enhanced",
+      "ms-vscode.vscode-docker",
+      "ms-vscode.vscode-sql",
+      "ms-vscode.vscode-powershell",
+      "ms-vscode.vscode-shell",
+      "timonwong.shellcheck",
+      "ms-vscode.vscode-node-debug2",
+      "ms-vscode.vscode-node-debug",
+      "ms-vscode.debugger-for-chrome",
+      "ms-vscode.debugger-for-firefox",
+      "ms-vscode.debugger-for-edge",
+      "ms-vscode.vscode-chrome-debug-core",
+      "ms-vscode.vscode-chrome-debug",
+      "ms-vscode.vscode-edge-debug2",
+      "ms-vscode.vscode-firefox-debug",
+      "ms-vscode.vscode-edge-debug",
+      "ms-vscode.debugger-auto-launch",
+      "ms-vscode.live-server",
+      "ritwickdey.liveserver",
+      "formulahendry.code-runner",
+      "christian-kohler.npm-intellisense",
+      "visualstudioexptteam.vscodeintellicode",
+      "ms-vscode.vscode-intellicode",
+      "visualstudioexptteam.vscodeintellicode-api-usage-examples",
+      "ms-vscode.vscode-intellicode-api-usage-examples",
+      "ms-vscode.vscode-intellicode-completions",
+      "visualstudioexptteam.vscodeintellicode-completions",
+      "ms-vscode.vscode-intellicode-predict",
+      "visualstudioexptteam.vscodeintellicode-predict",
+      "ms-vscode.vscode-intellicode-slash-commands",
+      "visualstudioexptteam.vscodeintellicode-slash-commands",
+      "ms-vscode.vscode-intellicode-assistant",
+      "visualstudioexptteam.vscodeintellicode-assistant",
+      "ms-vscode.vscode-intellicode-chat",
+      "visualstudioexptteam.vscodeintellicode-chat",
+      "kilocode.kilo-code"
+    ],
+    "unwantedRecommendations": [
+      "ms-vscode.vscode-json",
+      "ms-vscode.vscode-json-language-features"
+    ]
+  }
+}

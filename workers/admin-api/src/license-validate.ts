@@ -76,7 +76,7 @@ export async function handleLicenseValidate(request: Request, env: Env): Promise
 
   const now = Date.now();
   let status = record.status || "active";
-  let expiresAt = record.expiresAt ? Date.parse(record.expiresAt) : null;
+  const expiresAt = record.expiresAt ? Date.parse(record.expiresAt) : null;
 
   // If we have an expiry date and it's passed, treat as expired
   if (expiresAt && expiresAt < now) {

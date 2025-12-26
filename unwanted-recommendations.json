@@ -1,0 +1,6 @@
+{
+    "unwantedRecommendations": [
+        "ms-vscode.vscode-json",
+        "ms-vscode.vscode-json-language-features"
+    ]
+}

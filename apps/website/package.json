@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
+    "build": "npm run build:static",
+    "build:static": "mkdir -p dist && cp -r public/* dist/",
     "deploy": "wrangler deploy",
+    "deploy:pages": "wrangler pages publish ./dist --project-name rinawarp-website-production",
     "db:migrate": "wrangler d1 execute licenses --file=d1-schema.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

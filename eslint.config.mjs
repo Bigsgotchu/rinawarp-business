@@ -71,169 +71,111 @@ export default [
     }
   },
 
-  // Electron renderer context
+  // Base config for all JS/TS files with comprehensive globals
   {
-    files: ['apps/terminal-pro/desktop/src/renderer/**/*.{js,mjs,ts,tsx}'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     languageOptions: {
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+      },
       globals: {
-        // Browser globals available in Electron renderer
+        // Node globals
+        module: 'readonly',
+        process: 'readonly',
+        console: 'readonly',
+        __dirname: 'readonly',
+        require: 'readonly',
+        Buffer: 'readonly',
+        __filename: 'readonly',
+        global: 'readonly',
+        exports: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+
+        // Browser / Cloudflare Worker globals
+        fetch: 'readonly',
+        Response: 'readonly',
+        Headers: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        AbortController: 'readonly',
+        AbortSignal: 'readonly',
+        navigator: 'readonly',
         document: 'readonly',
         window: 'readonly',
         alert: 'readonly',
         confirm: 'readonly',
         prompt: 'readonly',
-        console: 'readonly',
-        setTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearTimeout: 'readonly',
-        clearInterval: 'readonly',
-        fetch: 'readonly',
         localStorage: 'readonly',
         sessionStorage: 'readonly',
         location: 'readonly',
         history: 'readonly',
-        navigator: 'readonly',
+        performance: 'readonly',
+        PerformanceObserver: 'readonly',
         MutationObserver: 'readonly',
         Request: 'readonly',
-        Response: 'readonly',
-        Headers: 'readonly',
         FormData: 'readonly',
         File: 'readonly',
         FileReader: 'readonly',
         Blob: 'readonly',
-        URL: 'readonly',
-        URLSearchParams: 'readonly',
-        AbortController: 'readonly',
-        AbortSignal: 'readonly',
+        dataLayer: 'readonly', // Google Analytics
+
+        // Jest / testing globals
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        jest: 'readonly',
+        test: 'readonly',
+
         // Terminal/xterm globals
         Terminal: 'readonly',
         FitAddon: 'readonly',
         WebLinksAddon: 'readonly',
         SearchAddon: 'readonly',
-        // Module exports (for CommonJS compatibility in renderer)
-        module: 'readonly',
-        exports: 'readonly',
-        require: 'readonly',
-        // Testing framework globals
-        describe: 'readonly',
-        test: 'readonly',
-        expect: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        beforeAll: 'readonly',
-        afterAll: 'readonly'
-      }
-    }
-  },
 
-  // Scripts with Node.js globals
-  {
-    files: ['scripts/**/*.mjs'],
-    languageOptions: {
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        global: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
-        fetch: 'readonly'
-      }
-    }
-  },
-
-  // Backend JavaScript files with Node.js globals
-  {
-    files: ['backend/**/*.js', 'backend/**/*.cjs'],
-    languageOptions: {
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        global: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
-        setTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearTimeout: 'readonly',
-        clearInterval: 'readonly',
-        URL: 'readonly',
+        // Additional Node/Worker
         atob: 'readonly',
         crypto: 'readonly',
-        fetch: 'readonly'
+        test: 'readonly',
+
+        // Cloudflare Workers / Pages Functions
+        KVNamespace: 'readonly',
+        ResponseInit: 'readonly',
+        PagesFunction: 'readonly',
+        RequestInit: 'readonly',
+        ExecutionContext: 'readonly'
       }
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }]
+      'no-undef': 'error',
+      'no-console': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }
+      ],
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-require-imports': 'error'
     }
   },
 
-  // Browser JavaScript files (website)
+  // Allow `any` in admin-console pages
   {
-    files: ['dist-website/**/*.js'],
-    languageOptions: {
-      globals: {
-        // Browser globals
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        alert: 'readonly',
-        confirm: 'readonly',
-        prompt: 'readonly',
-        setTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearTimeout: 'readonly',
-        clearInterval: 'readonly',
-        fetch: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        location: 'readonly',
-        history: 'readonly',
-        navigator: 'readonly',
-        performance: 'readonly',
-        PerformanceObserver: 'readonly',
-        MutationObserver: 'readonly',
-        Request: 'readonly',
-        Response: 'readonly',
-        Headers: 'readonly',
-        FormData: 'readonly',
-        File: 'readonly',
-        FileReader: 'readonly',
-        Blob: 'readonly',
-        URL: 'readonly',
-        URLSearchParams: 'readonly',
-        AbortController: 'readonly',
-        AbortSignal: 'readonly',
-        dataLayer: 'readonly' // Google Analytics
-      }
-    },
+    files: ['apps/admin-console/**/*.ts', 'apps/admin-console/**/*.tsx'],
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'caughtErrorsIgnorePattern': '^_' }]
+      '@typescript-eslint/no-explicit-any': 'off'
     }
   },
 
   // Config file itself
   {
     files: ['eslint.config.mjs'],
-    languageOptions: {
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        global: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly'
-      }
-    },
     rules: {
       'no-restricted-syntax': 'off'
     }

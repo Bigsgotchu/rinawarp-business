@@ -13,15 +13,12 @@ echo "Domain: $DOMAIN"
 echo "API: $API_ENDPOINT"
 echo
 
-# Test plans
+# Test plans (website plan names that get mapped to Stripe price IDs)
 PLANS=(
-    "basic-monthly"
-    "starter-monthly"
-    "creator-monthly"
-    "pro-monthly"
-    "founder-lifetime"
-    "pioneer-lifetime"
-    "evergreen-lifetime"
+    "basic"
+    "starter"
+    "creator"
+    "enterprise"
 )
 
 # Test each plan

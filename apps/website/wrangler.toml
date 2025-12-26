@@ -1,5 +1,5 @@
 name = "rinawarp-website"
-account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
+account_id = "ba2f14cefa19dbdc42ff88d772410689"
 workers_dev = true
 compatibility_date = "2025-11-17"
 
@@ -7,8 +7,8 @@ compatibility_date = "2025-11-17"
 [vars]
 STRIPE_SECRET_KEY = "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"
 STRIPE_WEBHOOK_SECRET = "whsec_k6SWU7KCMT4vdPL7ZUNpxFiK4SQk8nPi"
-DOMAIN = "https://rinawarptech.com"
-RINA_PRICE_MAP = "{\"starter-monthly\": \"price_1SW3RxGZrRdZy3W9tGHTuxrH\", \"creator-monthly\": \"price_1SW3SBGZrRdZy3W9HOVsW7wQ\", \"pro-monthly\": \"price_1SW3SQGZrRdZy3W9i7agMkRb\", \"founder-lifetime\": \"price_1SW3SeGZrRdZy3W9qLVKoXWS\", \"pioneer-lifetime\": \"price_1SW3SpGZrRdZy3W9CkEEO7Oz\"}"
+DOMAIN = "https://www.rinawarptech.com"
+RINA_PRICE_MAP = "{\"enterprise-yearly\":\"price_1SVRVMGZrRdZy3W9094r1F5B\",\"founder-lifetime\":\"price_1SVRVLGZrRdZy3W976aXrw0g\",\"pioneer-lifetime\":\"price_1SVRVLGZrRdZy3W9LoPVNyem\",\"pro-monthly\":\"price_1SVRVKGZrRdZy3W9wFO3QPw6\",\"creator-monthly\":\"price_1SVRVJGZrRdZy3W9tRX5tsaH\",\"starter-monthly\":\"price_1SVRVJGZrRdZy3W9q6u9L82y\"}"
 
 # D1 Database for licenses
 [[d1_databases]]
@@ -23,5 +23,38 @@ bucket_name = "rinawarp-downloads"
 
 # Service binding for Stripe worker
 [[services]]
+binding = "STRIPE_WORKER"
+service = "rinawarp-stripe-worker"
+
+[env.staging]
+name = "rinawarp-website-staging"
+workers_dev = true
+vars.STRIPE_SECRET_KEY = "sk_test_51SH4C2GZrRdZy3W9Rz9APjrsrm5815TGVBtGzT4XM5BujdrO94JaFPq8PqIjLlJ4v6HDdeyBAe8SlJEDeJxWnnhr00O4Wow0DL"
+vars.STRIPE_WEBHOOK_SECRET = "whsec_test_8dd90aa311dce345172987b5c121d74d633985cb55c96d00f5d490037bae8353"
+vars.DOMAIN = "https://staging.rinawarptech.com"
+
+[env.production]
+name = "rinawarp-website-production"
+workers_dev = false
+vars.STRIPE_SECRET_KEY = "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"
+vars.STRIPE_WEBHOOK_SECRET = "whsec_k6SWU7KCMT4vdPL7ZUNpxFiK4SQk8nPi"
+vars.DOMAIN = "https://www.rinawarptech.com"
+vars.RINA_PRICE_MAP = "{\"enterprise-yearly\":\"price_1SVRVMGZrRdZy3W9094r1F5B\",\"founder-lifetime\":\"price_1SVRVLGZrRdZy3W976aXrw0g\",\"pioneer-lifetime\":\"price_1SVRVLGZrRdZy3W9LoPVNyem\",\"pro-monthly\":\"price_1SVRVKGZrRdZy3W9wFO3QPw6\",\"creator-monthly\":\"price_1SVRVJGZrRdZy3W9tRX5tsaH\",\"starter-monthly\":\"price_1SVRVJGZrRdZy3W9q6u9L82y\"}"
+
+# KV namespaces for production
+[[env.production.kv_namespaces]]
+binding = "KV_STRIPE"
+id = "1b91a65e297040fdb823d17cd124adc6"
+
+[[env.production.kv_namespaces]]
+binding = "KV_ANALYTICS"
+id = "dff80fe842ef4fba8bfca23fa87069db"
+
+[[env.production.kv_namespaces]]
+binding = "KV_SITE"
+id = "a2627b88229343c5965bd6775a31ddb8"
+
+# Service bindings for production
+[[env.production.services]]
 binding = "STRIPE_WORKER"
 service = "rinawarp-stripe-worker"

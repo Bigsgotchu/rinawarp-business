@@ -133,45 +133,70 @@
         const plan = localStorage.getItem('rina_plan');
 
         if (license && email && plan) {
-          // User has activated license, show download options
-          document.getElementById('download-section').innerHTML = `
-          <div style="background: var(--teal); color: var(--black); padding: 2rem; border-radius: 16px; margin: 2rem auto; max-width: 600px;">
-            <h2 style="margin-bottom: 1rem;">🎉 License Activated!</h2>
-            <p style="margin-bottom: 1.5rem;">Welcome ${email}! Your ${plan} plan is ready.</p>
+          // Fetch download URLs from downloads.json
+          fetch('/releases/downloads.json')
+            .then(response => response.json())
+            .then(data => {
+              const terminalPro = data['terminal-pro'];
+              const latest = terminalPro.releases[terminalPro.latest];
+              const downloads = latest.downloads;
 
-            <div style="text-align: center;">
-              <a href="https://github.com/RinaWarp-Terminal/RinaWarp-Terminal-Pro/releases/download/v1.0.0/RinaWarp-Terminal-Pro-1.0.0.dmg"
-                 class="btn btn-primary"
-                 style="background: var(--pink); color: white; margin: 0.5rem; display: inline-block;">
-                🍎 Download for macOS
-              </a>
-              <a href="https://github.com/RinaWarp-Terminal/RinaWarp-Terminal-Pro/releases/download/v1.0.0/RinaWarp-Terminal-Pro-Setup-1.0.0.exe"
-                 class="btn btn-primary"
-                 style="background: var(--blue); color: white; margin: 0.5rem; display: inline-block;">
-                🪟 Download for Windows
-              </a>
-              <a href="https://github.com/RinaWarp-Terminal/RinaWarp-Terminal-Pro/releases/download/v1.0.0/rinawarp-terminal-pro_1.0.0_amd64.deb"
-                 class="btn btn-primary"
-                 style="background: var(--coral); color: white; margin: 0.5rem; display: inline-block;">
-                🐧 Download for Linux
-              </a>
-            </div>
+              // Use available downloads - currently only Linux packages
+              const macUrl = '#'; // No macOS builds available yet
+              const winUrl = '#'; // No Windows builds available yet
+              const linuxUrl = downloads.AppImage ? downloads.AppImage.url : (downloads.Debian ? downloads.Debian.url : '#');
 
-            <p style="margin-top: 1.5rem; font-size: 0.9rem;">
-              Your license (${license}) is stored securely and will activate automatically when you first run the app.
-            </p>
+              // User has activated license, show download options
+              document.getElementById('download-section').innerHTML = `
+              <div style="background: var(--teal); color: var(--black); padding: 2rem; border-radius: 16px; margin: 2rem auto; max-width: 600px;">
+                <h2 style="margin-bottom: 1rem;">🎉 License Activated!</h2>
+                <p style="margin-bottom: 1.5rem;">Welcome ${email}! Your ${plan} plan is ready.</p>
 
-            <div style="margin-top: 2rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
-              <h4 style="color: var(--pink); margin-bottom: 0.5rem;">📝 Installation Instructions:</h4>
-              <ol style="color: #ccc; text-align: left;">
-                <li>Download the appropriate file for your operating system</li>
-                <li>Run the installer and follow the setup wizard</li>
-                <li>Launch RinaWarp Terminal Pro</li>
-                <li>Your license will activate automatically on first run</li>
-              </ol>
-            </div>
-          </div>
-        `;
+                <div style="text-align: center;">
+                  <a href="${macUrl}"
+                     class="btn btn-primary"
+                     style="background: var(--pink); color: white; margin: 0.5rem; display: inline-block;">
+                    🍎 Download for macOS
+                  </a>
+                  <a href="${winUrl}"
+                     class="btn btn-primary"
+                     style="background: var(--blue); color: white; margin: 0.5rem; display: inline-block;">
+                    🪟 Download for Windows
+                  </a>
+                  <a href="${linuxUrl}"
+                     class="btn btn-primary"
+                     style="background: var(--coral); color: white; margin: 0.5rem; display: inline-block;">
+                    🐧 Download for Linux
+                  </a>
+                </div>
+
+                <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+                  Your license (${license}) is stored securely and will activate automatically when you first run the app.
+                </p>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                  <h4 style="color: var(--pink); margin-bottom: 0.5rem;">📝 Installation Instructions:</h4>
+                  <ol style="color: #ccc; text-align: left;">
+                    <li>Download the appropriate file for your operating system</li>
+                    <li>Run the installer and follow the setup wizard</li>
+                    <li>Launch RinaWarp Terminal Pro</li>
+                    <li>Your license will activate automatically on first run</li>
+                  </ol>
+                </div>
+              </div>
+            `;
+            })
+            .catch(error => {
+              console.error('Failed to load downloads:', error);
+              // Fallback to old hardcoded links
+              document.getElementById('download-section').innerHTML = `
+              <div style="background: var(--teal); color: var(--black); padding: 2rem; border-radius: 16px; margin: 2rem auto; max-width: 600px;">
+                <h2 style="margin-bottom: 1rem;">🎉 License Activated!</h2>
+                <p style="margin-bottom: 1.5rem;">Welcome ${email}! Your ${plan} plan is ready.</p>
+                <p style="color: red;">Download service temporarily unavailable. Please try again later.</p>
+              </div>
+            `;
+            });
         } else {
           // User hasn't activated license yet
           console.log('No activated license found, showing activation prompt');

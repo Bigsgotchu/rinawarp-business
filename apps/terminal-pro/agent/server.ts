@@ -288,7 +288,7 @@ app.use((_req, _res, next) => next(notFound("route_not_found")));
 
 // ---------- Error Handler ----------
 app.use(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   (err: ApiError, req: Request, res: Response, _next: NextFunction) => {
     const status = err.status && err.status >= 400 ? err.status : 500;
     const payload = {

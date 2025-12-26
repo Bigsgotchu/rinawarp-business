@@ -1,13 +1,13 @@
-/* eslint-env jest */
+//
 // src/domain/terminal/test/webhook.int.test.js
 // Integration-style test using supertest; adjust app import to your server entry.
-import request from 'supertest';
 import Stripe from 'stripe';
+import request from 'supertest';
 jest.mock('stripe');
 
 // Dummy express app with a webhook route example
-import express from 'express';
 import bodyParser from 'body-parser';
+import express from 'express';
 
 function buildApp() {
   const app = express();

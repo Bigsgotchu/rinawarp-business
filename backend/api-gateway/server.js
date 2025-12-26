@@ -26,6 +26,14 @@ try {
   console.error('❌ Failed to load price map:', error.message);
 }
 
+// Plan mapping for website compatibility
+const planMap = {
+  "basic": "price_1SdxksGZrRdZy3W9NSDRHfes",
+  "starter": "price_1Sdxl7GZrRdZy3W9INQvidPf",
+  "creator": "price_1SdxlKGZrRdZy3W9TvaLugc7",
+  "enterprise": "price_1SdxlZGZrRdZy3W9EXAMPLExx"
+};
+
 // Enhanced Service registry with production URLs
 const SERVICE_REGISTRY = {
   'auth-service': {
@@ -322,12 +330,19 @@ app.post('/api/checkout-v2',
         return res.status(400).json({ error: 'Plan is required' });
       }
       
-      // Validate plan against price map
-      if (!priceMap[plan]) {
-        return res.status(400).json({ error: 'Invalid plan code', availablePlans: Object.keys(priceMap) });
+      // Check plan mapping first (for website compatibility)
+      let priceId = planMap[plan];
+
+      // Fall back to price map if not in plan mapping
+      if (!priceId) {
+        if (!priceMap[plan]) {
+          return res.status(400).json({
+            error: 'Invalid plan code',
+            availablePlans: [...Object.keys(priceMap), ...Object.keys(planMap)]
+          });
+        }
+        priceId = priceMap[plan];
       }
-      
-      const priceId = priceMap[plan];
       console.log(`💳 Creating checkout session for plan: ${plan} (${priceId})`);
       
       // Create Stripe checkout session

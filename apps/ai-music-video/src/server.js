@@ -11,7 +11,31 @@ const app = express();
 const PORT = process.env.MUSIC_VIDEO_PORT || 3008;
 
 // Middleware
-app.use(cors());
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",").map(o => o.trim()) || [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://rinawarptech.com"
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (server-to-server, CLI)
+    if (!origin || allowedOrigins.includes(origin)) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`CORS allowed for origin: ${origin || 'none'}`);
+      }
+      callback(null, true);
+    } else {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`CORS denied for origin: ${origin}`);
+      }
+      callback(new Error("CORS origin denied"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+}));
 app.use(express.json());
 app.use(express.static('public'));
 
