@@ -2,66 +2,172 @@
   "folders": [
     {
       "path": "."
+    },
+    {
+      "path": "backend"
+    },
+    {
+      "path": "apps/website"
+    },
+    {
+      "path": "apps/admin-console"
+    },
+    {
+      "path": "apps/terminal-pro/desktop"
     }
   ],
   "settings": {
-    // Your existing VS Code enhancements preserved
-    "editor.tabSize": 2,
+    "kilocode.singleAIAgentMode": true,
+    "kilocode.enableErrorGuard": true,
+    "kilocode.autoExplainErrors": true,
+    "kilocode.replayLastCommandOnError": true,
+    "terminal.integrated.shell.osx": "/bin/zsh",
+    "terminal.integrated.env.osx": {
+      "SLACK_WEBHOOK_URL": "${env:SLACK_WEBHOOK_URL}"
+    },
     "editor.formatOnSave": true,
-    "files.autoSave": "onFocusChange",
-    "workbench.editor.enablePreview": false,  // Prevent preview tabs
-    "kilocode.singleAIAgentMode": true,       // Single AI agent mode
-    "kilocode.hotkeys.runTask": "ctrl+alt+r", // Example hotkey
-    "terminal.integrated.shell.linux": "/bin/bash"
+    "eslint.validate": [
+      "javascript",
+      "typescript",
+      "typescriptreact",
+      "javascriptreact"
+    ],
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.git": true,
+      "**/.DS_Store": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true
+    }
   },
-  "launch": "./.vscode/launch.json",
   "extensions": {
     "recommendations": [
-      "github.vscode-pull-request-github",
-      "github.vscode-github-actions",
-      "ms-vscode.vscode-markdown",
-      "yzhang.markdown-all-in-one",
-      "bierner.markdown-mermaid",
-      "shd101wyy.markdown-preview-enhanced",
-      "ms-vscode.vscode-docker",
-      "ms-vscode.vscode-sql",
-      "ms-vscode.vscode-powershell",
-      "ms-vscode.vscode-shell",
-      "timonwong.shellcheck",
+      "kilocode.kilo-code",
       "ms-vscode.vscode-node-debug2",
-      "ms-vscode.vscode-node-debug",
-      "ms-vscode.debugger-for-chrome",
-      "ms-vscode.debugger-for-firefox",
-      "ms-vscode.debugger-for-edge",
-      "ms-vscode.vscode-chrome-debug-core",
       "ms-vscode.vscode-chrome-debug",
       "ms-vscode.vscode-edge-debug2",
       "ms-vscode.vscode-firefox-debug",
-      "ms-vscode.vscode-edge-debug",
-      "ms-vscode.debugger-auto-launch",
-      "ms-vscode.live-server",
-      "ritwickdey.liveserver",
-      "formulahendry.code-runner",
-      "christian-kohler.npm-intellisense",
-      "visualstudioexptteam.vscodeintellicode",
       "ms-vscode.vscode-intellicode",
-      "visualstudioexptteam.vscodeintellicode-api-usage-examples",
-      "ms-vscode.vscode-intellicode-api-usage-examples",
-      "ms-vscode.vscode-intellicode-completions",
-      "visualstudioexptteam.vscodeintellicode-completions",
-      "ms-vscode.vscode-intellicode-predict",
-      "visualstudioexptteam.vscodeintellicode-predict",
-      "ms-vscode.vscode-intellicode-slash-commands",
-      "visualstudioexptteam.vscodeintellicode-slash-commands",
-      "ms-vscode.vscode-intellicode-assistant",
-      "visualstudioexptteam.vscodeintellicode-assistant",
-      "ms-vscode.vscode-intellicode-chat",
       "visualstudioexptteam.vscodeintellicode-chat",
-      "kilocode.kilo-code"
+      "ms-vscode.vscode-docker",
+      "ms-vscode.vscode-powershell",
+      "yzhang.markdown-all-in-one",
+      "bierner.markdown-mermaid",
+      "shd101wyy.markdown-preview-enhanced",
+      "ritwickdey.liveserver",
+      "formulahendry.code-runner"
     ],
     "unwantedRecommendations": [
       "ms-vscode.vscode-json",
       "ms-vscode.vscode-json-language-features"
     ]
-  }
+  },
+  "launch": {
+    "configurations": [
+      {
+        "name": "Launch Website",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}/apps/website/src",
+        "sourceMaps": true
+      },
+      {
+        "name": "Launch Admin Console",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3001",
+        "webRoot": "${workspaceFolder}/apps/admin-console/src",
+        "sourceMaps": true
+      },
+      {
+        "name": "Debug Terminal Pro",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/apps/terminal-pro/desktop/main.js",
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+        "env": {
+          "NODE_ENV": "development",
+          "ELECTRON_ENABLE_LOGGING": "true"
+        },
+        "console": "integratedTerminal"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Website + Backend",
+        "configurations": [
+          "Launch Website"
+        ]
+      },
+      {
+        "name": "Admin Console + Backend",
+        "configurations": [
+          "Launch Admin Console"
+        ]
+      },
+      {
+        "name": "Terminal Pro Full Debug",
+        "configurations": [
+          "Debug Terminal Pro"
+        ]
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "RinaWarp: Quick Health Check",
+        "type": "shell",
+        "command": "${workspaceFolder}/scripts/health-check.sh",
+        "problemMatcher": "$eslint-stylish"
+      },
+      {
+        "label": "RinaWarp: Deploy Staging",
+        "type": "shell",
+        "command": "${workspaceFolder}/deploy/deploy-staging.sh",
+        "problemMatcher": "$eslint-stylish"
+      },
+      {
+        "label": "RinaWarp: Ship Safely",
+        "type": "shell",
+        "command": "${workspaceFolder}/deploy/ship.sh",
+        "group": "build",
+        "dependsOn": [
+          "RinaWarp: Quick Health Check"
+        ],
+        "problemMatcher": "$eslint-stylish"
+      }
+    ]
+  },
+  "keybindings": [
+    {
+      "key": "ctrl+alt+h",
+      "command": "workbench.action.tasks.runTask",
+      "args": "RinaWarp: Quick Health Check"
+    },
+    {
+      "key": "ctrl+alt+s",
+      "command": "workbench.action.tasks.runTask",
+      "args": "RinaWarp: Deploy Staging"
+    },
+    {
+      "key": "ctrl+alt+v",
+      "command": "workbench.action.tasks.runTask",
+      "args": "RinaWarp: Ship Safely"
+    },
+    {
+      "key": "ctrl+alt+r",
+      "command": "workbench.action.tasks.runTask",
+      "args": "RinaWarp: Analyze Project"
+    },
+    {
+      "key": "ctrl+alt+d",
+      "command": "workbench.action.tasks.runTask",
+      "args": "RinaWarp: Backend Health Check"
+    }
+  ]
 }

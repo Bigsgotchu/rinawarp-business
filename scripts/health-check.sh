@@ -1,67 +1,36 @@
 #!/bin/bash
-# RinaWarp: Quick Health Check
-# Fast validation of critical project components
+# RinaWarp Health Check — AI-Assisted Diagnostics
 
-echo "⚡ RinaWarp: Quick Health Check"
-echo "==============================="
+LOG_FILE="./logs/health.log"
+mkdir -p ./logs
 
-# Check Node.js
-if command -v node &> /dev/null; then
-  NODE_VERSION=$(node --version)
-  echo "✅ Node.js: $NODE_VERSION"
-else
-  echo "❌ Node.js: Not found"
+handle_error() {
+  local msg="$1"
+  echo "❌ $msg" | tee -a "$LOG_FILE"
+  terminal-pro explain-error "$msg" | tee -a "$LOG_FILE"
   exit 1
-fi
+}
 
-# Check npm
-if command -v npm &> /dev/null; then
-  NPM_VERSION=$(npm --version)
-  echo "✅ npm: $NPM_VERSION"
-else
-  echo "❌ npm: Not found"
-  exit 1
-fi
+echo "🔍 Checking Node.js..."
+node -v > /dev/null 2>&1 || handle_error "Node.js not found"
 
-# Check package.json
-if [[ -f "package.json" ]]; then
-  echo "✅ package.json: Found"
-else
-  echo "❌ package.json: Missing"
-  exit 1
-fi
+echo "🔍 Checking npm..."
+npm -v > /dev/null 2>&1 || handle_error "npm not found"
 
-# Check git status
-if git rev-parse --git-dir > /dev/null 2>&1; then
-  BRANCH=$(git rev-parse --abbrev-ref HEAD)
-  echo "✅ Git: On branch $BRANCH"
-else
-  echo "❌ Git: Not a git repository"
-  exit 1
-fi
+echo "🔍 Checking package.json..."
+[[ -f package.json ]] || handle_error "Missing package.json"
 
-# Check for required directories
-REQUIRED_DIRS=("backend" "apps" "scripts")
-for dir in "${REQUIRED_DIRS[@]}"; do
-  if [[ -d "$dir" ]]; then
-    echo "✅ Directory: $dir"
-  else
-    echo "❌ Directory: $dir missing"
-    exit 1
-  fi
+echo "🔍 Checking git repository..."
+git rev-parse --is-inside-work-tree > /dev/null 2>&1 || handle_error "Not a git repository"
+
+echo "🔍 Checking required directories..."
+for dir in backend apps deploy; do
+  [[ -d "$dir" ]] || handle_error "Missing directory: $dir"
 done
 
-# Check for critical files
-CRITICAL_FILES=("backend/api-gateway/server.js" "backend/billing-service/server.js")
-for file in "${CRITICAL_FILES[@]}"; do
-  if [[ -f "$file" ]]; then
-    echo "✅ File: $file"
-  else
-    echo "❌ File: $file missing"
-    exit 1
-  fi
+echo "🔍 Checking critical files..."
+for file in deploy/ship.sh scripts/verify-prod.js; do
+  [[ -f "$file" ]] || handle_error "Missing critical file: $file"
 done
 
-echo ""
-echo "✅ All health checks passed!"
-echo "💡 Ready for deployment or development"
+echo "✅ All health checks passed successfully!"
