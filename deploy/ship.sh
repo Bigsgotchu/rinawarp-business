@@ -58,6 +58,9 @@ main() {
 
   git diff --quiet || handle_error "Working tree is not clean"
 
+  echo "🔍 Verifying DNS..."
+  bash scripts/check-dns.sh || handle_error "DNS verification failed"
+
   confirm_deploy
 
   echo "✅ Running smoke tests..."
