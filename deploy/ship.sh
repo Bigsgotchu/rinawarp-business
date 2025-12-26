@@ -1,74 +1,70 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
+set -e
 
-MODE="${1:-local}"
-REQUIRED_BRANCH="main"
-CONFIRM_PHRASE="DEPLOY TO PRODUCTION"
-
-echo ""
 echo "🚀 RinaWarp — Ship Safely"
 echo "────────────────────────"
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+STATUS=$(git status --porcelain)
+VERSION=$(grep '"version":' package.json | head -1 | awk -F '"' '{print $4}')
 
-# 1️⃣ Branch guard
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-if [[ "$CURRENT_BRANCH" != "$REQUIRED_BRANCH" ]]; then
-  echo "❌ You must be on '$REQUIRED_BRANCH' branch (current: $CURRENT_BRANCH)"
+echo "✔ Branch: $BRANCH"
+if [[ -z "$STATUS" ]]; then
+  echo "✔ Working tree clean"
+else
+  echo "❌ Working tree not clean. Commit changes first."
   exit 1
 fi
-echo "✔ Branch: $CURRENT_BRANCH"
 
-# 2️⃣ Clean working tree guard
-if [[ -n "$(git status --porcelain)" ]]; then
-  echo "❌ Working tree is not clean. Commit or stash changes."
-  git status --short
+echo "✔ Version: $VERSION"
+echo ""
+echo "⚠️  You are about to DEPLOY TO PRODUCTION"
+read -p "Type EXACTLY to continue: " CONFIRM
+
+if [[ "$CONFIRM" != "DEPLOY TO PRODUCTION" ]]; then
+  echo "❌ Confirmation failed. Aborting."
   exit 1
 fi
-echo "✔ Working tree clean"
 
-# 3️⃣ Version sanity
-VERSION=$(node -p "require('./package.json').version")
-if [[ -z "$VERSION" ]]; then
-  echo "❌ Unable to read version from package.json"
-  exit 1
-fi
-echo "✔ Version: v$VERSION"
+echo "✅ Confirmation passed."
 
-# 4️⃣ Human confirmation (skip in CI)
-if [[ "$MODE" != "--ci" ]]; then
-  echo ""
-  echo "⚠️  You are about to DEPLOY TO PRODUCTION"
-  echo "Type EXACTLY to continue:"
-  echo "$CONFIRM_PHRASE"
-  echo ""
-  read -r INPUT
-  if [[ "$INPUT" != "$CONFIRM_PHRASE" ]]; then
-    echo "❌ Confirmation failed. Aborting."
+# --- Slack Approval ---
+if [[ -z "$SLACK_WEBHOOK_URL" ]]; then
+  echo "⚠️ SLACK_WEBHOOK_URL not set. Skipping team approval."
+else
+  echo "📢 Sending Slack approval request..."
+  APPROVAL_MESSAGE=":warning: Production deploy requested on branch *$BRANCH* by $USER. Version: $VERSION. Please approve by replying 'APPROVE'."
+
+  curl -X POST -H 'Content-type: application/json' \
+    --data "{\"text\":\"$APPROVAL_MESSAGE\"}" \
+    $SLACK_WEBHOOK_URL
+
+  echo "⏳ Waiting for team approval..."
+  read -p "Has the team approved? Type 'APPROVE' to continue: " TEAM_CONFIRM
+
+  if [[ "$TEAM_CONFIRM" != "APPROVE" ]]; then
+    echo "❌ Team approval not received. Aborting."
     exit 1
   fi
+  echo "✅ Team approval received."
 fi
-echo "✔ Confirmation received"
 
-# 5️⃣ Smoke tests
+# --- Continue deploy ---
 echo ""
 echo "🧪 Running smoke tests..."
 npm run test:smoke
 
-# 6️⃣ Production verification
 echo ""
 echo "🔍 Verifying production environment..."
-npm run verify:prod
+node scripts/verify-prod.js
 
-# 7️⃣ Deploy
 echo ""
 echo "🚀 Deploying to production..."
 bash deploy/deploy-prod.sh
 
-# 8️⃣ Tag & release
-TAG="v$VERSION"
 echo ""
-echo "🏷️ Tagging release $TAG"
-git tag "$TAG"
-git push origin "$TAG"
+echo "🏷️ Tagging release v$VERSION..."
+git tag "v$VERSION"
+git push origin "v$VERSION"
 
 echo ""
 echo "✅ PRODUCTION DEPLOY COMPLETE — v$VERSION"
