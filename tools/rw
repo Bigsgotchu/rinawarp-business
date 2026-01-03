@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPTS_DIR="$ROOT_DIR/scripts"
+
+COMMAND="${1:-help}"
+shift || true
+
+usage() {
+  cat <<EOF
+RinaWarp CLI
+
+Usage:
+  rw <command> [args]
+
+Core commands:
+  version            Show global RinaWarp version (from VERSION file)
+  help               Show this help
+  doctor             Run workspace health checks
+  ci-test            Run CI integrity tests
+  backup             Create a timestamped backup
+  release            Create a tagged release (uses CHANGELOG + VERSION)
+
+Phase 3 commands:
+  version-sync       Sync VERSION into all package.json files
+  build-backend      Build/validate backend for Terminal Pro
+  build-frontend     Build Terminal Pro frontend (marketing/app)
+  build-desktop      Build Electron desktop installers
+  build              Run all build steps (backend, frontend, desktop)
+
+Examples:
+  rw version
+  rw version-sync
+  rw build
+  rw build-frontend
+EOF
+}
+
+case "$COMMAND" in
+  version)
+    if [[ -f "$ROOT_DIR/VERSION" ]]; then
+      echo -n "RinaWarp version: "
+      cat "$ROOT_DIR/VERSION"
+    else
+      echo "VERSION file not found at $ROOT_DIR/VERSION" >&2
+      exit 1
+    fi
+    ;;
+
+  help|-h|--help)
+    usage
+    ;;
+
+  doctor)
+    "$SCRIPTS_DIR/doctor.sh" "$@"
+    ;;
+
+  ci-test)
+    echo "🏃 Running CI-style checks locally..."
+    ./scripts/rw-doctor.sh
+    ;;
+
+  backup)
+    "$SCRIPTS_DIR/backup.sh" "$@"
+    ;;
+
+  release)
+    "$SCRIPTS_DIR/release-tag.sh" "$@"
+    ;;
+
+  version-sync)
+    "$SCRIPTS_DIR/version-sync.sh" "$@"
+    ;;
+
+  build-backend)
+    "$SCRIPTS_DIR/build-backend.sh" "$@"
+    ;;
+
+  build-frontend)
+    "$SCRIPTS_DIR/build-frontend.sh" "$@"
+    ;;
+
+  build-desktop)
+    "$SCRIPTS_DIR/build-desktop.sh" "$@"
+    ;;
+
+  build|build-all)
+    "$SCRIPTS_DIR/build-all.sh" "$@"
+    ;;
+
+  *)
+    echo "❌ Unknown command: $COMMAND" >&2
+    echo
+    usage
+    exit 1
+    ;;
+esac

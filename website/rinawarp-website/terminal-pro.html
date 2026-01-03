@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Terminal Pro - AI-Powered Terminal for Developers | RinaWarp Technologies</title>
+    <meta name="description" content="Boost your developer productivity with Terminal Pro's AI-powered mermaid-themed interface. Intelligent command suggestions, lightning-fast performance, and enterprise security. Start free today.">
+    <meta name="keywords" content="AI terminal, developer tools, command line, mermaid interface, productivity, terminal pro, RinaWarp">
+    <meta name="author" content="Rinawarp Technologies, LLC">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.stripe.com https://hooks.stripe.com;">
+    <link rel="canonical" href="https://rinawarptech.com/terminal-pro">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Terminal Pro - AI-Powered Terminal for Developers">
+    <meta property="og:description" content="Transform your development workflow with our AI-powered mermaid-themed terminal">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="https://rinawarptech.com/terminal-pro">
+    <meta property="og:image" content="https://rinawarptech.com/assets/terminal-pro-og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Terminal Pro - AI-Powered Terminal Interface">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Terminal Pro - AI-Powered Terminal for Developers">
+    <meta name="twitter:description" content="Transform your development workflow with our AI-powered mermaid-themed terminal">
+    <meta name="twitter:image" content="https://rinawarptech.com/assets/terminal-pro-og.jpg">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/icon-16.png">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/rinawarp-styles.css">
+    
+    <!-- Theme-Specific CSS -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #05060a 0%, #0a0c1a 50%, #05060a 100%);
+        }
+        
+        .mermaid-theme {
+            --mermaid-primary: #FF1B8D;
+            --mermaid-secondary: #00D1C1;
+            --mermaid-accent: #12D6FF;
+            --mermaid-bg: #05060a;
+            --mermaid-text: #f9fafb;
+            --mermaid-border: rgba(18,214,255,0.45);
+        }
+        
+        .hero-mermaid {
+            background: radial-gradient(circle at top left, rgba(18,214,255,0.25), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(255,27,141,0.2), transparent 60%),
+                        linear-gradient(135deg, #05060a 0%, #0a0c1a 50%, #05060a 100%);
+        }
+        
+        .feature-card-mermaid {
+            background: rgba(5,6,10,0.6);
+            border: 1px solid rgba(18,214,255,0.3);
+            backdrop-filter: blur(16px);
+        }
+        
+        .feature-card-mermaid:hover {
+            border-color: var(--mermaid-primary);
+            box-shadow: 0 0 30px rgba(18,214,255,0.2);
+        }
+        
+        .terminal-preview {
+            background: #000;
+            border: 2px solid var(--mermaid-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(90deg, #ff1fad, #12d6ff);
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .terminal-preview::after {
+            content: '~$';
+            position: absolute;
+            top: 8px;
+            left: 15px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .terminal-content {
+            margin-top: 20px;
+            color: #00d1c1;
+        }
+        
+        .code-line {
+            margin: 0.5rem 0;
+            animation: typewriter 2s steps(40) forwards;
+            opacity: 0;
+        }
+        
+        @keyframes typewriter {
+            to { opacity: 1; }
+        }
+        
+        .floating-icon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-icon:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-icon:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+        
+        .floating-icon:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Terminal Pro",
+        "description": "AI-powered terminal for developers with mermaid-themed interface",
+        "brand": {
+            "@type": "Brand",
+            "name": "RinaWarp Technologies"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": "https://rinawarptech.com/pricing",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "127"
+        }
+    }
+    
+    <!-- GA4 Tracking -->
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('event', 'view_terminal_pro', { location: window.location.pathname });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SZK23HMCVP');
+    </script>
+    </script>
+    
+    <!-- Unified Components JavaScript -->
+    <script src="/js/unified-components.js"></script>
+    <script src="/js/stripe-links.js"></script>
+</head>
+<body class="mermaid-theme">
+    <!-- Unified RinaWarp Header Component -->
+    <nav class="navbar rw-unified-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-brand">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 800 400"
+            xmlns="http://www.w3.org/2000/svg"
+            class="nav-logo"
+          >
+            <defs>
+              <linearGradient id="navGradUnified" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FF1B8D" />
+                <stop offset="50%" stop-color="#12D6FF" />
+                <stop offset="100%" stop-color="#00D1C1" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M150 200 C150 100, 300 100, 400 200 C500 300, 650 300, 650 200 
+                 C650 100, 500 100, 400 200 C300 300, 150 300, 150 200 Z"
+              fill="none"
+              stroke="url(#navGradUnified)"
+              stroke-width="15"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="nav-brand-text">RinaWarp</span>
+        </a>
+        
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/terminal-pro" class="nav-link music-link">Terminal Pro</a></li>
+          <li><a href="/music-video-creator" class="nav-link">Music Video Creator</a></li>
+          <li><a href="/pricing" class="nav-link">Pricing</a></li>
+          <li><a href="/support" class="nav-link">Support</a></li>
+          <li><a href="/rina-vex-music" class="nav-link music-link">🎵 Rina Vex</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <a href="/download" class="nav-cta">Download</a>
+          <a href="/download" class="btn btn-small btn-primary nav-download">
+            Download Free Tier
+          </a>
+        </div>
+        
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+      
+      <!-- Mobile Menu Overlay -->
+      <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu-content">
+          <ul class="mobile-nav-menu">
+            <li><a href="/" class="mobile-nav-link" onclick="closeMobileMenu()">Home</a></li>
+            <li><a href="/terminal-pro" class="mobile-nav-link music-link" onclick="closeMobileMenu()">Terminal Pro</a></li>
+            <li><a href="/music-video-creator" class="mobile-nav-link" onclick="closeMobileMenu()">Music Video Creator</a></li>
+            <li><a href="/pricing" class="mobile-nav-link" onclick="closeMobileMenu()">Pricing</a></li>
+            <li><a href="/support" class="mobile-nav-link" onclick="closeMobileMenu()">Support</a></li>
+            <li><a href="/rina-vex-music" class="mobile-nav-link music-link" onclick="closeMobileMenu()">🎵 Rina Vex</a></li>
+            <li class="mobile-cta-section">
+              <a href="/download" class="btn btn-primary mobile-download-btn">
+                Download Free Tier
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Global Mini Banner -->
+    <section class="rv-global-mini-banner">
+      <div class="banner-container">
+        <div class="banner-content">
+          <strong>🎵 New Rina Vex Release:</strong>
+          <span class="track-name">"For a Minute, Forever"</span>
+        </div>
+        <a href="/rina-vex-music" class="rv-banner-link">
+          <span>Listen Now</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero hero-mermaid" style="position: relative; overflow: hidden;">
+        <!-- Floating Icons -->
+        <svg class="floating-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <polyline points="4,17 10,11 4,5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
+        <svg class="floating-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+        </svg>
+        <svg class="floating-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M14.828 14.828a4 4 0 01-5.656 0"></path>
+            <path d="M9 9h.01"></path>
+            <path d="M15 9h.01"></path>
+        </svg>
+        
+        <div class="container">
+            <div class="hero-content fade-in-up" style="position: relative; z-index: 10;">
+                <div class="hero-badge" style="background: rgba(18,214,255,0.1); border-color: rgba(18,214,255,0.3); color: var(--mermaid-accent);">
+                    <span>🔮</span>
+                    <span>AI-Powered Terminal Experience</span>
+                </div>
+                
+                <h1 class="hero-title" style="background: linear-gradient(120deg, #ff1fad, #12d6ff, #00d1c1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Build smarter. Create faster.
+                    <span style="display: block; font-size: 1.5rem; margin-top: 0.5rem; font-weight: 400;">The terminal built for creators, coders, and AI-powered workflows.</span>
+                </h1>
+                
+                <!-- Scarcity Banner -->
+                <div class="scarcity-banner">
+                    🔥 <strong>Founder Lifetime Wave #1:</strong> Only <span class="remaining-count">200</span> seats remaining at $699 one-time
+                </div>
+                
+                <p class="hero-subtitle">
+                    Mermaid-themed AI terminal for developers. Intelligent command suggestions, lightning-fast performance, and enterprise security. 
+                    Start free forever, upgrade to lifetime when ready.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="#demo" class="btn btn-primary btn-large">
+                        ⚡ Start Free Forever
+                        <span>→</span>
+                    </a>
+                    <a href="/pricing" class="btn btn-accent btn-large">
+                        💎 Get Lifetime License
+                    </a>
+                </div>
+                
+                <div class="hero-secondary-actions">
+                    <a href="#demo" class="btn btn-outline">
+                        Watch Demo
+                    </a>
+                </div>
+                
+                <!-- Terminal Preview -->
+                <div class="terminal-preview" id="demo">
+                    <div class="terminal-content">
+                        <div class="code-line" style="color: #ff1fad;">$ terminal-pro init my-project</div>
+                        <div class="code-line" style="color: #12d6ff; animation-delay: 0.5s;">🔮 AI suggests: Creating new React project...</div>
+                        <div class="code-line" style="color: #00d1c1; animation-delay: 1s;">✅ Project initialized successfully!</div>
+                        <div class="code-line" style="color: #ff1fad; animation-delay: 1.5s;">$ terminal-pro build --optimize</div>
+                        <div class="code-line" style="color: #12d6ff; animation-delay: 2s;">🚀 Building with AI optimization...</div>
+                        <div class="code-line" style="color: #00d1c1; animation-delay: 2.5s;">⚡ Bundle optimized 47% faster!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- RinaWarp Pricing Strip v1 -->
+    <section class="rw-pricing-strip">
+      <div class="rw-pricing-strip-inner">
+        <h2>Pricing That Works for Creators</h2>
+        <p class="rw-pricing-strip-sub">
+          Start free. Upgrade anytime. Lifetime waves are limited — once they sell out, the wave locks forever.
+        </p>
+
+        <div class="rw-pricing-strip-grid">
+          
+          <article class="tier">
+            <h3>Free Tier</h3>
+            <p class="price">$0</p>
+            <p class="desc">Unlimited access to the basics. No card required.</p>
+            <a href="/download" class="btn btn-primary">Download Free Tier</a>
+          </article>
+
+          <article class="tier">
+            <h3>Basic</h3>
+            <p class="price">$9.99/mo</p>
+            <p class="desc">Perfect entry plan to try pro features.</p>
+            <a href="/pricing" class="btn btn-ghost">See All Features</a>
+          </article>
+
+          <article class="tier">
+            <h3>Starter</h3>
+            <p class="price">$29/mo</p>
+            <p class="desc">For creators beginning to scale.</p>
+            <a href="/pricing" class="btn btn-ghost">See All Features</a>
+          </article>
+
+          <article class="tier">
+            <h3>Creator</h3>
+            <p class="price">$69/mo</p>
+            <p class="desc">For serious creators and small teams.</p>
+            <a href="/pricing" class="btn btn-ghost">See All Features</a>
+          </article>
+
+          <article class="tier">
+            <h3>Pro</h3>
+            <p class="price">$99/mo</p>
+            <p class="desc">For power users who need everything.</p>
+            <a href="/pricing" class="btn btn-ghost">See All Features</a>
+          </article>
+
+          <article class="tier tier-featured">
+            <div class="badge">Limited Wave</div>
+            <h3>Founder Lifetime</h3>
+            <p class="price">$699</p>
+            <p class="desc">First 200 only — highest value.</p>
+            <a href="/pricing" class="btn btn-primary">Lock My License</a>
+          </article>
+
+          <article class="tier tier-featured">
+            <div class="badge">Wave 2</div>
+            <h3>Pioneer Lifetime</h3>
+            <p class="price">$800</p>
+            <p class="desc">Next 300 creators.</p>
+            <a href="/pricing" class="btn btn-primary">Lock My License</a>
+          </article>
+
+          <article class="tier">
+            <h3>Lifetime Future</h3>
+            <p class="price">$999</p>
+            <p class="desc">Unlimited wave — always open.</p>
+            <a href="/pricing" class="btn btn-primary">Get Lifetime</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Features Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-xl">
+                <h2>Why Developers Love Terminal Pro</h2>
+                <p>Every feature designed to boost your productivity and make coding a joy</p>
+            </div>
+            
+            <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--mermaid-accent);">🔮</div>
+                    <h4>AI Command Suggestions</h4>
+                    <p>Intelligent autocomplete and command recommendations based on your workflow patterns and project context.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--mermaid-primary);">🌊</div>
+                    <h4>Beautiful Mermaid Interface</h4>
+                    <p>Stunning mermaid-themed design with smooth animations and a calming color palette that reduces eye strain.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--mermaid-secondary);">⚡</div>
+                    <h4>Lightning Fast Performance</h4>
+                    <p>Optimized for speed with instant command execution and smooth scrolling even with large output logs.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--mermaid-accent);">🛡️</div>
+                    <h4>Enterprise Security</h4>
+                    <p>Bank-level encryption, secure command history, and enterprise SSO integration for team environments.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--mermaid-primary);">📱</div>
+                    <h4>Cross-Platform Support</h4>
+                    <p>Works seamlessly on macOS, Windows, and Linux with consistent experience across all platforms.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--mermaid-secondary);">🔧</div>
+                    <h4>Plugin Ecosystem</h4>
+                    <p>Extend functionality with our growing library of plugins for Git, Docker, testing, and deployment tools.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Outcomes Section -->
+    <section class="outcomes">
+        <h2>What Terminal Pro actually does for you</h2>
+        <ul>
+            <li>⏱ Cuts environment setup from hours to minutes.</li>
+            <li>🧠 Keeps all your scripts, tools, and AI helpers in one neon workspace.</li>
+            <li>💻 Makes your dev setup something you enjoy looking at every day.</li>
+        </ul>
+    </section>
+
+    <!-- Product Details Section -->
+    <section class="section" style="background: rgba(5,6,10,0.3);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+                <div>
+                    <h2>Built for Modern Development</h2>
+                    <p>Terminal Pro integrates seamlessly with your existing workflow while adding powerful AI capabilities that understand your code and project context.</p>
+                    
+                    <div style="margin: 2rem 0;">
+                        <h4 style="color: var(--mermaid-accent); margin-bottom: 1rem;">Smart Context Awareness</h4>
+                        <p>Our AI analyzes your project structure, git history, and coding patterns to provide relevant suggestions and automate repetitive tasks.</p>
+                    </div>
+                    
+                    <div style="margin: 2rem 0;">
+                        <h4 style="color: var(--mermaid-primary); margin-bottom: 1rem;">Team Collaboration</h4>
+                        <p>Share command snippets, sync configurations across team members, and maintain consistent development environments.</p>
+                    </div>
+                    
+                    <a href="/pricing" class="btn btn-primary" style="margin-top: 2rem;">
+                        Get Started Free
+                        <span>🚀</span>
+                    </a>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div class="terminal-preview" style="background: rgba(0,0,0,0.8); border: 2px solid var(--mermaid-accent);">
+                        <div style="color: var(--mermaid-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                            📁 my-awesome-project/<br>
+                            ├── src/<br>
+                            ├── tests/<br>
+                            └── config/
+                        </div>
+                        <div style="color: var(--mermaid-primary);">$ terminal-pro run tests --coverage</div>
+                        <div style="color: var(--mermaid-accent); margin-top: 1rem;">
+                            🧪 Running AI-detected test suite...<br>
+                            ✅ 47 tests passed | 98% coverage<br>
+                            🎯 Optimized for 2.3s execution time
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-xl">
+                <h2>What Developers Are Saying</h2>
+                <p>Join thousands of developers who've transformed their workflow</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(120deg, #ff1fad, #12d6ff); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; margin-right: 1rem;">JS</div>
+                        <div>
+                            <div style="font-weight: 600;">Sarah Chen</div>
+                            <div style="color: #9ca3af; font-size: 0.875rem;">Senior Developer @ TechCorp</div>
+                        </div>
+                    </div>
+                    <p>"Terminal Pro's AI suggestions have reduced my command typing time by 60%. The mermaid interface is so beautiful that I actually enjoy working in the terminal now!"</p>
+                    <div style="color: var(--mermaid-accent); margin-top: 1rem;">⭐⭐⭐⭐⭐</div>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(120deg, #12d6ff, #00d1c1); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; margin-right: 1rem;">RK</div>
+                        <div>
+                            <div style="font-weight: 600;">Raj Kumar</div>
+                            <div style="color: #9ca3af; font-size: 0.875rem;">DevOps Engineer @ CloudScale</div>
+                        </div>
+                    </div>
+                    <p>"The cross-platform consistency is incredible. Our entire team can now work with the same terminal environment regardless of their OS."</p>
+                    <div style="color: var(--mermaid-accent); margin-top: 1rem;">⭐⭐⭐⭐⭐</div>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 2rem; border-radius: 16px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(120deg, #00d1c1, #ff1fad); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; margin-right: 1rem;">MJ</div>
+                        <div>
+                            <div style="font-weight: 600;">Maria Johnson</div>
+                            <div style="color: #9ca3af; font-size: 0.875rem;">Full Stack Developer @ StartupXYZ</div>
+                        </div>
+                    </div>
+                    <p>"The security features and enterprise SSO integration made it easy for our CTO to approve the rollout. Best terminal upgrade we've ever made."</p>
+                    <div style="color: var(--mermaid-accent); margin-top: 1rem;">⭐⭐⭐⭐⭐</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing CTA Section -->
+    <section class="section" style="background: rgba(5,6,10,0.3);">
+        <div class="container">
+            <div class="glass" style="max-width: 700px; margin: 0 auto; padding: 3rem; border-radius: 16px; text-align: center; border: 1px solid var(--mermaid-accent);">
+                <h2>Ready to Transform Your Terminal?</h2>
+                <p style="font-size: 1.125rem; margin-bottom: 2rem; color: #d1d5db;">Join thousands of developers using Terminal Pro to supercharge their workflow</p>
+                
+                <div style="display: flex; justify-content: center; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--mermaid-primary);">Free</div>
+                        <div style="color: #9ca3af;">Forever</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--mermaid-accent);">$9/mo</div>
+                        <div style="color: #9ca3af;">Pro Features</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--mermaid-secondary);">$29/mo</div>
+                        <div style="color: #9ca3af;">Team License</div>
+                    </div>
+                </div>
+                
+                <div class="hero-actions">
+                    <a href="/pricing" class="btn btn-primary btn-large">
+                        Start Free Today
+                        <span>🚀</span>
+                    </a>
+                    <a href="/download" class="btn btn-secondary btn-large">
+                        Download Now
+                    </a>
+                </div>
+                
+                <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 1rem;">
+                    No credit card required • 30-day money-back guarantee • Cancel anytime
+                </p>
+            </div>
+        </div>
+    <!-- Inline Pricing Strip -->
+    <section class="rw-inline-pricing">
+      <h2>Terminal Pro Pricing</h2>
+      <p>Start free, then lock a lifetime wave when you're ready.</p>
+      <ul>
+        <li><strong>Free Tier:</strong> $0 · Unlimited · Funnel builder</li>
+        <li><strong>Basic:</strong> $9.99/mo · Entry plan</li>
+        <li><strong>Creator:</strong> $69/mo · Pro creators</li>
+        <li><strong>Founder Lifetime:</strong> $699 · 200 seats</li>
+        <li><strong>Pioneer Lifetime:</strong> $800 · 300 seats</li>
+        <li><strong>Lifetime Future:</strong> $999 · Unlimited seats</li>
+      </ul>
+      <div class="rw-inline-pricing-ctas">
+        <a href="/download" class="btn btn-primary">Download Free Tier</a>
+        <a href="/pricing" class="btn btn-ghost">View Full Pricing</a>
+      </div>
+    </section>
+
+
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-xl">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about Terminal Pro</p>
+            </div>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="feature-card-mermaid glass" style="padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                    <h4 style="color: var(--mermaid-accent); margin-bottom: 0.5rem;">Is Terminal Pro compatible with my existing terminal tools?</h4>
+                    <p>Yes! Terminal Pro is designed to work alongside your favorite development tools including Git, Docker, npm, yarn, and more. It enhances your existing workflow without breaking anything.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                    <h4 style="color: var(--mermaid-accent); margin-bottom: 0.5rem;">How does the AI suggest commands?</h4>
+                    <p>Our AI analyzes your project structure, command history, git logs, and current working directory to provide contextually relevant suggestions. It learns from your patterns to become more accurate over time.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                    <h4 style="color: var(--mermaid-accent); margin-bottom: 0.5rem;">Can I use Terminal Pro offline?</h4>
+                    <p>Yes, Terminal Pro works completely offline. The AI features are enhanced when connected to the internet, but core functionality remains available without any network connection.</p>
+                </div>
+                
+                <div class="feature-card-mermaid glass" style="padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                    <h4 style="color: var(--mermaid-accent); margin-bottom: 0.5rem;">What's included in the free version?</h4>
+                    <p>The free version includes basic terminal functionality, the beautiful mermaid interface, AI suggestions for common commands, and access to core plugins. Upgrade anytime for advanced features.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-xl">
+                <p>Have more questions? <a href="/support" style="color: var(--mermaid-primary);">Contact our support team</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cross Promotion CTA -->
+    <p class="rv-cross">
+        Tools built by a working creator. Hear the music that inspired Terminal Pro →
+        <a href="/rina-vex.html">Listen to Rina Vex</a>
+    </p>
+
+    <!-- Global Rina Vex Promo Strip -->
+    <section class="rw-rinavex-strip">
+      <div class="rw-rinavex-inner">
+        <div class="rw-rinavex-text">
+          <h2>🔥 Discover Rina Vex</h2>
+          <p>Dark-pop. Sultry vocals. Cinematic vibes.  
+          The artist behind RinaWarp.</p>
+
+          <div class="rw-rinavex-buttons">
+            <a href="/rina" class="btn btn-primary">Listen to the Latest Track</a>
+            <a href="/music-video-creator" class="btn btn-ghost">Make a Music Video</a>
+          </div>
+        </div>
+
+        <div class="rw-rinavex-art">
+          <img src="/assets/rinavex-cover.png" alt="Rina Vex Cover">
+        </div>
+      </div>
+    </section>
+
+    <!-- Listen While You Build Sidebar Widget -->
+    <section class="rw-mini-player">
+      <h3>🎧 Listen While You Create</h3>
+      <p>New Rina Vex releases power the creative zone.</p>
+
+      <div class="rw-player-box">
+        <img src="/assets/rinavex-cover.png" alt="Rina Vex Cover">
+        <div class="rw-player-buttons">
+          <a href="/rina" class="btn btn-primary btn-sm">Play Track</a>
+          <a href="/music-video-creator" class="btn btn-ghost btn-sm">Create Video</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Promo Strip -->
+    <section class="rv-promo-strip">
+        <h2>Powered by the Artist Behind Rina Vex</h2>
+        <p>Your tools were built by a creator who also makes music — the apps exist to support the art.</p>
+        <a href="/rina-vex.html" class="btn btn-ghost">Check Out the Music →</a>
+    </section>
+
+    <!-- Unified RinaWarp Footer Component -->
+    <footer class="footer rw-unified-footer">
+      <div class="container">
+        <!-- Music Integration Section -->
+        <div class="footer-music-section">
+          <div class="music-content">
+            <div class="music-info">
+              <div class="music-artwork">
+                <img src="/assets/img/rinavex-cover.png" alt="Rina Vex Cover Art" class="cover-image">
+                <div class="play-overlay">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="music-details">
+                <h3>Rina Vex</h3>
+                <p class="music-track">Latest: "For a Minute, Forever"</p>
+                <div class="music-platforms">
+                  <a href="/rina-vex-music" class="platform-btn">Listen</a>
+                  <a href="https://youtube.com" target="_blank" class="platform-btn">YouTube</a>
+                  <a href="https://spotify.com" target="_blank" class="platform-btn">Spotify</a>
+                </div>
+              </div>
+            </div>
+            <div class="music-cta">
+              <h4>🎵 Create Videos with Rina Vex Music</h4>
+              <p>Use our Music Video Creator to make stunning videos with Rina Vex tracks</p>
+              <a href="/music-video-creator" class="btn btn-primary music-cta-btn">Try Music Video Creator</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Footer Content -->
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="brand-header">
+              <svg width="32" height="32" viewBox="0 0 800 400" class="footer-logo">
+                <defs>
+                  <linearGradient id="footerGradUnified" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#FF1B8D" />
+                    <stop offset="50%" stop-color="#12D6FF" />
+                    <stop offset="100%" stop-color="#00D1C1" />
+                  </linearGradient>
+                </defs>
+                <path d="M150 200 C150 100, 300 100, 400 200 C500 300, 650 300, 650 200 C650 100, 500 100, 400 200 C300 300, 150 300, 150 200 Z" fill="none" stroke="url(#footerGradUnified)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <h3>RinaWarp Technologies</h3>
+            </div>
+            <p class="brand-description">Purpose-built AI tools for creators, developers & visionaries.</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Products</h4>
+            <ul class="footer-links">
+              <li><a href="/terminal-pro">Terminal Pro</a></li>
+              <li><a href="/music-video-creator">Music Video Creator</a></li>
+              <li><a href="/pricing">Pricing Plans</a></li>
+              <li><a href="/download">Download Center</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Music</h4>
+            <ul class="footer-links">
+              <li><a href="/rina-vex-music">Rina Vex Music</a></li>
+              <li><a href="/music-video-creator">Create Videos</a></li>
+              <li><a href="https://youtube.com" target="_blank">YouTube Channel</a></li>
+              <li><a href="https://spotify.com" target="_blank">Spotify</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul class="footer-links">
+              <li><a href="/support">Help Center</a></li>
+              <li><a href="/faq">FAQ</a></li>
+              <li><a href="/changelog">Changelog</a></li>
+              <li><a href="/contact">Contact Us</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Legal</h4>
+            <ul class="footer-links">
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/dmca">DMCA</a></li>
+              <li><a href="/refund-policy">Refund Policy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="footer-bottom-content">
+            <p class="copyright">© 2024–2025 RinaWarp Technologies, LLC. All rights reserved.</p>
+            <div class="footer-legal-links">
+              <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/dmca">DMCA</a> · <a href="/support">Support</a>
+            </div>
+          </div>
+          <p class="trademark-note">RinaWarp™ and Rina Vex™ are trademarks of RinaWarp Technologies, LLC.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate code lines in terminal preview
+        const codeLines = document.querySelectorAll('.code-line');
+        codeLines.forEach((line, index) => {
+            line.style.animationDelay = `${index * 0.5}s`;
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card-mermaid, .terminal-preview').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(5, 6, 10, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(5, 6, 10, 0.9)';
+            }
+        });
+    </script>
+
+    <!-- Additional Mermaid Theme CSS -->
+    <style>
+        @media (max-width: 768px) {
+            .hero-mermaid {
+                padding-top: 5rem;
+            }
+            
+            .floating-icon {
+                display: none;
+            }
+            
+            .terminal-preview {
+                margin: 1rem 0;
+                padding: 1rem;
+            }
+            
+            .terminal-content {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+
+    <!-- Sticky Bottom CTA -->
+    <div class="rw-sticky-cta" id="rwStickyCtaTerminal">
+        <span>Ready to boost your terminal productivity?</span>
+        <div>
+            <a href="/download" class="btn btn-primary btn-sm">Download Free Tier</a>
+            <a href="/pricing" class="btn btn-ghost btn-sm">View Pricing</a>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const bar = document.getElementById('rwStickyCtaTerminal');
+            if (!bar) return;
+            let shown = false;
+            function maybeShow() {
+                if (shown) return;
+                if (window.scrollY > 400) {
+                    bar.classList.add('rw-sticky-cta--visible');
+                    shown = true;
+                }
+            }
+            window.addEventListener('scroll', maybeShow, { passive: true });
+        })();
+    </script>
+
+    </style>
+</body>
+</html>

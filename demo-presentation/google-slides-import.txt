@@ -1,0 +1,149 @@
+# Google Slides Import Instructions
+
+## 🎯 How to Import to Google Slides
+
+1. **Copy each slide content** from below
+2. **Open Google Slides** in your browser
+3. **Create new presentation** or open existing
+4. **Paste content** into each slide
+5. **Apply theme** using the CSS provided
+
+---
+
+## 🎨 Theme CSS (Copy to "Slide > Change background > Image")
+
+```css
+
+/* Google Slides RinaWarp Mermaid Theme */
+.slide {
+  background: #000000;
+  color: white;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+.slide .title {
+  color: #FF69B4;
+  font-size: 48px;
+  font-weight: bold;
+  text-shadow: 0 0 20px #00FFFF;
+}
+
+.slide .subtitle {
+  color: #FF7F7F;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.slide .content {
+  color: #B0E0E6;
+  font-size: 24px;
+  line-height: 1.6;
+}
+
+.slide .highlight {
+  background: linear-gradient(45deg, #FF69B4, #20B2AA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.slide .bullet {
+  color: #20B2AA;
+  font-size: 20px;
+  margin: 15px 0;
+}
+
+.slide .cta {
+  background: linear-gradient(45deg, #FF69B4, #20B2AA, #B0E0E6);
+  color: #000000;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-weight: bold;
+  text-align: center;
+}
+    ```
+
+---
+
+## Slide 1: Introduction
+
+**SLIDE TITLE:** Quick Demo Presentation
+
+"Introduction"
+
+**Header:** 🎯 **The Future is Now**
+**team members Edition**
+*Your journey to digital empowerment starts here*
+
+**Sub-header:** 🌟 What You'll Discover
+• How Terminal Pro transforms complex tasks
+• Why thousands love this innovative approach
+• Your step-by-step transformation guide
+
+*Powered by RinaWarp Technologies™*
+
+
+---
+
+## Slide 2: Key Features
+
+**SLIDE TITLE:** What Terminal Pro Can Do
+
+"Key Features"
+
+**Header:** 🔥 **Real Solutions for Real People**
+**Sub-header:** Quick Fix Mode ⚡
+• **Instant problem solving** - Tell it what's broken, it fixes it
+• **No guesswork** - Just describe the issue in plain English
+• **Fast results** - Get back to what matters quickly
+**Sub-header:** Explain Anything 📚
+• **Complex made simple** - Break down any technical topic
+• **Your learning pace** - Ask questions, get clear answers
+• **Build understanding** - Learn while you solve problems
+**Sub-header:** Do It For Me 🤖
+• **Full automation** - Handle entire workflows for you
+• **Smart execution** - Makes decisions so you don't have to
+• **Quality results** - Professional outcomes every time
+
+**Sub-header:** ✨ **The Power is Yours**
+*Every feature designed to make your life easier*
+
+
+---
+
+## Slide 3: Next Steps
+
+**SLIDE TITLE:** Next Steps
+
+"Next Steps"
+
+**Header:** 💎 **Key Points**
+**Sub-header:** 🔹 Point One
+Clear explanation that speaks directly to you
+**Sub-header:** 🔹 Point Two
+Simple breakdown of the important concepts
+**Sub-header:** 🔹 Point Three
+Actionable insights you can use right away
+
+**Sub-header:** 💡 **Why This Matters**
+Understanding this helps you make better decisions and achieve your goals faster.
+*Each element designed for maximum clarity and impact*
+
+
+---
+
+## 📝 Formatting Tips
+
+- **Headers**: Use Heading 1 (H1) for slide titles
+- **Body text**: Use regular text with bullet points
+- **Highlights**: Use the gradient text effect for emphasis
+- **Colors**: Apply the RinaWarp color palette provided
+- **Fonts**: Use Poppins for headers, Montserrat for body text
+
+## 🔧 Advanced Customization
+
+- **Background images**: Use the generated background patterns
+- **Animations**: Add entrance animations for engagement
+- **Transitions**: Use smooth transitions between slides
+- **Speaker notes**: Add notes using the speaker notes file
+

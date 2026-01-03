@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -21,10 +22,47 @@
     "backend/**/*",
     "apps/**/*",
     "vscode-extension/**/*"
+=======
+    "target": "ES2020",
+    "module": "Node16",
+    "lib": ["ES2020", "DOM"],
+    "allowJs": true,
+    "checkJs": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": false,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "incremental": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node16",
+    "ignoreDeprecations": "6.0"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+>>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635
   ],
   "exclude": [
     "node_modules",
     "dist",
+<<<<<<< HEAD
     "build"
+=======
+    "build-output",
+    ".vscode",
+    "**/*.d.ts",
+    "extension.js"
+>>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635
   ]
 }

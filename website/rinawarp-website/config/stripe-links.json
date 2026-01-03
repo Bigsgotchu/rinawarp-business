@@ -1,0 +1,40 @@
+{
+  "terminal_pro": {
+    "basic": "https://buy.stripe.com/test_6oU5kDeCG9ESd3w2bp04800",
+    "starter": "https://buy.stripe.com/test_dRmcN5526bN07JcdU704801", 
+    "creator": "https://buy.stripe.com/test_9B600jdyC4ky0gK2bp04802",
+    "pro": "https://buy.stripe.com/test_cNi6oH8ei6sG6F89DR04803",
+    "founder_lifetime": "https://buy.stripe.com/test_aFa6oH3Y22cq1kOdU704804",
+    "pioneer_lifetime": "https://buy.stripe.com/test_9B64gzcuy2cq5B42bp04805",
+    "lifetime_future": "https://buy.stripe.com/test_eVq5kD0LQ5oC7Jc17l04806"
+  },
+  "music_video_creator": {
+    "mvc_creator_monthly": "https://buy.stripe.com/test_4gMeVdgKO18me7A03h04807",
+    "mvc_studio_monthly": "https://buy.stripe.com/test_5kQ4gz0LQ04i6F8aHV04808",
+    "mvc_label_monthly": "https://buy.stripe.com/test_9B600j8ei6sGbZs9DR04809",
+    "mvc_founder_lifetime": "https://buy.stripe.com/test_9B68wPgKO4kyaVobLZ0480a",
+    "mvc_pioneer_lifetime": "https://buy.stripe.com/test_3cIaEXgKO2cqaVodU70480b",
+    "mvc_future_lifetime": "https://buy.stripe.com/test_8x2eVd8eicR44x0cQ30480c"
+  },
+  "price_ids": {
+    "basic": "price_1SW3RiGZrRdZy3W9IuHbiwyB",
+    "starter": "price_1SW3RxGZrRdZy3W9tGHTuxrH",
+    "creator": "price_1SW3SBGZrRdZy3W9HOVsW7wQ", 
+    "pro": "price_1SW3SQGZrRdZy3W9i7agMkRb",
+    "founder_lifetime": "price_1SW3SeGZrRdZy3W9qLVKoXWS",
+    "pioneer_lifetime": "price_1SW3SpGZrRdZy3W9CkEEO7Oz",
+    "lifetime_future": "price_1SW3T2GZrRdZy3W9wKv6h59Y",
+    "mvc_creator_monthly": "price_1SZNVEGZrRdZy3W901h6DtXv",
+    "mvc_studio_monthly": "price_1SZNVXGZrRdZy3W9L940vVwk",
+    "mvc_label_monthly": "price_1SZNVjGZrRdZy3W9KCZf5INg",
+    "mvc_founder_lifetime": "price_1SZNW4GZrRdZy3W9wK9S6f54",
+    "mvc_pioneer_lifetime": "price_1SZNWGGZrRdZy3W90vsWyV2Q",
+    "mvc_future_lifetime": "price_1SZNWHGZrRdZy3W9TeTn8fsq"
+  },
+  "instructions": {
+    "setup": "All payment links created and configured via Stripe CLI - COMPLETE. Both Terminal Pro and MVC are fully configured.",
+    "test_mode": "All payment links are live and configured for both Terminal Pro and MVC.",
+    "live_mode": "Ready for deployment - All URLs are functional in test mode. Switch to live mode when ready for production.",
+    "analytics": "Track conversion events using the tier names in onclick handlers. MVC plans follow pattern 'mvc_*'."
+  }
+}

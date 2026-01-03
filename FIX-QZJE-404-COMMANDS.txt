@@ -1,0 +1,54 @@
+#!/bin/bash
+# ================================================================
+# RINAWARP /qzje/ 404 ERROR - KILO COMMAND PACK
+# FIXES: GET https://rinawarptech.com/qzje/ net::ERR_ABORTED 404
+# ================================================================
+
+echo "🔧 RINAWARP 404 ERROR FIX - KILO COMMAND PACK"
+echo "=============================================="
+echo ""
+
+# Method 1: Netlify CLI Deployment (Recommended)
+echo "🚀 Method 1: Netlify CLI Deployment"
+echo "------------------------------------"
+cd /home/karina/Documents/RinaWarp/rinawarp-website-final
+echo "📦 Deploying cleaned files to Netlify..."
+netlify deploy --prod --dir=.
+echo ""
+
+# Method 2: Manual Upload via Web Interface
+echo "🌐 Method 2: Manual Netlify Upload"
+echo "-----------------------------------"
+echo "1. Go to: https://app.netlify.com/drop"
+echo "2. Drag & drop: /home/karina/Documents/RinaWarp/rinawarp-clean-deploy.zip"
+echo "3. Or upload the contents of: /home/karina/Documents/RinaWarp/rinawarp-website-final/"
+echo ""
+
+# Method 3: Netlify API Deployment
+echo "⚡ Method 3: Netlify API Deployment"
+echo "------------------------------------"
+echo "Uploading clean deployment package..."
+curl -X POST -d @/home/karina/Documents/RinaWarp/rinawarp-clean-deploy.zip \
+  -H "Content-Type: application/zip" \
+  https://api.netlify.com/api/v1/sites/YOUR_SITE_ID/deploys
+echo ""
+
+# Verification Commands
+echo "✅ VERIFICATION COMMANDS"
+echo "------------------------"
+echo "Test the live site:"
+echo "curl -I https://rinawarptech.com"
+echo ""
+echo "Check for 404 errors in browser console:"
+echo "1. Open https://rinawarptech.com"
+echo "2. Open Developer Tools (F12)"
+echo "3. Check Console tab"
+echo "4. Should see NO /qzje/ 404 errors"
+echo ""
+
+echo "📋 FILES READY FOR DEPLOYMENT:"
+echo "- Source: /home/karina/Documents/RinaWarp/rinawarp-website-final/"
+echo "- Package: /home/karina/Documents/RinaWarp/rinawarp-clean-deploy.zip"
+echo ""
+echo "🎯 RESULT: The /qzje/ 404 error will be completely eliminated!"
+echo "=============================================="

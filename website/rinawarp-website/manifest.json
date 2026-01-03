@@ -1,0 +1,83 @@
+{
+  "name": "RinaWarp Technologies - AI Tools",
+  "short_name": "RinaWarp",
+  "description": "Purpose-built AI tools for creators, developers & visionaries. Terminal Pro and Music Video Creator.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05060a",
+  "theme_color": "#FF1B8D",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["productivity", "developer", "utilities", "multimedia"],
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Terminal Pro",
+      "short_name": "Terminal Pro",
+      "description": "Open Terminal Pro - AI-powered terminal for developers",
+      "url": "/terminal-pro.html"
+    },
+    {
+      "name": "Music Video Creator",
+      "short_name": "Video Creator",
+      "description": "Open Music Video Creator - AI-powered video creation",
+      "url": "/music-video-creator.html"
+    },
+    {
+      "name": "Pricing",
+      "short_name": "Pricing",
+      "description": "View RinaWarp pricing plans",
+      "url": "/pricing.html"
+    },
+    {
+      "name": "Download",
+      "short_name": "Download",
+      "description": "Download RinaWarp desktop applications",
+      "url": "/download.html"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "windows",
+      "url": "ms-windows-store://pdp/?productid=9NBLGGH5L9XT",
+      "id": "RinaWarp.TerminalPro"
+    },
+    {
+      "platform": "macappstore",
+      "url": "https://apps.apple.com/app/rinawarp-terminal-pro/id123456789",
+      "id": "com.rinawarp.terminal-pro"
+    }
+  ],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "assets/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "RinaWarp Terminal Pro interface on desktop"
+    },
+    {
+      "src": "assets/screenshot-mobile.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "RinaWarp mobile interface"
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
+}

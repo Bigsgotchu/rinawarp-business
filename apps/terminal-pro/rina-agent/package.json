@@ -1,0 +1,19 @@
+{
+    "name": "rina-agent",
+    "version": "1.0.0",
+    "description": "Rina Agent with MCP support for RinaWarp Terminal Pro",
+    "main": "src/index.ts",
+    "type": "module",
+    "scripts": {
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
+        "build": "echo 'No build step required for Workers'"
+    },
+    "dependencies": {
+        "agents": "^0.1.0"
+    },
+    "devDependencies": {
+        "wrangler": "^3.0.0",
+        "@cloudflare/workers-types": "^4.0.0"
+    }
+}

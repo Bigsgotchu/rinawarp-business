@@ -1,0 +1,157 @@
+name: Build RinaWarp Terminal Pro - Cross Platform
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd apps/terminal-pro/desktop
+        npm ci
+        
+    - name: Build Linux AppImage & DEB
+      run: |
+        cd apps/terminal-pro/desktop
+        npm run build:linux
+        
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-builds
+        path: |
+          apps/terminal-pro/desktop/dist/*.AppImage
+          apps/terminal-pro/desktop/dist/*.deb
+        
+    - name: Generate checksums
+      run: |
+        cd apps/terminal-pro/desktop/dist
+        sha256sum *.AppImage *.deb > checksums.txt
+        cat checksums.txt
+        
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd apps/terminal-pro/desktop
+        npm ci
+        
+    - name: Build Windows EXE
+      run: |
+        cd apps/terminal-pro/desktop
+        npm run build:win
+        
+    - name: Upload Windows artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-builds
+        path: apps/terminal-pro/desktop/dist/*.exe
+        
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd apps/terminal-pro/desktop
+        npm ci
+        
+    - name: Build macOS DMG
+      run: |
+        cd apps/terminal-pro/desktop
+        npm run build:mac
+        # Note: For signed builds, add code signing here
+        # security find-identity -v codesigning
+        # electron-builder --mac --publish=never
+        
+    - name: Upload macOS artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-builds
+        path: apps/terminal-pro/desktop/dist/*.dmg
+
+  upload-all:
+    needs: [build-linux, build-windows, build-macos]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      
+    - name: Setup AWS CLI
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Create build output directory
+      run: |
+        mkdir -p build-output/{linux,windows,macos}
+        cp linux-builds/* build-output/linux/ 2>/dev/null || true
+        cp windows-builds/* build-output/windows/ 2>/dev/null || true
+        cp macos-builds/* build-output/macos/ 2>/dev/null || true
+        
+    - name: Generate all checksums
+      run: |
+        cd build-output
+        find . -type f -name "*.AppImage" -o -name "*.deb" -o -name "*.exe" -o -name "*.dmg" | while read file; do
+          echo "Generating checksum for: $file"
+          sha256sum "$file" >> checksums.txt
+        done
+        
+    - name: Upload to S3
+      run: |
+        aws s3 sync build-output/ s3://downloads-rinawarptech/terminal/latest/ --delete
+        
+    - name: Setup Node.js for website update
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Update download page
+      run: |
+        cd rinawarp-website
+        # Update download links to point to latest
+        sed -i 's|https://downloads\.rinawarptech\.com/terminal/[^"]*|https://downloads.rinawarptech.com/terminal/latest/|g' download.html
+        
+    - name: Deploy to Netlify
+      uses: netlify/actions/cli@master
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      with:
+        args: deploy --dir=. --prod --message="Automated release build"
+        working-directory: rinawarp-website

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Meta Tags -->
+  <title>Download - Terminal Pro & Music Video Creator | RinaWarp Technologies</title>
+  <meta
+    name="description"
+    content="Download Terminal Pro and (coming soon) Music Video Creator. Linux builds available now. Start with the Free Tier and upgrade when you're ready."
+  />
+  <meta
+    name="keywords"
+    content="download, terminal pro download, music video creator download, windows, macos, linux, desktop app"
+  />
+  <meta name="author" content="RinaWarp Technologies, LLC" />
+  <link rel="canonical" href="https://rinawarptech.com/download" />
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Download RinaWarp AI Tools" />
+  <meta
+    property="og:description"
+    content="Download Terminal Pro for Linux. Windows and macOS builds coming soon. Start with the Free Tier."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rinawarptech.com/download" />
+  <meta property="og:image" content="https://rinawarptech.com/assets/download-og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Download RinaWarp AI Tools" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Download RinaWarp AI Tools" />
+  <meta
+    name="twitter:description"
+    content="Download Terminal Pro for Linux. Windows and macOS builds coming soon. Start with the Free Tier."
+  />
+  <meta name="twitter:image" content="https://rinawarptech.com/assets/download-og.jpg" />
+
+  <!-- Favicon and Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/icon-16.png" />
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- GA4 Tracking -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZK23HMCVP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-SZK23HMCVP');
+    gtag('event', 'view_download', { location: window.location.pathname });
+  </script>
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="/css/rinawarp-styles.css" />
+
+  <!-- Page-Specific Styles -->
+  <style>
+    /* Download hero / summary */
+    .rw-download {
+      padding: 3rem 1.5rem 4rem;
+      text-align: center;
+    }
+    .rw-download-sub {
+      max-width: 720px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+    .rw-download-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      gap: 2rem;
+    }
+    @media (min-width: 768px) {
+      .rw-download-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .rw-download-grid article {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 1.5rem;
+      padding: 1.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .rw-download-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1.2rem;
+    }
+    .rw-download-note {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+    .rw-download-pricing-hint {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* Pricing strip shared component */
+    .rw-pricing-strip {
+      padding: 3rem 1.5rem 4rem;
+      text-align: center;
+    }
+    .rw-pricing-strip-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .rw-pricing-strip-sub {
+      max-width: 720px;
+      margin: 0.5rem auto 2.5rem;
+      opacity: 0.85;
+    }
+    .rw-pricing-strip-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+    @media (min-width: 900px) {
+      .rw-pricing-strip-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+    .rw-pricing-strip .tier {
+      position: relative;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 1.25rem;
+      padding: 1.75rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: left;
+    }
+    .rw-pricing-strip .tier-featured {
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    }
+    .rw-pricing-strip .tier .badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .rw-pricing-strip .price {
+      font-size: 1.6rem;
+      margin: 0.4rem 0 0.4rem;
+    }
+    .rw-pricing-strip .desc {
+      font-size: 0.9rem;
+      opacity: 0.85;
+      margin-bottom: 0.9rem;
+    }
+
+    /* Platform cards */
+    .platform-grid {
+      max-width: 1080px;
+      margin: 0 auto 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .platform-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--mermaid-border, rgba(148, 163, 184, 0.4));
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+    .platform-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: var(--rw-pink, #ff1b8d);
+    }
+    .platform-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, var(--rw-pink, #ff1b8d), var(--rw-teal, #00d1c1));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .system-requirements {
+      background: rgba(5, 3, 22, 0.3);
+      border: 1px solid var(--unicorn-border, rgba(148, 163, 184, 0.4));
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      text-align: left;
+    }
+    .requirement-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      color: #d1d5db;
+      font-size: 0.9rem;
+    }
+    .requirement-item::before {
+      content: '✓';
+      color: var(--rw-teal, #00d1c1);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #ff1fad, #12d6ff);
+      color: white;
+      border: none;
+      padding: 0.9rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      margin: 0.5rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 31, 173, 0.3);
+    }
+    .download-btn.secondary {
+      background: transparent;
+      border: 2px solid var(--mermaid-border, rgba(148, 163, 184, 0.4));
+      color: white;
+    }
+    .download-btn.secondary:hover {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: var(--rw-teal, #00d1c1);
+    }
+
+    /* App showcase */
+    .app-showcase {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--mermaid-border, rgba(148, 163, 184, 0.4));
+      border-radius: 16px;
+      padding: 3rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .app-preview {
+      width: 300px;
+      height: 200px;
+      background: #000;
+      border: 2px solid var(--mermaid-accent, #12d6ff);
+      border-radius: 12px;
+      margin: 2rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--mermaid-secondary, #9ca3af);
+      font-family: 'Fira Code', monospace;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-preview::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ff1fad, #12d6ff, #00d1c1);
+    }
+
+    .feature-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 999px;
+      padding: 0.5rem 1rem;
+      color: #10b981;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin: 0.25rem;
+    }
+
+    /* Newsletter */
+    .newsletter-signup {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 31, 173, 0.1),
+        rgba(18, 214, 255, 0.1)
+      );
+      border: 1px solid rgba(255, 31, 173, 0.3);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .email-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--mermaid-border, rgba(148, 163, 184, 0.4));
+      border-radius: 8px;
+      padding: 1rem;
+      color: white;
+      width: 100%;
+      max-width: 300px;
+      margin-right: 1rem;
+      font-size: 1rem;
+    }
+    .email-input:focus {
+      outline: none;
+      border-color: var(--rw-pink, #ff1b8d);
+    }
+
+    /* Rina Vex promo strip */
+    .rw-rinavex-strip {
+      padding: 3rem 1.5rem 4rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: radial-gradient(circle at top left, rgba(255, 27, 141, 0.2), transparent),
+        radial-gradient(circle at bottom right, rgba(18, 214, 255, 0.15), transparent);
+    }
+    .rw-rinavex-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      gap: 2rem;
+      align-items: center;
+    }
+    @media (min-width: 900px) {
+      .rw-rinavex-inner {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      }
+    }
+    .rw-rinavex-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+    .rw-rinavex-art img {
+      max-width: 260px;
+      width: 100%;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Simple fade-in helper */
+    .fade-in-up {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    @media (max-width: 768px) {
+      .platform-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 2.3rem;
+      }
+      .email-input {
+        margin-right: 0;
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "RinaWarp Terminal Pro",
+      "description": "Download Terminal Pro desktop application by RinaWarp Technologies.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "downloadUrl": "https://rinawarptech.com/download",
+      "provider": {
+        "@type": "Organization",
+        "name": "RinaWarp Technologies, LLC",
+        "url": "https://rinawarptech.com"
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-brand">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 800 400"
+          xmlns="http://www.w3.org/2000/svg"
+          class="nav-logo"
+        >
+          <defs>
+            <linearGradient id="navGradDownload" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FF1B8D" />
+              <stop offset="50%" stop-color="#12D6FF" />
+              <stop offset="100%" stop-color="#00D1C1" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M150 200 C150 100, 300 100, 400 200 C500 300, 650 300, 650 200 
+               C650 100, 500 100, 400 200 C300 300, 150 300, 150 200 Z"
+            fill="none"
+            stroke="url(#navGradDownload)"
+            stroke-width="15"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        RinaWarp
+      </a>
+      <ul class="nav-menu">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/terminal-pro" class="nav-link">Terminal Pro</a></li>
+        <li><a href="/music-video-creator" class="nav-link">Music Video Creator</a></li>
+        <li><a href="/pricing" class="nav-link">Pricing</a></li>
+        <li><a href="/support" class="nav-link">Support</a></li>
+        <li><a href="#download" class="nav-cta">Download</a></li>
+        <li>
+          <a href="/download" class="btn btn-small btn-primary nav-download">
+            Download Free Tier
+          </a>
+        </li>
+      </ul>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Global Mini Banner -->
+  <section class="rv-global-mini-banner">
+    <div>
+      <strong>🎵 New Rina Vex Release:</strong>
+      <span>"For a Minute, Forever"</span>
+    </div>
+    <a href="/rina-vex.html" class="rv-banner-link">Listen →</a>
+  </section>
+
+  <!-- Hero Section -->
+  <section class="hero download-hero" style="padding-top: 5rem;">
+    <div class="container">
+      <div class="hero-content fade-in-up text-center">
+        <div class="hero-badge">
+          <span>📥</span>
+          <span>Free Desktop Application</span>
+        </div>
+
+        <h1 class="hero-title">
+          Download RinaWarp Terminal Pro
+          <span
+            style="
+              display: block;
+              font-size: 1.5rem;
+              margin-top: 0.5rem;
+              font-weight: 400;
+              color: #d1d5db;
+            "
+          >
+            Linux builds available now. Windows & macOS coming soon.
+          </span>
+        </h1>
+
+        <p class="hero-subtitle" style="max-width: 600px; margin: 0 auto;">
+          Start with the Free Tier and try Terminal Pro on your real projects. When it’s
+          paying you back in time or money, lock in a lifetime wave.
+        </p>
+
+        <div style="margin-top: 2rem;">
+          <span class="feature-highlight">
+            <span>🛡️</span>
+            <span>Malware-free guarantee</span>
+          </span>
+          <span class="feature-highlight">
+            <span>⚡</span>
+            <span>Native performance</span>
+          </span>
+          <span class="feature-highlight">
+            <span>🔄</span>
+            <span>Updates during your plan</span>
+          </span>
+        </div>
+
+        <p class="rw-risk-note" style="margin-top: 2rem;">
+          ✓ Instant download • ✓ Free updates during your plan • ✓ 30-day refund
+          window on paid tiers
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Post-Purchase Welcome Message -->
+  <section id="post-purchase-message" class="rw-post-purchase" style="display:none;">
+    <div class="container">
+      <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1)); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 16px; padding: 2rem; margin: 2rem auto; max-width: 600px; text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+        <h2 style="color: #10b981; margin-bottom: 1rem;">Welcome to RinaWarp!</h2>
+        <p style="color: #d1d5db; font-size: 1.1rem; margin-bottom: 1.5rem;">
+          Thanks for purchasing a RinaWarp license! Start by downloading the app for your OS below. 
+          Your license details have been emailed to you.
+        </p>
+        <p style="color: #9ca3af; font-size: 0.9rem;">
+          Check your email for license activation instructions and next steps.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Summary (Module 8) -->
+  <section class="rw-download" id="download">
+    <h1>Download Terminal Pro</h1>
+    <p class="rw-download-sub">
+      Start with the Free Tier. Linux installers are ready today. Windows and macOS
+      builds are in development.
+    </p>
+
+    <div class="rw-download-grid">
+      <article>
+        <h2>Terminal Pro — Linux</h2>
+        <p>Mermaid-themed terminal & dev tools for Linux.</p>
+        <div class="rw-download-buttons">
+          <a
+            href="/downloads/terminal-pro/RinaWarp-Terminal-Pro-1.0.0.AppImage"
+            class="btn btn-primary"
+            onclick="gtag('event','download',{event_category:'app',event_label:'Linux AppImage'})"
+          >
+            Linux AppImage
+          </a>
+          <span class="btn btn-secondary" style="cursor: default;">
+            DEB Package (Coming Soon)
+          </span>
+        </div>
+      </article>
+
+      <article>
+        <h2>Terminal Pro — Windows & macOS</h2>
+        <p>Native Windows and macOS builds are in development.</p>
+        <div class="rw-download-buttons">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="showComingSoon('Windows')"
+          >
+            Windows (Coming Soon)
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="showComingSoon('macOS')"
+          >
+            macOS (Coming Soon)
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <section class="rw-download-pricing-hint">
+      <p>
+        Terminal Pro pricing: Free Tier, monthly plans, and limited lifetime waves.
+        <a href="/pricing">See full pricing →</a>
+      </p>
+    </section>
+
+    <p class="rw-download-note">
+      Linux installers are signed and ready. Windows and macOS builds will be added
+      here as soon as they’re available.
+    </p>
+  </section>
+
+  <!-- Unified Pricing Strip (correct prices) -->
+  <section class="rw-pricing-strip">
+    <div class="rw-pricing-strip-inner">
+      <h2>Pricing That Works for Creators</h2>
+      <p class="rw-pricing-strip-sub">
+        Start free. Upgrade anytime. Lifetime waves are limited — once they sell out,
+        that wave locks forever.
+      </p>
+
+      <div class="rw-pricing-strip-grid">
+        <article class="tier">
+          <h3>Free</h3>
+          <p class="price">$0</p>
+          <p class="desc">Unlimited Free Tier. Funnel builder and testing ground.</p>
+          <a href="/download" class="btn btn-primary">Download Free Tier</a>
+        </article>
+
+        <article class="tier">
+          <h3>Basic</h3>
+          <p class="price">$9.99/mo</p>
+          <p class="desc">Perfect entry plan to start using pro features.</p>
+          <a href="/pricing" class="btn btn-ghost">See All Features</a>
+        </article>
+
+        <article class="tier">
+          <h3>Starter</h3>
+          <p class="price">$29/mo</p>
+          <p class="desc">For creators beginning to scale their workflow.</p>
+          <a href="/pricing" class="btn btn-ghost">See All Features</a>
+        </article>
+
+        <article class="tier">
+          <h3>Creator</h3>
+          <p class="price">$69/mo</p>
+          <p class="desc">For serious creators and small teams.</p>
+          <a href="/pricing" class="btn btn-ghost">See All Features</a>
+        </article>
+
+        <article class="tier">
+          <h3>Pro</h3>
+          <p class="price">$99/mo</p>
+          <p class="desc">For power users who need everything unlocked.</p>
+          <a href="/pricing" class="btn btn-ghost">See All Features</a>
+        </article>
+
+        <article class="tier tier-featured">
+          <div class="badge">Wave 1 · 200 seats</div>
+          <h3>Founder Lifetime</h3>
+          <p class="price">$699</p>
+          <p class="desc">First 200 only — highest value wave.</p>
+          <a
+            href="/pricing"
+            class="btn btn-primary"
+            onclick="gtag('event','click_pricing',{source:'download_license_cta',tier:'founder'})"
+          >
+            Lock My License
+          </a>
+        </article>
+
+        <article class="tier tier-featured">
+          <div class="badge">Wave 2 · 300 seats</div>
+          <h3>Pioneer Lifetime</h3>
+          <p class="price">$800</p>
+          <p class="desc">Next 300 creators — still under four figures.</p>
+          <a
+            href="/pricing"
+            class="btn btn-primary"
+            onclick="gtag('event','click_pricing',{source:'download_license_cta',tier:'pioneer'})"
+          >
+            Lock My License
+          </a>
+        </article>
+
+        <article class="tier">
+          <h3>Lifetime Future</h3>
+          <p class="price">$999</p>
+          <p class="desc">Evergreen lifetime tier once waves 1 & 2 are gone.</p>
+          <a href="/pricing" class="btn btn-primary">Get Lifetime</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform Downloads (detailed cards) -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-xl">
+        <h2>Choose Your Platform</h2>
+        <p>Download the appropriate build for your operating system.</p>
+      </div>
+
+      <div class="platform-grid">
+        <!-- Windows -->
+        <div class="platform-card">
+          <div
+            class="platform-icon"
+            style="background: linear-gradient(135deg, #0078d4, #106ebe);"
+          >
+            🪟
+          </div>
+          <h3 style="color: #d1d5db; margin-bottom: 0.5rem;">Windows</h3>
+          <p style="color: #9ca3af; margin-bottom: 1.5rem;">Windows 10/11 (64-bit)</p>
+
+          <div style="margin-bottom: 1.5rem;">
+            <span style="color: #9ca3af; font-size: 0.9rem;"
+              >Windows build in development.</span
+            >
+            <br />
+            <button
+              onclick="showComingSoon('Windows')"
+              class="download-btn secondary"
+              style="margin-top: 1rem;"
+            >
+              <span>📧</span>
+              <span>Notify Me When Ready</span>
+            </button>
+          </div>
+
+          <div class="system-requirements">
+            <h4 style="color: var(--rw-teal); margin-bottom: 1rem;">Planned Requirements</h4>
+            <div class="requirement-item">Windows 10 or later (64-bit)</div>
+            <div class="requirement-item">4 GB RAM minimum</div>
+            <div class="requirement-item">500 MB free disk space</div>
+            <div class="requirement-item">Internet connection for updates</div>
+          </div>
+        </div>
+
+        <!-- macOS -->
+        <div class="platform-card">
+          <div
+            class="platform-icon"
+            style="background: linear-gradient(135deg, #007aff, #5856d6);"
+          >
+            🍎
+          </div>
+          <h3 style="color: #d1d5db; margin-bottom: 0.5rem;">macOS</h3>
+          <p style="color: #9ca3af; margin-bottom: 1.5rem;">
+            macOS 10.15+ (Intel & Apple Silicon)
+          </p>
+
+          <div style="margin-bottom: 1.5rem;">
+            <span style="color: #9ca3af; font-size: 0.9rem;"
+              >macOS build in development.</span
+            >
+            <br />
+            <button
+              onclick="showComingSoon('macOS')"
+              class="download-btn secondary"
+              style="margin-top: 1rem;"
+            >
+              <span>📧</span>
+              <span>Notify Me When Ready</span>
+            </button>
+          </div>
+
+          <div class="system-requirements">
+            <h4 style="color: var(--rw-teal); margin-bottom: 1rem;">Planned Requirements</h4>
+            <div class="requirement-item">macOS 10.15 Catalina or later</div>
+            <div class="requirement-item">4 GB RAM minimum</div>
+            <div class="requirement-item">500 MB free disk space</div>
+            <div class="requirement-item">Internet connection for updates</div>
+          </div>
+        </div>
+
+        <!-- Linux -->
+        <div class="platform-card">
+          <div
+            class="platform-icon"
+            style="background: linear-gradient(135deg, #ff9500, #ff5e00);"
+          >
+            🐧
+          </div>
+          <h3 style="color: #d1d5db; margin-bottom: 0.5rem;">Linux</h3>
+          <p style="color: #9ca3af; margin-bottom: 1.5rem;">Ubuntu, Fedora, Arch Linux</p>
+
+          <div style="margin-bottom: 1.5rem;">
+            <a
+              href="/downloads/terminal-pro/RinaWarp-Terminal-Pro-1.0.0.AppImage"
+              class="download-btn"
+              onclick="gtag('event','download',{event_category:'app',event_label:'Linux AppImage'})"
+            >
+              <span>⬇</span>
+              <span>Terminal Pro (AppImage)</span>
+            </a>
+            <span class="download-btn" style="cursor: default; opacity: 0.6;">
+              <span>⏳</span>
+              <span>DEB Package (Coming Soon)</span>
+            </span>
+            <div style="margin-top: 1rem;">
+              <small style="color: #10b981;">✓ Ready to download</small>
+            </div>
+          </div>
+
+          <div class="system-requirements">
+            <h4 style="color: var(--rw-teal); margin-bottom: 1rem;">Requirements</h4>
+            <div class="requirement-item">Ubuntu 18.04+ or equivalent</div>
+            <div class="requirement-item">4 GB RAM minimum</div>
+            <div class="requirement-item">500 MB free disk space</div>
+            <div class="requirement-item">Internet connection for updates</div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <small style="color: #9ca3af;">Size: ~38–45 MB each</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Fits Your Week -->
+  <section class="rw-how-it-works section">
+    <div class="container">
+      <div class="text-center mb-xl">
+        <h2>How RinaWarp fits into your week</h2>
+      </div>
+      <ol class="rw-steps-list">
+        <li><strong>Download & install</strong> the Free Tier for your OS.</li>
+        <li><strong>Connect your tools</strong> (projects, music, workflows).</li>
+        <li>
+          <strong>Upgrade only if</strong> it actually saves you time or makes you money.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Desktop App Preview -->
+  <section class="section" style="background: rgba(5, 3, 22, 0.3);">
+    <div class="container">
+      <div class="app-showcase">
+        <h2>Desktop App Preview</h2>
+        <p style="color: #d1d5db; margin-bottom: 2rem;">
+          Experience the full power of RinaWarp Terminal Pro on your desktop.
+        </p>
+
+        <div class="app-preview">
+          <div style="text-align: center;">
+            <div style="color: var(--mermaid-accent, #12d6ff); font-size: 1.1rem;">
+              Terminal Pro Interface
+            </div>
+            <div style="color: var(--mermaid-secondary, #9ca3af); margin-top: 0.5rem;">
+              $ terminal-pro init my-project
+            </div>
+            <div style="color: var(--mermaid-primary, #e5e7eb); font-size: 0.9rem;">
+              🔮 AI: Creating new project...
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+          "
+        >
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+            <h4>Lightning Fast</h4>
+            <p style="font-size: 0.875rem; color: #9ca3af;">
+              Native performance optimized for your OS.
+            </p>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔄</div>
+            <h4>Auto-Updates</h4>
+            <p style="font-size: 0.875rem; color: #9ca3af;">
+              Always get the latest features and security patches.
+            </p>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌐</div>
+            <h4>Offline Mode</h4>
+            <p style="font-size: 0.875rem; color: #9ca3af;">
+              Work even when your connection drops.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Guide -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-xl">
+        <h2>Installation Guide</h2>
+        <p>Quick and easy setup instructions.</p>
+      </div>
+
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+          "
+        >
+          <div
+            style="
+              text-align: center;
+              padding: 1.5rem;
+              background: rgba(15, 23, 42, 0.5);
+              border-radius: 12px;
+            "
+          >
+            <div
+              style="
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #ff1fad, #12d6ff);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.5rem;
+                margin: 0 auto 1rem;
+              "
+            >
+              1
+            </div>
+            <h4 style="color: var(--rw-teal);">Download</h4>
+            <p style="color: #d1d5db; font-size: 0.875rem;">
+              Click the download button for your platform.
+            </p>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              padding: 1.5rem;
+              background: rgba(15, 23, 42, 0.5);
+              border-radius: 12px;
+            "
+          >
+            <div
+              style="
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #12d6ff, #00d1c1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.5rem;
+                margin: 0 auto 1rem;
+              "
+            >
+              2
+            </div>
+            <h4 style="color: var(--rw-teal);">Install</h4>
+            <p style="color: #d1d5db; font-size: 0.875rem;">
+              Run the installer and follow the setup wizard.
+            </p>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              padding: 1.5rem;
+              background: rgba(15, 23, 42, 0.5);
+              border-radius: 12px;
+            "
+          >
+            <div
+              style="
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #00d1c1, #10b981);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.5rem;
+                margin: 0 auto 1rem;
+              "
+            >
+              3
+            </div>
+            <h4 style="color: var(--rw-teal);">Launch</h4>
+            <p style="color: #d1d5db; font-size: 0.875rem;">
+              Start creating with RinaWarp Terminal Pro.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Trust Copy -->
+  <section class="section" style="background: rgba(5, 6, 10, 0.3);">
+    <div class="container">
+      <div class="download-trust">
+        <h3>Why Download Directly from RinaWarp?</h3>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+          "
+        >
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+            <h4>No adware</h4>
+            <p>Clean installations, no bundled junk software.</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+            <h4>Official Source</h4>
+            <p>Direct from RinaWarp Technologies, LLC.</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+            <h4>Malware-free Guarantee</h4>
+            <p>For hash/verification details, see the FAQ or support.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Signup -->
+  <section class="section" style="background: rgba(5, 6, 10, 0.3);">
+    <div class="container">
+      <div class="newsletter-signup">
+        <h3>Stay Updated</h3>
+        <p style="color: #d1d5db; margin-bottom: 1.5rem;">
+          Get notified when Windows & macOS builds ship, new features drop, and new Rina
+          Vex releases go live.
+        </p>
+
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+          "
+        >
+          <input
+            type="email"
+            placeholder="your@email.com"
+            class="email-input"
+            id="newsletterEmail"
+          />
+          <button type="button" class="btn btn-primary" onclick="subscribeNewsletter()">
+            Get Updates
+          </button>
+        </div>
+
+        <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 1rem;">
+          No spam, unsubscribe anytime. We respect your privacy.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support Section -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <h2>Need Help with Installation?</h2>
+        <p style="color: #d1d5db; margin-bottom: 2rem;">
+          If you can’t get the app running in 15 minutes, we’ll help you personally.
+        </p>
+
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+          "
+        >
+          <a href="/support" class="btn btn-secondary"> 📚 Documentation </a>
+          <a href="mailto:support@rinawarptech.com" class="btn btn-secondary">
+            💬 Contact Support
+          </a>
+          <a href="/faq" class="btn btn-secondary"> ❓ FAQ </a>
+        </div>
+
+        <div
+          style="
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+          "
+        >
+          <p style="color: #10b981; font-weight: 500; margin-bottom: 0;">
+            🎉 Installation guarantee: if you’re stuck, reach out and we’ll walk you
+            through it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promo Strip: tools + music -->
+  <section class="rv-promo-strip">
+    <h2>Powered by the Artist Behind Rina Vex</h2>
+    <p>
+      The tools exist to support the music — and the music helps show what the tools can
+      do.
+    </p>
+    <a href="/rina-vex.html" class="btn btn-ghost">Check Out the Music →</a>
+  </section>
+
+  <!-- Global Rina Vex Strip -->
+  <section class="rw-rinavex-strip">
+    <div class="rw-rinavex-inner">
+      <div class="rw-rinavex-text">
+        <h2>🔥 Discover Rina Vex</h2>
+        <p>
+          Dark-pop. Sultry vocals. Cinematic vibes.
+          <br />
+          The artist behind RinaWarp.
+        </p>
+
+        <div class="rw-rinavex-buttons">
+          <a href="/rina" class="btn btn-primary">Listen to the Latest Track</a>
+          <a href="/music-video-creator" class="btn btn-ghost"
+            >Make a Music Video With It</a
+          >
+        </div>
+      </div>
+
+      <div class="rw-rinavex-art">
+        <img src="/assets/rinavex-cover.png" alt="Rina Vex Cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: var(--spacing-sm);
+              margin-bottom: var(--spacing-md);
+            "
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 800 400"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="footerGradDownload" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#FF1B8D" />
+                  <stop offset="50%" stop-color="#12D6FF" />
+                  <stop offset="100%" stop-color="#00D1C1" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M150 200 C150 100, 300 100, 400 200 C500 300, 650 300, 650 200 
+                   C650 100, 500 100, 400 200 C300 300, 150 300, 150 200 Z"
+                fill="none"
+                stroke="url(#footerGradDownload)"
+                stroke-width="15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <h3>RinaWarp Technologies</h3>
+          </div>
+          <p>Purpose-built AI tools for creators, developers & visionaries.</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Products</h4>
+          <ul class="footer-links">
+            <li><a href="/terminal-pro">Terminal Pro</a></li>
+            <li><a href="/music-video-creator">Music Video Creator</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Download</h4>
+          <ul class="footer-links">
+            <li><a href="/download" style="color: var(--rw-pink);">Linux</a></li>
+            <li><a href="/download">Windows (coming soon)</a></li>
+            <li><a href="/download">macOS (coming soon)</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="/support">Help Center</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2024–2025 RinaWarp Technologies, LLC. All rights reserved.</p>
+        <p>
+          <a href="/privacy">Privacy Policy</a> ·
+          <a href="/terms">Terms of Use</a> ·
+          <a href="/dmca">DMCA</a> ·
+          <a href="/refund-policy">Refund Policy</a> ·
+          <a href="/support">Support</a>
+        </p>
+        <p class="footnote">
+          RinaWarp™ and Rina Vex™ are trademarks of RinaWarp Technologies, LLC.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const navMenu = document.querySelector('.nav-menu');
+      if (!navMenu) return;
+      const isVisible = getComputedStyle(navMenu).display === 'flex';
+      navMenu.style.display = isVisible ? 'none' : 'flex';
+    }
+
+    // Simple "coming soon" toast
+    function showComingSoon(platform) {
+      const notification = document.createElement('div');
+      notification.style.cssText =
+        'position:fixed;top:20px;right:20px;background:rgba(255,193,7,0.95);color:#000;padding:1rem 1.5rem;border-radius:12px;z-index:10000;box-shadow:0 10px 30px rgba(0,0,0,0.3);max-width:350px;';
+      notification.innerHTML =
+        '<div style="display:flex;align-items:center;gap:0.5rem;">' +
+        '<span>🚧</span>' +
+        '<div>' +
+        '<div style="font-weight:600;">' +
+        platform +
+        ' build coming soon</div>' +
+        '<div style="font-size:0.875rem;margin-top:0.25rem;">We\'re finishing the ' +
+        platform +
+        ' version now. Join the list above to get notified.</div>' +
+        '</div>' +
+        '</div>';
+      document.body.appendChild(notification);
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(20px)';
+        setTimeout(() => notification.remove(), 300);
+      }, 5000);
+    }
+
+    // Newsletter subscription (placeholder handler)
+    function subscribeNewsletter() {
+      const input = document.getElementById('newsletterEmail');
+      const email = input ? input.value.trim() : '';
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+      // Hook this into your real endpoint when ready
+      console.log('Newsletter subscription:', email);
+      alert("Thank you for subscribing! We'll keep you updated.");
+      input.value = '';
+    }
+
+    // Navbar background on scroll
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (!navbar) return;
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(5, 6, 10, 0.95)';
+      } else {
+        navbar.style.background = 'rgba(5, 6, 10, 0.9)';
+      }
+    });
+
+    // Post-purchase flow - show welcome message if redirected from successful Stripe checkout
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('license') === 'success') {
+        const el = document.getElementById('post-purchase-message');
+        if (el) {
+          el.style.display = 'block';
+          // Smooth scroll to the message
+          setTimeout(() => {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+          // Track the successful purchase flow
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'purchase_success_redirect', {
+              event_category: 'checkout',
+              event_label: 'stripe_success_to_download'
+            });
+          }
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

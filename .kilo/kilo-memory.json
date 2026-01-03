@@ -1,0 +1,169 @@
+{
+  "projectName": "RinaWarp",
+  "rootPath": "/home/karina/Documents/RinaWarp",
+  "lastScan": "2025-11-25T05:10:40.609Z",
+  "paths": {
+    "backend": "apps/terminal-pro/backend",
+    "desktop": "apps/terminal-pro/desktop",
+    "website": "rinawarp-website",
+    "scripts": "scripts",
+    "plugins": "plugins"
+  },
+  "packageManagers": {
+    "node": true,
+    "python": true,
+    "pm2": true,
+    "netlify": true
+  },
+  "buildCommands": {
+    "linux": "npm run build:linux",
+    "win": "npm run build:win",
+    "mac": "npm run build:mac",
+    "website": "echo 'Static site - no build needed'"
+  },
+  "deployCommands": {
+    "frontend": "netlify deploy --prod --dir=./rinawarp-website",
+    "backend": "pm2 restart rinawarp-api",
+    "oneClick": "bash scripts/rinawarp-one-click-deploy.sh"
+  },
+  "aiProviders": [
+    "openai",
+    "claude",
+    "groq",
+    "ollama"
+  ],
+  "autoUpdate": {
+    "enabled": true,
+    "manifest": "apps/terminal-pro/backend/version_manifest.json"
+  },
+  "recentCommands": [
+    {
+      "command": "test-adaptive-command --error This is a test",
+      "at": "2025-11-25T05:11:58.377Z",
+      "cwd": "/home/karina/Documents/RinaWarp"
+    }
+  ],
+  "recentErrors": [
+    {
+      "error": "This is a test",
+      "at": "2025-11-25T05:11:58.378Z",
+      "command": "test-adaptive-command --error This is a test"
+    }
+  ],
+  "detectedScripts": {
+    "backend": {
+      "dev": "nodemon server.js",
+      "start": "node server.js",
+      "test": "echo \"No tests yet\""
+    },
+    "desktop": {
+      "build:linux": "electron-builder --linux",
+      "build:win": "electron-builder --win",
+      "build:mac": "electron-builder --mac",
+      "build:all": "electron-builder -mwl"
+    }
+  },
+  "workspaceFiles": [
+    "apps/terminal-pro/backend/.cspell.json",
+    "apps/terminal-pro/backend/API-CLIENT-EXAMPLE.js",
+    "apps/terminal-pro/backend/db_init.py",
+    "apps/terminal-pro/backend/docker-compose.yml",
+    "apps/terminal-pro/backend/electron-builder.yml",
+    "apps/terminal-pro/backend/fastapi_server.py",
+    "apps/terminal-pro/backend/inject-owner-license.js",
+    "apps/terminal-pro/backend/package-lock.json",
+    "apps/terminal-pro/backend/package.json",
+    "apps/terminal-pro/backend/plugins/git_status.py",
+    "apps/terminal-pro/backend/routes/emailRoutes.js",
+    "apps/terminal-pro/backend/routes/index.js",
+    "apps/terminal-pro/backend/routes/license.js",
+    "apps/terminal-pro/backend/routes/licenseCount.js",
+    "apps/terminal-pro/backend/routes/licenseRoutes.js",
+    "apps/terminal-pro/backend/routes/products.js",
+    "apps/terminal-pro/backend/routes/stripe.js",
+    "apps/terminal-pro/backend/routes/stripeRoutes.js",
+    "apps/terminal-pro/backend/routes/terminalProCheckout.js",
+    "apps/terminal-pro/backend/server.js",
+    "apps/terminal-pro/backend/services/licenseService.js",
+    "apps/terminal-pro/backend/services/licenses.js",
+    "apps/terminal-pro/backend/services/stripeService.js",
+    "apps/terminal-pro/backend/version_manifest.json",
+    "apps/terminal-pro/desktop/desktop-app-badge-styles.css",
+    "apps/terminal-pro/desktop/desktop-app-license-integration.js",
+    "apps/terminal-pro/desktop/dist/builder-debug.yml",
+    "apps/terminal-pro/desktop/dist/linux-unpacked/LICENSES.chromium.html",
+    "apps/terminal-pro/desktop/dist/linux-unpacked/vk_swiftshader_icd.json",
+    "apps/terminal-pro/desktop/electron-builder.json",
+    "apps/terminal-pro/desktop/electron-builder.yml",
+    "apps/terminal-pro/desktop/electron/ipc/license.js",
+    "apps/terminal-pro/desktop/electron/main.js",
+    "apps/terminal-pro/desktop/electron/preload.js",
+    "apps/terminal-pro/desktop/index.html",
+    "apps/terminal-pro/desktop/licenseManager.js",
+    "apps/terminal-pro/desktop/main.js",
+    "apps/terminal-pro/desktop/package-lock.json",
+    "apps/terminal-pro/desktop/package.json",
+    "apps/terminal-pro/desktop/preload.js",
+    "apps/terminal-pro/desktop/renderer.js",
+    "apps/terminal-pro/desktop/terminal-pro/electron/main.js",
+    "apps/terminal-pro/desktop/terminal-pro/electron/preload.js",
+    "apps/terminal-pro/desktop/terminal-pro/package-lock.json",
+    "rinawarp-website/DEPLOYMENT-GUIDE.md",
+    "rinawarp-website/about.html",
+    "rinawarp-website/admin-feedback.html",
+    "rinawarp-website/affiliates.html",
+    "rinawarp-website/blog-template.html",
+    "rinawarp-website/blog.html",
+    "rinawarp-website/contact.html",
+    "rinawarp-website/css/rinawarp-ui-kit-v3.css",
+    "rinawarp-website/css/styles.css",
+    "rinawarp-website/dist/about.html",
+    "rinawarp-website/dist/contact.html",
+    "rinawarp-website/dist/css/styles.css",
+    "rinawarp-website/dist/dmca.html",
+    "rinawarp-website/dist/download.html",
+    "rinawarp-website/dist/index.html",
+    "rinawarp-website/dist/music-video-creator.html",
+    "rinawarp-website/dist/pricing.html",
+    "rinawarp-website/dist/privacy.html",
+    "rinawarp-website/dist/terminal-pro.html",
+    "rinawarp-website/dist/terms.html",
+    "rinawarp-website/dmca.html",
+    "rinawarp-website/download.html",
+    "rinawarp-website/faq.html",
+    "rinawarp-website/feedback-form.html",
+    "rinawarp-website/founder-wave.html",
+    "rinawarp-website/index-backup-20251124-174001.html",
+    "rinawarp-website/index-backup.html",
+    "rinawarp-website/index-v3.html",
+    "rinawarp-website/index.html",
+    "rinawarp-website/js/MermaidLayout.js",
+    "rinawarp-website/js/MermaidSeatBar.js",
+    "rinawarp-website/js/rinawarp-ui-kit-v2.js",
+    "rinawarp-website/js/rinawarp-ui-kit-v3.js",
+    "rinawarp-website/landing-v3.html",
+    "rinawarp-website/manifest.json",
+    "rinawarp-website/music-video-creator-enhanced.html",
+    "rinawarp-website/music-video-creator.html",
+    "rinawarp-website/package-lock.json",
+    "rinawarp-website/pricing-saas.html",
+    "rinawarp-website/pricing.html",
+    "rinawarp-website/privacy.html",
+    "rinawarp-website/refund-policy.html",
+    "rinawarp-website/support.html",
+    "rinawarp-website/terminal-pro-activation.html",
+    "rinawarp-website/terminal-pro-enhanced.html",
+    "rinawarp-website/terminal-pro-success.html",
+    "rinawarp-website/terminal-pro.html",
+    "rinawarp-website/terms.html",
+    "rinawarp-website/testimonials-widget.html"
+  ],
+  "preferences": {
+    "htmlStyle": "clean_static",
+    "backend": "fastapi",
+    "desktop": "electron",
+    "theme": "rinawarp-mermaid",
+    "neverHallucinateFiles": true,
+    "explainBeforeDestructive": true
+  }
+}

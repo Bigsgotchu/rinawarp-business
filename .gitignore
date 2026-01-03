@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # General
 .DS_Store
 *.log
@@ -19,3 +20,34 @@ coverage/
 # Netlify / tooling cache
 .netlify/
 .cache/
+=======
+# ---- build / release artifacts ----
+dist-terminal-pro/
+build-output/
+out/
+release/
+*.AppImage
+*.deb
+*.snap
+*.dmg
+*.pkg
+*.exe
+*.msi
+*.blockmap
+latest*.yml
+SHA256SUMS*
+
+# electron-builder unpacked
+**/*-unpacked/
+squashfs-root/
+
+# Cloudflare / wrangler local state (can be HUGE)
+.wrangler/
+**/.wrangler/
+
+# Secrets / local configs
+.env
+.env.*
+.rclone.conf
+**/.rclone.conf
+>>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635

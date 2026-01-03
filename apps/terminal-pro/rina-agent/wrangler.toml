@@ -1,0 +1,64 @@
+# RinaWarp Terminal Pro - Cloudflare Wrangler Configuration
+# This configuration is used for Rina Agent with MCP support
+
+name = "rinawarp-terminal-pro-rina-agent"
+main = "index.ts"
+compatibility_date = "2025-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Account ID - Replace with your Cloudflare account ID
+account_id = "ba2f14cefa19dbdc42ff88d772410689"
+
+# Durable Objects for Rina Agent
+durable_objects = { bindings = [{ name = "RinaAgent", class_name = "RinaAgent" }] }
+
+# Environment variables for local development
+[env.development]
+account_id = "ba2f14cefa19dbdc42ff88d772410689"
+
+# Environment variables for preview
+[env.preview]
+account_id = "YOUR_ACCOUNT_ID_HERE"
+
+# Environment variables for production
+[env.production]
+account_id = "YOUR_ACCOUNT_ID_HERE"
+
+# Migrations for Durable Objects
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RinaAgent"]
+
+# Build configuration - disabled for Workers deployment
+# [build]
+# command = "npm run build"
+# cwd = "."
+
+# [build.upload]
+# format = "service-worker"
+
+# MCP Configuration - Disabled (not supported in current Wrangler version)
+# [mcp]
+# enabled = true
+# tools = [
+#     "verifyLicense",
+#     "getUpdateChannel", 
+#     "setUpdateChannel",
+#     "openPortal",
+#     "searchDocs",
+#     "createTerminalShareSession",
+#     "getLicensePlan",
+#     "setUserPreferences",
+#     "getUserPreferences"
+# ]
+
+# Variables for MCP tools
+[vars]
+OPENAI_API_KEY = "@openai_api_key"
+RINAWARP_LICENSE_VERIFY_URL = "https://api.rinawarptech.com/api/license/verify"
+RINAWARP_API_URL = "https://api.rinawarptech.com"
+
+# Dev environment overrides
+[env.development.vars]
+RINAWARP_LICENSE_VERIFY_URL = "http://localhost:8787/api/license/verify"
+RINAWARP_API_URL = "http://localhost:8787"

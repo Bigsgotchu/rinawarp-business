@@ -1,0 +1,153 @@
+diff --git a/apps/terminal-pro/desktop/.github/workflows/release-r2.yml b/apps/terminal-pro/desktop/.github/workflows/release-r2.yml
+index 1111111..2222222 100644
+--- a/apps/terminal-pro/desktop/.github/workflows/release-r2.yml
++++ b/apps/terminal-pro/desktop/.github/workflows/release-r2.yml
+@@ -1,6 +1,7 @@
+ name: Release (R2)
+
+ on:
+   workflow_dispatch:
+     inputs:
+       channel:
+@@ -9,6 +10,7 @@ on:
+         default: stable
+         type: choice
+         options: [stable, canary, nightly]
+       dry_run:
+         description: "If true: do not upload to R2 or create GitHub Release"
+         required: true
+         default: true
+         type: boolean
+
+ permissions:
+   contents: write
+
+ concurrency:
+   group: release-r2-${{ github.ref }}-${{ inputs.channel }}
+   cancel-in-progress: false
+
+ jobs:
+   build:
+     name: Build (${{ matrix.os }})
+     strategy:
+       fail-fast: false
+       matrix:
+         os: [ubuntu-latest, windows-latest, macos-latest]
+
+     runs-on: ${{ matrix.os }}
+
+     env:
+       CHANNEL: ${{ inputs.channel }}
+-      R2_BUCKET: ${{ vars.R2_BUCKET || 'rinawarp-downloads' }}
+-      R2_ACCOUNT_ID: ${{ vars.R2_ACCOUNT_ID || 'ba2f14cefa19dbdc42ff88d772410689' }}
+-      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+-      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
++      # Non-sensitive values from Actions Variables
++      R2_BUCKET: ${{ vars.R2_BUCKET }}
++      R2_ACCOUNT_ID: ${{ vars.R2_ACCOUNT_ID }}
+
+     steps:
+       - uses: actions/checkout@v4
+
+       - uses: actions/setup-node@v4
+@@ -33,17 +35,23 @@ jobs:
+       - name: Install dependencies
+         working-directory: apps/terminal-pro/desktop
+         run: npm ci
+
+       - name: Preflight secrets/vars check
+         shell: bash
++        env:
++          # Keep secrets scoped to this step only
++          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
++          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+         run: |
+           set -euo pipefail
+           req() { [ -n "${1:-}" ] || (echo "❌ Missing: $2" && exit 1); }
+
+           req "$R2_BUCKET" "R2_BUCKET (Actions Variables)"
+           req "$R2_ACCOUNT_ID" "R2_ACCOUNT_ID (Actions Variables)"
+           req "$R2_ACCESS_KEY_ID" "R2_ACCESS_KEY_ID (Actions Secrets)"
+           req "$R2_SECRET_ACCESS_KEY" "R2_SECRET_ACCESS_KEY (Actions Secrets)"
+
+           echo "✅ All required secrets/vars are present"
+
+@@ -78,7 +86,7 @@ jobs:
+       - name: Headless smoke test (Linux)
+         if: matrix.os == 'ubuntu-latest'
+         timeout-minutes: 5
+         working-directory: apps/terminal-pro/desktop
+         run: |
+           sudo apt-get update
+           sudo apt-get install -y xvfb
+-          xvfb-run -a npx electron src/main/main.js --headless-smoke
++          xvfb-run -a npx electron . --headless-smoke
+
+       - name: Headless smoke test
+         if: matrix.os != 'ubuntu-latest'
+         timeout-minutes: 5
+         working-directory: apps/terminal-pro/desktop
+-        run: npx electron src/main/main.js --headless-smoke
++        run: npx electron . --headless-smoke
+
+   upload:
+     name: Upload to R2 + Create Release
+     needs: build
+     runs-on: ubuntu-latest
+
+     env:
+       CHANNEL: ${{ inputs.channel }}
+       R2_BUCKET: ${{ vars.R2_BUCKET }}
+       R2_ACCOUNT_ID: ${{ vars.R2_ACCOUNT_ID }}
+       AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+       AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+       AWS_DEFAULT_REGION: auto
+
+     steps:
+       - uses: actions/download-artifact@v4
+         with:
+           path: artifacts
+
+@@ -169,12 +177,12 @@ jobs:
+       - name: R2 auth test (read-only)
+         shell: bash
+         timeout-minutes: 2
+         env:
+-          R2_ENDPOINT: https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
++          R2_ENDPOINT: https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+         run: |
+           set -euo pipefail
+           echo "Testing read-only R2 authentication..."
+           aws s3 ls "s3://${R2_BUCKET}" --endpoint-url "$R2_ENDPOINT" | head -10
+           echo "✅ R2 read-only auth works"
+
+       - name: R2 temp write test (create + delete)
+         if: ${{ inputs.dry_run }}
+         shell: bash
+         env:
+           R2_ENDPOINT: https://${{ env.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+         run: |
+           set -euo pipefail
+           PROBE_PREFIX="_ci_probe/${GITHUB_REPOSITORY}/${GITHUB_RUN_ID}/${GITHUB_RUN_ATTEMPT}"
+
+-          # Write probe object using s3api
+-          aws s3api put-object \
+-            --bucket "$R2_BUCKET" \
+-            --key "${PROBE_PREFIX}/probe.txt" \
+-            --body <(printf "ok\n") \
+-            --endpoint-url "$R2_ENDPOINT"
++          echo "ok" > probe.txt
++          aws s3api put-object \
+-            --bucket "$R2_BUCKET" \
+-            --key "${PROBE_PREFIX}/probe.txt" \
+-            --body probe.txt \
+-            --endpoint-url "$R2_ENDPOINT"
+
+           # Clean up probe object
+           aws s3api delete-object \
+             --bucket "$R2_BUCKET" \
+             --key "${PROBE_PREFIX}/probe.txt" \
+             --endpoint-url "$R2_ENDPOINT"
++          rm -f probe.txt
+
+           echo "✅ Temp write/delete OK"

@@ -1,0 +1,8 @@
+{
+  "id": "git-helper",
+  "name": "Git Helper",
+  "description": "Run common git flows with one command.",
+  "category": "devtools",
+  "command": "git status && git add . && git commit -m 'RinaWarp auto-commit' && git push",
+  "shortcut": "Ctrl+Alt+G"
+}

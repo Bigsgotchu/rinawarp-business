@@ -1,6 +1,7 @@
 {
   "folders": [
     {
+<<<<<<< HEAD
       "path": "."
     },
     {
@@ -170,4 +171,22 @@
       "args": "RinaWarp: Backend Health Check"
     }
   ]
+=======
+      "name": "RinaWarp Root",
+      "path": "."
+    },
+    {
+      "name": "Terminal Pro",
+      "path": "apps/terminal-pro"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/build": true
+    },
+    "terminal.integrated.cwd": "${workspaceFolder:RinaWarp Root}"
+  }
+>>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635
 }

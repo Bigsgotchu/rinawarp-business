@@ -1,0 +1,16 @@
+[build]
+  publish = "website"
+  # Static site, no build command needed for now
+  command = ""
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://api.rinawarptech.com/:splat"
+  status = 200
+  force = true
+
+# Optional: SPA-style fallback so deep links always work
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

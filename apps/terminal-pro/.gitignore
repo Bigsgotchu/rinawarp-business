@@ -1,0 +1,24 @@
+
+# Electron build outputs
+apps/terminal-pro/desktop/dist-terminal-pro/
+apps/terminal-pro/desktop/build-output/
+**/linux-unpacked/
+**/win-unpacked/
+**/mac/
+**/dist/
+**/out/
+
+# Extracted AppImage / temp
+squashfs-root/
+*.AppImage
+*.deb
+*.snap
+*.dmg
+*.exe
+*.msi
+*.zip
+*.blockmap
+
+# Cloudflare Wrangler local state
+.wrangler/state/
+

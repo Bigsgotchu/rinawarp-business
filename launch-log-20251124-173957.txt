@@ -1,0 +1,108 @@
+[0;34m[INFO][0m 🚀 Starting RinaWarp Launch Automation...
+[0;34m[INFO][0m Log file: /home/karina/Documents/RinaWarp/launch-log-20251124-173957.txt
+[0;34m[INFO][0m 🚀 STEP 1: Building Windows + macOS installers...
+[0;34m[INFO][0m → Running npm install (if needed)...
+
+up to date in 802ms
+[0;32m[SUCCESS][0m ✅ npm install completed
+[0;34m[INFO][0m → Building Windows installer...
+
+> rinawarp-terminal-pro@1.0.0 build:win
+> electron-builder --win
+
+  • electron-builder  version=26.0.12 os=6.16.8+kali-amd64
+  • loaded configuration  file=package.json ("build" field)
+  ⨯ Cannot compute electron version from installed node modules - none of the possible electron modules are installed and version ("^31.7.7") is not fixed in project.
+See https://github.com/electron-userland/electron-builder/issues/3984#issuecomment-504968246
+[1;33m[WARNING][0m ⚠️ Windows build failed – check logs manually
+[0;34m[INFO][0m → Building macOS installer...
+
+> rinawarp-terminal-pro@1.0.0 build:mac
+> electron-builder --mac
+
+  • electron-builder  version=26.0.12 os=6.16.8+kali-amd64
+  • loaded configuration  file=package.json ("build" field)
+  ⨯ Cannot compute electron version from installed node modules - none of the possible electron modules are installed and version ("^31.7.7") is not fixed in project.
+See https://github.com/electron-userland/electron-builder/issues/3984#issuecomment-504968246
+[1;33m[WARNING][0m ⚠️ macOS build failed – check logs manually
+[0;34m[INFO][0m → Collecting installers into build-output...
+[0;32m[SUCCESS][0m    • Copied RinaWarp Terminal Pro-1.0.0.AppImage
+[0;32m[SUCCESS][0m    • Copied RinaWarp-Terminal-Pro-1.0.0-linux-x86_64.AppImage
+[0;32m[SUCCESS][0m    • Copied RinaWarp-Terminal-Pro-1.0.0-linux-amd64.deb
+[0;32m[SUCCESS][0m ✅ Installer collection complete
+[0;34m[INFO][0m 🚀 STEP 2: Publishing Landing Page V3 as homepage...
+[0;32m[SUCCESS][0m    • Backed up existing index.html → index-backup-20251124-174001.html
+[0;32m[SUCCESS][0m    • index-v3.html → index.html (Landing Page V3 now set as homepage)
+[0;34m[INFO][0m 🚀 STEP 3: Deploying website via Netlify...
+​
+Netlify Build                                                 
+────────────────────────────────────────────────────────────────
+​
+❯ Version
+  @netlify/build 35.2.7
+​
+❯ Flags
+  accountId: 685c0602bef4762e13bab1f6
+​
+❯ Current directory
+  /home/karina/Documents/RinaWarp/rinawarp-website
+​
+❯ Config file
+  No config file was defined: using default values.
+​
+❯ Context
+  production
+
+Deploying to Netlify
+────────────────────────────────────────────────────────────────
+
+Deploy path: /home/karina/Documents/RinaWarp/rinawarp-website
+
+⠋ Uploading blobs to deploy store...
+
+✔ Finished uploading blobs to deploy store
+⠋ Hashing files...
+⠋ Looking for a functions cache...
+✔ No cached functions were found
+✔ Finished hashing 
+⠋ CDN diffing files...
+✔ CDN requesting 0 files
+⠋ Uploading 0 files
+✔ Finished uploading 0 assets
+⠋ Waiting for deploy to go live...
+✔ Deploy is live!
+​
+Netlify Build Complete                                        
+────────────────────────────────────────────────────────────────
+​
+(Netlify Build completed in 2.4s)
+
+🚀 Deploy complete
+────────────────────────────────────────────────────────────────
+
+   ╭────────────────── ⬥  Production deploy is live ⬥  ──────────────────╮
+   │                                                                     │
+   │        Deployed to production URL: https://rinawarptech.com         │
+   │                                                                     │
+   │                         Unique deploy URL:                          │
+   │   https://6924fae63e676a0f207e9dd3--rinawarp-terminal.netlify.app   │
+   │                                                                     │
+   ╰─────────────────────────────────────────────────────────────────────╯
+
+Build logs:         https://app.netlify.com/projects/rinawarp-terminal/deploys/6924fae63e676a0f207e9dd3
+Function logs:      https://app.netlify.com/projects/rinawarp-terminal/logs/functions
+Edge function Logs: https://app.netlify.com/projects/rinawarp-terminal/logs/edge-functions
+[0;32m[SUCCESS][0m ✅ Netlify deployment successful
+[0;34m[INFO][0m 🚀 STEP 4: Running backend/API health checks...
+[0;32m[SUCCESS][0m    • /api/health ✅ OK
+[0;32m[SUCCESS][0m    • /api/license-count ✅ OK
+[0;34m[INFO][0m 🚀 STEP 6: Verifying launch components...
+[0;32m[SUCCESS][0m ✅ Website is live and accessible
+[0;32m[SUCCESS][0m ✅ Found 3 installers in build-output/
+[0;32m[SUCCESS][0m ✅ Launch verification complete
+[0;34m[INFO][0m 🚀 GENERATING: Founder Wave Launch Content Pack
+[0;32m[SUCCESS][0m ✅ Launch content generated in /home/karina/Documents/RinaWarp/launch-content
+[0;34m[INFO][0m    • Facebook post: /home/karina/Documents/RinaWarp/launch-content/facebook-post.txt
+[0;34m[INFO][0m    • Instagram caption: /home/karina/Documents/RinaWarp/launch-content/instagram-caption.txt
+[0;34m[INFO][0m    • DM script: /home/karina/Documents/RinaWarp/launch-content/dm-script.txt
+[0;34m[INFO][0m    • Demo video script: /home/karina/Documents/RinaWarp/launch-content/demo-video-script.txt

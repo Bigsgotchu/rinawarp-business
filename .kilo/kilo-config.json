@@ -1,0 +1,39 @@
+{
+  "description": "Kilo Adaptive Brain config for RinaWarp",
+  "version": "1.0.0",
+  "rootPath": "/home/karina/Documents/RinaWarp",
+  "memoryFile": ".kilo/kilo-memory.json",
+  "autoscanScript": ".kilo/kilo-autoscan.js",
+  "preExecHookScript": ".kilo/kilo-pre-exec-hook.js",
+  "defaultShell": "bash",
+  "adaptiveMode": true,
+  "rules": {
+    "alwaysLoadMemory": true,
+    "alwaysRunAutoscanBeforeCriticalCommands": true,
+    "trackRecentCommands": true,
+    "trackRecentErrors": true
+  },
+  "criticalCommands": [
+    "build",
+    "deploy",
+    "netlify",
+    "pm2",
+    "uvicorn",
+    "stripe",
+    "aws",
+    "docker"
+  ],
+  "paths": {
+    "backend": "apps/terminal-pro/backend",
+    "desktop": "apps/terminal-pro/desktop",
+    "website": "rinawarp-website",
+    "scripts": "scripts",
+    "plugins": "plugins"
+  },
+  "safeGlobs": [
+    "apps/**",
+    "rinawarp-website/**",
+    "scripts/**",
+    "plugins/**"
+  ]
+}

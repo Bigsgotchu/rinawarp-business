@@ -1,0 +1,52 @@
+RinaWarp Website Deployment Report
+=================================
+
+Deployment Date: Sun Nov 30 03:36:40 AM MST 2025
+Environment: production
+Build Directory: /home/karina/Documents/RinaWarp/rinawarp-website
+
+Files Deployed:
+/home/karina/Documents/RinaWarp/rinawarp-website/assets/rinawarp-og.jpg
+/home/karina/Documents/RinaWarp/rinawarp-website/changelog.html
+/home/karina/Documents/RinaWarp/rinawarp-website/css/conversion-upgrades.css
+/home/karina/Documents/RinaWarp/rinawarp-website/css/rinawarp-styles.css
+/home/karina/Documents/RinaWarp/rinawarp-website/deployment-report-20251130-033219.txt
+/home/karina/Documents/RinaWarp/rinawarp-website/deployment-report-20251130-033640.txt
+/home/karina/Documents/RinaWarp/rinawarp-website/deploy.sh
+/home/karina/Documents/RinaWarp/rinawarp-website/download.html
+/home/karina/Documents/RinaWarp/rinawarp-website/faq.html
+/home/karina/Documents/RinaWarp/rinawarp-website/index.html
+/home/karina/Documents/RinaWarp/rinawarp-website/manifest.json
+/home/karina/Documents/RinaWarp/rinawarp-website/music-video-creator.html
+/home/karina/Documents/RinaWarp/rinawarp-website/netlify.toml
+/home/karina/Documents/RinaWarp/rinawarp-website/pricing-backup.html
+/home/karina/Documents/RinaWarp/rinawarp-website/pricing.html
+/home/karina/Documents/RinaWarp/rinawarp-website/README.md
+/home/karina/Documents/RinaWarp/rinawarp-website/rina/index.html
+/home/karina/Documents/RinaWarp/rinawarp-website/rina-vex.html
+/home/karina/Documents/RinaWarp/rinawarp-website/rinawarp-website-production-20251130-033219.tar.gz
+/home/karina/Documents/RinaWarp/rinawarp-website/robots.txt
+/home/karina/Documents/RinaWarp/rinawarp-website/scripts/full-clean-rebuild-2.sh
+/home/karina/Documents/RinaWarp/rinawarp-website/sitemap.xml
+/home/karina/Documents/RinaWarp/rinawarp-website/terminal-pro.html
+
+Total Files: 23
+Total Size: 492K
+
+Optimization Status:
+- WebP Images: 0 files created
+- Minified CSS: No
+
+SEO Status:
+- robots.txt: Present
+- sitemap.xml: Present
+- manifest.json: Present
+
+Page Status:
+- Homepage: ✓
+- Terminal Pro: ✓
+- Music Video Creator: ✓
+- Pricing: ✓
+- Download: ✓
+
+Deployment completed successfully!

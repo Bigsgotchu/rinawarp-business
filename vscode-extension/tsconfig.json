@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "compilerOptions": {
         "module": "commonjs",
         "target": "ES2020",
@@ -15,4 +16,36 @@
         "node_modules",
         ".vscode-test"
     ]
+=======
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2020",
+    "lib": [
+      "ES2020"
+    ],
+    "outDir": "out",
+    "rootDir": "src",
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "ignoreDeprecations": "6.0"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "out",
+    "dist",
+    "**/*.test.ts"
+  ]
+>>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635
 }

@@ -1,0 +1,145 @@
+{
+  "product": {
+    "name": "RinaWarp Terminal Pro",
+    "description": "Professional terminal application with advanced features for developers and power users"
+  },
+  "pricingTiers": [
+    {
+      "id": "basic",
+      "name": "Basic",
+      "type": "subscription",
+      "price": "$9.99",
+      "interval": "monthly",
+      "stripePriceId": "price_1SW3RiGZrRdZy3W9IuHbiwyB",
+      "paymentLink": "https://buy.stripe.com/test_6oU5kDeCG9ESd3w2bp04800",
+      "features": [
+        "Basic terminal features",
+        "Syntax highlighting",
+        "Multiple tabs",
+        "Basic themes"
+      ]
+    },
+    {
+      "id": "starter",
+      "name": "Starter", 
+      "type": "subscription",
+      "price": "$29",
+      "interval": "monthly",
+      "stripePriceId": "price_1SW3RxGZrRdZy3W9tGHTuxrH",
+      "paymentLink": "https://buy.stripe.com/test_dRmcN5526bN07JcdU704801",
+      "features": [
+        "Everything in Basic",
+        "Advanced terminal features",
+        "Custom themes",
+        "Plugin support",
+        "Enhanced productivity tools"
+      ]
+    },
+    {
+      "id": "creator",
+      "name": "Creator",
+      "type": "subscription", 
+      "price": "$69",
+      "interval": "monthly",
+      "stripePriceId": "price_1SW3SBGZrRdZy3W9HOVsW7wQ",
+      "paymentLink": "https://buy.stripe.com/test_9B600jdyC4ky0gK2bp04802",
+      "features": [
+        "Everything in Starter",
+        "Advanced customization",
+        "Premium themes",
+        "Priority support",
+        "Development workflow tools",
+        "Advanced terminal multiplexing"
+      ]
+    },
+    {
+      "id": "pro",
+      "name": "Pro",
+      "type": "subscription",
+      "price": "$99", 
+      "interval": "monthly",
+      "stripePriceId": "price_1SW3SQGZrRdZy3W9i7agMkRb",
+      "paymentLink": "https://buy.stripe.com/test_cNi6oH8ei6sG6F89DR04803",
+      "features": [
+        "Everything in Creator",
+        "Enterprise features",
+        "Team collaboration",
+        "Advanced integrations",
+        "Premium support",
+        "Custom branding options"
+      ]
+    },
+    {
+      "id": "founder_lifetime",
+      "name": "Founder Lifetime",
+      "type": "one_time",
+      "price": "$699",
+      "stripePriceId": "price_1SW3SeGZrRdZy3W9qLVKoXWS",
+      "paymentLink": "https://buy.stripe.com/test_aFa6oH3Y22cq1kOdU704804",
+      "features": [
+        "Lifetime access to all features",
+        "All future updates included",
+        "Exclusive founder badge",
+        "Direct access to development team",
+        "Custom feature requests consideration",
+        "Limited to first 100 customers"
+      ]
+    },
+    {
+      "id": "pioneer_lifetime",
+      "name": "Pioneer Lifetime", 
+      "type": "one_time",
+      "price": "$800",
+      "stripePriceId": "price_1SW3SpGZrRdZy3W9CkEEO7Oz",
+      "paymentLink": "https://buy.stripe.com/test_9B64gzcuy2cq5B42bp04805",
+      "features": [
+        "Everything in Founder Lifetime",
+        "Early access to new features",
+        "Beta testing privileges",
+        "Named in credits",
+        "Exclusive community access",
+        "Limited to first 200 customers"
+      ]
+    },
+    {
+      "id": "lifetime_future",
+      "name": "Lifetime Future",
+      "type": "one_time", 
+      "price": "$999",
+      "stripePriceId": "price_1SW3T2GZrRdZy3W9wKv6h59Y",
+      "paymentLink": "https://buy.stripe.com/test_eVq5kD0LQ5oC7Jc17l04806",
+      "features": [
+        "Everything in Pioneer Lifetime",
+        "Lifetime access to RinaWarp ecosystem",
+        "Future products included",
+        "Personal consultation sessions",
+        "Custom development options",
+        "VIP customer status"
+      ]
+    }
+  ],
+  "setupInstructions": {
+    "stripeDashboard": {
+      "mode": "Live mode when ready",
+      "productCreation": "Create one Product: 'RinaWarp Terminal Pro'",
+      "priceCreation": "Create Prices under the Product for each tier"
+    },
+    "paymentLinks": {
+      "instructions": "Payment links created via Stripe CLI - all configured and ready",
+      "result": "All payment links are live and configured in the application"
+    },
+    "environmentVariables": {
+      "BASIC_LINK": "https://buy.stripe.com/test_blahblah",
+      "STARTER_LINK": "https://buy.stripe.com/test_blahblah", 
+      "CREATOR_LINK": "https://buy.stripe.com/test_blahblah",
+      "PRO_LINK": "https://buy.stripe.com/test_blahblah",
+      "FOUNDER_LINK": "https://buy.stripe.com/test_blahblah",
+      "PIONEER_LINK": "https://buy.stripe.com/test_blahblah",
+      "LIFETIME_FUTURE_LINK": "https://buy.stripe.com/test_blahblah"
+    }
+  },
+  "copyUpdates": {
+    "subscriptionMessaging": "Start free. Choose monthly or lifetime when you're ready.",
+    "noSubscriptionNote": "Do NOT say 'no subscriptions' - we now have both subscription and lifetime options"
+  }
+}

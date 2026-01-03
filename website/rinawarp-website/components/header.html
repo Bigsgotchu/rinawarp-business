@@ -1,0 +1,89 @@
+<!-- Unified RinaWarp Header Component -->
+<nav class="navbar rw-unified-nav">
+  <div class="nav-container">
+    <a href="/" class="nav-brand">
+      <svg
+        width="32"
+        height="32"
+        viewBox="0 0 800 400"
+        xmlns="http://www.w3.org/2000/svg"
+        class="nav-logo"
+      >
+        <defs>
+          <linearGradient id="navGradUnified" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF1B8D" />
+            <stop offset="50%" stop-color="#12D6FF" />
+            <stop offset="100%" stop-color="#00D1C1" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M150 200 C150 100, 300 100, 400 200 C500 300, 650 300, 650 200 
+             C650 100, 500 100, 400 200 C300 300, 150 300, 150 200 Z"
+          fill="none"
+          stroke="url(#navGradUnified)"
+          stroke-width="15"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span class="nav-brand-text">RinaWarp</span>
+    </a>
+    
+    <ul class="nav-menu">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/terminal-pro" class="nav-link">Terminal Pro</a></li>
+      <li><a href="/music-video-creator" class="nav-link">Music Video Creator</a></li>
+      <li><a href="/pricing" class="nav-link">Pricing</a></li>
+      <li><a href="/support" class="nav-link">Support</a></li>
+      <li><a href="/rina-vex-music" class="nav-link music-link">🎵 Rina Vex</a></li>
+    </ul>
+    
+    <div class="nav-actions">
+      <a href="/download" class="nav-cta">Download</a>
+      <a href="/download" class="btn btn-small btn-primary nav-download">
+        Download Free Tier
+      </a>
+    </div>
+    
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </div>
+  
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-menu-content">
+      <ul class="mobile-nav-menu">
+        <li><a href="/" class="mobile-nav-link" onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="/terminal-pro" class="mobile-nav-link" onclick="closeMobileMenu()">Terminal Pro</a></li>
+        <li><a href="/music-video-creator" class="mobile-nav-link" onclick="closeMobileMenu()">Music Video Creator</a></li>
+        <li><a href="/pricing" class="mobile-nav-link" onclick="closeMobileMenu()">Pricing</a></li>
+        <li><a href="/support" class="mobile-nav-link" onclick="closeMobileMenu()">Support</a></li>
+        <li><a href="/rina-vex-music" class="mobile-nav-link music-link" onclick="closeMobileMenu()">🎵 Rina Vex</a></li>
+        <li class="mobile-cta-section">
+          <a href="/download" class="btn btn-primary mobile-download-btn">
+            Download Free Tier
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Global Mini Banner -->
+<section class="rv-global-mini-banner">
+  <div class="banner-container">
+    <div class="banner-content">
+      <strong>🎵 New Rina Vex Release:</strong>
+      <span class="track-name">"For a Minute, Forever"</span>
+    </div>
+    <a href="/rina-vex-music" class="rv-banner-link">
+      <span>Listen Now</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>

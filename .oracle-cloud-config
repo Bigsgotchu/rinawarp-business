@@ -1,0 +1,25 @@
+# Oracle Cloud Infrastructure Configuration
+# All IDs provided by user for RinaWarp deployment
+
+# Tenancy/Compartment IDs
+TENANCY_OCID="ocid1.tenancy.oc1..aaaaaaaazruptwuezlpqcarfmk2v7fkxgnlvkpu2id5tngagpksxubbagmzq"
+
+# Current RinaWarp Backend Instance (137.131.48.124)
+INSTANCE_ID="ocid1.instance.oc1.phx.anyhqljtx725ovacwblvi3c7vomqll5jgpgqczy6tk2vi45ikbhzqaejlw3a"
+INSTANCE_IP="137.131.48.124"
+
+# Network Infrastructure
+VCN_ID="ocid1.vcn.oc1.phx.amaaaaaax725ovaau2dzesz6qefjeh2ldryqxuyn5pz4ennm5jd5gqj76iea"
+SUBNET_ID="ocid1.subnet.oc1.phx.aaaaaaaagupovynr2u36v6qdhag53fjvlg56swhg4k2kvlvls3nsa5brwmnq"
+
+# Security Configuration
+SEC_LIST_ID="ocid1.securitylist.oc1.phx.aaaaaaaaoknlgot7s3qr4fpzkwoqsuittwipzx6xem6xeecvufk44yvkq2na"
+NSG_ID="ocid1.networksecuritygroup.oc1.phx.aaaaaaaa63z6onop7hk2ivw35fbcihqp3togtpjttu3lfgpo3wzugfxty6hq"
+
+# Old Instance (158.101.1.38) - for reference
+OLD_INSTANCE_ID="ocid1.instance.oc1.phx.anyhqljtx725ovacvackt6mfxdtvtozwsqwkhz3uvoj7imp4ayk6mij7miyq"
+OLD_INSTANCE_IP="158.101.1.38"
+
+# Region and Availability Domain
+REGION="us-phoenix-1"
+AVAILABILITY_DOMAIN="kB7:PHX-AD-1"
