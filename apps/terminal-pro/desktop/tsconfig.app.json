@@ -1,0 +1,50 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "jsx": "react-jsx",
+        "lib": [
+            "ES2022",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "types": [
+            "node",
+            "vite/client"
+        ],
+        "outDir": "out",
+        "rootDir": "src",
+        "noEmitOnError": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "paths": {
+            "@shared/*": [
+                "src/shared/*"
+            ]
+        }
+    },
+    "include": [
+        "src/main/**/*.ts",
+        "src/preload/**/*.ts",
+        "src/shared/**/*.ts",
+        "src/brain/**/*.ts"
+    ],
+    "exclude": [
+        "worker/**",
+        "legacy/**",
+        "src/renderer/**",
+        "out/**",
+        "dist/**",
+        "dist-*/**",
+        "dist-terminal-pro/**",
+        "build-output/**",
+        "release/**",
+        "coverage/**",
+        ".vite/**"
+    ]
+}

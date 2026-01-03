@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts", "src/**/*.tsx", "worker/src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "out",
+    "dist",
+    "dist-terminal-pro",
+    "build-output",
+    "release",
+    "coverage",
+    "legacy"
+  ]
+}

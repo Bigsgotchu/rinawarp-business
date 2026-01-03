@@ -1,0 +1,157 @@
+name: Release AppImage (staged + smoke online/offline)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+
+    env:
+      CI: true
+      MAX_MB: '180' # adjust your size budget
+
+    steps:
+      - name: Pre-checkout hardening (Linux)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git --version
+          git config --global core.longpaths true || true
+          git config --global core.protectNTFS true || true
+          git config --global core.protectHFS true || true
+          git config --global core.autocrlf false || true
+          git config --global fetch.prune true || true
+          git config --global advice.detachedHead false || true
+          git config --global gc.auto 0 || true
+          git config --global protocol.version 2 || true
+          git config --global safe.directory "*" || true
+          git config --global --list
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      # Deterministic native rebuild for Electron (node-pty)
+      - name: Rebuild native deps (Electron)
+        run: npx --yes electron-builder install-app-deps
+
+      - name: PTY smoke test
+        run: npm run ci:smoke:pty
+
+      - name: Build AppImage (staged)
+        run: npm run dist:linux:staged
+
+      - name: Install xvfb for GUI testing
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
+      - name: Smoke test AppImage (Xvfb + IPC + Rina online)
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 dist-terminal-pro/*.AppImage | head -n 1)"
+          chmod +x "$APP"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          xvfb-run -a "$APP" --smoke-test --smoke-ipc --smoke-rina-roundtrip --smoke-timeout-ms 60000 --smoke-no-sandbox
+
+      - name: Smoke test AppImage (Xvfb + IPC + Rina offline)
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 dist-terminal-pro/*.AppImage | head -n 1)"
+          chmod +x "$APP"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          xvfb-run -a "$APP" --smoke-test --smoke-ipc --smoke-rina-roundtrip --smoke-offline --smoke-timeout-ms 60000 --smoke-no-sandbox
+
+      - name: Inspect + verify AppImage scope
+        run: npm run ci:verify:appimage
+
+      - name: Enforce size budget
+        run: npm run ci:check:size
+
+      - name: Compute SHA256
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 dist-terminal-pro/*.AppImage | head -n 1)"
+          sha256sum "$APP" | tee "${APP}.sha256"
+
+      - name: Upload to R2
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 dist-terminal-pro/*.AppImage | head -n 1)"
+          SHA_FILE="${APP}.sha256"
+          VERSION="${GITHUB_REF_NAME#v}"  # Remove 'v' prefix
+          ENDPOINT="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
+          # Install AWS CLI if needed
+          if ! command -v aws >/dev/null 2>&1; then
+            pip install --user awscli
+            export PATH="$HOME/.local/bin:$PATH"
+          fi
+
+          # Upload AppImage and SHA256 to versioned path
+          aws s3 cp "$APP" "s3://${R2_BUCKET}/terminal-pro/v${VERSION}/" --endpoint-url "$ENDPOINT" --acl public-read
+          aws s3 cp "$SHA_FILE" "s3://${R2_BUCKET}/terminal-pro/v${VERSION}/" --endpoint-url "$ENDPOINT" --acl public-read
+
+          echo "✅ R2 upload complete"
+
+      - name: Update Admin API latest manifest
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          ADMIN_API_BASE_URL: ${{ secrets.ADMIN_API_BASE_URL }}
+          ADMIN_API_TOKEN: ${{ secrets.ADMIN_API_TOKEN }}
+          R2_PUBLIC_BASE_URL: ${{ secrets.R2_PUBLIC_BASE_URL }}
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 dist-terminal-pro/*.AppImage | head -n 1)"
+          SHA_FILE="${APP}.sha256"
+          VERSION="${GITHUB_REF_NAME#v}"
+          BASENAME="$(basename "$APP")"
+
+          SHA256="$(cat "$SHA_FILE" | awk '{print $1}')"
+          APPIMAGE_URL="${R2_PUBLIC_BASE_URL}/terminal-pro/v${VERSION}/${BASENAME}"
+
+          # Update Admin API manifest
+          curl -X PUT "${ADMIN_API_BASE_URL}/api/admin/downloads/latest" \
+            -H "Authorization: Bearer ${ADMIN_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{\"version\":\"${VERSION}\",\"linuxAppImageUrl\":\"${APPIMAGE_URL}\",\"linuxAppImageSha256\":\"${SHA256}\",\"notesUrl\":\"https://github.com/${GITHUB_REPOSITORY}/releases/tag/${GITHUB_REF_NAME}\"}"
+
+          echo "✅ Admin API updated"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: appimage
+          path: |
+            dist-terminal-pro/*.AppImage
+            dist-terminal-pro/*.sha256
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist-terminal-pro/*.AppImage
+            dist-terminal-pro/*.sha256
+          generate_release_notes: true

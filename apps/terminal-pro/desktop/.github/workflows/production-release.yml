@@ -1,0 +1,217 @@
+# Production Release CI - Hard Gates for vX.Y.Z tags
+name: Production Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+env:
+  APP_NAME: RinaWarp-Terminal-Pro
+  BUILD_DIR: dist-terminal-pro
+
+jobs:
+  build-and-test:
+    name: Build & Run All Gates
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint & Type Check
+        run: npm run lint && npm run type-check
+
+      - name: Build AppImage
+        run: npm run build:appimage
+
+      - name: Scope Guard - Verify no unwanted files
+        run: |
+          set -euo pipefail
+          echo "Checking for unwanted files in build..."
+          # Should not contain source files
+          if find "${{ env.BUILD_DIR }}" -name "*.ts" -o -name "*.js" -o -name "*.map" | grep -q .; then
+            echo "❌ Found source files in build output"
+            exit 1
+          fi
+          echo "✅ Scope guard passed"
+
+      - name: Size Budget Check
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 ${{ env.BUILD_DIR }}/*.AppImage | head -n 1)"
+          SIZE_MB=$(du -m "$APP" | cut -f1)
+          echo "AppImage size: ${SIZE_MB}MB"
+          if [ "$SIZE_MB" -gt 200 ]; then
+            echo "❌ AppImage exceeds 200MB budget"
+            exit 1
+          fi
+          echo "✅ Size budget passed"
+
+      - name: Electron Boot Smoke Test
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 ${{ env.BUILD_DIR }}/*.AppImage | head -n 1)"
+          chmod +x "$APP"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          timeout 30s xvfb-run -a "$APP" --version || (
+            echo "❌ Electron failed to boot"
+            exit 1
+          )
+          echo "✅ Electron boot smoke passed"
+
+      - name: IPC Smoke Test (Offline)
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 ${{ env.BUILD_DIR }}/*.AppImage | head -n 1)"
+          chmod +x "$APP"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          xvfb-run -a "$APP" --smoke-test --smoke-ipc --smoke-offline --smoke-timeout-ms 45000 --smoke-no-sandbox || (
+            echo "❌ IPC smoke test failed"
+            exit 1
+          )
+          echo "✅ IPC smoke test passed"
+
+      - name: Rina Offline Smoke Test
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 ${{ env.BUILD_DIR }}/*.AppImage | head -n 1)"
+          chmod +x "$APP"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          xvfb-run -a "$APP" --smoke-test --smoke-rina-roundtrip --smoke-offline --smoke-timeout-ms 45000 --smoke-no-sandbox || (
+            echo "❌ Rina offline smoke test failed"
+            exit 1
+          )
+          echo "✅ Rina offline smoke test passed"
+
+      - name: node-pty Smoke Test
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 ${{ env.BUILD_DIR }}/*.AppImage | head -n 1)"
+          chmod +x "$APP"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          xvfb-run -a "$APP" --smoke-test --smoke-terminal-pty --smoke-timeout-ms 30000 --smoke-no-sandbox || (
+            echo "❌ node-pty smoke test failed"
+            exit 1
+          )
+          echo "✅ node-pty smoke test passed"
+
+      - name: Rina Online Smoke Test (with secrets)
+        if: env.RINA_WORKER_BASE_URL != '' && env.RINA_WORKER_API_KEY != ''
+        env:
+          RINA_WORKER_BASE_URL: ${{ secrets.RINA_WORKER_BASE_URL }}
+          RINA_WORKER_API_KEY: ${{ secrets.RINA_WORKER_API_KEY }}
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 ${{ env.BUILD_DIR }}/*.AppImage | head -n 1)"
+          chmod +x "$APP"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          xvfb-run -a "$APP" --smoke-test --smoke-rina-roundtrip --smoke-timeout-ms 60000 --smoke-no-sandbox || (
+            echo "❌ Rina online smoke test failed"
+            exit 1
+          )
+          echo "✅ Rina online smoke test passed"
+
+      - name: Compute SHA256
+        run: |
+          set -euo pipefail
+          APP="$(ls -1 ${{ env.BUILD_DIR }}/*.AppImage | head -n 1)"
+          sha256sum "$APP" | tee "${APP}.sha256"
+          echo "APPIMAGE=$APP" >> $GITHUB_ENV
+          echo "APPIMAGE_SHA_FILE=${APP}.sha256" >> $GITHUB_ENV
+          echo "APPIMAGE_SHA=$(cut -d' ' -f1 < ${APP}.sha256)" >> $GITHUB_ENV
+
+      - name: Install awscli
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install awscli
+
+      - name: Upload to Cloudflare R2 (S3 API)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_PUBLIC_BASE_URL: ${{ secrets.R2_PUBLIC_BASE_URL }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}" # tag v1.0.2 -> 1.0.2
+          KEY_PREFIX="terminal-pro/v${VERSION}"
+
+          ENDPOINT="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
+          aws --endpoint-url "$ENDPOINT" s3 cp "$APPIMAGE" "s3://${R2_BUCKET}/${KEY_PREFIX}/$(basename "$APPIMAGE")"
+          aws --endpoint-url "$ENDPOINT" s3 cp "$APPIMAGE_SHA_FILE" "s3://${R2_BUCKET}/${KEY_PREFIX}/$(basename "$APPIMAGE").sha256"
+
+          echo "PUBLIC_URL=${R2_PUBLIC_BASE_URL}/${KEY_PREFIX}/$(basename "$APPIMAGE")" >> $GITHUB_ENV
+
+      - name: Set release notes URL
+        run: |
+          echo "NOTES_URL=${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}" >> $GITHUB_ENV
+
+      - name: Update latest download manifest (Admin API)
+        env:
+          ADMIN_API_BASE_URL: ${{ secrets.ADMIN_API_BASE_URL }}
+          ADMIN_API_TOKEN: ${{ secrets.ADMIN_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+
+          curl -sS -X PUT "${ADMIN_API_BASE_URL}/api/admin/downloads/latest" \
+            -H "Authorization: Bearer ${ADMIN_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg version "$VERSION" \
+              --arg url "$PUBLIC_URL" \
+              --arg sha "$APPIMAGE_SHA" \
+              --arg notes "$NOTES_URL" \
+              '{
+                product: "terminal-pro",
+                version: $version,
+                linuxAppImageUrl: $url,
+                linuxAppImageSha256: $sha,
+                notesUrl: $notes
+              }')"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.BUILD_DIR }}/*.AppImage
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+ security-audit:
+   name: Security Audit
+   runs-on: ubuntu-22.04
+   needs: build-and-test
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v4
+     - name: Audit dependencies
+       run: npm audit --production
+     - name: Check for vulnerable patterns
+       run: |
+         echo "Checking for common security issues..."
+         # Check for eval() usage
+         if grep -r "eval(" src/ --include="*.ts" --include="*.js" | grep -v "node_modules"; then
+           echo "⚠️  Found eval() usage"
+         fi
+         # Check for dangerous regex
+         if grep -r "new RegExp" src/ --include="*.ts" --include="*.js" | grep -v "node_modules"; then
+           echo "ℹ️  Found RegExp usage - review for ReDoS"
+         fi
+         echo "✅ Security audit completed"

@@ -1,0 +1,16 @@
+node_modules/
+out/
+dist/
+dist-*/
+dist-terminal-pro/
+build-output/
+release/
+coverage/
+.vite/
+src/renderer/js/
+src/shared/
+tools/
+tests/
+test*.js
+legacy/
+*.map

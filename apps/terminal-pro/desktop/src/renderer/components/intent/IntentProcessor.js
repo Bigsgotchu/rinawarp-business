@@ -1,0 +1,12 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const IntentProcessor = ({ currentIntent, proposals, isProcessing, onExecuteAction, onBackToConversation, }) => {
+    const handleExecuteAction = async (actionId) => {
+        try {
+            await onExecuteAction(actionId);
+        }
+        catch (error) {
+            console.error('Failed to execute action:', error);
+        }
+    };
+    return (_jsxs("div", { className: "intent-processor", children: [_jsxs("div", { className: "intent-header", children: [_jsx("button", { className: "back-button", onClick: onBackToConversation, children: "\u2190 Back to Conversation" }), _jsx("h2", { children: "Intent Processing" })] }), isProcessing && (_jsxs("div", { className: "processing-indicator", children: [_jsx("div", { className: "spinner" }), _jsx("span", { children: "Processing your intent..." })] })), currentIntent && (_jsxs("div", { className: "current-intent", children: [_jsx("h3", { children: "Current Intent" }), _jsx("p", { children: currentIntent.text }), _jsxs("div", { className: "intent-confidence", children: ["Confidence: ", Math.round(currentIntent.confidence * 100), "%"] })] })), proposals.length > 0 && (_jsxs("div", { className: "action-proposals", children: [_jsx("h3", { children: "Proposed Actions" }), proposals.map((proposal) => (_jsxs("div", { className: "action-proposal", children: [_jsxs("div", { className: "proposal-header", children: [_jsx("h4", { children: proposal.title }), _jsx("span", { className: `risk-level ${proposal.riskLevel}`, children: proposal.riskLevel.toUpperCase() })] }), _jsx("p", { className: "proposal-description", children: proposal.description }), _jsxs("div", { className: "proposal-consequences", children: [_jsx("h5", { children: "Consequences:" }), _jsx("ul", { children: proposal.consequences.map((consequence, index) => (_jsx("li", { className: consequence.impact, children: consequence.description }, index))) })] }), _jsxs("div", { className: "proposal-actions", children: [_jsx("button", { className: "execute-btn", onClick: () => handleExecuteAction(proposal.id), children: "Execute Action" }), _jsx("button", { className: "cancel-btn", onClick: () => console.log('Cancel action'), children: "Cancel" })] })] }, proposal.id)))] })), !isProcessing && !currentIntent && proposals.length === 0 && (_jsx("div", { className: "empty-state", children: _jsx("p", { children: "No active intents. Start a conversation to create intents." }) }))] }));
+};
