@@ -146,7 +146,10 @@ export default [
         test: 'readonly',
 
         // Cloudflare Workers / Pages Functions
+        D1Database: 'readonly',
         KVNamespace: 'readonly',
+        R2Bucket: 'readonly',
+        Fetcher: 'readonly',
         ResponseInit: 'readonly',
         PagesFunction: 'readonly',
         RequestInit: 'readonly',
@@ -168,6 +171,14 @@ export default [
   // Allow `any` in admin-console pages
   {
     files: ['apps/admin-console/**/*.ts', 'apps/admin-console/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
+  },
+
+  // Allow `any` in Cloudflare Workers (early development phase)
+  {
+    files: ['**/worker/**/*.ts', '**/workers/**/*.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off'
     }
