@@ -1,5 +1,5 @@
 import { IpcMain } from 'electron';
-import { IPC_CHANNELS } from '../../shared/constants';
+import { IPC } from '../../../src/shared/constants';
 
 export class IntentHandler {
   private initialized = false;
@@ -11,8 +11,8 @@ export class IntentHandler {
   register(ipcMain: IpcMain): void {
     if (this.initialized) return;
 
-    ipcMain.handle(IPC_CHANNELS.INTENT.PROCESS, this.handleProcess.bind(this));
-    ipcMain.handle(IPC_CHANNELS.INTENT.EXECUTE_ACTION, this.handleExecuteAction.bind(this));
+    ipcMain.handle(IPC.intent.PROCESS, this.handleProcess.bind(this));
+    ipcMain.handle(IPC.intent.EXECUTE_ACTION, this.handleExecuteAction.bind(this));
 
     this.initialized = true;
     console.log('✅ Intent IPC handlers registered');

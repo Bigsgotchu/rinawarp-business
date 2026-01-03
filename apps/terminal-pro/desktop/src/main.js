@@ -24,8 +24,16 @@ const { z } = require('zod');
 // History
 const HISTORY_DIR = path.join(os.homedir(), '.rinawarp');
 const HISTORY_FILE = path.join(HISTORY_DIR, 'history.jsonl');
-function ensureHistory() { if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true }); if (!fs.existsSync(HISTORY_FILE)) fs.writeFileSync(HISTORY_FILE, ''); }
-function appendHistory(entry) { try { ensureHistory(); fs.appendFileSync(HISTORY_FILE, JSON.stringify(entry) + '\n'); } catch {} }
+function ensureHistory() {
+  if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true });
+  if (!fs.existsSync(HISTORY_FILE)) fs.writeFileSync(HISTORY_FILE, '');
+}
+function appendHistory(entry) {
+  try {
+    ensureHistory();
+    fs.appendFileSync(HISTORY_FILE, JSON.stringify(entry) + '\n');
+  } catch {}
+}
 
 // Security
 function hardenSession() {
@@ -37,8 +45,19 @@ function cspHeader() {
 }
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1100, height: 720, minWidth: 900, minHeight: 600, title: 'RinaWarp Terminal Pro',
-    webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, devTools: IS_DEV }
+    width: 1100,
+    height: 720,
+    minWidth: 900,
+    minHeight: 600,
+    title: 'RinaWarp Terminal Pro',
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      devTools: IS_DEV,
+    },
   });
   win.webContents.on('will-navigate', (e) => e.preventDefault());
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
@@ -46,13 +65,16 @@ function createWindow() {
   return win;
 }
 app.whenReady().then(() => {
-  ensureHistory(); hardenSession();
-  session.defaultSession.webRequest.onHeadersReceived((d, cb) => cb({ responseHeaders: { ...d.responseHeaders, 'Content-Security-Policy': [cspHeader()] } }));
-  
+  ensureHistory();
+  hardenSession();
+  session.defaultSession.webRequest.onHeadersReceived((d, cb) =>
+    cb({ responseHeaders: { ...d.responseHeaders, 'Content-Security-Policy': [cspHeader()] } }),
+  );
+
   // Start brain server for VS Code integration
   brainServer = startBrainServer();
   process.env.RINAWARP_BRAIN_TOKEN = brainServer.token;
-  
+
   createWindow();
   session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
     const url = details.url;
@@ -62,19 +84,21 @@ app.whenReady().then(() => {
     }
     cb({});
   });
-  app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
 });
-app.on('window-all-closed', () => { 
+app.on('window-all-closed', () => {
   if (brainServer) brainServer.stop();
-  if (process.platform !== 'darwin') app.quit(); 
+  if (process.platform !== 'darwin') app.quit();
 });
-process.on('SIGINT', () => { 
+process.on('SIGINT', () => {
   if (brainServer) brainServer.stop();
-  app.quit(); 
-}); 
-process.on('SIGTERM', () => { 
+  app.quit();
+});
+process.on('SIGTERM', () => {
   if (brainServer) brainServer.stop();
-  app.quit(); 
+  app.quit();
 });
 
 // Shared modules
@@ -119,18 +143,23 @@ const ExecGraphSchema = z.object({
   intent: z.string().min(1),
   cwd: z.string().min(1),
   confirm: z.boolean(),
-  resetFailed: z.boolean().optional().default(false)
+  resetFailed: z.boolean().optional().default(false),
 });
 const CapsSetSchema = z.object({
   cwd: z.string().min(1),
-  caps: z.object({ docker: z.boolean().optional(), git: z.boolean().optional(), npm: z.boolean().optional(), network: z.boolean().optional() })
+  caps: z.object({
+    docker: z.boolean().optional(),
+    git: z.boolean().optional(),
+    npm: z.boolean().optional(),
+    network: z.boolean().optional(),
+  }),
 });
 
 const ExecSubsetSchema = z.object({
   intent: z.string().min(1),
   cwd: z.string().min(1),
   selectedIds: z.array(z.string().min(1)).min(1),
-  dryRun: z.boolean().optional().default(true)
+  dryRun: z.boolean().optional().default(true),
 });
 
 function safeHandle(channel, handler) {
@@ -138,32 +167,38 @@ function safeHandle(channel, handler) {
     try {
       return await handler(evt, payload);
     } catch (e) {
-      const msg = (e && e.message) ? e.message : String(e);
+      const msg = e && e.message ? e.message : String(e);
       return { status: 'error', message: msg, plan: [], stdout: '', stderr: '' };
     }
   });
 }
 
 function cmdSync(cmd) {
-  try { return String(child.execSync(cmd, { stdio: ['ignore','pipe','pipe'] })).trim(); }
-  catch (e) { return `ERR: ${e.message}`; }
+  try {
+    return String(child.execSync(cmd, { stdio: ['ignore', 'pipe', 'pipe'] })).trim();
+  } catch (e) {
+    return `ERR: ${e.message}`;
+  }
 }
 
 // helper: dependency closure
 function selectWithDeps(steps, ids) {
   const idset = new Set(ids);
-  const map = new Map(steps.map(s => [s.id, s]));
+  const map = new Map(steps.map((s) => [s.id, s]));
   // add required ancestors recursively
   const toVisit = [...ids];
   while (toVisit.length) {
     const id = toVisit.pop();
     const s = map.get(id);
     if (!s) continue;
-    for (const dep of (s.requires || [])) {
-      if (!idset.has(dep)) { idset.add(dep); toVisit.push(dep); }
+    for (const dep of s.requires || []) {
+      if (!idset.has(dep)) {
+        idset.add(dep);
+        toVisit.push(dep);
+      }
     }
   }
-  return steps.filter(s => idset.has(s.id));
+  return steps.filter((s) => idset.has(s.id));
 }
 
 safeHandle('agent:plan', async (_evt, payload) => {
@@ -180,25 +215,53 @@ safeHandle('agent:dryrun', async (_evt, payload) => {
   let steps = await composePlanner(intent, cwd);
   steps = applyPlugins(steps, { cwd, appRoot: path.join(__dirname, '..') });
   const res = await execGraph({ steps, cwd, dry: true, confirm: false });
-  const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
-  const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
-  auditWrite('dryrun', { intent, cwd, ok: !Object.values(res).some(r => r.code !== 0) });
+  const stdout = Object.values(res)
+    .map((r) => r.stdout)
+    .filter(Boolean)
+    .join('\n');
+  const stderr = Object.values(res)
+    .map((r) => r.stderr)
+    .filter(Boolean)
+    .join('\n');
+  auditWrite('dryrun', { intent, cwd, ok: !Object.values(res).some((r) => r.code !== 0) });
   appendHistory({ ts: Date.now(), method: 'dryrun', intent, steps, stdout, stderr });
   return { status: 'ok', message: '', plan: steps, stdout, stderr };
 });
 
 safeHandle('agent:execGraph', async (_evt, payload) => {
   const { intent, cwd, confirm, resetFailed } = ExecGraphSchema.parse(payload);
-  if (!confirm) return { status: 'error', message: 'confirmation required', plan: [], stdout: '', stderr: '' };
+  if (!confirm)
+    return { status: 'error', message: 'confirmation required', plan: [], stdout: '', stderr: '' };
   let steps = await composePlanner(intent, cwd);
   steps = applyPlugins(steps, { cwd, appRoot: path.join(__dirname, '..') });
   const res = await execGraph({ steps, cwd, dry: false, confirm: true, resetFailed });
-  const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
-  const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
-  const failed = Object.values(res).some(r => r.code !== 0);
+  const stdout = Object.values(res)
+    .map((r) => r.stdout)
+    .filter(Boolean)
+    .join('\n');
+  const stderr = Object.values(res)
+    .map((r) => r.stderr)
+    .filter(Boolean)
+    .join('\n');
+  const failed = Object.values(res).some((r) => r.code !== 0);
   auditWrite('exec', { intent, cwd, status: failed ? 'error' : 'ok' });
-  appendHistory({ ts: Date.now(), method: 'execGraph', intent, steps, status: failed ? 'error' : 'ok', stdout, stderr });
-  return { status: failed ? 'error' : 'ok', message: failed ? 'one or more steps failed' : 'completed', plan: steps, stdout, stderr, detail: res };
+  appendHistory({
+    ts: Date.now(),
+    method: 'execGraph',
+    intent,
+    steps,
+    status: failed ? 'error' : 'ok',
+    stdout,
+    stderr,
+  });
+  return {
+    status: failed ? 'error' : 'ok',
+    message: failed ? 'one or more steps failed' : 'completed',
+    plan: steps,
+    stdout,
+    stderr,
+    detail: res,
+  };
 });
 
 safeHandle('agent:rollback', async () => {
@@ -214,7 +277,9 @@ safeHandle('agent:caps:set', async (_evt, payload) => {
   const { cwd, caps } = CapsSetSchema.parse(payload);
   const policy = loadPolicy(cwd);
   // Only allow enabling options already allowed by policy; never elevate above policy=false
-  const merged = Object.fromEntries(Object.entries(policy.capabilities).map(([k, v]) => [k, v && !!caps[k]]));
+  const merged = Object.fromEntries(
+    Object.entries(policy.capabilities).map(([k, v]) => [k, v && !!caps[k]]),
+  );
   return { cwd, caps: merged };
 });
 
@@ -280,24 +345,67 @@ safeHandle('agent:execSubset', async (_evt, payload) => {
   const sub = selectWithDeps(steps, selectedIds);
 
   // Plan must preserve dependencies that reference pruned nodes → ensure validity
-  const validIds = new Set(sub.map(s => s.id));
-  const subFixed = sub.map(s => ({ ...s, requires: (s.requires || []).filter(r => validIds.has(r)) }));
+  const validIds = new Set(sub.map((s) => s.id));
+  const subFixed = sub.map((s) => ({
+    ...s,
+    requires: (s.requires || []).filter((r) => validIds.has(r)),
+  }));
 
   // Execute
   if (dryRun) {
     const res = await execGraph({ steps: subFixed, cwd, dry: true, confirm: false });
-    const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
-    const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
+    const stdout = Object.values(res)
+      .map((r) => r.stdout)
+      .filter(Boolean)
+      .join('\n');
+    const stderr = Object.values(res)
+      .map((r) => r.stderr)
+      .filter(Boolean)
+      .join('\n');
     auditWrite('dryrun:selected', { intent, cwd, selected: selectedIds, size: subFixed.length });
-    appendHistory({ ts: Date.now(), method: 'dryrun:selected', intent, steps: subFixed, stdout, stderr });
+    appendHistory({
+      ts: Date.now(),
+      method: 'dryrun:selected',
+      intent,
+      steps: subFixed,
+      stdout,
+      stderr,
+    });
     return { status: 'ok', message: '', plan: subFixed, stdout, stderr };
   } else {
     const res = await execGraph({ steps: subFixed, cwd, dry: false, confirm: true });
-    const stdout = Object.values(res).map(r => r.stdout).filter(Boolean).join('\n');
-    const stderr = Object.values(res).map(r => r.stderr).filter(Boolean).join('\n');
-    const failed = Object.values(res).some(r => r.code !== 0);
-    auditWrite('exec:selected', { intent, cwd, selected: selectedIds, size: subFixed.length, status: failed ? 'error' : 'ok' });
-    appendHistory({ ts: Date.now(), method: 'exec:selected', intent, steps: subFixed, status: failed ? 'error' : 'ok', stdout, stderr });
-    return { status: failed ? 'error' : 'ok', message: failed ? 'one or more steps failed' : 'completed', plan: subFixed, stdout, stderr, detail: res };
+    const stdout = Object.values(res)
+      .map((r) => r.stdout)
+      .filter(Boolean)
+      .join('\n');
+    const stderr = Object.values(res)
+      .map((r) => r.stderr)
+      .filter(Boolean)
+      .join('\n');
+    const failed = Object.values(res).some((r) => r.code !== 0);
+    auditWrite('exec:selected', {
+      intent,
+      cwd,
+      selected: selectedIds,
+      size: subFixed.length,
+      status: failed ? 'error' : 'ok',
+    });
+    appendHistory({
+      ts: Date.now(),
+      method: 'exec:selected',
+      intent,
+      steps: subFixed,
+      status: failed ? 'error' : 'ok',
+      stdout,
+      stderr,
+    });
+    return {
+      status: failed ? 'error' : 'ok',
+      message: failed ? 'one or more steps failed' : 'completed',
+      plan: subFixed,
+      stdout,
+      stderr,
+      detail: res,
+    };
   }
 });

@@ -63,7 +63,7 @@ function generateReportData() {
   // Group tests by suite
   const testsBySuite = {};
 
-  testResults.tests.forEach(test => {
+  testResults.tests.forEach((test) => {
     if (!testsBySuite[test.test]) {
       testsBySuite[test.test] = [];
     }
@@ -71,20 +71,20 @@ function generateReportData() {
       name: test.test,
       passed: test.passed,
       message: test.message,
-      error: test.passed ? null : test.message
+      error: test.passed ? null : test.message,
     });
   });
 
   // Create test suites
   for (const [suiteName, tests] of Object.entries(testsBySuite)) {
-    const allPassed = tests.every(test => test.passed);
+    const allPassed = tests.every((test) => test.passed);
     testSuites.push({
       name: suiteName,
       allPassed,
-      tests
+      tests,
     });
 
-    tests.forEach(test => {
+    tests.forEach((test) => {
       totalTests++;
       if (test.passed) passedTests++;
     });
@@ -96,18 +96,18 @@ function generateReportData() {
   return {
     reportInfo: {
       date: reportDate,
-      duration: "00:02:45", // This would be calculated in a real implementation
-      environment: "Development",
-      version: "1.0.0",
-      timestamp: reportTimestamp
+      duration: '00:02:45', // This would be calculated in a real implementation
+      environment: 'Development',
+      version: '1.0.0',
+      timestamp: reportTimestamp,
     },
     summary: {
       total: totalTests,
       passed: passedTests,
       failed: failedTests,
-      successRate: successRate
+      successRate: successRate,
     },
-    testSuites: testSuites
+    testSuites: testSuites,
   };
 }
 
@@ -119,23 +119,53 @@ function generateHtmlReport() {
   let htmlReport = templateContent;
 
   // Replace metadata
-  htmlReport = htmlReport.replace('id="report-date">2025-12-11', `id="report-date">${reportData.reportInfo.date}`);
-  htmlReport = htmlReport.replace('id="report-duration">00:00:00', `id="report-duration">${reportData.reportInfo.duration}`);
-  htmlReport = htmlReport.replace('id="report-environment">Development', `id="report-environment">${reportData.reportInfo.environment}`);
-  htmlReport = htmlReport.replace('id="report-version">1.0.0', `id="report-version">${reportData.reportInfo.version}`);
-  htmlReport = htmlReport.replace('id="footer-timestamp">2025-12-11 09:30:00', `id="footer-timestamp">${reportData.reportInfo.timestamp}`);
+  htmlReport = htmlReport.replace(
+    'id="report-date">2025-12-11',
+    `id="report-date">${reportData.reportInfo.date}`,
+  );
+  htmlReport = htmlReport.replace(
+    'id="report-duration">00:00:00',
+    `id="report-duration">${reportData.reportInfo.duration}`,
+  );
+  htmlReport = htmlReport.replace(
+    'id="report-environment">Development',
+    `id="report-environment">${reportData.reportInfo.environment}`,
+  );
+  htmlReport = htmlReport.replace(
+    'id="report-version">1.0.0',
+    `id="report-version">${reportData.reportInfo.version}`,
+  );
+  htmlReport = htmlReport.replace(
+    'id="footer-timestamp">2025-12-11 09:30:00',
+    `id="footer-timestamp">${reportData.reportInfo.timestamp}`,
+  );
 
   // Replace summary
-  htmlReport = htmlReport.replace('id="total-tests">0', `id="total-tests">${reportData.summary.total}`);
-  htmlReport = htmlReport.replace('id="passed-tests">0', `id="passed-tests">${reportData.summary.passed}`);
-  htmlReport = htmlReport.replace('id="failed-tests">0', `id="failed-tests">${reportData.summary.failed}`);
-  htmlReport = htmlReport.replace('id="success-rate">0%', `id="success-rate">${reportData.summary.successRate}`);
-  htmlReport = htmlReport.replace('style="width: 0%"', `style="width: ${reportData.summary.successRate}"`);
+  htmlReport = htmlReport.replace(
+    'id="total-tests">0',
+    `id="total-tests">${reportData.summary.total}`,
+  );
+  htmlReport = htmlReport.replace(
+    'id="passed-tests">0',
+    `id="passed-tests">${reportData.summary.passed}`,
+  );
+  htmlReport = htmlReport.replace(
+    'id="failed-tests">0',
+    `id="failed-tests">${reportData.summary.failed}`,
+  );
+  htmlReport = htmlReport.replace(
+    'id="success-rate">0%',
+    `id="success-rate">${reportData.summary.successRate}`,
+  );
+  htmlReport = htmlReport.replace(
+    'style="width: 0%"',
+    `style="width: ${reportData.summary.successRate}"`,
+  );
 
   // Generate test suites HTML
   let testSuitesHtml = '';
 
-  reportData.testSuites.forEach(suite => {
+  reportData.testSuites.forEach((suite) => {
     testSuitesHtml += `
       <div class="test-suite">
         <div class="test-suite-header">
@@ -145,7 +175,7 @@ function generateHtmlReport() {
         <div class="test-suite-body">
     `;
 
-    suite.tests.forEach(test => {
+    suite.tests.forEach((test) => {
       testSuitesHtml += `
         <div class="test-case ${test.passed ? 'passed' : 'failed'}">
           <div class="test-case-header">
@@ -169,7 +199,10 @@ function generateHtmlReport() {
   });
 
   // Replace test results container
-  htmlReport = htmlReport.replace('<div id="test-results-container">', `<div id="test-results-container">${testSuitesHtml}`);
+  htmlReport = htmlReport.replace(
+    '<div id="test-results-container">',
+    `<div id="test-results-container">${testSuitesHtml}`,
+  );
 
   return htmlReport;
 }

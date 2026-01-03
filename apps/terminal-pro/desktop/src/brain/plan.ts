@@ -1,4 +1,4 @@
-import { IntentRequest, PlanResponse } from './types';
+import { IntentRequest, PlanResponse, PlanStep } from './types.js';
 
 export function handlePlan(res: any, body: IntentRequest): void {
   const { intent, context } = body;
@@ -10,7 +10,7 @@ export function handlePlan(res: any, body: IntentRequest): void {
     summary: intent,
     risk: determineRisk(context.buildChannel, intent),
     steps: generateSteps(intent, context),
-    requiresConfirmation: true
+    requiresConfirmation: true,
   };
 
   res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -21,59 +21,37 @@ function determineRisk(buildChannel: string, intent: string): 'LOW' | 'MEDIUM' |
   // Simple risk assessment based on keywords and build channel
   const highRiskKeywords = ['delete', 'remove', 'drop', 'deploy', 'production'];
   const mediumRiskKeywords = ['refactor', 'change', 'update', 'modify'];
-  
+
   const intentLower = intent.toLowerCase();
-  
+
   // Production builds are automatically higher risk
   if (buildChannel === 'stable') {
-    if (highRiskKeywords.some(keyword => intentLower.includes(keyword))) {
+    if (highRiskKeywords.some((keyword) => intentLower.includes(keyword))) {
       return 'HIGH';
     }
     return 'MEDIUM';
   }
-  
+
   // Dev builds are generally lower risk
-  if (highRiskKeywords.some(keyword => intentLower.includes(keyword))) {
+  if (highRiskKeywords.some((keyword) => intentLower.includes(keyword))) {
     return 'MEDIUM';
   }
-  
+
   return 'LOW';
 }
 
 function generateSteps(intent: string, context: IntentRequest['context']) {
-  const intentLower = intent.toLowerCase();
-  const steps = [];
-  
-  // Always start with analysis
-  steps.push({
-    id: 's1',
-    type: 'analysis' as const,
-    description: 'Review current implementation and requirements'
-  });
-  
-  // Add steps based on intent keywords
-  if (intentLower.includes('refactor') || intentLower.includes('change')) {
-    steps.push({
-      id: 's2',
-      type: 'edit' as const,
-      description: 'Apply changes behind safe boundaries'
-    });
+  const steps: PlanStep[] = [
+    { id: '1', type: 'analysis', description: 'Analyze request' },
+    { id: '2', type: 'edit', description: 'Propose changes' },
+    { id: '3', type: 'validation', description: 'Validate result' },
+  ];
+
+  const _mediumRiskKeywords = ['rm -rf', 'sudo', 'curl | sh'];
+
+  function score(_context: unknown) {
+    return 0;
   }
-  
-  if (intentLower.includes('auth') || intentLower.includes('security')) {
-    steps.push({
-      id: 's3',
-      type: 'validation' as const,
-      description: 'Run security validation tests'
-    });
-  }
-  
-  // Always end with validation
-  steps.push({
-    id: steps.length + 1,
-    type: 'validation' as const,
-    description: 'Run smoke tests and validate functionality'
-  });
-  
+
   return steps;
 }

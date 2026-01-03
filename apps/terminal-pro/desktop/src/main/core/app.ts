@@ -1,4 +1,4 @@
-import { APP_CONFIG } from '../../shared/constants';
+import { APP } from '../../shared/constants';
 
 /**
  * Core Application class that manages the overall application state
@@ -8,7 +8,7 @@ export class Application {
   private startTime = Date.now();
 
   constructor() {
-    console.log(`📱 Initializing ${APP_CONFIG.name} v${APP_CONFIG.version}`);
+    console.log(`📱 Initializing ${APP.name} v${APP.version}`);
   }
 
   /**
@@ -50,14 +50,14 @@ export class Application {
    * Get application version
    */
   getVersion(): string {
-    return APP_CONFIG.version;
+    return APP.version;
   }
 
   /**
    * Get application name
    */
   getName(): string {
-    return APP_CONFIG.name;
+    return APP.name;
   }
 
   /**
@@ -68,7 +68,11 @@ export class Application {
     timestamp: number;
     environment: string;
   } {
-    return APP_CONFIG.build;
+    return {
+      number: APP.version,
+      timestamp: Date.now(),
+      environment: APP.build.channel
+    };
   }
 
   /**

@@ -17,29 +17,34 @@ The focus of v1.0.0 is **correctness, stability, and supportability**.
 ## Key Capabilities
 
 ### Terminal & Core
+
 - Multi-pane terminal management powered by `node-pty`
 - Session persistence and workspace handling
 - Cross-platform support (Linux, macOS, Windows)
 
 ### AI Assistance
+
 - AI-powered command suggestions and explanations
 - Error analysis and diagnostics integration
 - Cloudflare-backed AI routing
 - No direct AI execution from renderer (IPC enforced)
 
 ### Security & Architecture
+
 - Strict main / preload / renderer separation
 - Typed, allowlisted IPC (single source of truth)
 - Runtime IPC guard to block unauthorized channels
 - Deprecated Electron APIs explicitly forbidden
 
 ### Crash Handling & Recovery
+
 - Stable crash signature hashing (deduplicated across machines)
 - Automatic safe-mode entry on repeated crashes
 - Safe-mode report bundles for deterministic support
 - Renderer, child-process, and main-process crash capture
 
 ### Runtime & Build Governance
+
 - Node.js and Electron versions pinned and enforced
 - ABI compatibility safeguards for native modules
 - Deterministic CI with architecture drift detection
@@ -82,6 +87,7 @@ See attached release assets for platform-specific builds.
 ## Support
 
 When reporting issues, include:
+
 - Crash signature hash
 - Safe-mode report bundle
 - Platform and version information

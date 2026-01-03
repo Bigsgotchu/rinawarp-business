@@ -37,33 +37,32 @@ check('Node version matches package.json', () => {
   const packageJson = JSON.parse(fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf-8'));
   const requiredVersion = packageJson.engines.node;
   const currentVersion = process.version;
-  
+
   // Simple version check (could be enhanced with semver)
-  return currentVersion.startsWith('v' + requiredVersion.replace('>=', '').replace('^', '').replace('~', ''));
+  return currentVersion.startsWith(
+    'v' + requiredVersion.replace('>=', '').replace('^', '').replace('~', ''),
+  );
 });
 
 check('Electron version matches package.json', () => {
   const packageJson = JSON.parse(fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf-8'));
   const requiredVersion = packageJson.engines.electron;
-  
+
   // In main process, we can check process.versions.electron
   if (process.versions && process.versions.electron) {
     const currentVersion = process.versions.electron;
     return currentVersion.startsWith(requiredVersion.replace('^', '').replace('~', ''));
   }
-  
+
   // If not in Electron, just check if the version is specified
   return !!requiredVersion;
 });
 
 // 2. Environment variables
 check('Required environment variables are set', () => {
-  const required = [
-    'RINAWARP_API_URL',
-    'RINA_AGENT_URL'
-  ];
-  
-  return required.every(env => process.env[env]);
+  const required = ['RINAWARP_API_URL', 'RINA_AGENT_URL'];
+
+  return required.every((env) => process.env[env]);
 });
 
 check('OpenAI API key is configured (optional)', () => {
@@ -77,18 +76,25 @@ check('OpenAI API key is configured (optional)', () => {
 check('Stripe keys are configured (optional)', () => {
   // These are optional, so we just check format if present
   if (process.env.STRIPE_SECRET_KEY) {
-    return process.env.STRIPE_SECRET_KEY.startsWith('sk_') && process.env.STRIPE_SECRET_KEY.length > 20;
+    return (
+      process.env.STRIPE_SECRET_KEY.startsWith('sk_') && process.env.STRIPE_SECRET_KEY.length > 20
+    );
   }
   if (process.env.STRIPE_PUBLIC_KEY) {
-    return process.env.STRIPE_PUBLIC_KEY.startsWith('pk_') && process.env.STRIPE_PUBLIC_KEY.length > 20;
+    return (
+      process.env.STRIPE_PUBLIC_KEY.startsWith('pk_') && process.env.STRIPE_PUBLIC_KEY.length > 20
+    );
   }
   return true; // Not required
 });
 
 // 3. File system permissions
 check('Config directory is writable', () => {
-  const configPath = path.join(process.env.HOME || process.env.USERPROFILE || '', '.rinawarp-terminal-pro');
-  
+  const configPath = path.join(
+    process.env.HOME || process.env.USERPROFILE || '',
+    '.rinawarp-terminal-pro',
+  );
+
   try {
     fs.mkdirSync(configPath, { recursive: true });
     fs.writeFileSync(path.join(configPath, 'test.tmp'), 'test');
@@ -100,8 +106,12 @@ check('Config directory is writable', () => {
 });
 
 check('Logs directory is writable', () => {
-  const logsPath = path.join(process.env.HOME || process.env.USERPROFILE || '', '.rinawarp-terminal-pro', 'logs');
-  
+  const logsPath = path.join(
+    process.env.HOME || process.env.USERPROFILE || '',
+    '.rinawarp-terminal-pro',
+    'logs',
+  );
+
   try {
     fs.mkdirSync(logsPath, { recursive: true });
     fs.writeFileSync(path.join(logsPath, 'test.log'), 'test');
@@ -133,7 +143,7 @@ check('WebSocket is available', () => {
 
 check('OpenAI client is available (if configured)', () => {
   if (!process.env.OPENAI_API_KEY) return true; // Not required
-  
+
   try {
     const OpenAI = require('openai');
     return typeof OpenAI === 'function';
@@ -144,18 +154,14 @@ check('OpenAI client is available (if configured)', () => {
 
 // 5. Security
 check('No dangerous environment variables', () => {
-  const dangerous = [
-    'NODE_OPTIONS',
-    'ELECTRON_ENABLE_LOGGING',
-    'ELECTRON_ENABLE_STACK_DUMPING'
-  ];
-  
-  return !dangerous.some(env => process.env[env]);
+  const dangerous = ['NODE_OPTIONS', 'ELECTRON_ENABLE_LOGGING', 'ELECTRON_ENABLE_STACK_DUMPING'];
+
+  return !dangerous.some((env) => process.env[env]);
 });
 
 check('Process is not running as root (on Unix)', () => {
   if (process.platform === 'win32') return true;
-  
+
   try {
     return process.getuid() !== 0;
   } catch {

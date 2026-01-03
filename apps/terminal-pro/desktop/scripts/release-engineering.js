@@ -22,41 +22,42 @@ class ReleaseEngineeringPipeline {
    */
   updateElectronBuilderConfig() {
     console.log('🔧 Updating electron-builder configuration...');
-    
+
     const packageJson = JSON.parse(fs.readFileSync(this.packageJsonPath, 'utf8'));
-    
+
     // Enhance build configuration
     const enhancedBuildConfig = {
       ...packageJson.build,
       asarUnpack: [
-        "node_modules/electron-log/**/*",
-        "node_modules/openai/**/*", 
-        "node_modules/stripe/**/*",
-        "node_modules/ws/**/*",
-        "node_modules/node-pty/**/*"
+        'node_modules/electron-log/**/*',
+        'node_modules/openai/**/*',
+        'node_modules/stripe/**/*',
+        'node_modules/ws/**/*',
+        'node_modules/node-pty/**/*',
       ],
       // Add consistent artifact naming
       artifactName: '${productName}-${version}-${arch}.${ext}',
       // Enhanced publish configuration
       publish: {
-        provider: "generic",
-        url: "https://download.rinawarptech.com/releases/",
-        channel: "latest"
+        provider: 'generic',
+        url: 'https://download.rinawarptech.com/releases/',
+        channel: 'latest',
       },
       // Build optimization
-      compression: "maximum",
+      compression: 'maximum',
       removePackageScripts: false,
       npmRebuild: true,
       buildDependenciesFromSource: false,
       nodeGypRebuild: false,
       // Version management
       buildVersion: process.env.BUILD_NUMBER || '1',
-      buildNumber: process.env.BUILD_NUMBER || '1'
+      buildNumber: process.env.BUILD_NUMBER || '1',
     };
 
     // Update platform-specific artifact names
     if (enhancedBuildConfig.win) {
-      enhancedBuildConfig.win.artifactName = 'RinaWarp-Terminal-Pro-Setup-${version}-${arch}.${ext}';
+      enhancedBuildConfig.win.artifactName =
+        'RinaWarp-Terminal-Pro-Setup-${version}-${arch}.${ext}';
       enhancedBuildConfig.win.compression = 'maximum';
       enhancedBuildConfig.win.timeStampServer = 'http://timestamp.sectigo.com';
     }
@@ -74,7 +75,7 @@ class ReleaseEngineeringPipeline {
     // Update package.json
     packageJson.build = enhancedBuildConfig;
     fs.writeFileSync(this.packageJsonPath, JSON.stringify(packageJson, null, 2));
-    
+
     console.log('✅ Electron-builder configuration updated');
     return true;
   }
@@ -84,19 +85,19 @@ class ReleaseEngineeringPipeline {
    */
   bumpVersion(bumpType = 'patch') {
     console.log(`📦 Bumping version (${bumpType})...`);
-    
+
     const packageJson = JSON.parse(fs.readFileSync(this.packageJsonPath, 'utf8'));
     const currentVersion = packageJson.version;
-    
+
     try {
       const newVersion = semver.inc(currentVersion, bumpType);
       if (!newVersion) {
         throw new Error(`Invalid version increment: ${currentVersion} + ${bumpType}`);
       }
-      
+
       packageJson.version = newVersion;
       fs.writeFileSync(this.packageJsonPath, JSON.stringify(packageJson, null, 2));
-      
+
       console.log(`✅ Version updated: ${currentVersion} → ${newVersion}`);
       return newVersion;
     } catch (error) {
@@ -110,21 +111,21 @@ class ReleaseEngineeringPipeline {
    */
   dryRunVersionBump(bumpType = 'patch') {
     console.log(`🔍 Dry run version bump (${bumpType})...`);
-    
+
     const packageJson = JSON.parse(fs.readFileSync(this.packageJsonPath, 'utf8'));
     const currentVersion = packageJson.version;
-    
+
     try {
       const newVersion = semver.inc(currentVersion, bumpType);
       if (!newVersion) {
         throw new Error(`Invalid version increment: ${currentVersion} + ${bumpType}`);
       }
-      
+
       console.log(`Current version: ${currentVersion}`);
       console.log(`Would bump to: ${newVersion}`);
       console.log(`Package.json changes:`);
       console.log(`  "version": "${currentVersion}" → "${newVersion}"`);
-      
+
       return { currentVersion, newVersion };
     } catch (error) {
       console.error('❌ Dry run failed:', error.message);
@@ -137,30 +138,31 @@ class ReleaseEngineeringPipeline {
    */
   async buildAllPlatforms(options = {}) {
     console.log('🏗️  Building for all platforms...');
-    
+
     const { skipTests = false, verbose = false } = options;
-    
+
     try {
       // Security audit first
       if (!skipTests) {
         console.log('🔒 Running security audit...');
-        execSync('npm run security-audit', { 
+        execSync('npm run security-audit', {
           cwd: this.projectRoot,
-          stdio: verbose ? 'inherit' : 'pipe'
+          stdio: verbose ? 'inherit' : 'pipe',
         });
       }
-      
+
       // Build for each platform
       const platforms = ['linux', 'win', 'mac'];
-      
+
       for (const platform of platforms) {
         console.log(`📦 Building ${platform}...`);
-        
+
         try {
-          const command = platform === 'mac' ? 'npm run build:mac:simple' : `npm run build:${platform}`;
-          execSync(command, { 
+          const command =
+            platform === 'mac' ? 'npm run build:mac:simple' : `npm run build:${platform}`;
+          execSync(command, {
             cwd: this.projectRoot,
-            stdio: verbose ? 'inherit' : 'pipe'
+            stdio: verbose ? 'inherit' : 'pipe',
           });
           console.log(`✅ ${platform} build completed`);
         } catch (error) {
@@ -168,10 +170,9 @@ class ReleaseEngineeringPipeline {
           throw error;
         }
       }
-      
+
       console.log('✅ All platform builds completed');
       return this.validateBuildArtifacts();
-      
     } catch (error) {
       console.error('❌ Build process failed:', error.message);
       throw error;
@@ -183,42 +184,42 @@ class ReleaseEngineeringPipeline {
    */
   validateBuildArtifacts() {
     console.log('🔍 Validating build artifacts...');
-    
+
     const artifacts = [];
     const expectedFiles = [
       'RinaWarp-Terminal-Pro-*-x64.AppImage',
-      'RinaWarp-Terminal-Pro-*-x64.deb', 
+      'RinaWarp-Terminal-Pro-*-x64.deb',
       'RinaWarp-Terminal-Pro-Setup-*-x64.exe',
-      'RinaWarp-Terminal-Pro-*-x64.dmg'
+      'RinaWarp-Terminal-Pro-*-x64.dmg',
     ];
-    
+
     if (!fs.existsSync(this.buildOutputPath)) {
       throw new Error('Build output directory not found');
     }
-    
+
     const files = fs.readdirSync(this.buildOutputPath);
-    
-    expectedFiles.forEach(pattern => {
-      const matchingFiles = files.filter(file => {
+
+    expectedFiles.forEach((pattern) => {
+      const matchingFiles = files.filter((file) => {
         const regex = new RegExp(pattern.replace('*', '.*'));
         return regex.test(file);
       });
-      
+
       if (matchingFiles.length === 0) {
         console.warn(`⚠️  No artifacts found matching: ${pattern}`);
       } else {
-        matchingFiles.forEach(file => {
+        matchingFiles.forEach((file) => {
           const filePath = path.join(this.buildOutputPath, file);
           const stats = fs.statSync(filePath);
           artifacts.push({
             name: file,
             size: stats.size,
-            path: filePath
+            path: filePath,
           });
         });
       }
     });
-    
+
     console.log(`✅ Found ${artifacts.length} artifacts`);
     return artifacts;
   }
@@ -228,7 +229,7 @@ class ReleaseEngineeringPipeline {
    */
   generateReleaseNotes(version, changelog) {
     console.log('📝 Generating release notes...');
-    
+
     const releaseNotes = `# RinaWarp Terminal Pro v${version}
 
 ## 🎉 What's New
@@ -266,10 +267,10 @@ ${changelog || 'This release includes performance improvements, bug fixes, and e
 
 **Built with ❤️ by RinaWarp Technologies**
 `;
-    
+
     const releaseNotesPath = path.join(this.projectRoot, 'RELEASE_NOTES.md');
     fs.writeFileSync(releaseNotesPath, releaseNotes);
-    
+
     console.log(`✅ Release notes generated: ${releaseNotesPath}`);
     return releaseNotesPath;
   }
@@ -279,9 +280,9 @@ ${changelog || 'This release includes performance improvements, bug fixes, and e
    */
   runReleaseValidation() {
     console.log('🔍 Running comprehensive release validation...');
-    
+
     const validations = [];
-    
+
     // Check Node.js version
     const nodeVersion = process.version;
     const requiredNodeVersion = '>=18.0.0';
@@ -289,9 +290,9 @@ ${changelog || 'This release includes performance improvements, bug fixes, and e
     validations.push({
       name: 'Node.js version',
       passed: nodeValid,
-      details: `Current: ${nodeVersion}, Required: ${requiredNodeVersion}`
+      details: `Current: ${nodeVersion}, Required: ${requiredNodeVersion}`,
     });
-    
+
     // Check npm version
     try {
       const npmVersion = execSync('npm --version').toString().trim();
@@ -300,16 +301,16 @@ ${changelog || 'This release includes performance improvements, bug fixes, and e
       validations.push({
         name: 'npm version',
         passed: npmValid,
-        details: `Current: ${npmVersion}, Required: ${requiredNpmVersion}`
+        details: `Current: ${npmVersion}, Required: ${requiredNpmVersion}`,
       });
     } catch {
       validations.push({
         name: 'npm version',
         passed: false,
-        details: 'npm not found'
+        details: 'npm not found',
       });
     }
-    
+
     // Check required files
     const requiredFiles = [
       'package.json',
@@ -317,37 +318,39 @@ ${changelog || 'This release includes performance improvements, bug fixes, and e
       'src/renderer/index.html',
       'assets/icons/icon.ico',
       'assets/icons/icon.icns',
-      'assets/icons/icon.png'
+      'assets/icons/icon.png',
     ];
-    
-    requiredFiles.forEach(file => {
+
+    requiredFiles.forEach((file) => {
       const filePath = path.join(this.projectRoot, file);
       const exists = fs.existsSync(filePath);
       validations.push({
         name: `File exists: ${file}`,
         passed: exists,
-        details: exists ? 'Found' : 'Missing'
+        details: exists ? 'Found' : 'Missing',
       });
     });
-    
+
     // Check build output directory
     const buildOutputExists = fs.existsSync(this.buildOutputPath);
     validations.push({
       name: 'Build output directory',
       passed: buildOutputExists,
-      details: buildOutputExists ? 'Ready' : 'Will be created'
+      details: buildOutputExists ? 'Ready' : 'Will be created',
     });
-    
+
     // Display results
     console.log('\n📊 Validation Results:');
-    validations.forEach(validation => {
+    validations.forEach((validation) => {
       const status = validation.passed ? '✅' : '❌';
       console.log(`${status} ${validation.name}: ${validation.details}`);
     });
-    
-    const allPassed = validations.every(v => v.passed);
-    console.log(`\n${allPassed ? '✅' : '❌'} Overall: ${allPassed ? 'All validations passed' : 'Some validations failed'}`);
-    
+
+    const allPassed = validations.every((v) => v.passed);
+    console.log(
+      `\n${allPassed ? '✅' : '❌'} Overall: ${allPassed ? 'All validations passed' : 'Some validations failed'}`,
+    );
+
     return { passed: allPassed, validations };
   }
 
@@ -357,66 +360,66 @@ ${changelog || 'This release includes performance improvements, bug fixes, and e
   async run() {
     const args = process.argv.slice(2);
     const command = args[0];
-    
+
     try {
       switch (command) {
         case 'update-config':
           this.updateElectronBuilderConfig();
           break;
-          
+
         case 'bump-version':
           const bumpType = args[1] || 'patch';
           this.bumpVersion(bumpType);
           break;
-          
+
         case 'dry-run-bump':
           const dryRunType = args[1] || 'patch';
           this.dryRunVersionBump(dryRunType);
           break;
-          
+
         case 'build':
           const skipTests = args.includes('--skip-tests');
           const verbose = args.includes('--verbose');
           await this.buildAllPlatforms({ skipTests, verbose });
           break;
-          
+
         case 'validate':
           this.runReleaseValidation();
           break;
-          
+
         case 'generate-notes':
           const version = args[1] || require(this.packageJsonPath).version;
           const changelog = args.slice(2).join(' ');
           this.generateReleaseNotes(version, changelog);
           break;
-          
+
         case 'release':
           const releaseBumpType = args[1] || 'patch';
           const releaseChangelog = args.slice(2).join(' ');
-          
+
           console.log('🚀 Starting full release process...');
-          
+
           // 1. Validate environment
           const validation = this.runReleaseValidation();
           if (!validation.passed) {
             throw new Error('Release validation failed');
           }
-          
+
           // 2. Bump version
           const newVersion = this.bumpVersion(releaseBumpType);
           if (!newVersion) {
             throw new Error('Version bump failed');
           }
-          
+
           // 3. Build
           await this.buildAllPlatforms();
-          
+
           // 4. Generate release notes
           this.generateReleaseNotes(newVersion, releaseChangelog);
-          
+
           console.log(`🎉 Release ${newVersion} completed successfully!`);
           break;
-          
+
         default:
           console.log(`
 RinaWarp Terminal Pro - Release Engineering Pipeline

@@ -148,7 +148,8 @@
   color: #9ca3af;
 }
 
-.status-left, .status-right {
+.status-left,
+.status-right {
   display: flex;
   align-items: center;
   gap: 16px;

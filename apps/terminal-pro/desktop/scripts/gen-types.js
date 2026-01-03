@@ -32,10 +32,10 @@ let match;
 while ((match = channelRegex.exec(ipcMapContent)) !== null) {
   const groupName = match[1];
   const groupContent = match[2];
-  
+
   const methodRegex = /(\w+):\s*['"]([^'"]+)['"]/g;
   let methodMatch;
-  
+
   while ((methodMatch = methodRegex.exec(groupContent)) !== null) {
     const methodName = methodMatch[1];
     const channelName = methodMatch[2];
@@ -44,31 +44,37 @@ while ((match = channelRegex.exec(ipcMapContent)) !== null) {
 }
 
 // Generate TypeScript definitions
-const typeDefinitions = channels.map(ch => {
-  const interfaceName = `${ch.group.charAt(0).toUpperCase() + ch.group.slice(1)}${ch.method.charAt(0).toUpperCase() + ch.method.slice(1)}`;
-  return `  '${ch.channel}': ${interfaceName};`;
-}).join('\n');
+const typeDefinitions = channels
+  .map((ch) => {
+    const interfaceName = `${ch.group.charAt(0).toUpperCase() + ch.group.slice(1)}${ch.method.charAt(0).toUpperCase() + ch.method.slice(1)}`;
+    return `  '${ch.channel}': ${interfaceName};`;
+  })
+  .join('\n');
 
 const electronAPIInterface = channels.reduce((acc, ch) => {
   const group = ch.group;
   const method = ch.method;
   const channel = ch.channel;
-  
+
   if (!acc[group]) {
     acc[group] = {};
   }
-  
+
   acc[group][method] = `() => Promise<any>`;
   return acc;
 }, {});
 
-const electronAPI = Object.entries(electronAPIInterface).map(([group, methods]) => {
-  const groupMethods = Object.entries(methods).map(([method, signature]) => {
-    return `    ${method}: ${signature};`;
-  }).join('\n');
-  
-  return `  ${group}: {\n${groupMethods}\n  };`;
-}).join('\n');
+const electronAPI = Object.entries(electronAPIInterface)
+  .map(([group, methods]) => {
+    const groupMethods = Object.entries(methods)
+      .map(([method, signature]) => {
+        return `    ${method}: ${signature};`;
+      })
+      .join('\n');
+
+    return `  ${group}: {\n${groupMethods}\n  };`;
+  })
+  .join('\n');
 
 const template = `// Auto-generated TypeScript definitions for RinaWarp Terminal Pro
 // This file is generated from src/shared/ipc-map.ts and provides type safety
@@ -101,13 +107,13 @@ console.log(`✓ Defined ${channels.length} IPC channels`);
 const packageJsonPath = path.join(projectRoot, 'package.json');
 if (fs.existsSync(packageJsonPath)) {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-  
+
   if (!packageJson.scripts) {
     packageJson.scripts = {};
   }
-  
+
   packageJson.scripts['gen:types'] = 'node scripts/gen-types.js';
-  
+
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
   console.log('✓ Updated package.json with gen:types script');
 }

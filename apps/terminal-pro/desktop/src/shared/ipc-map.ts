@@ -159,7 +159,7 @@ export type IPCChannelKey = keyof IPCChannel;
 
 // Helper to get all allowed channels
 export const ALLOWED_IPC_CHANNELS = new Set(
-  Object.values(IPC_CHANNELS).flatMap(group =>
-    typeof group === 'object' ? Object.values(group) : [group]
-  )
+  Object.values(IPC_CHANNELS).flatMap((group) =>
+    typeof group === 'object' ? Object.values(group) : [group],
+  ),
 );

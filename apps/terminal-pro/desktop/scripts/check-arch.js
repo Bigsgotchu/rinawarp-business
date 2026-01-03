@@ -52,9 +52,9 @@ check('Type definitions exist', () => {
 check('No direct ipcRenderer in renderer', () => {
   const rendererDir = path.join(projectRoot, 'src/renderer');
   if (!fs.existsSync(rendererDir)) return true;
-  
+
   const files = fs.readdirSync(rendererDir, { recursive: true });
-  return !files.some(file => {
+  return !files.some((file) => {
     if (!file.endsWith('.js') && !file.endsWith('.ts')) return false;
     const content = fs.readFileSync(path.join(rendererDir, file), 'utf-8');
     return content.includes('ipcRenderer');
@@ -65,7 +65,7 @@ check('No direct ipcRenderer in renderer', () => {
 check('PTY spawn is guarded', () => {
   const mainFile = path.join(projectRoot, 'src/main/main.js');
   if (!fs.existsSync(mainFile)) return false;
-  
+
   const content = fs.readFileSync(mainFile, 'utf-8');
   return content.includes('Guard PTY spawn by platform checks');
 });
@@ -73,9 +73,9 @@ check('PTY spawn is guarded', () => {
 check('No node-pty in renderer', () => {
   const rendererDir = path.join(projectRoot, 'src/renderer');
   if (!fs.existsSync(rendererDir)) return true;
-  
+
   const files = fs.readdirSync(rendererDir, { recursive: true });
-  return !files.some(file => {
+  return !files.some((file) => {
     if (!file.endsWith('.js') && !file.endsWith('.ts')) return false;
     const content = fs.readFileSync(path.join(rendererDir, file), 'utf-8');
     return content.includes('node-pty');
@@ -88,14 +88,14 @@ check('OpenAI API key not hardcoded', () => {
     path.join(projectRoot, 'src/main/main.js'),
     path.join(projectRoot, 'src/preload/ipc.ts'),
     path.join(projectRoot, 'src/renderer/**/*.js'),
-    path.join(projectRoot, 'src/renderer/**/*.ts')
+    path.join(projectRoot, 'src/renderer/**/*.ts'),
   ];
-  
-  return !files.some(filePattern => {
+
+  return !files.some((filePattern) => {
     try {
       const glob = require('glob');
       const matches = glob.sync(filePattern, { cwd: projectRoot });
-      return matches.some(file => {
+      return matches.some((file) => {
         const content = fs.readFileSync(file, 'utf-8');
         return content.includes('sk-') && content.includes('openai');
       });
@@ -108,7 +108,7 @@ check('OpenAI API key not hardcoded', () => {
 check('Cloudflare endpoints are configurable', () => {
   const mainFile = path.join(projectRoot, 'src/main/main.js');
   if (!fs.existsSync(mainFile)) return false;
-  
+
   const content = fs.readFileSync(mainFile, 'utf-8');
   return content.includes('RINA_AGENT_URL') && content.includes('process.env');
 });
@@ -117,9 +117,9 @@ check('Cloudflare endpoints are configurable', () => {
 check('Billing code isolated from renderer', () => {
   const rendererDir = path.join(projectRoot, 'src/renderer');
   if (!fs.existsSync(rendererDir)) return true;
-  
+
   const files = fs.readdirSync(rendererDir, { recursive: true });
-  return !files.some(file => {
+  return !files.some((file) => {
     if (!file.endsWith('.js') && !file.endsWith('.ts')) return false;
     const content = fs.readFileSync(path.join(rendererDir, file), 'utf-8');
     return content.includes('stripe') && content.includes('new Stripe');
@@ -130,7 +130,7 @@ check('Billing code isolated from renderer', () => {
 check('WebSocket server owned by main process', () => {
   const mainFile = path.join(projectRoot, 'src/main/main.js');
   if (!fs.existsSync(mainFile)) return false;
-  
+
   const content = fs.readFileSync(mainFile, 'utf-8');
   return content.includes('WebSocket.Server') && content.includes('setupWebSocketServer');
 });
@@ -143,7 +143,7 @@ check('Crash telemetry exists', () => {
 check('Safe-mode policy implemented', () => {
   const crashFile = path.join(projectRoot, 'src/main/crash-telemetry.js');
   if (!fs.existsSync(crashFile)) return false;
-  
+
   const content = fs.readFileSync(crashFile, 'utf-8');
   return content.includes('shouldEnterSafeMode') && content.includes('RINAWARP_SAFE_MODE');
 });
@@ -152,7 +152,7 @@ check('Safe-mode policy implemented', () => {
 check('Updater disabled in CI/headless smoke', () => {
   const mainFile = path.join(projectRoot, 'src/main/main.js');
   if (!fs.existsSync(mainFile)) return false;
-  
+
   const content = fs.readFileSync(mainFile, 'utf-8');
   return content.includes('--headless-smoke') && content.includes('autoUpdater');
 });
@@ -161,21 +161,21 @@ check('Updater disabled in CI/headless smoke', () => {
 check('No deprecated Electron APIs', () => {
   const mainFile = path.join(projectRoot, 'src/main/main.js');
   if (!fs.existsSync(mainFile)) return false;
-  
+
   const content = fs.readFileSync(mainFile, 'utf-8');
   const deprecated = [
     'nodeIntegration: true',
     'webviewTag: true',
-    'allowRunningInsecureContent: true'
+    'allowRunningInsecureContent: true',
   ];
-  
-  return !deprecated.some(deprecated => content.includes(deprecated));
+
+  return !deprecated.some((deprecated) => content.includes(deprecated));
 });
 
 check('Context isolation enabled', () => {
   const mainFile = path.join(projectRoot, 'src/main/main.js');
   if (!fs.existsSync(mainFile)) return false;
-  
+
   const content = fs.readFileSync(mainFile, 'utf-8');
   return content.includes('contextIsolation: true');
 });
@@ -184,7 +184,7 @@ check('Context isolation enabled', () => {
 check('Node and Electron versions locked', () => {
   const packageJson = path.join(projectRoot, 'package.json');
   if (!fs.existsSync(packageJson)) return false;
-  
+
   const content = JSON.parse(fs.readFileSync(packageJson, 'utf-8'));
   return content.engines && content.engines.node && content.engines.electron;
 });
@@ -193,9 +193,13 @@ check('Node and Electron versions locked', () => {
 check('Electron rebuild configured', () => {
   const packageJson = path.join(projectRoot, 'package.json');
   if (!fs.existsSync(packageJson)) return false;
-  
+
   const content = JSON.parse(fs.readFileSync(packageJson, 'utf-8'));
-  return content.scripts && content.scripts.rebuild && content.scripts.rebuild.includes('electron-rebuild');
+  return (
+    content.scripts &&
+    content.scripts.rebuild &&
+    content.scripts.rebuild.includes('electron-rebuild')
+  );
 });
 
 console.log(`\n=== Results ===`);

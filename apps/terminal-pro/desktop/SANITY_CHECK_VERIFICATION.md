@@ -1,24 +1,30 @@
+<!-- markdownlint-disable MD060 -->
+<!-- markdownlint-disable MD012 -->
+
 # Sanity Check Verification - API Error Fix ✅
 
 ## Completed Sanity Checks
 
 ### ✅ 1. Safe Versions Confirmed Loaded
+
 **All three files verified with safe API patterns:**
 
-| File | Status | Safe Patterns Found | Header Confirmation |
-|------|--------|--------------------|---------------------|
-| `src/renderer/js/license.js` | ✅ ACTIVE | 8 instances | "Safe API Version" |
-| `src/renderer/js/agent-status.js` | ✅ ACTIVE | 7 instances | Safe methods present |
-| `src/renderer/js/live-session.js` | ✅ ACTIVE | 9 instances | "Safe API Version" |
+| File                              | Status    | Safe Patterns Found | Header Confirmation  |
+| --------------------------------- | --------- | ------------------- | -------------------- |
+| `src/renderer/js/license.js`      | ✅ ACTIVE | 8 instances         | "Safe API Version"   |
+| `src/renderer/js/agent-status.js` | ✅ ACTIVE | 7 instances         | Safe methods present |
+| `src/renderer/js/live-session.js` | ✅ ACTIVE | 9 instances         | "Safe API Version"   |
 
 ### ✅ 2. Syntax Validation Passed
+
 ```bash
 ✅ license.js syntax OK
-✅ agent-status.js syntax OK  
+✅ agent-status.js syntax OK
 ✅ live-session.js syntax OK
 ```
 
 ### ✅ 3. Backup Files Created
+
 ```bash
 src/renderer/js/license.js.backup (18.5KB)
 src/renderer/js/agent-status.js.backup (1.9KB)
@@ -27,14 +33,16 @@ src/renderer/js/live-session.js.backup (9.1KB)
 
 ## Expected Behavior When Launching (`npm start`)
 
-### ❌ What You'll NO LONGER See:
+### ❌ What You'll NO LONGER See
+
 - Red "API Error" banners
 - `$0.0000` billing error spam
 - Console flooded with `console.error()` messages
 - Repeated agent ping failures every 8 seconds
 - Live session connection error spam
 
-### ✅ What You'll See Instead:
+### ✅ What You'll See Instead
+
 - Clean app launch
 - Agent status shows "Offline" gracefully
 - License shows "Free tier" without API calls
@@ -44,34 +52,40 @@ src/renderer/js/live-session.js.backup (9.1KB)
 ## Production Readiness
 
 ### 🔒 No Regression Risk
+
 - **Backend available**: APIs will return real data automatically
 - **UI updates**: Will show actual license status when backend online
 - **No code changes needed**: Same codebase works in both dev and prod
 - **Graceful degradation**: Falls back to cached data if backend fails
 
 ### 🚀 Enhancement Available (Optional)
+
 Created `src/shared/api-utils-enhanced.js` with environment-based debug logging:
+
 - Only shows debug logs in development (`NODE_ENV !== 'production'`)
 - Completely silent in production builds
 - Even cleaner console output
 
 ## Verification Commands
 
-### Quick Test:
+### Quick Test
+
 ```bash
 npm start
 ```
 
-### Debug Analysis (if needed):
+### Debug Analysis (if needed)
+
 ```bash
 # Run the temporary debugging script
 node debug-api-failures.js
 ```
 
-### Rollback (if needed):
+### Rollback (if needed)
+
 ```bash
 cp src/renderer/js/license.js.backup src/renderer/js/license.js
-cp src/renderer/js/agent-status.js.backup src/renderer/js/agent-status.js  
+cp src/renderer/js/agent-status.js.backup src/renderer/js/agent-status.js
 cp src/renderer/js/live-session.js.backup src/renderer/js/live-session.js
 ```
 

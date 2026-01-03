@@ -7,11 +7,7 @@ interface HeaderProps {
   onViewChange: (view: 'conversation' | 'intent' | 'terminal') => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  agentStatus,
-  currentView,
-  onViewChange
-}) => {
+export const Header: React.FC<HeaderProps> = ({ agentStatus, currentView, onViewChange }) => {
   const getStatusColor = (status: AgentStatus) => {
     switch (status) {
       case AgentStatus.CONNECTED:

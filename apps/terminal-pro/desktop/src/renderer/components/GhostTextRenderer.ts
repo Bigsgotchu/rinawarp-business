@@ -19,16 +19,17 @@ export interface GhostTextInstance {
 }
 
 export function attachGhostText(config: GhostTextConfig): GhostTextInstance {
-  let suggestion = "";
+  let suggestion = '';
   let dismissed = false;
   let refreshTimer: number | undefined;
 
   function render() {
-    const typed = config.inputEl.value ?? "";
-    const show = !dismissed && suggestion && suggestion.startsWith(typed) && suggestion.length > typed.length;
+    const typed = config.inputEl.value ?? '';
+    const show =
+      !dismissed && suggestion && suggestion.startsWith(typed) && suggestion.length > typed.length;
 
     if (!show) {
-      config.ghostLayerEl.innerHTML = "";
+      config.ghostLayerEl.innerHTML = '';
       return;
     }
 
@@ -41,21 +42,21 @@ export function attachGhostText(config: GhostTextConfig): GhostTextInstance {
 
   async function refreshSuggestion() {
     dismissed = false;
-    const typed = config.inputEl.value ?? "";
-    
+    const typed = config.inputEl.value ?? '';
+
     if (!typed.trim()) {
-      suggestion = "";
+      suggestion = '';
       render();
       return;
     }
 
     try {
       const s = await config.getSuggestion();
-      suggestion = (typeof s === "string" ? s : "") || "";
+      suggestion = (typeof s === 'string' ? s : '') || '';
       render();
     } catch (error) {
-      console.warn("Ghost text suggestion failed:", error);
-      suggestion = "";
+      console.warn('Ghost text suggestion failed:', error);
+      suggestion = '';
       render();
     }
   }
@@ -63,26 +64,31 @@ export function attachGhostText(config: GhostTextConfig): GhostTextInstance {
   function handleInput() {
     dismissed = false;
     render();
-    
+
     // Debounce suggestion refresh
     window.clearTimeout(refreshTimer);
     refreshTimer = window.setTimeout(refreshSuggestion, 120);
   }
 
   function handleKeydown(e: KeyboardEvent) {
-    if (e.key === "Tab") {
-      const typed = config.inputEl.value ?? "";
-      if (!dismissed && suggestion && suggestion.startsWith(typed) && suggestion.length > typed.length) {
+    if (e.key === 'Tab') {
+      const typed = config.inputEl.value ?? '';
+      if (
+        !dismissed &&
+        suggestion &&
+        suggestion.startsWith(typed) &&
+        suggestion.length > typed.length
+      ) {
         e.preventDefault();
         config.inputEl.value = suggestion;
-        suggestion = "";
+        suggestion = '';
         dismissed = false;
-        config.ghostLayerEl.innerHTML = "";
+        config.ghostLayerEl.innerHTML = '';
         config.onAccept?.(config.inputEl.value);
       }
     }
 
-    if (e.key === "Escape") {
+    if (e.key === 'Escape') {
       dismissed = true;
       render();
       config.onDismiss?.();
@@ -90,39 +96,43 @@ export function attachGhostText(config: GhostTextConfig): GhostTextInstance {
   }
 
   // Event listeners
-  config.inputEl.addEventListener("input", handleInput);
-  config.inputEl.addEventListener("keydown", handleKeydown);
+  config.inputEl.addEventListener('input', handleInput);
+  config.inputEl.addEventListener('keydown', handleKeydown);
 
   // Public API
   return {
     setSuggestion(text: string) {
-      suggestion = text || "";
+      suggestion = text || '';
       dismissed = false;
       render();
     },
-    
+
     clear() {
-      suggestion = "";
+      suggestion = '';
       dismissed = false;
       render();
     },
-    
+
     refreshSuggestion,
-    
+
     destroy() {
       window.clearTimeout(refreshTimer);
-      config.inputEl.removeEventListener("input", handleInput);
-      config.inputEl.removeEventListener("keydown", handleKeydown);
-    }
+      config.inputEl.removeEventListener('input', handleInput);
+      config.inputEl.removeEventListener('keydown', handleKeydown);
+    },
   };
 }
 
 function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[c] as string));
+  return s.replace(
+    /[&<>"']/g,
+    (c) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[c] as string,
+  );
 }

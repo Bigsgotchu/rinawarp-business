@@ -1,5 +1,5 @@
 import { IpcMain } from 'electron';
-import { IPC_CHANNELS, APP_CONFIG } from '../../shared/constants';
+import { IPC, APP } from '../../../src/shared/constants';
 
 export class AppHandler {
   private initialized = false;
@@ -11,10 +11,10 @@ export class AppHandler {
   register(ipcMain: IpcMain): void {
     if (this.initialized) return;
 
-    ipcMain.handle(IPC_CHANNELS.APP.GET_VERSION, this.handleGetVersion.bind(this));
-    ipcMain.handle(IPC_CHANNELS.APP.OPEN_EXTERNAL, this.handleOpenExternal.bind(this));
-    ipcMain.handle(IPC_CHANNELS.APP.GET_CONFIG, this.handleGetConfig.bind(this));
-    ipcMain.handle(IPC_CHANNELS.APP.SET_CONFIG, this.handleSetConfig.bind(this));
+    ipcMain.handle(IPC.app.GET_VERSION, this.handleGetVersion.bind(this));
+    ipcMain.handle(IPC.app.OPEN_EXTERNAL, this.handleOpenExternal.bind(this));
+    ipcMain.handle(IPC.app.GET_CONFIG, this.handleGetConfig.bind(this));
+    ipcMain.handle(IPC.app.SET_CONFIG, this.handleSetConfig.bind(this));
 
     this.initialized = true;
     console.log('✅ App IPC handlers registered');
@@ -22,7 +22,7 @@ export class AppHandler {
 
   private async handleGetVersion(event: any, payload: any): Promise<any> {
     console.log('📋 Get version:', payload);
-    return { version: APP_CONFIG.version, name: APP_CONFIG.name };
+    return { version: APP.version, name: APP.name };
   }
 
   private async handleOpenExternal(event: any, payload: any): Promise<any> {

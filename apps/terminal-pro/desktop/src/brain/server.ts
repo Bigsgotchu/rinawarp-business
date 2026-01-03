@@ -9,13 +9,13 @@ const HOST = '127.0.0.1'; // Loopback only
 
 export function startBrainServer() {
   const sessionToken = generateToken();
-  
+
   const server = http.createServer(async (req, res) => {
     // CORS headers for local development
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    
+
     // Handle preflight requests
     if (req.method === 'OPTIONS') {
       res.writeHead(200);
@@ -25,7 +25,7 @@ export function startBrainServer() {
     // Extract token from Authorization header
     const authHeader = req.headers.authorization;
     const token = authHeader?.replace('Bearer ', '');
-    
+
     if (!token || !verifyToken(token, sessionToken)) {
       res.writeHead(401, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ error: 'Unauthorized' }));
@@ -38,7 +38,7 @@ export function startBrainServer() {
 
       if (req.method === 'POST' && req.url === '/plan') {
         let body = '';
-        req.on('data', chunk => (body += chunk));
+        req.on('data', (chunk) => (body += chunk));
         req.on('end', () => {
           try {
             const requestData = JSON.parse(body) as IntentRequest;
@@ -70,8 +70,8 @@ export function startBrainServer() {
     console.error('[RinaWarp Brain] Server error:', error);
   });
 
-  return { 
+  return {
     token: sessionToken,
-    stop: () => server.close()
+    stop: () => server.close(),
   };
 }

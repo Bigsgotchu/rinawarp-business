@@ -8,7 +8,7 @@
   font-weight: 500;
   background: linear-gradient(90deg, #00f5ff, #09c6f9, #6a00f4);
   color: white;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   z-index: 9999;
   position: fixed;
   top: 0;

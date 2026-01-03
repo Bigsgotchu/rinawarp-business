@@ -20,11 +20,7 @@ export interface IntentRequest {
   };
 }
 
-export interface PlanStep {
-  id: string;
-  description: string;
-  type: 'analysis' | 'edit' | 'command' | 'validation';
-}
+export type PlanStep = { id: string; type: 'analysis' | 'edit' | 'validation'; description: string };
 
 export interface PlanResponse {
   planId: string;

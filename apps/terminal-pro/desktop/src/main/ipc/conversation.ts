@@ -1,5 +1,5 @@
 import { IpcMain } from 'electron';
-import { IPC_CHANNELS } from '../../shared/constants';
+import { IPC } from '../../../src/shared/constants';
 
 /**
  * Conversation IPC handler
@@ -19,9 +19,9 @@ export class ConversationHandler {
     console.log('📡 Registering conversation IPC handlers...');
 
     // Register conversation handlers here
-    ipcMain.handle(IPC_CHANNELS.CONVERSATION.SEND_MESSAGE, this.handleSendMessage.bind(this));
-    ipcMain.handle(IPC_CHANNELS.CONVERSATION.GET_HISTORY, this.handleGetHistory.bind(this));
-    ipcMain.handle(IPC_CHANNELS.CONVERSATION.CLEAR_HISTORY, this.handleClearHistory.bind(this));
+    ipcMain.handle(IPC.conversation.SEND_MESSAGE, this.handleSendMessage.bind(this));
+    ipcMain.handle(IPC.conversation.GET_HISTORY, this.handleGetHistory.bind(this));
+    ipcMain.handle(IPC.conversation.CLEAR_HISTORY, this.handleClearHistory.bind(this));
 
     this.initialized = true;
     console.log('✅ Conversation IPC handlers registered');

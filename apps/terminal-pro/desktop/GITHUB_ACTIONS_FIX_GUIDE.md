@@ -10,9 +10,9 @@ Your Windows workflow is failing because GitHub Actions variables and secrets ar
 
 Add these two variables:
 
-| Variable Name | Value |
-|---------------|-------|
-| `R2_BUCKET` | `rinawarp-downloads` |
+| Variable Name   | Value                              |
+| --------------- | ---------------------------------- |
+| `R2_BUCKET`     | `rinawarp-downloads`               |
 | `R2_ACCOUNT_ID` | `ba2f14cefa19dbdc42ff88d772410689` |
 
 ## ✅ Step 2: Add GitHub Actions Secrets (Repo-Level)
@@ -21,9 +21,9 @@ Add these two variables:
 
 Add these two secrets:
 
-| Secret Name | Value |
-|-------------|-------|
-| `R2_ACCESS_KEY_ID` | `[your Cloudflare R2 access key id]` |
+| Secret Name            | Value                                    |
+| ---------------------- | ---------------------------------------- |
+| `R2_ACCESS_KEY_ID`     | `[your Cloudflare R2 access key id]`     |
 | `R2_SECRET_ACCESS_KEY` | `[your Cloudflare R2 secret access key]` |
 
 **⚠️ Important:** You need to get your actual R2 credentials from Cloudflare dashboard.
@@ -31,6 +31,7 @@ Add these two secrets:
 ## ✅ Step 3: Run Windows Workflow
 
 ### A) Dry Run (Safe Validation)
+
 1. Go to GitHub → Actions
 2. Select "Release (R2) - Windows"
 3. Click "Run workflow"
@@ -39,7 +40,9 @@ Add these two secrets:
    - `dry_run`: `true`
 
 ### B) Real Upload (Fixes 404)
+
 After dry run succeeds:
+
 1. Run workflow again
 2. Set parameters:
    - `channel`: `stable`
@@ -50,6 +53,7 @@ After dry run succeeds:
 Run these verification commands:
 
 ### A) Check Public Endpoint
+
 ```bash
 curl -fsSL https://download.rinawarptech.com/terminal-pro/stable/latest.yml | sed -n '1,80p'
 ```
@@ -57,6 +61,7 @@ curl -fsSL https://download.rinawarptech.com/terminal-pro/stable/latest.yml | se
 **Expected Result:** Should see `.exe` in the url/path fields, NOT `.AppImage`
 
 ### B) Check R2 Storage (Optional)
+
 ```bash
 export R2_BUCKET="rinawarp-downloads"
 export R2_ACCOUNT_ID="ba2f14cefa19dbdc42ff88d772410689"
@@ -66,6 +71,7 @@ aws s3 ls "s3://${R2_BUCKET}/terminal-pro/stable/" --endpoint-url "$R2_ENDPOINT"
 ```
 
 **Expected Result:** Should see:
+
 - `latest.yml`
 - Windows installer like `RinaWarp-Terminal-Pro-Setup-...exe`
 - Possibly `*.blockmap`
@@ -73,6 +79,7 @@ aws s3 ls "s3://${R2_BUCKET}/terminal-pro/stable/" --endpoint-url "$R2_ENDPOINT"
 ## 🔧 Quick Commands Reference
 
 ### Using the Helper Scripts
+
 ```bash
 # Make scripts executable
 chmod +x apps/terminal-pro/desktop/*.sh
@@ -91,6 +98,7 @@ chmod +x apps/terminal-pro/desktop/*.sh
 ```
 
 ### Manual Verification
+
 ```bash
 # Quick check if latest.yml exists and has correct content
 curl -fsSL https://download.rinawarptech.com/terminal-pro/stable/latest.yml | grep -Ei '\.exe|AppImage'
@@ -101,18 +109,22 @@ curl -fsSL https://download.rinawarptech.com/terminal-pro/stable/latest.yml | gr
 ## 🛠 Troubleshooting
 
 ### If Variables/Secrets Still Show [EMPTY]
+
 1. Double-check you added them to the correct repository
-2. Ensure you're adding to "Variables" not "Secrets" for the R2_* vars
-3. Ensure you're adding to "Secrets" not "Variables" for the R2_* keys
+2. Ensure you're adding to "Variables" not "Secrets" for the R2\_\* vars
+3. Ensure you're adding to "Secrets" not "Variables" for the R2\_\* keys
 4. Wait a few minutes for propagation
 
 ### If Workflow Still Fails
+
 Run the workflow and check these three specific step outputs:
+
 1. **Preflight secrets/vars check** - Should show ✅ Preflight OK
 2. **Debug dist output** - Should show Windows build artifacts
 3. **Upload step failure** (if any) - Will show the exact error
 
 ### If 404 Persists
+
 1. Confirm the real deployment (dry_run=false) completed successfully
 2. Check that latest.yml was uploaded to the correct R2 path
 3. Verify the public endpoint is working
@@ -121,7 +133,7 @@ Run the workflow and check these three specific step outputs:
 
 1. **Add the variables and secrets** (Steps 1-2 above)
 2. **Run dry run workflow** (Step 3A)
-3. **Run real deployment** (Step 3B) 
+3. **Run real deployment** (Step 3B)
 4. **Verify with commands** (Step 4)
 
 Once these variables and secrets are added, the workflow will stop showing `[EMPTY]` and the Windows 404 error will be resolved.
@@ -129,7 +141,7 @@ Once these variables and secrets are added, the workflow will stop showing `[EMP
 ## 🎯 Success Criteria
 
 - ✅ GitHub Actions variables show actual values (not [EMPTY])
-- ✅ Dry run workflow completes successfully  
+- ✅ Dry run workflow completes successfully
 - ✅ Real deployment uploads files to R2
 - ✅ `curl https://download.rinawarptech.com/terminal-pro/stable/latest.yml` returns 200 OK
 - ✅ latest.yml contains `.exe` references and NO `AppImage` references

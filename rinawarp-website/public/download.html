@@ -40,22 +40,23 @@
             </p>
           </div>
 
-          <div class="download-card">
-            <h2 style="margin-top: 0;">Step 1 · Download installer</h2>
-            <p class="lead" style="margin-top: 0.3rem; max-width: none;">
-              Installers are delivered directly from
-              <strong>https://rinawarptech.com/install.sh</strong> or platform-specific bundles hosted on our
-              secure infrastructure.
-            </p>
+           <div class="download-card">
+             <h2 style="margin-top: 0;">Step 1 · Download installer</h2>
+             <p class="lead" style="margin-top: 0.3rem; max-width: none;">
+               Get the latest version of RinaWarp Terminal Pro for your platform.
+             </p>
 
-            <div class="hero-actions">
-              <a href="/install.sh" class="rw-button">Download via shell script</a>
-            </div>
+             <div class="hero-actions" id="download-buttons">
+               <div id="loading-spinner" style="text-align: center; padding: 2rem;">
+                 <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                 <p style="margin-top: 1rem; color: #666;">Loading latest version...</p>
+               </div>
+             </div>
 
-            <p class="hero-meta" style="margin-top: 1.1rem;">
-              <span>System requirements: macOS 10.15+ · Windows 10+ · Linux (Ubuntu 18.04+)</span>
-            </p>
-
+             <p class="hero-meta" style="margin-top: 1.1rem;">
+               <span>System requirements: macOS 10.15+ · Windows 10+ · Linux (Ubuntu 18.04+)</span>
+             </p>
+           </div>
             <h2 style="margin-top: 1.5rem;">Step 2 · Activate your license</h2>
             <p class="lead" style="margin-top: 0.3rem; max-width: none;">
               If you don't have a license yet, start with the free tier or purchase a Pro license:
@@ -82,6 +83,144 @@
           <a href="/contact.html">Contact</a>
         </div>
       </footer>
+    <script>
+      async function loadLatestVersion() {
+        try {
+          const response = await fetch('https://admin-api.rinawarptech.com/api/downloads/latest.json');
+          const data = await response.json();
+          
+          if (data.ok && data.linux && data.linux.appimage) {
+            const version = data.version;
+            const url = data.linux.appimage.url;
+            const sha256 = data.linux.appimage.sha256;
+            
+            document.getElementById('download-buttons').innerHTML = `
+              <a href="${url}" class="rw-button" onclick="gtag('event', 'download', {event_category: 'app', event_label: 'Linux AppImage'})">
+                Download Linux AppImage (v${version})
+              </a>
+              <div style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                <strong>SHA256:</strong> <code style="background: #f5f5f5; padding: 2px 4px; border-radius: 3px;">${sha256}</code>
+              </div>
+            `;
+          } else {
+            throw new Error('Invalid response');
+          }
+        } catch (error) {
+          console.error('Failed to load latest version:', error);
+          document.getElementById('download-buttons').innerHTML = `
+            <div style="text-align: center; color: #666;">
+              <p>Unable to load latest version. Please try again later.</p>
+              <a href="/install.sh" class="rw-button-outline">Download via shell script</a>
+            </div>
+          `;
+        }
+      }
+      
+      // Load on page load
+      loadLatestVersion();
+      
+      // Add CSS animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
+    <script>
+      async function loadLatestVersion() {
+        try {
+          const response = await fetch('https://admin-api.rinawarptech.com/api/downloads/latest.json');
+          const data = await response.json();
+          
+          if (data.ok && data.linux && data.linux.appimage) {
+            const version = data.version;
+            const url = data.linux.appimage.url;
+            const sha256 = data.linux.appimage.sha256;
+            
+            document.getElementById('download-buttons').innerHTML = `
+              <a href="${url}" class="rw-button" onclick="gtag('event', 'download', {event_category: 'app', event_label: 'Linux AppImage'})">
+                Download Linux AppImage (v${version})
+              </a>
+              <div style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                <strong>SHA256:</strong> <code style="background: #f5f5f5; padding: 2px 4px; border-radius: 3px;">${sha256}</code>
+              </div>
+            `;
+          } else {
+            throw new Error('Invalid response');
+          }
+        } catch (error) {
+          console.error('Failed to load latest version:', error);
+          document.getElementById('download-buttons').innerHTML = `
+            <div style="text-align: center; color: #666;">
+              <p>Unable to load latest version. Please try again later.</p>
+              <a href="/install.sh" class="rw-button-outline">Download via shell script</a>
+            </div>
+          `;
+        }
+      }
+      
+      // Load on page load
+      loadLatestVersion();
+      
+      // Add CSS animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
     </div>
   </body>
 </html>
+<script>
+    async function loadLatestVersion() {
+        try {
+          const response = await fetch('https://admin-api.rinawarptech.com/api/downloads/latest.json');
+    const data = await response.json();
+
+    if (data.ok && data.linux && data.linux.appimage) {
+            const version = data.version;
+    const url = data.linux.appimage.url;
+    const sha256 = data.linux.appimage.sha256;
+
+    document.getElementById('download-buttons').innerHTML = `
+    <a href="${url}" class="rw-button" onclick="gtag('event', 'download', {event_category: 'app', event_label: 'Linux AppImage'})">
+        Download Linux AppImage (v${version})
+    </a>
+    <div style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+        <strong>SHA256:</strong> <code style="background: #f5f5f5; padding: 2px 4px; border-radius: 3px;">${sha256}</code>
+    </div>
+    `;
+          } else {
+            throw new Error('Invalid response');
+          }
+        } catch (error) {
+        console.error('Failed to load latest version:', error);
+    document.getElementById('download-buttons').innerHTML = `
+    <div style="text-align: center; color: #666;">
+        <p>Unable to load latest version. Please try again later.</p>
+        <a href="/install.sh" class="rw-button-outline">Download via shell script</a>
+    </div>
+    `;
+        }
+      }
+
+    // Load on page load
+    loadLatestVersion();
+
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+    @keyframes spin {
+        0 % { transform: rotate(0deg); }
+          100% {transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+</script>

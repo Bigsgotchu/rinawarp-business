@@ -8,7 +8,7 @@ const originalHandle = ipcMain.handle.bind(ipcMain);
 const originalOn = ipcMain.on.bind(ipcMain);
 
 // Override ipcMain.handle to check channels
-ipcMain.handle = function(channel: string, listener: (...args: any[]) => any) {
+ipcMain.handle = function (channel: string, listener: (...args: any[]) => any) {
   if (!ALLOWED_IPC_CHANNELS.has(channel as any)) {
     console.error(`[IPC Guard] Blocked unauthorized ipcMain.handle for channel: ${channel}`);
     throw new Error(`Unauthorized IPC channel: ${channel}`);
@@ -17,7 +17,7 @@ ipcMain.handle = function(channel: string, listener: (...args: any[]) => any) {
 };
 
 // Override ipcMain.on for completeness (though we mainly use handle)
-ipcMain.on = function(channel: string, listener: (...args: any[]) => void) {
+ipcMain.on = function (channel: string, listener: (...args: any[]) => void) {
   if (!ALLOWED_IPC_CHANNELS.has(channel as any)) {
     console.error(`[IPC Guard] Blocked unauthorized ipcMain.on for channel: ${channel}`);
     throw new Error(`Unauthorized IPC channel: ${channel}`);

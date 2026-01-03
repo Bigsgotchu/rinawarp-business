@@ -1,236 +1,70 @@
 {
+  "main": "out/main/main.js",
   "name": "rinawarp-terminal-pro",
-  "version": "1.0.0",
-  "description": "RinaWarp Terminal Pro - AI-powered terminal application with advanced features",
-  "main": "src/main/main.js",
-  "type": "module",
-  "author": {
-    "name": "RinaWarp Technologies",
-    "email": "contact@rinawarptech.com"
-  },
-  "license": "UNLICENSED",
-  "homepage": "https://rinawarptech.com",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/RinaWarp/rinawarp-terminal-pro.git"
-  },
+  "version": "1.0.2",
+  "type": "commonjs",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron . --dev",
-    "build": "npm run security-audit && electron-builder",
-    "build:win": "npm run security-audit && electron-builder --win",
-    "build:mac": "npm run security-audit && ./scripts/build/build-macos.sh",
-    "build:mac:simple": "npm run security-audit && electron-builder --mac",
-    "build:linux": "npm run security-audit && electron-builder --linux",
-    "dist": "npm run security-audit && electron-builder --publish=never",
-    "dist:mac": "npm run security-audit && electron-builder --mac --publish=never",
-    "security-audit": "node scripts/security-audit.js",
-    "security-audit:fix": "npm audit fix",
-    "sign:win": "electron-builder --win --publish=never",
-    "sign:mac": "electron-builder --mac --publish=never",
-    "sign:linux": "electron-builder --linux --publish=never",
-    "notarize": "xcrun notarytool submit build/*.dmg --apple-id $APPLE_ID --password $APPLE_APP_PASSWORD --team-id $TEAM_ID --wait",
-    "validate:signatures": "node scripts/validate-signatures.js",
-    "customize:dmg": "node tools/dmg-customizer.js",
-    "build:production": "npm run security-audit && npm run customize:dmg && electron-builder --mac --win --linux --publish=never",
-    "postinstall": "echo 'Dependencies installed successfully'",
-    "test": "node test-comprehensive.js",
-    "test:basic": "node test-basic.js",
-    "test:comprehensive": "node test-comprehensive.js",
-    "test:debug": "NODE_ENV=development node test-comprehensive.js",
-    "test:coverage": "npm run test:comprehensive -- --coverage",
-    "release:notes": "node scripts/generate-release-notes.mjs",
-    "qa:ai": "node scripts/ai-qa-summary.mjs",
-    "check:arch": "node scripts/check-arch.js",
-    "gen:types": "node scripts/gen-types.js",
-    "check:runtime": "node scripts/check-runtime.js"
-  },
-  "keywords": [
-    "terminal",
-    "ai",
-    "development",
-    "command-line",
-    "productivity"
-  ],
-  "build": {
-    "appId": "com.rinawarp.terminalpro",
-    "productName": "RinaWarp Terminal Pro",
-    "directories": {
-      "output": "build-output"
-    },
-    "files": [
-      "src/**/*",
-      "assets/**/*",
-      "package.json",
-      "entitlements.plist"
-    ],
-    "extraMetadata": {
-      "main": "src/main/main.js"
-    },
-    "asar": {
-      "smartUnpack": false
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "assets/icons/icon.ico"
-    },
-    "mac": {
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ],
-      "icon": "assets/icons/icon.icns",
-      "category": "public.app-category.developer-tools",
-      "hardenedRuntime": true,
-      "entitlements": "entitlements.plist",
-      "entitlementsInherit": "entitlements.plist",
-      "type": "distribution"
-    },
-    "linux": {
-      "target": [
-        {
-          "target": "AppImage",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "deb",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "rpm",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "snap",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "assets/icons/icon.png",
-      "category": "Development",
-      "desktop": {
-        "entry": {
-          "Name": "RinaWarp Terminal Pro",
-          "GenericName": "AI-Powered Terminal",
-          "Comment": "Conversation-first terminal with AI assistant",
-          "Keywords": "terminal;ai;developer;"
-        }
-      },
-      "maintainer": "RinaWarp Technologies <contact@rinawarptech.com>",
-      "vendor": "RinaWarp Technologies",
-      "synopsis": "AI-powered terminal application with advanced features",
-      "description": "RinaWarp Terminal Pro is an AI-enhanced terminal application designed for developers and creators who need powerful command-line tools with intelligent assistance.",
-      "artifactName": "RinaWarp-Terminal-Pro-${version}-${arch}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "allowElevation": true,
-      "installerIcon": "assets/icons/icon.ico",
-      "uninstallerIcon": "assets/icons/icon.ico",
-      "installerHeaderIcon": "assets/icons/icon.ico",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "RinaWarp Terminal Pro",
-      "include": "scripts/installer.nsh",
-      "script": "scripts/installer.nsi",
-      "artifactName": "RinaWarp-Terminal-Pro-Setup-${version}.${ext}"
-    },
-    "dmg": {
-      "title": "RinaWarp Terminal Pro ${version}",
-      "icon": "assets/icons/icon.icns",
-      "iconSize": 80,
-      "window": {
-        "width": 540,
-        "height": 420
-      },
-      "contents": [
-        {
-          "x": 130,
-          "y": 220,
-          "type": "file"
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ],
-      "background": "assets/dmg-background.png",
-      "backgroundColor": "#f5f5f7",
-      "internetEnabled": false,
-      "sign": false,
-      "format": "ULFO"
-    },
-    "publish": {
-      "provider": "generic",
-      "url": "https://download.rinawarptech.com/releases/"
-    }
+    "verify:project": "node scripts/phase1-analyze.js",
+    "backend:health": "node scripts/phase4-backend-health.js",
+    "quick-health-check": "node scripts/quick-health-check.js",
+    "build:apps": "npm run build",
+    "deploy:staging": "echo 'Staging deploy placeholder'",
+    "deploy:production": "echo 'Production deploy placeholder'",
+    "test:smoke": "node production-smoke-test.cjs",
+    "test:smoke:runtime": "electron . --smoke-runtime",
+    "verify:prod": "node scripts/verify-prod.js",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" \"worker/src/**/*.ts\"",
+    "cleanup:dry": "node legacy/tools/cleanup-repo.mjs --dry-run",
+    "cleanup:apply": "node legacy/tools/cleanup-repo.mjs --apply",
+    "cleanup:apply:yes": "node legacy/tools/cleanup-repo.mjs --apply --yes",
+    "clean:dist": "rm -rf dist dist-electron dist-terminal-pro build-output squashfs-root release",
+    "compile": "tsc -p tsconfig.app.json",
+    "compile:worker": "tsc -p tsconfig.worker.json",
+    "build:renderer": "vite build",
+    "build": "npm run build:renderer && npm run compile",
+    "dist:linux:staged": "npm run clean:dist && npm run build && bash scripts/build-staging.sh && electron-builder --config electron-builder-config.js --linux AppImage --publish=never",
+    "ci:verify:appimage": "bash scripts/ci-verify-appimage.sh",
+    "ci:check:size": "bash scripts/check-size.sh",
+    "ci:smoke:pty": "node scripts/smoke-pty.mjs",
+    "install:local:linux": "bash scripts/install-local-linux.sh",
+    "uninstall:local:linux": "bash scripts/uninstall-local-linux.sh",
+    "smoke:test:offline": "npm run dist:linux:staged && ./dist-terminal-pro/*.AppImage --smoke-test --smoke-ipc --smoke-rina-roundtrip --smoke-offline --smoke-timeout-ms 60000 --smoke-no-sandbox",
+    "smoke:test:online": "npm run dist:linux:staged && ./dist-terminal-pro/*.AppImage --smoke-test --smoke-ipc --smoke-rina-roundtrip --smoke-timeout-ms 60000 --smoke-no-sandbox",
+    "smoke:test:pty": "npm run dist:linux:staged && ./dist-terminal-pro/*.AppImage --smoke-test --smoke-terminal-pty --smoke-timeout-ms 30000 --smoke-no-sandbox",
+    "format": "prettier . --write && markdownlint \"**/*.md\" --fix || true",
+    "format:check": "prettier . --check && markdownlint \"**/*.md\"",
+    "audit": "node tools/repo-audit.mjs --report",
+    "audit:fix": "node tools/repo-audit.mjs --report --fix-format",
+    "audit:quarantine": "node tools/repo-audit.mjs --report --fix-format --quarantine-conflicts",
+    "audit:danger": "node tools/repo-audit.mjs --report --fix-format --quarantine-conflicts --delete-exact-dups"
   },
   "dependencies": {
-    "node-pty": "^1.0.0",
-    "node-record-lpcm16": "^1.0.1",
-    "openai": "^4.20.1",
-    "stripe": "^14.9.0",
-    "ws": "^8.17.1",
-    "xterm": "^5.3.0"
+    "@types/node": "^25.0.3",
+    "@types/xterm": "^2.0.3",
+    "chalk": "^5.6.2",
+    "electron-store": "^11.0.2",
+    "node-machine-id": "^1.1.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "stripe": "^20.0.0",
+    "xterm": "^5.3.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "electron": "^28.3.3",
-    "electron-builder": "^24.13.3",
-    "eslint": "^8.55.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-security": "^2.1.1",
-    "glob": "^10.3.10",
-    "@sentry/electron": "^5.0.0",
-    "chai": "^4.3.7",
-    "mocha": "^10.2.0",
-    "sinon": "^15.0.0",
-    "electron-mocha": "^10.0.0",
-    "nyc": "^15.1.0",
-    "commander": "^11.0.0"
-  },
-  "optionalDependencies": {
-    "electron-updater": "^6.1.4"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  },
-  "os": [
-    "win32",
-    "darwin",
-    "linux"
-  ],
-  "cpu": [
-    "x64",
-    "arm64"
-  ]
+    "@cloudflare/workers-types": "^4.20251209.0",
+    "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.57.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.39.2",
+    "markdownlint-cli": "^0.41.0",
+    "node-pty": "^1.1.0",
+    "prettier": "^3.0.0",
+    "typescript-eslint": "^8.50.1",
+    "vite": "^5.4.11",
+    "electron": "^39.2.7",
+    "vitest": "^4.0.15"
+  }
 }

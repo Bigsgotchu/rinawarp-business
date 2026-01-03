@@ -1,12 +1,15 @@
 ## RinaWarp Terminal Pro ${VERSION}
 
 **Highlights**
+
 - …
 
 **Safety & Hardening**
+
 - …
 
 **Fixes**
+
 - …
 
 **Checksums**

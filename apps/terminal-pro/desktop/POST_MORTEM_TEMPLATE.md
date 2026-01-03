@@ -1,6 +1,10 @@
+<!-- markdownlint-disable MD060 -->
+<!-- markdownlint-disable MD012 -->
+
 # Incident Post-Mortem
 
 ## Incident Summary
+
 - **Incident ID:**
 - **Date / Time (UTC):**
 - **Duration:**
@@ -10,6 +14,7 @@
 ---
 
 ## Impact
+
 - User impact:
 - Systems affected:
 - Severity:
@@ -21,6 +26,7 @@
 ---
 
 ## Detection
+
 - How was the issue detected?
 - Crash signature or log reference:
 - Was safe mode triggered? (Yes/No)
@@ -28,12 +34,14 @@
 ---
 
 ## Root Cause
+
 Describe the underlying cause.
 Avoid speculation. Reference logs and code paths.
 
 ---
 
 ## Resolution
+
 - What was done to resolve the issue?
 - Patch version released:
 - Mitigations applied:
@@ -41,7 +49,9 @@ Avoid speculation. Reference logs and code paths.
 ---
 
 ## Prevention
+
 What changes prevent recurrence?
+
 - Code changes:
 - Guardrail updates:
 - Tests added:
@@ -51,12 +61,13 @@ What changes prevent recurrence?
 ## Timeline
 
 | Time (UTC) | Event |
-|-----------|-------|
-|           |       |
+| ---------- | ----- |
+|            |       |
 
 ---
 
 ## Lessons Learned
+
 - What worked well:
 - What didn't:
 - Follow-up actions:
@@ -66,5 +77,5 @@ What changes prevent recurrence?
 ## Action Items
 
 | Item | Owner | Status |
-|----|------|--------|
-|     |      |        |
+| ---- | ----- | ------ |
+|      |       |        |

@@ -5,11 +5,13 @@
 ### ✅ Step 1: Environment Variables Configuration
 
 **Current Configuration:**
+
 - `RINAWARP_API_URL`: `https://api.rinawarptech.com` (default in code)
 - `RINA_AGENT_URL`: `https://rinawarptech.com/api/agent` (default in code)
 - `OPENAI_API_KEY`: Required for AI features (optional for live sessions)
 
 **Files to update:**
+
 - Create `.env` file in `apps/terminal-pro/desktop/` directory with:
   ```bash
   RINAWARP_API_URL="https://api.rinawarptech.com"
@@ -20,6 +22,7 @@
 ### ✅ Step 2: Worker Route Configuration
 
 **Worker Route (wrangler.toml):**
+
 ```toml
 routes = [
   { pattern = "https://api.rinawarptech.com/api/live-session/*", zone_name = "rinawarptech.com" },
@@ -28,10 +31,9 @@ routes = [
 ```
 
 **Desktop API Root (live-session.js):**
+
 ```javascript
-const API_ROOT =
-  window.RINA_API_ROOT ||
-  "https://api.rinawarptech.com";
+const API_ROOT = window.RINA_API_ROOT || 'https://api.rinawarptech.com';
 ```
 
 **Status: ✅ MATCHED** - Both configured to use `https://api.rinawarptech.com`
@@ -41,6 +43,7 @@ const API_ROOT =
 **Endpoint:** `https://api.rinawarptech.com/api/live-session/health`
 
 **Expected Response:**
+
 ```json
 { "ok": true, "service": "live-session-worker" }
 ```
@@ -48,11 +51,13 @@ const API_ROOT =
 ### ✅ Step 4: Authentication JWT Structure
 
 **Worker expects JWT with claims:**
+
 - `sub`: User ID (e.g., "user_123")
 - `teamId`: Team ID (e.g., "team_456")
 - `name`: User name (e.g., "Karina")
 
 **Verification method:**
+
 1. Login to desktop app
 2. Open DevTools (Ctrl+Shift+I) → Console
 3. Run: `await window.RinaAuth.getToken()`
@@ -62,6 +67,7 @@ const API_ROOT =
 ### ✅ Step 5: End-to-End Live Session Test
 
 **Host Computer:**
+
 1. Login to desktop app
 2. Click "Start Live Session"
 3. Verify status: `[live] Hosting session …`
@@ -69,6 +75,7 @@ const API_ROOT =
 5. Copy Session ID
 
 **Guest Computer:**
+
 1. Login to desktop app
 2. Paste Session ID
 3. Click "Join"
@@ -85,6 +92,7 @@ const API_ROOT =
 **Endpoint:** `https://api.rinawarptech.com/api/live-session/<sessionId>/logs`
 
 **Expected Response:**
+
 ```json
 {
   "ok": true,
@@ -101,6 +109,7 @@ const API_ROOT =
 ### ✅ Step 7: Production Build and Start
 
 **Commands:**
+
 ```bash
 cd apps/terminal-pro/desktop
 npm run build
@@ -108,6 +117,7 @@ npm run start
 ```
 
 **Verification:**
+
 - Preload bridges load correctly
 - WebSockets connect in packaged app
 - Environment variables are baked in correctly
@@ -115,6 +125,7 @@ npm run start
 ## Implementation Details
 
 ### Worker Architecture
+
 - **Database**: D1 (SQLite-compatible)
 - **KV Storage**: Cloudflare KV for session state
 - **WebSockets**: Native WebSocket streaming
@@ -122,11 +133,13 @@ npm run start
 - **Event Logging**: All actions logged to D1 for replay
 
 ### Desktop Integration
+
 - **Auth Bridge**: `window.RinaAuth.getToken()`
 - **Live Session API**: `window.RinaLiveSession`
 - **Terminal UI Bridge**: `window.RinaTerminalUI`
 
 ### Required JWT Claims
+
 ```json
 {
   "sub": "user_123",
@@ -138,6 +151,7 @@ npm run start
 ```
 
 ### Session Flow
+
 1. **Host** creates session → GETs WebSocket URL
 2. **Guest** joins session → GETs same WebSocket URL
 3. Both connect to WebSocket with JWT token

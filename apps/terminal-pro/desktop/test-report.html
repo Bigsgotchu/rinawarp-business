@@ -1,797 +1,892 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RinaWarp Terminal Pro Test Report</title>
     <style>
-        :root {
-            --primary-color: #6c5ce7;
-            --success-color: #00b894;
-            --danger-color: #d63031;
-            --warning-color: #fdcb6e;
-            --info-color: #0984e3;
-            --light-color: #f5f6fa;
-            --dark-color: #2d3436;
-            --border-color: #dfe6e9;
-        }
+      :root {
+        --primary-color: #6c5ce7;
+        --success-color: #00b894;
+        --danger-color: #d63031;
+        --warning-color: #fdcb6e;
+        --info-color: #0984e3;
+        --light-color: #f5f6fa;
+        --dark-color: #2d3436;
+        --border-color: #dfe6e9;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
 
+      body {
+        background-color: #f5f6fa;
+        color: var(--dark-color);
+        line-height: 1.6;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, var(--primary-color), #a29bfe);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .header .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 20px;
+      }
+
+      .header .metadata {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+        font-size: 0.9rem;
+      }
+
+      .header .metadata-item {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px 15px;
+        border-radius: 20px;
+        display: inline-block;
+      }
+
+      .summary {
+        display: flex;
+        justify-content: space-around;
+        padding: 25px;
+        background: var(--light-color);
+        border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .summary-card {
+        text-align: center;
+        padding: 15px;
+        border-radius: 10px;
+        flex: 1;
+        min-width: 150px;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .summary-card.total {
+        border-top: 4px solid var(--primary-color);
+      }
+
+      .summary-card.passed {
+        border-top: 4px solid var(--success-color);
+      }
+
+      .summary-card.failed {
+        border-top: 4px solid var(--danger-color);
+      }
+
+      .summary-card .number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .summary-card .label {
+        color: #636e72;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .test-results {
+        padding: 25px;
+      }
+
+      .test-suite {
+        margin-bottom: 30px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .test-suite-header {
+        background: var(--light-color);
+        padding: 15px 20px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .test-suite-header .status {
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .test-suite-header .status.passed {
+        background: var(--success-color);
+        color: white;
+      }
+
+      .test-suite-header .status.failed {
+        background: var(--danger-color);
+        color: white;
+      }
+
+      .test-suite-body {
+        padding: 20px;
+      }
+
+      .test-case {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        background: white;
+        border-left: 4px solid var(--border-color);
+        transition: all 0.2s;
+      }
+
+      .test-case:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .test-case.passed {
+        border-left-color: var(--success-color);
+      }
+
+      .test-case.failed {
+        border-left-color: var(--danger-color);
+      }
+
+      .test-case-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .test-case-header .status {
+        padding: 3px 10px;
+        border-radius: 15px;
+        font-size: 0.7rem;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .test-case-header .status.passed {
+        background: var(--success-color);
+        color: white;
+      }
+
+      .test-case-header .status.failed {
+        background: var(--danger-color);
+        color: white;
+      }
+
+      .test-case-name {
+        font-weight: 500;
+        color: var(--dark-color);
+      }
+
+      .test-case-details {
+        font-size: 0.9rem;
+        color: #636e72;
+        padding-left: 25px;
+        margin-top: 5px;
+      }
+
+      .test-case-error {
+        background: #fff5f5;
+        border: 1px solid #ffe3e3;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 4px;
+        color: var(--danger-color);
+        font-family: 'Courier New', monospace;
+        font-size: 0.8rem;
+        white-space: pre-wrap;
+      }
+
+      .footer {
+        background: var(--dark-color);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      .footer .timestamp {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        margin-bottom: 10px;
+      }
+
+      .charts {
+        display: flex;
+        gap: 20px;
+        padding: 25px;
+        flex-wrap: wrap;
+      }
+
+      .chart-container {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .chart-container h3 {
+        margin-bottom: 15px;
+        color: var(--dark-color);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background: var(--light-color);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 15px 0;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: var(--success-color);
+        transition: width 0.3s ease;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.8rem;
+      }
+
+      .legend-item .color-box {
+        width: 15px;
+        height: 15px;
+        margin-right: 8px;
+        border-radius: 3px;
+      }
+
+      @media print {
         body {
-            background-color: #f5f6fa;
-            color: var(--dark-color);
-            line-height: 1.6;
-            padding: 20px;
+          background: white;
+          padding: 0;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+          box-shadow: none;
+          border: none;
         }
 
         .header {
-            background: linear-gradient(135deg, var(--primary-color), #a29bfe);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .header .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-
-        .header .metadata {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-
-        .header .metadata-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-
-        .summary {
-            display: flex;
-            justify-content: space-around;
-            padding: 25px;
-            background: var(--light-color);
-            border-bottom: 1px solid var(--border-color);
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .summary-card {
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-            flex: 1;
-            min-width: 150px;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .summary-card.total {
-            border-top: 4px solid var(--primary-color);
-        }
-
-        .summary-card.passed {
-            border-top: 4px solid var(--success-color);
-        }
-
-        .summary-card.failed {
-            border-top: 4px solid var(--danger-color);
-        }
-
-        .summary-card .number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .summary-card .label {
-            color: #636e72;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .test-results {
-            padding: 25px;
-        }
-
-        .test-suite {
-            margin-bottom: 30px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .test-suite-header {
-            background: var(--light-color);
-            padding: 15px 20px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .test-suite-header .status {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .test-suite-header .status.passed {
-            background: var(--success-color);
-            color: white;
-        }
-
-        .test-suite-header .status.failed {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        .test-suite-body {
-            padding: 20px;
-        }
-
-        .test-case {
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            background: white;
-            border-left: 4px solid var(--border-color);
-            transition: all 0.2s;
-        }
-
-        .test-case:hover {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .test-case.passed {
-            border-left-color: var(--success-color);
-        }
-
-        .test-case.failed {
-            border-left-color: var(--danger-color);
-        }
-
-        .test-case-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .test-case-header .status {
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .test-case-header .status.passed {
-            background: var(--success-color);
-            color: white;
-        }
-
-        .test-case-header .status.failed {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        .test-case-name {
-            font-weight: 500;
-            color: var(--dark-color);
-        }
-
-        .test-case-details {
-            font-size: 0.9rem;
-            color: #636e72;
-            padding-left: 25px;
-            margin-top: 5px;
-        }
-
-        .test-case-error {
-            background: #fff5f5;
-            border: 1px solid #ffe3e3;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 4px;
-            color: var(--danger-color);
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
-            white-space: pre-wrap;
-        }
-
-        .footer {
-            background: var(--dark-color);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .footer .timestamp {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-bottom: 10px;
-        }
-
-        .charts {
-            display: flex;
-            gap: 20px;
-            padding: 25px;
-            flex-wrap: wrap;
-        }
-
-        .chart-container {
-            flex: 1;
-            min-width: 300px;
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .chart-container h3 {
-            margin-bottom: 15px;
-            color: var(--dark-color);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: var(--light-color);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--success-color);
-            transition: width 0.3s ease;
-        }
-
-        .legend {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            font-size: 0.8rem;
-        }
-
-        .legend-item .color-box {
-            width: 15px;
-            height: 15px;
-            margin-right: 8px;
-            border-radius: 3px;
-        }
-
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-
-            .container {
-                box-shadow: none;
-                border: none;
-            }
-
-            .header {
-                background: var(--primary-color);
-                color: white;
-            }
-
-            .no-print {
-                display: none;
-            }
+          background: var(--primary-color);
+          color: white;
         }
 
         .no-print {
-            text-align: center;
-            margin: 20px 0;
+          display: none;
         }
+      }
 
-        .no-print button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.2s;
-        }
+      .no-print {
+        text-align: center;
+        margin: 20px 0;
+      }
 
-        .no-print button:hover {
-            background: #5649c0;
-        }
+      .no-print button {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+      }
+
+      .no-print button:hover {
+        background: #5649c0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>🧪 RinaWarp Terminal Pro Test Report</h1>
-            <div class="subtitle">Comprehensive Test Results</div>
-            <div class="metadata">
-                <div class="metadata-item">📅 Date: <span id="report-date">2025-12-11</span></div>
-                <div class="metadata-item">⏱️ Duration: <span id="report-duration">00:02:45</span></div>
-                <div class="metadata-item">💻 Environment: <span id="report-environment">Development</span></div>
-                <div class="metadata-item">📦 Version: <span id="report-version">1.0.0</span></div>
-            </div>
+      <div class="header">
+        <h1>🧪 RinaWarp Terminal Pro Test Report</h1>
+        <div class="subtitle">Comprehensive Test Results</div>
+        <div class="metadata">
+          <div class="metadata-item">📅 Date: <span id="report-date">2025-12-11</span></div>
+          <div class="metadata-item">⏱️ Duration: <span id="report-duration">00:02:45</span></div>
+          <div class="metadata-item">
+            💻 Environment: <span id="report-environment">Development</span>
+          </div>
+          <div class="metadata-item">📦 Version: <span id="report-version">1.0.0</span></div>
         </div>
+      </div>
 
-        <div class="summary">
-            <div class="summary-card total">
-                <div class="number" id="total-tests">9</div>
-                <div class="label">Total Tests</div>
-            </div>
-            <div class="summary-card passed">
-                <div class="number" id="passed-tests">9</div>
-                <div class="label">Passed</div>
-            </div>
-            <div class="summary-card failed">
-                <div class="number" id="failed-tests">0</div>
-                <div class="label">Failed</div>
-            </div>
-            <div class="summary-card">
-                <div class="number" id="success-rate">100.0%</div>
-                <div class="label">Success Rate</div>
-            </div>
+      <div class="summary">
+        <div class="summary-card total">
+          <div class="number" id="total-tests">9</div>
+          <div class="label">Total Tests</div>
         </div>
+        <div class="summary-card passed">
+          <div class="number" id="passed-tests">9</div>
+          <div class="label">Passed</div>
+        </div>
+        <div class="summary-card failed">
+          <div class="number" id="failed-tests">0</div>
+          <div class="label">Failed</div>
+        </div>
+        <div class="summary-card">
+          <div class="number" id="success-rate">100.0%</div>
+          <div class="label">Success Rate</div>
+        </div>
+      </div>
 
-        <div class="charts">
-            <div class="chart-container">
-                <h3>Test Results Overview</h3>
-                <div class="progress-bar">
-                    <div class="progress-bar-fill" id="progress-fill" style="width: 100.0%"></div>
+      <div class="charts">
+        <div class="chart-container">
+          <h3>Test Results Overview</h3>
+          <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 100%"></div>
+          </div>
+          <div class="legend">
+            <div class="legend-item">
+              <div class="color-box" style="background: var(--success-color)"></div>
+              <span>Passed</span>
+            </div>
+            <div class="legend-item">
+              <div class="color-box" style="background: var(--danger-color)"></div>
+              <span>Failed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-results">
+        <!-- Test results will be inserted here dynamically -->
+        <div id="test-results-container">
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>Main Application Functionality</div>
+              <div class="status passed">PASSED</div>
+            </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">Main Application Functionality</div>
+                  <div class="status passed">PASS</div>
                 </div>
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="color-box" style="background: var(--success-color)"></div>
-                        <span>Passed</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="color-box" style="background: var(--danger-color)"></div>
-                        <span>Failed</span>
-                    </div>
+                <div class="test-case-details">All main application tests passed</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>Terminal Creation and Management</div>
+              <div class="status passed">PASSED</div>
+            </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">Terminal Creation and Management</div>
+                  <div class="status passed">PASS</div>
                 </div>
+                <div class="test-case-details">All terminal management tests passed</div>
+              </div>
             </div>
-        </div>
+          </div>
 
-        <div class="test-results">
-            <!-- Test results will be inserted here dynamically -->
-            <div id="test-results-container">
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>Main Application Functionality</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">Main Application Functionality</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All main application tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>Terminal Creation and Management</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">Terminal Creation and Management</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All terminal management tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>License Gate Functionality</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">License Gate Functionality</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All license gate tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>Auto-Updater Functionality</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">Auto-Updater Functionality</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All auto-updater tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>AI Agent Integration</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">AI Agent Integration</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All AI agent integration tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>Voice Functionality</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">Voice Functionality</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All voice functionality tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>Command Palette</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">Command Palette</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All command palette tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>Update Banner</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">Update Banner</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All update banner tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-      <div class="test-suite">
-        <div class="test-suite-header">
-          <div>Agent Status Indicator</div>
-          <div class="status passed">PASSED</div>
-        </div>
-        <div class="test-suite-body">
-    
-        <div class="test-case passed">
-          <div class="test-case-header">
-            <div class="test-case-name">Agent Status Indicator</div>
-            <div class="status passed">PASS</div>
-          </div>
-          <div class="test-case-details">All agent status indicator tests passed</div>
-      </div>
-        </div>
-      </div>
-    
-                <!-- Test suites will be added here -->
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>License Gate Functionality</div>
+              <div class="status passed">PASSED</div>
             </div>
-        </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">License Gate Functionality</div>
+                  <div class="status passed">PASS</div>
+                </div>
+                <div class="test-case-details">All license gate tests passed</div>
+              </div>
+            </div>
+          </div>
 
-        <div class="footer">
-            <div class="timestamp">Generated on <span id="footer-timestamp">12/11/2025, 3:08:32 AM</span></div>
-            <div>© 2025 RinaWarp Technologies. All rights reserved.</div>
-            <div class="no-print">
-                <button onclick="window.print()">🖨️ Print Report</button>
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>Auto-Updater Functionality</div>
+              <div class="status passed">PASSED</div>
             </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">Auto-Updater Functionality</div>
+                  <div class="status passed">PASS</div>
+                </div>
+                <div class="test-case-details">All auto-updater tests passed</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>AI Agent Integration</div>
+              <div class="status passed">PASSED</div>
+            </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">AI Agent Integration</div>
+                  <div class="status passed">PASS</div>
+                </div>
+                <div class="test-case-details">All AI agent integration tests passed</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>Voice Functionality</div>
+              <div class="status passed">PASSED</div>
+            </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">Voice Functionality</div>
+                  <div class="status passed">PASS</div>
+                </div>
+                <div class="test-case-details">All voice functionality tests passed</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>Command Palette</div>
+              <div class="status passed">PASSED</div>
+            </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">Command Palette</div>
+                  <div class="status passed">PASS</div>
+                </div>
+                <div class="test-case-details">All command palette tests passed</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>Update Banner</div>
+              <div class="status passed">PASSED</div>
+            </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">Update Banner</div>
+                  <div class="status passed">PASS</div>
+                </div>
+                <div class="test-case-details">All update banner tests passed</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="test-suite">
+            <div class="test-suite-header">
+              <div>Agent Status Indicator</div>
+              <div class="status passed">PASSED</div>
+            </div>
+            <div class="test-suite-body">
+              <div class="test-case passed">
+                <div class="test-case-header">
+                  <div class="test-case-name">Agent Status Indicator</div>
+                  <div class="status passed">PASS</div>
+                </div>
+                <div class="test-case-details">All agent status indicator tests passed</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Test suites will be added here -->
         </div>
+      </div>
+
+      <div class="footer">
+        <div class="timestamp">
+          Generated on <span id="footer-timestamp">12/11/2025, 3:08:32 AM</span>
+        </div>
+        <div>© 2025 RinaWarp Technologies. All rights reserved.</div>
+        <div class="no-print">
+          <button onclick="window.print()">🖨️ Print Report</button>
+        </div>
+      </div>
     </div>
 
     <script>
-        // Test data - this would be populated by the test runner
-        const testData = {
-            reportInfo: {
-                date: "2025-12-11",
-                duration: "00:02:45",
-                environment: "Development",
-                version: "1.0.0",
-                timestamp: "2025-12-11 09:30:00"
-            },
-            summary: {
-                total: 0,
-                passed: 0,
-                failed: 0,
-                successRate: "0%"
-            },
-            testSuites: []
-        };
+      // Test data - this would be populated by the test runner
+      const testData = {
+        reportInfo: {
+          date: '2025-12-11',
+          duration: '00:02:45',
+          environment: 'Development',
+          version: '1.0.0',
+          timestamp: '2025-12-11 09:30:00',
+        },
+        summary: {
+          total: 0,
+          passed: 0,
+          failed: 0,
+          successRate: '0%',
+        },
+        testSuites: [],
+      };
 
-        // Function to populate the report
-        function populateReport() {
-            // Set report metadata
-            document.getElementById('report-date').textContent = testData.reportInfo.date;
-            document.getElementById('report-duration').textContent = testData.reportInfo.duration;
-            document.getElementById('report-environment').textContent = testData.reportInfo.environment;
-            document.getElementById('report-version').textContent = testData.reportInfo.version;
-            document.getElementById('footer-timestamp').textContent = testData.reportInfo.timestamp;
+      // Function to populate the report
+      function populateReport() {
+        // Set report metadata
+        document.getElementById('report-date').textContent = testData.reportInfo.date;
+        document.getElementById('report-duration').textContent = testData.reportInfo.duration;
+        document.getElementById('report-environment').textContent = testData.reportInfo.environment;
+        document.getElementById('report-version').textContent = testData.reportInfo.version;
+        document.getElementById('footer-timestamp').textContent = testData.reportInfo.timestamp;
 
-            // Set summary
-            document.getElementById('total-tests').textContent = testData.summary.total;
-            document.getElementById('passed-tests').textContent = testData.summary.passed;
-            document.getElementById('failed-tests').textContent = testData.summary.failed;
-            document.getElementById('success-rate').textContent = testData.summary.successRate;
+        // Set summary
+        document.getElementById('total-tests').textContent = testData.summary.total;
+        document.getElementById('passed-tests').textContent = testData.summary.passed;
+        document.getElementById('failed-tests').textContent = testData.summary.failed;
+        document.getElementById('success-rate').textContent = testData.summary.successRate;
 
-            // Update progress bar
-            const progressFill = document.getElementById('progress-fill');
-            progressFill.style.width = testData.summary.successRate;
+        // Update progress bar
+        const progressFill = document.getElementById('progress-fill');
+        progressFill.style.width = testData.summary.successRate;
 
-            // Generate test suite HTML
-            const resultsContainer = document.getElementById('test-results-container');
+        // Generate test suite HTML
+        const resultsContainer = document.getElementById('test-results-container');
 
-            testData.testSuites.forEach(suite => {
-                const suiteElement = document.createElement('div');
-                suiteElement.className = 'test-suite';
+        testData.testSuites.forEach((suite) => {
+          const suiteElement = document.createElement('div');
+          suiteElement.className = 'test-suite';
 
-                const suiteHeader = document.createElement('div');
-                suiteHeader.className = 'test-suite-header';
+          const suiteHeader = document.createElement('div');
+          suiteHeader.className = 'test-suite-header';
 
-                const suiteTitle = document.createElement('div');
-                suiteTitle.textContent = suite.name;
+          const suiteTitle = document.createElement('div');
+          suiteTitle.textContent = suite.name;
 
-                const suiteStatus = document.createElement('div');
-                suiteStatus.className = `status ${suite.allPassed ? 'passed' : 'failed'}`;
-                suiteStatus.textContent = suite.allPassed ? 'PASSED' : 'FAILED';
+          const suiteStatus = document.createElement('div');
+          suiteStatus.className = `status ${suite.allPassed ? 'passed' : 'failed'}`;
+          suiteStatus.textContent = suite.allPassed ? 'PASSED' : 'FAILED';
 
-                suiteHeader.appendChild(suiteTitle);
-                suiteHeader.appendChild(suiteStatus);
-                suiteElement.appendChild(suiteHeader);
+          suiteHeader.appendChild(suiteTitle);
+          suiteHeader.appendChild(suiteStatus);
+          suiteElement.appendChild(suiteHeader);
 
-                const suiteBody = document.createElement('div');
-                suiteBody.className = 'test-suite-body';
+          const suiteBody = document.createElement('div');
+          suiteBody.className = 'test-suite-body';
 
-                suite.tests.forEach(test => {
-                    const testElement = document.createElement('div');
-                    testElement.className = `test-case ${test.passed ? 'passed' : 'failed'}`;
+          suite.tests.forEach((test) => {
+            const testElement = document.createElement('div');
+            testElement.className = `test-case ${test.passed ? 'passed' : 'failed'}`;
 
-                    const testHeader = document.createElement('div');
-                    testHeader.className = 'test-case-header';
+            const testHeader = document.createElement('div');
+            testHeader.className = 'test-case-header';
 
-                    const testName = document.createElement('div');
-                    testName.className = 'test-case-name';
-                    testName.textContent = test.name;
+            const testName = document.createElement('div');
+            testName.className = 'test-case-name';
+            testName.textContent = test.name;
 
-                    const testStatus = document.createElement('div');
-                    testStatus.className = `status ${test.passed ? 'passed' : 'failed'}`;
-                    testStatus.textContent = test.passed ? 'PASS' : 'FAIL';
+            const testStatus = document.createElement('div');
+            testStatus.className = `status ${test.passed ? 'passed' : 'failed'}`;
+            testStatus.textContent = test.passed ? 'PASS' : 'FAIL';
 
-                    testHeader.appendChild(testName);
-                    testHeader.appendChild(testStatus);
-                    testElement.appendChild(testHeader);
+            testHeader.appendChild(testName);
+            testHeader.appendChild(testStatus);
+            testElement.appendChild(testHeader);
 
-                    const testDetails = document.createElement('div');
-                    testDetails.className = 'test-case-details';
-                    testDetails.textContent = test.message;
-                    testElement.appendChild(testDetails);
+            const testDetails = document.createElement('div');
+            testDetails.className = 'test-case-details';
+            testDetails.textContent = test.message;
+            testElement.appendChild(testDetails);
 
-                    if (!test.passed && test.error) {
-                        const testError = document.createElement('div');
-                        testError.className = 'test-case-error';
-                        testError.textContent = test.error;
-                        testElement.appendChild(testError);
-                    }
-
-                    suiteBody.appendChild(testElement);
-                });
-
-                suiteElement.appendChild(suiteBody);
-                resultsContainer.appendChild(suiteElement);
-            });
-        }
-
-        // Load test data from URL parameter or use sample data
-        function loadTestData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const testDataParam = urlParams.get('testData');
-
-            if (testDataParam) {
-                try {
-                    const decodedData = decodeURIComponent(testDataParam);
-                    Object.assign(testData, JSON.parse(decodedData));
-                } catch (error) {
-                    console.error('Failed to parse test data:', error);
-                }
-            } else {
-                // Use sample data for demonstration
-                testData.reportInfo.date = new Date().toISOString().split('T')[0];
-                testData.reportInfo.timestamp = new Date().toLocaleString();
-
-                // Generate sample test results
-                const testSuites = [
-                    {
-                        name: "Main Application Functionality",
-                        allPassed: true,
-                        tests: [
-                            { name: "Application loads without errors", passed: true, message: "Application initialized successfully" },
-                            { name: "UI elements are present", passed: true, message: "All main UI elements found" },
-                            { name: "Configuration is accessible", passed: true, message: "Configuration loaded correctly" }
-                        ]
-                    },
-                    {
-                        name: "Terminal Creation and Management",
-                        allPassed: true,
-                        tests: [
-                            { name: "Terminal creation", passed: true, message: "Terminal created successfully" },
-                            { name: "Terminal list management", passed: true, message: "Terminal list contains created terminals" },
-                            { name: "Terminal switching", passed: true, message: "Terminal switching works correctly" },
-                            { name: "Terminal closing", passed: true, message: "Terminal closed successfully" }
-                        ]
-                    },
-                    {
-                        name: "License Gate Functionality",
-                        allPassed: true,
-                        tests: [
-                            { name: "License gate shows when no license", passed: true, message: "License gate displayed correctly" },
-                            { name: "License verification", passed: true, message: "License verification function exists" },
-                            { name: "License storage", passed: true, message: "License storage functions work" }
-                        ]
-                    },
-                    {
-                        name: "Auto-Updater Functionality",
-                        allPassed: true,
-                        tests: [
-                            { name: "Auto-updater is initialized", passed: true, message: "Auto-updater initialized successfully" },
-                            { name: "Update events are handled", passed: true, message: "All update events handled correctly" },
-                            { name: "Update banner functionality", passed: true, message: "Update banner works as expected" }
-                        ]
-                    },
-                    {
-                        name: "AI Agent Integration",
-                        allPassed: true,
-                        tests: [
-                            { name: "AI agent is initialized", passed: true, message: "AI agent initialized successfully" },
-                            { name: "Agent status indicator", passed: true, message: "Agent status indicator functional" },
-                            { name: "AI router functionality", passed: true, message: "AI router works correctly" },
-                            { name: "Agent debug functionality", passed: true, message: "Agent debug functionality available" }
-                        ]
-                    },
-                    {
-                        name: "Voice Functionality",
-                        allPassed: true,
-                        tests: [
-                            { name: "Voice controller is initialized", passed: true, message: "Voice controller initialized" },
-                            { name: "Voice UI elements", passed: true, message: "Voice UI elements present" },
-                            { name: "Voice event handling", passed: true, message: "Voice events handled correctly" }
-                        ]
-                    },
-                    {
-                        name: "Command Palette",
-                        allPassed: true,
-                        tests: [
-                            { name: "Command palette is initialized", passed: true, message: "Command palette initialized" },
-                            { name: "Command palette UI", passed: true, message: "Command palette UI present" },
-                            { name: "Command palette functionality", passed: true, message: "Command palette works correctly" }
-                        ]
-                    },
-                    {
-                        name: "Update Banner",
-                        allPassed: true,
-                        tests: [
-                            { name: "Update banner is initialized", passed: true, message: "Update banner initialized" },
-                            { name: "Update banner UI", passed: true, message: "Update banner UI present" },
-                            { name: "Update banner functionality", passed: true, message: "Update banner functions correctly" }
-                        ]
-                    },
-                    {
-                        name: "Agent Status Indicator",
-                        allPassed: true,
-                        tests: [
-                            { name: "Agent status indicator is present", passed: true, message: "Agent status indicator present" },
-                            { name: "Agent status functionality", passed: true, message: "Agent status functions work" },
-                            { name: "Agent status auto-ping", passed: true, message: "Agent status auto-ping running" }
-                        ]
-                    }
-                ];
-
-                // Calculate summary
-                let total = 0;
-                let passed = 0;
-
-                testSuites.forEach(suite => {
-                    suite.tests.forEach(test => {
-                        total++;
-                        if (test.passed) passed++;
-                    });
-                });
-
-                testData.summary.total = total;
-                testData.summary.passed = passed;
-                testData.summary.failed = total - passed;
-                testData.summary.successRate = `${((passed / total) * 100).toFixed(1)}%`;
-                testData.testSuites = testSuites;
+            if (!test.passed && test.error) {
+              const testError = document.createElement('div');
+              testError.className = 'test-case-error';
+              testError.textContent = test.error;
+              testElement.appendChild(testError);
             }
 
-            populateReport();
+            suiteBody.appendChild(testElement);
+          });
+
+          suiteElement.appendChild(suiteBody);
+          resultsContainer.appendChild(suiteElement);
+        });
+      }
+
+      // Load test data from URL parameter or use sample data
+      function loadTestData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const testDataParam = urlParams.get('testData');
+
+        if (testDataParam) {
+          try {
+            const decodedData = decodeURIComponent(testDataParam);
+            Object.assign(testData, JSON.parse(decodedData));
+          } catch (error) {
+            console.error('Failed to parse test data:', error);
+          }
+        } else {
+          // Use sample data for demonstration
+          testData.reportInfo.date = new Date().toISOString().split('T')[0];
+          testData.reportInfo.timestamp = new Date().toLocaleString();
+
+          // Generate sample test results
+          const testSuites = [
+            {
+              name: 'Main Application Functionality',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'Application loads without errors',
+                  passed: true,
+                  message: 'Application initialized successfully',
+                },
+                {
+                  name: 'UI elements are present',
+                  passed: true,
+                  message: 'All main UI elements found',
+                },
+                {
+                  name: 'Configuration is accessible',
+                  passed: true,
+                  message: 'Configuration loaded correctly',
+                },
+              ],
+            },
+            {
+              name: 'Terminal Creation and Management',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'Terminal creation',
+                  passed: true,
+                  message: 'Terminal created successfully',
+                },
+                {
+                  name: 'Terminal list management',
+                  passed: true,
+                  message: 'Terminal list contains created terminals',
+                },
+                {
+                  name: 'Terminal switching',
+                  passed: true,
+                  message: 'Terminal switching works correctly',
+                },
+                { name: 'Terminal closing', passed: true, message: 'Terminal closed successfully' },
+              ],
+            },
+            {
+              name: 'License Gate Functionality',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'License gate shows when no license',
+                  passed: true,
+                  message: 'License gate displayed correctly',
+                },
+                {
+                  name: 'License verification',
+                  passed: true,
+                  message: 'License verification function exists',
+                },
+                {
+                  name: 'License storage',
+                  passed: true,
+                  message: 'License storage functions work',
+                },
+              ],
+            },
+            {
+              name: 'Auto-Updater Functionality',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'Auto-updater is initialized',
+                  passed: true,
+                  message: 'Auto-updater initialized successfully',
+                },
+                {
+                  name: 'Update events are handled',
+                  passed: true,
+                  message: 'All update events handled correctly',
+                },
+                {
+                  name: 'Update banner functionality',
+                  passed: true,
+                  message: 'Update banner works as expected',
+                },
+              ],
+            },
+            {
+              name: 'AI Agent Integration',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'AI agent is initialized',
+                  passed: true,
+                  message: 'AI agent initialized successfully',
+                },
+                {
+                  name: 'Agent status indicator',
+                  passed: true,
+                  message: 'Agent status indicator functional',
+                },
+                {
+                  name: 'AI router functionality',
+                  passed: true,
+                  message: 'AI router works correctly',
+                },
+                {
+                  name: 'Agent debug functionality',
+                  passed: true,
+                  message: 'Agent debug functionality available',
+                },
+              ],
+            },
+            {
+              name: 'Voice Functionality',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'Voice controller is initialized',
+                  passed: true,
+                  message: 'Voice controller initialized',
+                },
+                { name: 'Voice UI elements', passed: true, message: 'Voice UI elements present' },
+                {
+                  name: 'Voice event handling',
+                  passed: true,
+                  message: 'Voice events handled correctly',
+                },
+              ],
+            },
+            {
+              name: 'Command Palette',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'Command palette is initialized',
+                  passed: true,
+                  message: 'Command palette initialized',
+                },
+                { name: 'Command palette UI', passed: true, message: 'Command palette UI present' },
+                {
+                  name: 'Command palette functionality',
+                  passed: true,
+                  message: 'Command palette works correctly',
+                },
+              ],
+            },
+            {
+              name: 'Update Banner',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'Update banner is initialized',
+                  passed: true,
+                  message: 'Update banner initialized',
+                },
+                { name: 'Update banner UI', passed: true, message: 'Update banner UI present' },
+                {
+                  name: 'Update banner functionality',
+                  passed: true,
+                  message: 'Update banner functions correctly',
+                },
+              ],
+            },
+            {
+              name: 'Agent Status Indicator',
+              allPassed: true,
+              tests: [
+                {
+                  name: 'Agent status indicator is present',
+                  passed: true,
+                  message: 'Agent status indicator present',
+                },
+                {
+                  name: 'Agent status functionality',
+                  passed: true,
+                  message: 'Agent status functions work',
+                },
+                {
+                  name: 'Agent status auto-ping',
+                  passed: true,
+                  message: 'Agent status auto-ping running',
+                },
+              ],
+            },
+          ];
+
+          // Calculate summary
+          let total = 0;
+          let passed = 0;
+
+          testSuites.forEach((suite) => {
+            suite.tests.forEach((test) => {
+              total++;
+              if (test.passed) passed++;
+            });
+          });
+
+          testData.summary.total = total;
+          testData.summary.passed = passed;
+          testData.summary.failed = total - passed;
+          testData.summary.successRate = `${((passed / total) * 100).toFixed(1)}%`;
+          testData.testSuites = testSuites;
         }
 
-        // Initialize the report
-        document.addEventListener('DOMContentLoaded', loadTestData);
+        populateReport();
+      }
+
+      // Initialize the report
+      document.addEventListener('DOMContentLoaded', loadTestData);
     </script>
-</body>
+  </body>
 </html>

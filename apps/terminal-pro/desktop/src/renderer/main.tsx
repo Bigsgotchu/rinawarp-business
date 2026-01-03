@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './components/App';
+import App from './components/App.js';
 import './styles/main.css';
 
 // Initialize the application
@@ -19,7 +19,7 @@ root.render(
 );
 
 // Performance monitoring
-if (import.meta.env.DEV) {
+if (process.env.NODE_ENV === 'development') {
   console.log('🚀 RinaWarp Terminal Pro renderer initialized');
 }
 

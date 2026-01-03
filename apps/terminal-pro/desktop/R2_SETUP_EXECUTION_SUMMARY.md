@@ -1,4 +1,4 @@
-`````````# R2 Setup Execution Summary
+# R2 Setup Execution Summary
 
 ## ✅ Completed Successfully
 
