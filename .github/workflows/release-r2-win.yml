@@ -36,10 +36,18 @@ jobs:
 
     steps:
       - name: Configure Git for Windows long paths
-        shell: bash
+        shell: pwsh
         run: |
+          # Configure git to handle long paths on Windows
           git config --global core.longpaths true
           git config --global --add safe.directory '*'
+          
+          # Verify the settings were applied
+          Write-Host "Git core.longpaths: $(git config --global core.longpaths)"
+          Write-Host "Git safe directories: $(git config --global --get-all safe.directory)"
+          
+          # Set environment variable to persist across steps
+          echo "GIT_CONFIG_GLOBAL=$HOME\.gitconfig" >> $env:GITHUB_ENV
 
       - uses: actions/checkout@v4
         with:
