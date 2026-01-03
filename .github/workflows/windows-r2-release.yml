@@ -1,0 +1,136 @@
+name: Windows R2 Release
+
+on:
+    workflow_dispatch:
+        inputs:
+            channel:
+                description: stable | canary | nightly
+                required: true
+                default: stable
+                type: choice
+                options: [stable, canary, nightly]
+            dry_run:
+                description: "If true: build + validate only (no R2 upload)"
+                required: true
+                default: true
+                type: boolean
+
+permissions:
+    contents: read
+
+concurrency:
+    group: windows-r2-release-${{ github.ref }}-${{ inputs.channel }}
+    cancel-in-progress: false
+
+jobs:
+    win:
+        runs-on: windows-latest
+        env:
+            CHANNEL: ${{ inputs.channel }}
+            R2_BUCKET: ${{ vars.R2_BUCKET }}
+            R2_ACCOUNT_ID: ${{ vars.R2_ACCOUNT_ID }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: auto
+            R2_ENDPOINT: https://${{ vars.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+
+            - name: Install deps
+              working-directory: apps/terminal-pro/desktop
+              run: npm ci
+
+            - name: Preflight secrets/vars check
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  req() { [ -n "${1:-}" ] || (echo "❌ Missing: $2" && exit 1); }
+                  req "$R2_BUCKET" "R2_BUCKET (Actions Variables)"
+                  req "$R2_ACCOUNT_ID" "R2_ACCOUNT_ID (Actions Variables)"
+                  req "$AWS_ACCESS_KEY_ID" "R2_ACCESS_KEY_ID (Actions Secrets)"
+                  req "$AWS_SECRET_ACCESS_KEY" "R2_SECRET_ACCESS_KEY (Actions Secrets)"
+                  echo "✅ Preflight OK"
+
+            - name: Build Windows (NSIS) - no publish
+              working-directory: apps/terminal-pro/desktop
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  rm -rf dist-terminal-pro
+                  npx electron-builder -c electron-builder.terminal-pro.json --win nsis --publish=never
+
+            - name: Debug dist output
+              working-directory: apps/terminal-pro/desktop
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  echo "=== dist-terminal-pro top ==="
+                  ls -la dist-terminal-pro || true
+                  echo "=== matching outputs ==="
+                  find dist-terminal-pro -maxdepth 2 -type f \( \
+                    -iname "latest*.yml" -o -iname "*.exe" -o -iname "*.msi" -o -iname "*.zip" -o -iname "*.blockmap" \
+                  \) -print | sort
+
+            - name: Assert Windows outputs exist + anti-poisoning
+              working-directory: apps/terminal-pro/desktop
+              shell: bash
+              run: |
+                  set -euo pipefail
+
+                  test -f dist-terminal-pro/latest.yml || (echo "❌ Missing dist-terminal-pro/latest.yml" && exit 1)
+
+                  # Must have an installer
+                  if ! find dist-terminal-pro -maxdepth 2 -type f \( -iname "*.exe" -o -iname "*.msi" -o -iname "*.zip" \) | head -1 | grep -q .; then
+                    echo "❌ No Windows installer produced (.exe/.msi/.zip)"
+                    exit 1
+                  fi
+
+                  # Prevent the original poisoning bug
+                  if grep -qiE '\.AppImage|latest-linux\.yml|\.deb|\.snap' dist-terminal-pro/latest.yml; then
+                    echo "❌ Poisoned metadata: latest.yml references Linux artifacts"
+                    echo "---- latest.yml ----"
+                    sed -n '1,160p' dist-terminal-pro/latest.yml || true
+                    exit 1
+                  fi
+
+                  echo "✅ Windows outputs look sane"
+
+            - name: Install AWS CLI
+              if: ${{ !inputs.dry_run }}
+              shell: powershell
+              run: |
+                  choco install awscli -y
+                  aws --version
+
+            - name: Upload Windows artifacts to R2 channel root (NO delete)
+              if: ${{ !inputs.dry_run }}
+              working-directory: apps/terminal-pro/desktop
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  DEST="s3://${R2_BUCKET}/terminal-pro/${CHANNEL}/"
+                  echo "Uploading to: $DEST"
+
+                  # Upload only Windows-related updater files
+                  aws s3 cp "dist-terminal-pro/latest.yml" "${DEST}latest.yml" --endpoint-url "$R2_ENDPOINT"
+
+                  for f in dist-terminal-pro/*.{exe,msi,zip,blockmap} 2>/dev/null; do
+                    [ -f "$f" ] || continue
+                    aws s3 cp "$f" "${DEST}$(basename "$f")" --endpoint-url "$R2_ENDPOINT"
+                  done
+
+                  echo "✅ Upload complete"
+
+            - name: Verify public endpoint (download domain)
+              if: ${{ !inputs.dry_run }}
+              shell: powershell
+              run: |
+                  $base = "https://download.rinawarptech.com/terminal-pro/${{ inputs.channel }}"
+                  curl.exe -I "$base/latest.yml"
+                  curl.exe -s "$base/latest.yml" | Select-Object -First 40
