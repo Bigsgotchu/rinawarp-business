@@ -35,6 +35,12 @@ jobs:
       R2_ENDPOINT: https://${{ vars.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
 
     steps:
+      - name: Configure Git for Windows long paths
+        shell: bash
+        run: |
+          git config --global core.longpaths true
+          git config --global --add safe.directory '*'
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
