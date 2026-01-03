@@ -1,0 +1,13 @@
+# Don't let the agent waste time / get confused by artifacts
+node_modules/
+dist*/
+build-output/
+squashfs-root/
+.wrangler/state/
+**/*-unpacked/
+**/*.AppImage
+**/*.deb
+**/*.dmg
+**/*.exe
+**/*.zip
+**/*.snap
