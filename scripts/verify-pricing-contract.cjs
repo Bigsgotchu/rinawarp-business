@@ -130,9 +130,11 @@ class PricingContractVerifier {
   async validateWebsiteRuntime(apiData) {
     this.log("🌐 Checking website consistency (runtime)...");
 
-    const lifetime = Array.isArray(apiData?.lifetime) ? apiData.lifetime : [];
-    const hasAvailableLifetime = lifetime.some((p) => p && p.soldOut === false);
+    // Check both API endpoints to understand the data inconsistency
+    const lifetimeStatusData = await this.checkLifetimeStatusAPI();
+    const pricingApiData = apiData;
 
+    // Check what the live website is actually displaying
     if (!chromium) {
       this.warnings.push("Playwright not available; using basic HTML checks only");
       return true;
@@ -143,7 +145,7 @@ class PricingContractVerifier {
 
     try {
       await page.goto(WEBSITE_PRICING_URL, { waitUntil: "networkidle", timeout: 30000 });
-      await page.waitForTimeout(750); // allow client JS to toggle UI
+      await page.waitForTimeout(1000); // allow client JS to toggle UI
 
       const soldOutSel = "#sold-out-message";
       const lifetimeSel = "#lifetime-offers-container";
@@ -161,23 +163,41 @@ class PricingContractVerifier {
       const soldOutVisible = await page.locator(soldOutSel).isVisible();
       const lifetimeVisible = await page.locator(lifetimeSel).isVisible();
 
-      if (hasAvailableLifetime && soldOutVisible) {
+      // Check consistency with /api/pricing data
+      const pricingHasAvailable = pricingApiData?.lifetime?.some((p) => p && p.soldOut === false);
+
+      // Check consistency with /api/lifetime-status data  
+      const statusHasAvailable = lifetimeStatusData ? Object.values(lifetimeStatusData).some(tier => tier.remaining > 0) : false;
+
+      if (pricingHasAvailable && soldOutVisible) {
         this.errors.push(
-          "Website shows 'All Lifetime Offers Sold Out' but API reports lifetime available (soldOut:false)."
+          "CRITICAL: Website shows 'All Lifetime Offers Sold Out' but /api/pricing reports lifetime available (soldOut:false)."
         );
       }
 
-      if (hasAvailableLifetime && !lifetimeVisible) {
+      if (statusHasAvailable && soldOutVisible) {
         this.errors.push(
-          "API reports lifetime available (soldOut:false) but lifetime offers container is not visible."
+          "CRITICAL: Website shows 'All Lifetime Offers Sold Out' but /api/lifetime-status reports available inventory."
         );
       }
 
-      if (!hasAvailableLifetime && !soldOutVisible) {
+      if (pricingHasAvailable && !lifetimeVisible) {
         this.errors.push(
-          "API reports all lifetime sold out, but sold-out message is not visible."
+          "/api/pricing reports lifetime available (soldOut:false) but lifetime offers container is not visible."
         );
       }
+
+      if (!pricingHasAvailable && !statusHasAvailable && !soldOutVisible) {
+        this.errors.push(
+          "Both APIs report no lifetime available, but sold-out message is not visible."
+        );
+      }
+
+      // Report the data comparison
+      this.log("📊 API Data Comparison:");
+      this.log(`   /api/pricing: ${pricingHasAvailable ? 'Has available plans' : 'All sold out'}`);
+      this.log(`   /api/lifetime-status: ${statusHasAvailable ? 'Has available inventory' : 'All sold out'}`);
+      this.log(`   Website: Sold-out message ${soldOutVisible ? 'VISIBLE' : 'HIDDEN'}, Lifetime offers ${lifetimeVisible ? 'VISIBLE' : 'HIDDEN'}`);
 
       if (this.errors.length === 0) {
         this.log("✅ Website consistency check passed: Runtime visibility matches API data.");
@@ -190,6 +210,18 @@ class PricingContractVerifier {
     } finally {
       await browser.close();
     }
+  }
+
+  async checkLifetimeStatusAPI() {
+    try {
+      const response = await fetch('https://rinawarptech.com/api/lifetime-status');
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (error) {
+      this.warnings.push("Could not fetch /api/lifetime-status endpoint");
+    }
+    return null;
   }
 
   async run() {
