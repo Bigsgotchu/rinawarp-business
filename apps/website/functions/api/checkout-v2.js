@@ -1,6 +1,6 @@
 /**
  * Cloudflare Pages Function for Stripe Checkout Session Creation
- * Updated to use pricing.json as single source of truth
+ * Uses environment variables for Stripe price IDs
  */
 
 import { Stripe } from 'stripe';
@@ -10,6 +10,7 @@ export const onRequestPost = async (context) => {
     // Get environment variables
     const stripeSecretKey = context.env.STRIPE_SECRET_KEY;
     const domain = context.env.DOMAIN || 'https://rinawarptech.com';
+    const priceMapJson = context.env.RINA_PRICE_MAP;
 
     // Initialize Stripe
     const stripe = new Stripe(stripeSecretKey, {
@@ -18,67 +19,75 @@ export const onRequestPost = async (context) => {
 
     // Parse request body
     const requestBody = await context.request.json();
-    const { plan, successUrl, cancelUrl, email } = requestBody;
+    const { plan, product, successUrl, cancelUrl, email } = requestBody;
+    let planId = plan || product;
 
-    if (!plan) {
+    if (!planId) {
       return new Response(
         JSON.stringify({ error: 'Plan is required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Load pricing.json as single source of truth
-    let pricing;
+    // Map legacy product names to canonical plan IDs
+    const productMap = {
+      'terminal-pro': 'pro_monthly',
+      'mvc-monthly': 'creator_monthly',
+      'starter_monthly': 'starter-monthly',
+      'creator_monthly': 'creator-monthly',
+      'pro_monthly': 'pro-monthly',
+      'founder_lifetime': 'founder-lifetime',
+      'pioneer_lifetime': 'pioneer-lifetime',
+      'final_lifetime': 'enterprise-yearly'
+    };
+    planId = productMap[planId] || planId;
+
+    // Parse RINA_PRICE_MAP environment variable
+    let priceMap = {};
     try {
-      const pricingResponse = await fetch(`${domain}/pricing.json`);
-      if (!pricingResponse.ok) {
-        throw new Error('Failed to load pricing.json');
+      if (priceMapJson) {
+        priceMap = JSON.parse(priceMapJson);
+      } else {
+        // Fallback price mapping if RINA_PRICE_MAP is not set
+        console.warn('RINA_PRICE_MAP environment variable not set, using fallback mapping');
+        priceMap = {
+          'starter-monthly': 'price_1SVRVJGZrRdZy3W9q6u9L82y',
+          'creator-monthly': 'price_1SVRVJGZrRdZy3W9tRX5tsaH',
+          'pro-monthly': 'price_1SVRVKGZrRdZy3W9wFO3QPw6',
+          'founder-lifetime': 'price_1SVRVLGZrRdZy3W976aXrw0g',
+          'pioneer-lifetime': 'price_1SVRVLGZrRdZy3W9LoPVNyem',
+          'enterprise-yearly': 'price_1SVRVMGZrRdZy3W9094r1F5B'
+        };
       }
-      pricing = await pricingResponse.json();
-    } catch (error) {
-      console.error('Failed to load pricing.json:', error);
+    } catch (parseError) {
+      console.error('Failed to parse RINA_PRICE_MAP:', parseError);
       return new Response(
-        JSON.stringify({ error: 'Failed to load pricing configuration' }),
+        JSON.stringify({ error: 'Invalid price map configuration' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Find the plan in pricing.json
-    const planKey = plan.replace('-monthly', '').replace('-lifetime', '');
-    const planData = pricing.plans[planKey];
+    const priceId = priceMap[planId];
 
-    if (!planData) {
+    if (!priceId) {
       return new Response(
         JSON.stringify({
           error: 'Invalid plan selected',
-          availablePlans: Object.keys(pricing.plans),
-          receivedPlan: plan
+          availablePlans: Object.keys(priceMap),
+          receivedPlan: planId
         }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    if (!planData.stripe_price_id) {
-      return new Response(
-        JSON.stringify({
-          error: 'Plan configuration incomplete',
-          plan: planKey,
-          message: 'Missing stripe_price_id in pricing.json'
-        }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    const priceId = planData.stripe_price_id;
-
     // Use provided URLs or fallback to defaults
     const finalSuccessUrl = successUrl || `${domain}/success.html`;
     const finalCancelUrl = cancelUrl || `${domain}/cancel.html`;
 
-    // Determine checkout mode based on plan interval
-    const isLifetimePlan = planData.interval === 'one_time';
+    // Determine checkout mode based on plan
+    const isLifetimePlan = planId.includes('lifetime');
     const mode = isLifetimePlan ? 'payment' : 'subscription';
-    
+
     // Create Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -93,20 +102,17 @@ export const onRequestPost = async (context) => {
       cancel_url: finalCancelUrl,
       customer_email: email,
       metadata: {
-        plan: planKey,
-        plan_display: planData.name,
-        price: planData.price,
-        interval: planData.interval,
+        plan: planId,
         email: email || '',
         plan_type: isLifetimePlan ? 'lifetime' : 'subscription',
       },
     });
 
-    console.log(`✅ Created ${mode} session for ${planKey} (${planData.name}) - $${planData.price}`);
+    console.log(`✅ Created ${mode} session for ${planId}`);
 
-    // Return session ID for Stripe.js redirect
+    // Return session URL for redirect
     return new Response(
-      JSON.stringify({ sessionId: session.id }),
+      JSON.stringify({ url: session.url }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
