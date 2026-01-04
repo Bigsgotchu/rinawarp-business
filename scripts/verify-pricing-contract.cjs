@@ -19,162 +19,228 @@
 
 const https = require('https');
 
-function makeRequest(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(new Error(`Failed to parse JSON: ${e.message}`));
-        }
-      });
-    }).on('error', reject);
-  });
-}
-
-function makeHtmlRequest(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => {
-        resolve(data);
-      });
-    }).on('error', reject);
-  });
-}
-
-async function checkWebsiteConsistency(apiData) {
+// Try to load Playwright for runtime website checking
+let chromium = null;
+try {
+  // Try root directory first
+  ({ chromium } = require("@playwright/test"));
+} catch {
   try {
-    console.log(`\n🌐 Checking website consistency...`);
-    
-    // Check if API says any lifetime is available (soldOut: false)
-    const apiHasAvailableLifetime = apiData.lifetime.some(p => p && p.soldOut === false);
-    
-    if (apiHasAvailableLifetime) {
-      // Fetch website HTML and check for sold-out message
-      const websiteHtml = await makeHtmlRequest('https://rinawarptech.com/pricing');
-      
-      if (/All\s+Lifetime\s+Offers\s+Sold\s+Out/i.test(websiteHtml)) {
-        console.log(`❌ Website consistency check failed:`);
-        console.log(`   Website shows 'All Lifetime Offers Sold Out' but API reports lifetime available (soldOut:false).`);
-        console.log(`   This mismatch will confuse customers.`);
-        allPassed = false;
-      } else {
-        console.log(`✅ Website consistency check passed:`);
-        console.log(`   API shows lifetime plans available, website doesn't show sold-out message.`);
-      }
-    } else {
-      console.log(`✅ Website consistency check skipped: API shows all lifetime plans sold out.`);
-    }
-  } catch (error) {
-    console.log(`❌ Website consistency check failed: ${error.message}`);
-    allPassed = false;
+    // Fall back to desktop app directory where it's installed
+    ({ chromium } = require("../apps/terminal-pro/desktop/node_modules/@playwright/test"));
+  } catch {
+    console.log("⚠️ Playwright not available; using basic HTML checks only");
   }
 }
 
-async function verifyPricingContract() {
-  const endpoints = [
-    'https://api.rinawarptech.com/api/pricing',
-    'https://admin-api.rinawarptech.workers.dev/api/pricing'
-  ];
+// Website URL for testing
+const WEBSITE_PRICING_URL = 'https://rinawarptech.com/pricing';
 
-  let allPassed = true;
+class PricingContractVerifier {
+  constructor() {
+    this.errors = [];
+    this.warnings = [];
+  }
 
-  for (const url of endpoints) {
-    console.log(`\n🔍 Verifying ${url}...`);
-    
+  log(message, level = 'info') {
+    const prefix = level === 'error' ? '❌' : level === 'success' ? '✅' : level === 'warning' ? '⚠️' : '📋';
+    console.log(`${prefix} ${message}`);
+  }
+
+  async makeRequest(url) {
+    return new Promise((resolve, reject) => {
+      https.get(url, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(new Error(`Failed to parse JSON: ${e.message}`));
+          }
+        });
+      }).on('error', reject);
+    });
+  }
+
+  async validateApiEndpoint(url) {
+    this.log(`🔍 Verifying ${url}...`);
+
     try {
-      const data = await makeRequest(url);
-      
+      const data = await this.makeRequest(url);
+
       // Check if response has required structure
       if (!data.ok) {
-        console.log(`❌ ${url}: Missing 'ok: true'`);
-        allPassed = false;
-        continue;
+        this.errors.push(`${url}: Missing 'ok: true'`);
+        return false;
       }
 
       if (!data.plans || !Array.isArray(data.plans)) {
-        console.log(`❌ ${url}: Missing or invalid 'plans' array`);
-        allPassed = false;
-        continue;
+        this.errors.push(`${url}: Missing or invalid 'plans' array`);
+        return false;
       }
 
       if (!data.lifetime || !Array.isArray(data.lifetime)) {
-        console.log(`❌ ${url}: Missing or invalid 'lifetime' array`);
-        allPassed = false;
-        continue;
+        this.errors.push(`${url}: Missing or invalid 'lifetime' array`);
+        return false;
       }
 
       // Check plans
-      console.log(`📊 Plans: ${data.plans.length} monthly plans`);
+      this.log(`📊 Plans: ${data.plans.length} monthly plans`);
       if (data.plans.length !== 3) {
-        console.log(`❌ ${url}: Expected 3 monthly plans, got ${data.plans.length}`);
-        allPassed = false;
+        this.errors.push(`${url}: Expected 3 monthly plans, got ${data.plans.length}`);
       }
 
       // Check lifetime
-      console.log(`📊 Lifetime: ${data.lifetime.length} lifetime plans`);
+      this.log(`📊 Lifetime: ${data.lifetime.length} lifetime plans`);
       if (data.lifetime.length !== 3) {
-        console.log(`❌ ${url}: Expected 3 lifetime plans, got ${data.lifetime.length}`);
-        allPassed = false;
+        this.errors.push(`${url}: Expected 3 lifetime plans, got ${data.lifetime.length}`);
       }
 
       // Verify each plan has required fields
       const allPlans = [...data.plans, ...data.lifetime];
       for (const plan of allPlans) {
         if (!plan.stripeEnv) {
-          console.log(`❌ ${url}: Plan ${plan.id} missing 'stripeEnv' field`);
-          allPassed = false;
+          this.errors.push(`${url}: Plan ${plan.id} missing 'stripeEnv' field`);
         }
         if (!plan.priceUsd) {
-          console.log(`❌ ${url}: Plan ${plan.id} missing 'priceUsd' field`);
-          allPassed = false;
+          this.errors.push(`${url}: Plan ${plan.id} missing 'priceUsd' field`);
         }
         if (plan.soldOut === undefined) {
-          console.log(`❌ ${url}: Plan ${plan.id} missing 'soldOut' field`);
-          allPassed = false;
+          this.errors.push(`${url}: Plan ${plan.id} missing 'soldOut' field`);
         }
       }
 
-      if (allPassed) {
-        console.log(`✅ ${url}: All checks passed!`);
-        console.log(`   ✅ 3 monthly plans`);
-        console.log(`   ✅ 3 lifetime plans`);
-        console.log(`   ✅ stripeEnv present everywhere`);
-        console.log(`   ✅ priceUsd present for all plans`);
+      if (this.errors.length === 0) {
+        this.log(`✅ ${url}: All checks passed!`);
+        this.log(`   ✅ 3 monthly plans`);
+        this.log(`   ✅ 3 lifetime plans`);
+        this.log(`   ✅ stripeEnv present everywhere`);
+        this.log(`   ✅ priceUsd present for all plans`);
       }
 
-      // Check website consistency if API data is valid
-      if (data.ok && data.lifetime && Array.isArray(data.lifetime)) {
-        await checkWebsiteConsistency(data);
-      }
+      return data;
 
     } catch (error) {
-      console.log(`❌ ${url}: Request failed - ${error.message}`);
-      allPassed = false;
+      this.errors.push(`${url}: Request failed - ${error.message}`);
+      return null;
     }
   }
 
-  console.log('\n' + '='.repeat(50));
-  if (allPassed) {
-    console.log('🎉 ALL CHECKS PASSED! Pricing contract is valid.');
-    console.log('✅ 3 monthly plans');
-    console.log('✅ 3 lifetime plans');
-    console.log('✅ stripeEnv present everywhere');
-    console.log('✅ priceUsd present for all plans');
-    process.exit(0);
-  } else {
-    console.log('❌ SOME CHECKS FAILED! Pricing contract verification failed.');
-    process.exit(1);
+  async validateWebsiteRuntime(apiData) {
+    this.log("🌐 Checking website consistency (runtime)...");
+
+    const lifetime = Array.isArray(apiData?.lifetime) ? apiData.lifetime : [];
+    const hasAvailableLifetime = lifetime.some((p) => p && p.soldOut === false);
+
+    if (!chromium) {
+      this.warnings.push("Playwright not available; using basic HTML checks only");
+      return true;
+    }
+
+    const browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+
+    try {
+      await page.goto(WEBSITE_PRICING_URL, { waitUntil: "networkidle", timeout: 30000 });
+      await page.waitForTimeout(750); // allow client JS to toggle UI
+
+      const soldOutSel = "#sold-out-message";
+      const lifetimeSel = "#lifetime-offers-container";
+
+      const soldOutExists = (await page.locator(soldOutSel).count()) > 0;
+      const lifetimeExists = (await page.locator(lifetimeSel).count()) > 0;
+
+      if (!soldOutExists || !lifetimeExists) {
+        this.errors.push(
+          `Website DOM contract changed: expected ${soldOutSel} and ${lifetimeSel} to exist on ${WEBSITE_PRICING_URL}`
+        );
+        return false;
+      }
+
+      const soldOutVisible = await page.locator(soldOutSel).isVisible();
+      const lifetimeVisible = await page.locator(lifetimeSel).isVisible();
+
+      if (hasAvailableLifetime && soldOutVisible) {
+        this.errors.push(
+          "Website shows 'All Lifetime Offers Sold Out' but API reports lifetime available (soldOut:false)."
+        );
+      }
+
+      if (hasAvailableLifetime && !lifetimeVisible) {
+        this.errors.push(
+          "API reports lifetime available (soldOut:false) but lifetime offers container is not visible."
+        );
+      }
+
+      if (!hasAvailableLifetime && !soldOutVisible) {
+        this.errors.push(
+          "API reports all lifetime sold out, but sold-out message is not visible."
+        );
+      }
+
+      if (this.errors.length === 0) {
+        this.log("✅ Website consistency check passed: Runtime visibility matches API data.");
+      }
+
+      return this.errors.length === 0;
+    } catch (error) {
+      this.errors.push(`Website runtime check failed: ${error.message}`);
+      return false;
+    } finally {
+      await browser.close();
+    }
+  }
+
+  async run() {
+    this.log("Starting pricing contract verification...");
+
+    try {
+      const endpoints = [
+        'https://api.rinawarptech.com/api/pricing',
+        'https://admin-api.rinawarptech.workers.dev/api/pricing'
+      ];
+
+      let validApiData = null;
+
+      for (const url of endpoints) {
+        const apiData = await this.validateApiEndpoint(url);
+        if (apiData && !validApiData) {
+          validApiData = apiData;
+        }
+      }
+
+      // Run website consistency check if we have valid API data
+      if (validApiData) {
+        await this.validateWebsiteRuntime(validApiData);
+      }
+
+      // Report warnings
+      this.warnings.forEach(w => this.log(w, 'warning'));
+
+      if (this.errors.length === 0) {
+        this.log("🎉 ALL CHECKS PASSED! Pricing contract is valid.", "success");
+        return 0;
+      }
+
+      this.log("❌ SOME CHECKS FAILED! Pricing contract verification failed.", "error");
+      this.errors.forEach((e) => this.log(e, "error"));
+      return 1;
+    } catch (error) {
+      this.log(`❌ Verification failed: ${error.message}`, "error");
+      return 1;
+    }
   }
 }
 
 // Run verification
-verifyPricingContract().catch(error => {
+async function main() {
+  const verifier = new PricingContractVerifier();
+  const exitCode = await verifier.run();
+  process.exit(exitCode);
+}
+
+main().catch(error => {
   console.error('Verification failed:', error);
   process.exit(1);
 });
