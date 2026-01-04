@@ -1,0 +1,162 @@
+name: Release Pipeline
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    env:
+      APP_DIR: apps/terminal-pro/desktop
+      DIST_DIR: apps/terminal-pro/desktop/dist-terminal-pro
+      ADMIN_API_BASE_URL: ${{ secrets.ADMIN_API_BASE_URL }}
+      WEBSITE_PRICING_URL: https://rinawarptech.com/pricing
+      DESKTOP_PRICING_PATH: apps/terminal-pro/desktop/src/shared/types/pricing.types.ts
+      AWS_EC2_METADATA_DISABLED: "true"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+            apps/terminal-pro/desktop/package-lock.json
+
+      # Install ONLY the desktop app deps (avoids monorepo bloat and surprises)
+      - name: Install desktop dependencies
+        working-directory: ${{ env.APP_DIR }}
+        run: npm ci
+
+      - name: Verify pricing contract (API + desktop)
+        run: node scripts/verify-pricing-contract.cjs
+
+      - name: Verify website pricing visibility (runtime)
+        run: node scripts/verify-website-pricing-visibility.cjs
+
+      - name: Build AppImage (staged)
+        working-directory: ${{ env.APP_DIR }}
+        run: npm run dist:linux:staged
+
+      - name: Generate checksums
+        id: meta
+        run: |
+          set -euo pipefail
+
+          APPIMAGE_PATH="$(ls -1 "${{ env.DIST_DIR }}"/*.AppImage | head -n 1)"
+          APPIMAGE_FILE="$(basename "$APPIMAGE_PATH")"
+
+          sha256sum "$APPIMAGE_PATH" | tee "${{ env.DIST_DIR }}/checksums.txt"
+          APPIMAGE_SHA256="$(cut -d' ' -f1 "${{ env.DIST_DIR }}/checksums.txt")"
+          APPIMAGE_SIZE="$(stat -c%s "$APPIMAGE_PATH")"
+
+          echo "APPIMAGE_PATH=$APPIMAGE_PATH" >> "$GITHUB_OUTPUT"
+          echo "APPIMAGE_FILE=$APPIMAGE_FILE" >> "$GITHUB_OUTPUT"
+          echo "APPIMAGE_SHA256=$APPIMAGE_SHA256" >> "$GITHUB_OUTPUT"
+          echo "APPIMAGE_SIZE=$APPIMAGE_SIZE" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to R2
+        id: r2
+        env:
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_PUBLIC_BASE_URL: ${{ secrets.R2_PUBLIC_BASE_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          set -euo pipefail
+
+          KEY_PREFIX="releases/${{ github.ref_name }}"
+          APPIMAGE_FILE="${{ steps.meta.outputs.APPIMAGE_FILE }}"
+
+          aws s3 cp "${{ steps.meta.outputs.APPIMAGE_PATH }}" \
+            "s3://${R2_BUCKET}/${KEY_PREFIX}/${APPIMAGE_FILE}" \
+            --endpoint-url "${R2_ENDPOINT}" \
+            --no-progress
+
+          aws s3 cp "${{ env.DIST_DIR }}/checksums.txt" \
+            "s3://${R2_BUCKET}/${KEY_PREFIX}/checksums.txt" \
+            --endpoint-url "${R2_ENDPOINT}" \
+            --no-progress
+
+          # Public URL must be your public domain (NOT the S3 API endpoint)
+          echo "R2_URL=${R2_PUBLIC_BASE_URL}/${KEY_PREFIX}/${APPIMAGE_FILE}" >> "$GITHUB_OUTPUT"
+          echo "R2_CHECKSUMS_URL=${R2_PUBLIC_BASE_URL}/${KEY_PREFIX}/checksums.txt" >> "$GITHUB_OUTPUT"
+
+      - name: Update Admin API latest.json
+        env:
+          ADMIN_API_BASE_URL: ${{ secrets.ADMIN_API_BASE_URL }}
+          ADMIN_API_TOKEN: ${{ secrets.ADMIN_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          cat > release-manifest.json << EOF
+          {
+            "version": "${{ github.ref_name }}",
+            "linux": {
+              "appImageUrl": "${{ steps.r2.outputs.R2_URL }}",
+              "sha256": "${{ steps.meta.outputs.APPIMAGE_SHA256 }}",
+              "size": ${{ steps.meta.outputs.APPIMAGE_SIZE }},
+              "checksumsUrl": "${{ steps.r2.outputs.R2_CHECKSUMS_URL }}"
+            },
+            "releaseDate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "notesUrl": "${{ github.event.release.html_url }}"
+          }
+          EOF
+
+          curl -fsS -X POST "$ADMIN_API_BASE_URL/api/releases/latest" \
+            -H "Authorization: Bearer $ADMIN_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @release-manifest.json
+
+      - name: Verify download and checksum
+        env:
+          ADMIN_API_BASE_URL: ${{ secrets.ADMIN_API_BASE_URL }}
+        run: |
+          set -euo pipefail
+
+          LATEST_JSON="$(curl -fsS "$ADMIN_API_BASE_URL/api/downloads/latest.json")"
+          DOWNLOAD_URL="$(echo "$LATEST_JSON" | jq -r '.linux.appImageUrl')"
+          EXPECTED_SHA256="$(echo "$LATEST_JSON" | jq -r '.linux.sha256')"
+
+          echo "Downloading from: $DOWNLOAD_URL"
+          curl -L -o test-download.AppImage "$DOWNLOAD_URL"
+
+          ACTUAL_SHA256="$(sha256sum test-download.AppImage | cut -d' ' -f1)"
+          if [ "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]; then
+            echo "❌ Checksum verification failed"
+            echo "Expected: $EXPECTED_SHA256"
+            echo "Actual:   $ACTUAL_SHA256"
+            exit 1
+          fi
+
+          chmod +x test-download.AppImage
+          echo "✅ Checksum verification passed and AppImage is executable"
+
+      - name: Upload assets to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            ${{ steps.meta.outputs.APPIMAGE_PATH }}
+            ${{ env.DIST_DIR }}/checksums.txt
