@@ -3,12 +3,25 @@ account_id = "ba2f14cefa19dbdc42ff88d772410689"
 workers_dev = true
 compatibility_date = "2025-11-17"
 
+# Assets directory for static files
+[assets]
+directory = "./dist"
+
+# Pages build output directory
+pages_build_output_dir = "dist"
+
 # Environment variables
 [vars]
 STRIPE_SECRET_KEY = "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"
 STRIPE_WEBHOOK_SECRET = "whsec_k6SWU7KCMT4vdPL7ZUNpxFiK4SQk8nPi"
 DOMAIN = "https://www.rinawarptech.com"
 RINA_PRICE_MAP = "{\"enterprise-yearly\":\"price_1SVRVMGZrRdZy3W9094r1F5B\",\"founder-lifetime\":\"price_1SVRVLGZrRdZy3W976aXrw0g\",\"pioneer-lifetime\":\"price_1SVRVLGZrRdZy3W9LoPVNyem\",\"pro-monthly\":\"price_1SVRVKGZrRdZy3W9wFO3QPw6\",\"creator-monthly\":\"price_1SVRVJGZrRdZy3W9tRX5tsaH\",\"starter-monthly\":\"price_1SVRVJGZrRdZy3W9q6u9L82y\"}"
+STRIPE_PRICE_STARTER_MONTHLY = "price_1SVRVJGZrRdZy3W9q6u9L82y"
+STRIPE_PRICE_CREATOR_MONTHLY = "price_1SVRVJGZrRdZy3W9tRX5tsaH"
+STRIPE_PRICE_PRO_MONTHLY = "price_1SVRVKGZrRdZy3W9wFO3QPw6"
+STRIPE_PRICE_FOUNDER_LIFETIME = "price_1SVRVLGZrRdZy3W976aXrw0g"
+STRIPE_PRICE_PIONEER_LIFETIME = "price_1SVRVLGZrRdZy3W9LoPVNyem"
+STRIPE_PRICE_FINAL_LIFETIME = "price_1SVRVMGZrRdZy3W9094r1F5B"
 
 # D1 Database for licenses
 [[d1_databases]]
@@ -40,6 +53,12 @@ vars.STRIPE_SECRET_KEY = "sk_live_51SH4C2GZrRdZy3W9Rz9APjrsrm5815TGVBtGzT4XM5Buj
 vars.STRIPE_WEBHOOK_SECRET = "whsec_k6SWU7KCMT4vdPL7ZUNpxFiK4SQk8nPi"
 vars.DOMAIN = "https://www.rinawarptech.com"
 vars.RINA_PRICE_MAP = "{\"enterprise-yearly\":\"price_1SVRVMGZrRdZy3W9094r1F5B\",\"founder-lifetime\":\"price_1SVRVLGZrRdZy3W976aXrw0g\",\"pioneer-lifetime\":\"price_1SVRVLGZrRdZy3W9LoPVNyem\",\"pro-monthly\":\"price_1SVRVKGZrRdZy3W9wFO3QPw6\",\"creator-monthly\":\"price_1SVRVJGZrRdZy3W9tRX5tsaH\",\"starter-monthly\":\"price_1SVRVJGZrRdZy3W9q6u9L82y\"}"
+vars.STRIPE_PRICE_STARTER_MONTHLY = "price_1SVRVJGZrRdZy3W9q6u9L82y"
+vars.STRIPE_PRICE_CREATOR_MONTHLY = "price_1SVRVJGZrRdZy3W9tRX5tsaH"
+vars.STRIPE_PRICE_PRO_MONTHLY = "price_1SVRVKGZrRdZy3W9wFO3QPw6"
+vars.STRIPE_PRICE_FOUNDER_LIFETIME = "price_1SVRVLGZrRdZy3W976aXrw0g"
+vars.STRIPE_PRICE_PIONEER_LIFETIME = "price_1SVRVLGZrRdZy3W9LoPVNyem"
+vars.STRIPE_PRICE_FINAL_LIFETIME = "price_1SVRVMGZrRdZy3W9094r1F5B"
 
 # KV namespaces for production
 [[env.production.kv_namespaces]]
