@@ -13,6 +13,7 @@
     "test:smoke": "node production-smoke-test.cjs",
     "test:smoke:runtime": "electron . --smoke-runtime",
     "verify:prod": "node scripts/verify-prod.js",
+    "verify:pricing": "node scripts/verify-pricing-contract.mjs",
     "lint": "eslint \"src/**/*.{ts,tsx}\" \"worker/src/**/*.ts\"",
     "cleanup:dry": "node legacy/tools/cleanup-repo.mjs --dry-run",
     "cleanup:apply": "node legacy/tools/cleanup-repo.mjs --apply",

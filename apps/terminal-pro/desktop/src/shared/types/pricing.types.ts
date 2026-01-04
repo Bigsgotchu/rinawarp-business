@@ -14,7 +14,7 @@ export const PRICING_PLANS = {
         soldOut: false
     },
     STARTER: {
-        id: 'starter',
+        id: 'starter_monthly',
         name: 'Starter',
         price: 29,
         billing: 'monthly' as const,
@@ -24,7 +24,7 @@ export const PRICING_PLANS = {
         soldOut: false
     },
     CREATOR: {
-        id: 'creator',
+        id: 'creator_monthly',
         name: 'Creator',
         price: 69,
         billing: 'monthly' as const,
@@ -34,7 +34,7 @@ export const PRICING_PLANS = {
         soldOut: false
     },
     PRO: {
-        id: 'pro',
+        id: 'pro_monthly',
         name: 'Pro',
         price: 99,
         billing: 'monthly' as const,
@@ -45,33 +45,33 @@ export const PRICING_PLANS = {
     },
     FOUNDER_LIFETIME: {
         id: 'founder_lifetime',
-        name: 'Founder',
+        name: 'Founder Lifetime',
         price: 699,
         billing: 'one-time' as const,
         features: ['all-features', 'lifetime-access', 'priority-support'],
         description: 'Founder Lifetime - $699 one-time',
         comingSoon: false,
-        soldOut: true
+        soldOut: false
     },
     PIONEER_LIFETIME: {
         id: 'pioneer_lifetime',
-        name: 'Pioneer',
+        name: 'Pioneer Lifetime',
         price: 800,
         billing: 'one-time' as const,
         features: ['all-features', 'lifetime-access', 'priority-support', 'early-access'],
         description: 'Pioneer Lifetime - $800 one-time',
         comingSoon: false,
-        soldOut: true
+        soldOut: false
     },
     FINAL_LIFETIME: {
         id: 'final_lifetime',
-        name: 'Final',
+        name: 'Final Lifetime',
         price: 999,
         billing: 'one-time' as const,
         features: ['all-features', 'lifetime-access', 'priority-support', 'early-access', 'premium-support'],
         description: 'Final Lifetime - $999 one-time',
         comingSoon: false,
-        soldOut: true
+        soldOut: false
     }
 } as const;
 
@@ -117,10 +117,10 @@ export const getActivePricingPlans = (): PricingPlan[] => {
 };
 
 export const getStripePriceIds = () => ({
-    STARTER: process.env.STRIPE_PRICE_STARTER || 'price_starter_monthly',
-    CREATOR: process.env.STRIPE_PRICE_CREATOR || 'price_creator_monthly',
-    PRO: process.env.STRIPE_PRICE_PRO || 'price_pro_monthly',
-    FOUNDER_LIFETIME: process.env.STRIPE_PRICE_FOUNDER || 'price_founder_lifetime',
-    PIONEER_LIFETIME: process.env.STRIPE_PRICE_PIONEER || 'price_pioneer_lifetime',
-    FINAL_LIFETIME: process.env.STRIPE_PRICE_FINAL || 'price_final_lifetime',
+    STARTER_MONTHLY: process.env.STRIPE_PRICE_STARTER_MONTHLY || 'price_starter_monthly',
+    CREATOR_MONTHLY: process.env.STRIPE_PRICE_CREATOR_MONTHLY || 'price_creator_monthly',
+    PRO_MONTHLY: process.env.STRIPE_PRICE_PRO_MONTHLY || 'price_pro_monthly',
+    FOUNDER_LIFETIME: process.env.STRIPE_PRICE_FOUNDER_LIFETIME || 'price_founder_lifetime',
+    PIONEER_LIFETIME: process.env.STRIPE_PRICE_PIONEER_LIFETIME || 'price_pioneer_lifetime',
+    FINAL_LIFETIME: process.env.STRIPE_PRICE_FINAL_LIFETIME || 'price_final_lifetime',
 });

@@ -66,7 +66,7 @@ async function dbRun(db, sql, params = []) {
 /* ----------------------------------------------------------------------------
 Pricing endpoint: your website can render from this instead of hardcoding.
 ---------------------------------------------------------------------------- */
-app.get('/api/pricing', (c) => {
+app.get('/api/pricing', async (c) => {
     const env = c.env;
     const plans = [
         {
@@ -74,43 +74,58 @@ app.get('/api/pricing', (c) => {
             name: 'Starter',
             interval: 'month',
             priceUsd: 29,
-            stripePriceId: env.STRIPE_PRICE_STARTER_MONTHLY,
+            stripeEnv: 'STRIPE_PRICE_STARTER_MONTHLY',
+            soldOut: false,
         },
         {
             id: 'creator_monthly',
             name: 'Creator',
             interval: 'month',
             priceUsd: 69,
-            stripePriceId: env.STRIPE_PRICE_CREATOR_MONTHLY,
+            stripeEnv: 'STRIPE_PRICE_CREATOR_MONTHLY',
+            soldOut: false,
         },
         {
             id: 'pro_monthly',
             name: 'Pro',
             interval: 'month',
             priceUsd: 99,
-            stripePriceId: env.STRIPE_PRICE_PRO_MONTHLY,
+            stripeEnv: 'STRIPE_PRICE_PRO_MONTHLY',
+            soldOut: false,
         },
     ];
+
+    // Count lifetime licenses by plan
+    const founderCount = await dbGet(env.DB, `SELECT COUNT(*) as count FROM licenses WHERE plan_id = 'founder_lifetime' AND status = 'ACTIVE'`);
+    const pioneerCount = await dbGet(env.DB, `SELECT COUNT(*) as count FROM licenses WHERE plan_id = 'pioneer_lifetime' AND status = 'ACTIVE'`);
+    const finalCount = await dbGet(env.DB, `SELECT COUNT(*) as count FROM licenses WHERE plan_id = 'final_lifetime' AND status = 'ACTIVE'`);
+
     const lifetime = [
-        env.STRIPE_PRICE_STARTER_LIFETIME && {
-            id: 'starter_lifetime',
-            name: 'Starter (Lifetime)',
+        {
+            id: 'founder_lifetime',
+            name: 'Founder Lifetime',
             interval: 'lifetime',
-            stripePriceId: env.STRIPE_PRICE_STARTER_LIFETIME,
+            priceUsd: 699,
+            stripeEnv: 'STRIPE_PRICE_FOUNDER_LIFETIME',
+            soldOut: (founderCount?.count ?? 0) >= 200,
         },
-        env.STRIPE_PRICE_CREATOR_LIFETIME && {
-            id: 'creator_lifetime',
-            name: 'Creator (Lifetime)',
+        {
+            id: 'pioneer_lifetime',
+            name: 'Pioneer Lifetime',
             interval: 'lifetime',
-            stripePriceId: env.STRIPE_PRICE_CREATOR_LIFETIME,
+            priceUsd: 800,
+            stripeEnv: 'STRIPE_PRICE_PIONEER_LIFETIME',
+            soldOut: (pioneerCount?.count ?? 0) >= 200,
         },
-        env.STRIPE_PRICE_FINAL_LIFETIME && {
+        {
             id: 'final_lifetime',
-            name: 'Final (Lifetime)',
+            name: 'Final Lifetime',
             interval: 'lifetime',
-            stripePriceId: env.STRIPE_PRICE_FINAL_LIFETIME,
+            priceUsd: 999,
+            stripeEnv: 'STRIPE_PRICE_FINAL_LIFETIME',
+            soldOut: (finalCount?.count ?? 0) >= 100,
         },
-    ].filter(Boolean);
+    ];
     return c.json({ ok: true, plans, lifetime });
 });
 /* ----------------------------------------------------------------------------
@@ -191,8 +206,8 @@ const PLAN_TO_PRICE = (env) => ({
     starter_monthly: env.STRIPE_PRICE_STARTER_MONTHLY,
     creator_monthly: env.STRIPE_PRICE_CREATOR_MONTHLY,
     pro_monthly: env.STRIPE_PRICE_PRO_MONTHLY,
-    starter_lifetime: env.STRIPE_PRICE_STARTER_LIFETIME,
-    creator_lifetime: env.STRIPE_PRICE_CREATOR_LIFETIME,
+    founder_lifetime: env.STRIPE_PRICE_FOUNDER_LIFETIME,
+    pioneer_lifetime: env.STRIPE_PRICE_PIONEER_LIFETIME,
     final_lifetime: env.STRIPE_PRICE_FINAL_LIFETIME,
 });
 app.post('/api/stripe/create-checkout-session', async (c) => {
