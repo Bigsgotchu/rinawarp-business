@@ -1,0 +1,23 @@
+# Node
+node_modules/
+dist/
+*.vsix
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.*
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Data (you likely don't want to commit local runtime state)
+.rinawarp/

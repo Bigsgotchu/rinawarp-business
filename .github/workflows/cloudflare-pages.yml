@@ -1,0 +1,68 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "production or preview"
+        required: true
+        default: "production"
+      build_dir:
+        description: "Build output directory (e.g. dist, build, out)"
+        required: true
+        default: "dist-website"
+      build_cmd:
+        description: "Build command"
+        required: true
+        default: "npm ci && npm run build"
+
+concurrency:
+  group: cf-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    env:
+      # CHANGE THESE "SETTINGS" HERE (or via workflow_dispatch inputs)
+      CF_PAGES_PROJECT: rinawarptech-website
+      BUILD_DIR: dist-website
+      BUILD_CMD: npm ci && npm run build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Override settings (workflow_dispatch)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo "BUILD_DIR=${{ inputs.build_dir }}" >> $GITHUB_ENV
+          echo "BUILD_CMD=${{ inputs.build_cmd }}" >> $GITHUB_ENV
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: ${{ env.BUILD_CMD }}
+
+      - name: Deploy (production on main, preview on PR)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: >
+            pages deploy ${{ env.BUILD_DIR }}
+            --project-name=${{ env.CF_PAGES_PROJECT }}
+            ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.pull_request.number) || '' }}
