@@ -25,21 +25,9 @@ jobs:
           cache: "npm"
           cache-dependency-path: vscode-rinawarp-extension/extension/package-lock.json
 
-      - name: Install deps (ci if lockfile exists)
+      - name: Install deps
         working-directory: vscode-rinawarp-extension/extension
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
-
-      - name: Build (if present)
-        working-directory: vscode-rinawarp-extension/extension
-        run: |
-          npm run build --if-present
-          npm run compile --if-present
-          npm run vscode:prepublish --if-present
+        run: npm ci
 
       - name: Package VSIX
         working-directory: vscode-rinawarp-extension/extension
