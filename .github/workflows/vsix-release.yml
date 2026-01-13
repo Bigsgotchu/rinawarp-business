@@ -3,47 +3,57 @@ name: VSIX Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
+
+permissions:
+  contents: write
 
 jobs:
-  build-and-release:
+  build_vsix:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: vscode-rinawarp-extension/extension
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: "vscode-rinawarp-extension/extension/package-lock.json"
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: vscode-rinawarp-extension/extension/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install deps (ci if lockfile exists)
+        working-directory: vscode-rinawarp-extension/extension
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
-      - name: Build extension
-        run: npm run compile
+      - name: Build (if present)
+        working-directory: vscode-rinawarp-extension/extension
+        run: |
+          npm run build --if-present
+          npm run compile --if-present
+          npm run vscode:prepublish --if-present
 
       - name: Package VSIX
-        run: npm run package
+        working-directory: vscode-rinawarp-extension/extension
+        run: npx --yes vsce package
 
-      - name: Upload VSIX artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: vsix-extension
+          name: vsix
           path: vscode-rinawarp-extension/extension/*.vsix
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Create GitHub Release + upload VSIX
+        uses: softprops/action-gh-release@v2
         with:
-          files: vscode-rinawarp-extension/extension/*.vsix
-          generate_release_notes: true
-          prerelease: ${{ contains(github.ref, 'v0.') }}
-          fail_on_unmatched_files: false
+          prerelease: ${{ startsWith(github.ref_name, v0.) }}
+          files: |
+            vscode-rinawarp-extension/extension/*.vsix
