@@ -45,13 +45,11 @@ jobs:
         working-directory: vscode-rinawarp-extension/extension
         run: |
           # If your package.json main points somewhere else, adjust this check accordingly.
-          if [ -f "dist/extension.js" ]; then
-            echo "Found dist/extension.js"
-          elif [ -f "extension/dist/extension.js" ]; then
-            echo "Found extension/dist/extension.js"
+          if [ -f "dist/extension.js" ] || [ -f "extension/dist/extension.js" ]; then
+            echo "Entrypoint present"
           else
-            echo "WARNING: extension entrypoint not found in dist/ or extension/dist/"
-            echo "If packaging fails, check package.json -> main + your build output path."
+            echo "ERROR: extension entrypoint not found"
+            exit 1
           fi
 
       - name: Package VSIX
