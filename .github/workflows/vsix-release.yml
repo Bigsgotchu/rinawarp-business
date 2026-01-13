@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: extensions/vscode/rinawarp-terminal-pro
+        working-directory: vscode-rinawarp-extension/extension
 
     steps:
       - name: Checkout
@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: "extensions/vscode/rinawarp-terminal-pro/package-lock.json"
+          cache-dependency-path: "vscode-rinawarp-extension/extension/package-lock.json"
 
       - name: Install dependencies
         run: npm ci
@@ -38,12 +38,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vsix-extension
-          path: extensions/vscode/rinawarp-terminal-pro/*.vsix
+          path: vscode-rinawarp-extension/extension/*.vsix
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: extensions/vscode/rinawarp-terminal-pro/*.vsix
+          files: vscode-rinawarp-extension/extension/*.vsix
           generate_release_notes: true
           prerelease: ${{ contains(github.ref, 'v0.') }}
           fail_on_unmatched_files: false
