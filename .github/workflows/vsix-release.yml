@@ -25,9 +25,34 @@ jobs:
           cache: "npm"
           cache-dependency-path: vscode-rinawarp-extension/extension/package-lock.json
 
-      - name: Install deps
+      - name: Install deps (ci if lockfile exists)
         working-directory: vscode-rinawarp-extension/extension
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Build (if scripts exist)
+        working-directory: vscode-rinawarp-extension/extension
+        run: |
+          npm run build --if-present
+          npm run compile --if-present
+          npm run vscode:prepublish --if-present
+
+      - name: Sanity check entrypoint (best effort)
+        working-directory: vscode-rinawarp-extension/extension
+        run: |
+          # If your package.json main points somewhere else, adjust this check accordingly.
+          if [ -f "dist/extension.js" ]; then
+            echo "Found dist/extension.js"
+          elif [ -f "extension/dist/extension.js" ]; then
+            echo "Found extension/dist/extension.js"
+          else
+            echo "WARNING: extension entrypoint not found in dist/ or extension/dist/"
+            echo "If packaging fails, check package.json -> main + your build output path."
+          fi
 
       - name: Package VSIX
         working-directory: vscode-rinawarp-extension/extension
