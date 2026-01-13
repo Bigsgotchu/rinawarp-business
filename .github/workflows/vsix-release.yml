@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -54,6 +54,6 @@ jobs:
       - name: Create GitHub Release + upload VSIX
         uses: softprops/action-gh-release@v2
         with:
-          prerelease: ${{ startsWith(github.ref_name, v0.) }}
+          prerelease: ${{ startsWith(github.ref_name, 'v0.') }}
           files: |
             vscode-rinawarp-extension/extension/*.vsix
