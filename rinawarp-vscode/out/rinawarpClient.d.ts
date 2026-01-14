@@ -1,46 +1,28 @@
-export interface IntentRequest {
-    intent: string;
-    context: {
-        workspace: string;
-        openFiles: string[];
-        selection: string | null;
-        gitBranch: string;
-        editor: 'vscode';
-        buildChannel: 'dev' | 'stable';
-    };
+import * as vscode from "vscode";
+export interface RinaWarpCompletionRequest {
+    filePath: string;
+    languageId: string;
+    textBeforeCursor: string;
+    textAfterCursor: string;
 }
-export interface PlanResponse {
-    planId: string;
-    summary: string;
-    risk: 'LOW' | 'MEDIUM' | 'HIGH';
-    steps: Array<{
-        id: string;
-        description: string;
-        type: 'analysis' | 'edit' | 'command' | 'validation';
-    }>;
-    requiresConfirmation: boolean;
+export interface RinaWarpCompletionResponse {
+    completion: string;
 }
-export interface StatusResponse {
-    build: 'dev' | 'stable';
-    license: 'active' | 'expired';
-    profile: string;
-    uptime: string;
+export interface RinaWarpFixRequest {
+    filePath: string;
+    languageId: string;
+    originalCode: string;
+    mode: "file" | "selection";
 }
-export interface ExecutionResult {
-    status: 'SUCCESS' | 'FAILED';
-    checks: string[];
-    output: string;
-    confidence: 'LOW' | 'MEDIUM' | 'HIGH';
+export interface RinaWarpFixResponse {
+    fixedCode: string;
+    summary?: string;
 }
 export declare class RinaWarpClient {
-    private sessionToken;
-    constructor();
-    private initializeSession;
-    private makeRequest;
-    getStatus(): Promise<StatusResponse>;
-    explainSelection(selection: string): Promise<void>;
-    planAction(intent: string): Promise<PlanResponse>;
-    executePlan(planId: string): Promise<ExecutionResult>;
-    private getCurrentGitBranch;
+    private readonly context;
+    private readonly apiBase;
+    constructor(context: vscode.ExtensionContext);
+    getInlineCompletion(req: RinaWarpCompletionRequest): Promise<string | null>;
+    fixCode(req: RinaWarpFixRequest): Promise<RinaWarpFixResponse | null>;
 }
 //# sourceMappingURL=rinawarpClient.d.ts.map

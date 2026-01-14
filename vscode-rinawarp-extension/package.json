@@ -1,0 +1,41 @@
+{
+  "name": "rinawarp-brain",
+  "displayName": "RinaWarp Brain",
+  "description": "VS Code extension treating RinaWarp as the single source of truth for code changes.",
+  "version": "0.1.0",
+  "publisher": "rinawarp",
+  "engines": {
+    "vscode": ">=1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:rinawarp.openPanel",
+    "onCommand:rinawarp.plan",
+    "onCommand:rinawarp.preview",
+    "onCommand:rinawarp.approve",
+    "onCommand:rinawarp.execute",
+    "onCommand:rinawarp.verify",
+    "onCommand:rinawarp.pingDaemon",
+    "onCommand:rinawarp.regenerate"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.29",
+    "@types/node-fetch": "^2.6.13",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.1.6",
+    "vsce": "^2.12.0",
+    "zod": "^3.25.76"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.12",
+    "puppeteer": "^24.35.0"
+  }
+}

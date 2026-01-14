@@ -4,6 +4,16 @@
     <meta charset="utf-8" />
     <title>RinaWarp | Terminal Pro for Developers</title>
     <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' https://js.stripe.com https://plausible.io;
+        style-src 'self' 'unsafe-inline';
+        connect-src 'self' https://api.stripe.com https://plausible.io;
+        frame-src https://js.stripe.com;
+      "
+    />
+    <meta
       name="description"
       content="A modern, production-ready terminal designed for focused work, long sessions, and real projects. Start at $9.99/month with a 30-day money-back guarantee."
     />
@@ -280,5 +290,27 @@
         </div>
       </footer>
     </div>
+    
+    <!-- Cookie Consent Banner -->
+    <script src="/js/cookie-banner.js"></script>
+    
+    <!-- Analytics (loaded after cookie consent) -->
+    <!-- Plausible Analytics -->
+    <script defer data-domain="rinawarptech.com" src="https://plausible.io/js/script.js"></script>
+    
+    <!-- GA4 Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"}'></script>
+    
+    <!-- Custom Analytics Tracking -->
+    <script src="/js/analytics.js"></script>
   </body>
 </html>

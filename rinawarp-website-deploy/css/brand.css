@@ -5,6 +5,13 @@
   --radius-xl: 26px;
   --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
 
+  /* RinaWarp Color Palette */
+  --color-hot-pink: #ff007f;
+  --color-coral: #ff6f61;
+  --color-teal: #008080;
+  --color-baby-blue: #89CFF0;
+  --color-black: #000000;
+
   /* Mermaid (Terminal Pro) */
   --mermaid-bg: #020617;
   --mermaid-bg-soft: #020617;

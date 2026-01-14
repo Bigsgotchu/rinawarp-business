@@ -1,0 +1,3 @@
+# RinaWarp Deployment Log
+# Format: Timestamp,VSIX File,Website URL,HTTP Status,Smoke Test Result,Git Commit
+# This file is automatically updated by deployment scripts

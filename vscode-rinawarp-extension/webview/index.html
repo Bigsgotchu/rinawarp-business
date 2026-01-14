@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    button { margin: 0.25rem; padding: 0.5rem 1rem; }
+    .section { margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>RinaWarp Brain</h2>
+
+  <div class="section">
+    <strong>Current Plan:</strong> <span id="planTitle">No plan loaded</span><br/>
+    <strong>State:</strong> <span id="state">draft</span><br/>
+    <strong>Approved Hash:</strong> <span id="approvedHash">N/A</span>
+  </div>
+
+  <div class="section">
+    <button onclick="sendMessage('pingDaemon')">Ping Daemon</button>
+    <button onclick="sendMessage('plan')">Plan</button>
+    <button onclick="sendMessage('preview')">Preview</button>
+    <button onclick="sendMessage('approve')">Approve</button>
+    <button onclick="sendMessage('execute')">Execute</button>
+    <button onclick="sendMessage('verify')">Verify</button>
+  </div>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+    function sendMessage(command) {
+      vscode.postMessage({ command });
+    }
+  </script>
+</body>
+</html>

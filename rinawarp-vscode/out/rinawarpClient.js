@@ -35,89 +35,64 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RinaWarpClient = void 0;
 const vscode = __importStar(require("vscode"));
-// RinaWarp API base URL (local only)
-const RINAWARP_API_URL = 'http://127.0.0.1:9337';
 class RinaWarpClient {
-    constructor() {
-        this.sessionToken = null;
-        // Initialize session token if available
-        this.initializeSession();
+    constructor(context) {
+        this.context = context;
+        const config = vscode.workspace.getConfiguration("rinawarp");
+        this.apiBase = (config.get("apiBaseUrl") || "https://api.rinawarptech.com").replace(/:+$/g, "");
     }
-    async initializeSession() {
-        // TODO: Implement session token retrieval from RinaWarp
-        // For now, we'll use a placeholder
-        this.sessionToken = 'placeholder-token';
-    }
-    async makeRequest(endpoint, data) {
-        const url = `${RINAWARP_API_URL}${endpoint}`;
-        const headers = {
-            'Content-Type': 'application/json',
-        };
-        if (this.sessionToken) {
-            headers['Authorization'] = `Bearer ${this.sessionToken}`;
-        }
+    async getInlineCompletion(req) {
         try {
-            const response = await fetch(url, {
-                method: data ? 'POST' : 'GET',
-                headers,
-                body: data ? JSON.stringify(data) : undefined,
+            // Use the new /api/ai/inline endpoint for Copilot-style completion
+            const res = await fetch(`${this.apiBase}/api/ai/inline`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    before: req.textBeforeCursor,
+                    after: req.textAfterCursor,
+                }),
             });
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            if (!res.ok) {
+                console.error("RinaWarp inline completion error:", res.status, res.statusText);
+                return null;
             }
-            return await response.json();
+            const data = await res.json();
+            return data.completion || null;
         }
-        catch (error) {
-            vscode.window.showErrorMessage(`RinaWarp API Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-            throw error;
+        catch (err) {
+            console.error("RinaWarp inline completion request failed:", err);
+            return null;
         }
     }
-    async getStatus() {
-        return await this.makeRequest('/status');
-    }
-    async explainSelection(selection) {
-        const request = {
-            command: selection
-        };
-        const result = await this.makeRequest('/explain', request);
-        vscode.window.showInformationMessage(`RinaWarp explanation: ${JSON.stringify(result)}`);
-    }
-    async planAction(intent) {
-        const workspace = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
-        const openFiles = vscode.workspace.textDocuments
-            .filter(doc => !doc.isUntitled)
-            .map(doc => doc.fileName);
-        const request = {
-            intent,
-            context: {
-                workspace,
-                openFiles,
-                selection: vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection) || null,
-                gitBranch: await this.getCurrentGitBranch(),
-                editor: 'vscode',
-                buildChannel: 'dev' // TODO: Determine from workspace
-            }
-        };
-        return await this.makeRequest('/plan', request);
-    }
-    async executePlan(planId) {
-        const request = {
-            planId,
-            confirm: true
-        };
-        return await this.makeRequest('/execute', request);
-    }
-    async getCurrentGitBranch() {
+    async fixCode(req) {
         try {
-            const git = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, '.git', 'HEAD'));
-            const content = git.toString().trim();
-            if (content.startsWith('ref: refs/heads/')) {
-                return content.substring('ref: refs/heads/'.length);
+            // Use the new /api/ai/fix endpoint for RinaWarp Fix Mode
+            const instructions = `Fix and improve this ${req.mode === "file" ? "entire file" : "code selection"} for ${req.languageId}. Provide only the fixed code.`;
+            const res = await fetch(`${this.apiBase}/api/ai/fix`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    code: req.originalCode,
+                    instructions: instructions,
+                }),
+            });
+            if (!res.ok) {
+                console.error("RinaWarp fix-code error:", res.status, res.statusText);
+                return null;
             }
-            return 'unknown';
+            const data = await res.json();
+            return {
+                fixedCode: data.fixed || "No changes suggested",
+                summary: "Code fixed by RinaWarp AI",
+            };
         }
-        catch {
-            return 'unknown';
+        catch (err) {
+            console.error("RinaWarp fix-code request failed:", err);
+            return null;
         }
     }
 }

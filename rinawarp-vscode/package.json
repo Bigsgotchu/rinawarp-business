@@ -1,40 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "rinawarp-brain-client",
-  "displayName": "RinaWarp Brain",
-  "description": "VS Code client that delegates planning, validation, and execution to RinaWarp Terminal Pro",
-  "version": "0.1.0",
-  "publisher": "rinawarp",
-  "engines": {
-    "vscode": "^1.85.0"
-  },
-  "categories": ["Other"],
-  "activationEvents": [
-    "onCommand:rinawarp.status",
-    "onCommand:rinawarp.explain",
-    "onCommand:rinawarp.plan",
-    "onCommand:rinawarp.execute",
-    "onStartupFinished"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "rinawarp.status",
-        "title": "RinaWarp: Status"
-      },
-      {
-        "command": "rinawarp.explain",
-        "title": "RinaWarp: Explain Selection"
-      },
-      {
-        "command": "rinawarp.plan",
-        "title": "RinaWarp: Plan Action"
-      },
-      {
-        "command": "rinawarp.execute",
-        "title": "RinaWarp: Execute Plan"
-=======
   "name": "rinawarp-terminal-pro",
   "displayName": "RinaWarp Terminal Pro",
   "description": "AI-powered terminal, code assistant, and deployment cockpit inside VS Code.",
@@ -89,50 +53,18 @@
       {
         "command": "rinawarp.deployStatus",
         "title": "RinaWarp: Check Deploy Status"
->>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-<<<<<<< HEAD
-          "id": "rinawarp",
-          "title": "RinaWarp",
-          "icon": "media/rinawarp.svg"
-=======
           "id": "rinawarp-sidebar",
           "title": "RinaWarp",
           "icon": "media/icon-64.png"
->>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635
         }
       ]
     },
     "views": {
-<<<<<<< HEAD
-      "rinawarp": [
-        {
-          "id": "rinawarpMain",
-          "name": "RinaWarp",
-          "when": "true"
-        }
-      ]
-    }
-  },
-  "scripts": {
-    "build": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "package": "vsce package",
-    "publish": "vsce publish"
-  },
-  "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/vscode": "^1.85.0",
-    "typescript": "^5.3.0",
-    "@vscode/vsce": "^2.22.0"
-  },
-  "dependencies": {}
-}
-=======
       "rinawarp-sidebar": [
         {
           "id": "rinawarp.control",
@@ -162,18 +94,17 @@
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
-    "@types/vscode": "^1.90.0",
+    "@types/vscode": "^1.108.1",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
+    "@vscode/test-electron": "^2.3.0",
+    "@vscode/vsce": "^2.19.0",
     "eslint": "^8.39.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "typescript": "^5.0.4",
-    "@vscode/test-electron": "^2.3.0",
-    "@vscode/vsce": "^2.19.0"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
   }
 }
->>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635

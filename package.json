@@ -12,12 +12,13 @@
     "test:smoke": "node production-smoke-test.js",
     "verify:prod": "node scripts/verify-prod.js",
     "lint": "eslint .",
-    "build": "echo 'Build placeholder - implement based on your build process'",
+    "build": "echo 'Build placeholder - implement based on your build process'"
   },
   "dependencies": {
     "chalk": "^5.6.2",
     "electron-store": "^11.0.2",
     "node-fetch": "^3.3.2",
+    "puppeteer": "^24.35.0",
     "stripe": "^20.0.0"
   },
   "devDependencies": {

@@ -37,40 +37,76 @@ exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const rinawarpClient_1 = require("./rinawarpClient");
-const rinawarpPanel_1 = require("./rinawarpPanel");
+const inlineCompletionProvider_1 = require("./inlineCompletionProvider");
 function activate(context) {
-    console.log('RinaWarp Brain Client activated');
+    console.log('RinaWarp Terminal Pro activated');
     // Initialize RinaWarp client
-    const rinaWarpClient = new rinawarpClient_1.RinaWarpClient();
+    const rinaWarpClient = new rinawarpClient_1.RinaWarpClient(context);
+    // Register inline completion provider
+    const inlineCompletionProvider = new inlineCompletionProvider_1.RinaWarpInlineCompletionProvider(rinaWarpClient);
+    context.subscriptions.push(vscode.languages.registerInlineCompletionItemProvider({ scheme: 'file' }, inlineCompletionProvider));
     // Register commands
-    context.subscriptions.push(vscode.commands.registerCommand('rinawarp.status', async () => {
-        await rinaWarpClient.getStatus();
-    }), vscode.commands.registerCommand('rinawarp.explain', async () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rinawarp.login', async () => {
+        vscode.window.showInformationMessage('RinaWarp: Sign In command triggered');
+    }), vscode.commands.registerCommand('rinawarp.openPanel', async () => {
+        vscode.window.showInformationMessage('RinaWarp: Open Control Panel command triggered');
+    }), vscode.commands.registerCommand('rinawarp.fixFile', async () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showWarningMessage('No active editor found');
             return;
         }
-        const selection = editor.document.getText(editor.selection);
-        if (!selection) {
+        const document = editor.document;
+        const code = document.getText();
+        const result = await rinaWarpClient.fixCode({
+            filePath: document.uri.fsPath,
+            languageId: document.languageId,
+            originalCode: code,
+            mode: 'file'
+        });
+        if (result) {
+            // Apply the fixed code
+            await editor.edit((editBuilder) => {
+                editBuilder.replace(new vscode.Range(document.positionAt(0), document.positionAt(code.length)), result.fixedCode);
+            });
+            vscode.window.showInformationMessage(result.summary || 'File fixed successfully');
+        }
+    }), vscode.commands.registerCommand('rinawarp.fixSelection', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showWarningMessage('No active editor found');
+            return;
+        }
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+        if (!selectedText) {
             vscode.window.showWarningMessage('No text selected');
             return;
         }
-        await rinaWarpClient.explainSelection(selection);
-    }), vscode.commands.registerCommand('rinawarp.plan', async () => {
-        await rinawarpPanel_1.RinaWarpPanel.createOrShow(context.extensionUri, rinaWarpClient);
-    }), vscode.commands.registerCommand('rinawarp.execute', async () => {
-        if (rinawarpPanel_1.RinaWarpPanel.currentPanel) {
-            await rinawarpPanel_1.RinaWarpPanel.currentPanel.executeCurrentPlan();
+        const result = await rinaWarpClient.fixCode({
+            filePath: editor.document.uri.fsPath,
+            languageId: editor.document.languageId,
+            originalCode: selectedText,
+            mode: 'selection'
+        });
+        if (result) {
+            // Apply the fixed code
+            await editor.edit((editBuilder) => {
+                editBuilder.replace(selection, result.fixedCode);
+            });
+            vscode.window.showInformationMessage(result.summary || 'Selection fixed successfully');
         }
-        else {
-            vscode.window.showWarningMessage('No active plan to execute');
-        }
+    }), vscode.commands.registerCommand('rinawarp.voiceCommand', async () => {
+        vscode.window.showInformationMessage('RinaWarp: Voice Command command triggered');
+    }), vscode.commands.registerCommand('rinawarp.executeShell', async () => {
+        vscode.window.showInformationMessage('RinaWarp: Execute Shell Command command triggered');
+    }), vscode.commands.registerCommand('rinawarp.deploy', async () => {
+        vscode.window.showInformationMessage('RinaWarp: Deploy Project command triggered');
+    }), vscode.commands.registerCommand('rinawarp.deployStatus', async () => {
+        vscode.window.showInformationMessage('RinaWarp: Check Deploy Status command triggered');
     }));
-    // Create webview panel
-    rinawarpPanel_1.RinaWarpPanel.createOrShow(context.extensionUri, rinaWarpClient);
 }
 function deactivate() {
-    console.log('RinaWarp Brain Client deactivated');
+    console.log('RinaWarp Terminal Pro deactivated');
 }
 //# sourceMappingURL=extension.js.map

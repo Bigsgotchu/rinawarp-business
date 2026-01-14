@@ -1,0 +1,14 @@
+{
+  "name": "rinawarp-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler pages deploy rinawarp-website --project-name rinawarptech-website"
+  },
+  "dependencies": {
+    "stripe": "^12.18.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

@@ -2,38 +2,18 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2020",
-<<<<<<< HEAD
-    "outDir": "out",
-    "lib": [
-      "ES2020"
-    ],
-    "sourceMap": true,
-    "rootDir": "src",
-=======
-    "lib": ["ES2020"],
+    "lib": ["ES2020", "DOM"],
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "out",
->>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-<<<<<<< HEAD
     "declaration": true,
     "declarationMap": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    ".vscode-test"
-  ]
-}
-=======
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "allowJs": false,
     "checkJs": false
@@ -47,4 +27,3 @@
     "extension.js"
   ]
 }
->>>>>>> c96dec9711e3102b02ea7c741edb155f2a3f5635

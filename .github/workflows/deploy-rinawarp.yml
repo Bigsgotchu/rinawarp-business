@@ -1,0 +1,223 @@
+name: Deploy RinaWarp
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*-prod"
+  workflow_dispatch:
+
+env:
+  SITE_URL: https://rinawarptech.com
+  SITE_DIR: rinawarp-website-deploy
+  EXT_DIR: vscode-rinawarp-extension
+  VSCE_PUBLISH: false
+  CSS_FILE: rinawarp-colors.css
+  COOKIE_HTML: cookie-banner.html
+  COOKIE_JS: cookie-banner.js
+  PROJECT_NAME: rinawarptech-website
+  LOG_FILE: deployment-log.csv
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # -------------------------
+      # 1️⃣ Checkout code
+      # -------------------------
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # -------------------------
+      # 2️⃣ Install Node
+      # -------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "npm"
+
+      # -------------------------
+      # 3️⃣ Install dependencies for extension
+      # -------------------------
+      - name: Install Extension Dependencies
+        working-directory: ${{ env.EXT_DIR }}
+        run: |
+          npm install --save-dev @types/vscode@^1.80.0
+          npm install node-fetch@2.6.12 zod
+          npm install --save-dev @types/node
+          npm install
+
+      # -------------------------
+      # 4️⃣ Build VS Code extension
+      # -------------------------
+      - name: Compile Extension
+        working-directory: ${{ env.EXT_DIR }}
+        run: npm run compile
+
+      # -------------------------
+      # 5️⃣ Package VSIX
+      # -------------------------
+      - name: Package VSIX
+        working-directory: ${{ env.EXT_DIR }}
+        run: |
+          npm install -g vsce
+          vsce package
+          VSIX_FILE=$(ls *.vsix | sort -V | tail -n 1)
+          echo "VSIX_FILE=$VSIX_FILE" >> $GITHUB_ENV
+          echo "VSIX file created: $VSIX_FILE"
+
+      # -------------------------
+      # 6️⃣ Optional Marketplace publish
+      # -------------------------
+      - name: Publish VSIX (Optional)
+        if: env.VSCE_PUBLISH == 'true'
+        working-directory: ${{ env.EXT_DIR }}
+        run: vsce publish
+
+      # -------------------------
+      # 7️⃣ Build website
+      # -------------------------
+      - name: Build Website
+        run: |
+          npm install
+          npm run build
+
+      # -------------------------
+      # 8️⃣ Copy Branding Assets
+      # -------------------------
+      - name: Copy Branding Assets
+        run: |
+          mkdir -p ${{ env.SITE_DIR }}/css
+          cp ${{ env.CSS_FILE }} ${{ env.SITE_DIR }}/css/
+          cp ${{ env.COOKIE_HTML }} ${{ env.SITE_DIR }}/
+          cp ${{ env.COOKIE_JS }} ${{ env.SITE_DIR }}/
+
+      # -------------------------
+      # 9️⃣ Inject RinaWarp CSS
+      # -------------------------
+      - name: Inject RinaWarp CSS
+        run: |
+          for html_file in $(find ${{ env.SITE_DIR }} -name "*.html"); do
+            if ! grep -q "$CSS_FILE" "$html_file"; then
+              sed -i '/<\/head>/i <link rel="stylesheet" href="css/'${{ env.CSS_FILE }}">" $html_file
+            fi
+          done
+
+      # -------------------------
+      # 🔟 Inject Cookie Banner
+      # -------------------------
+      - name: Inject Cookie Banner
+        run: |
+          for html_file in $(find ${{ env.SITE_DIR }} -name "*.html"); do
+            if ! grep -q "rinawarp-cookie-banner" "$html_file"; then
+              sed -i "/<\/body>/i $(cat ${{ env.COOKIE_HTML }})" $html_file
+              sed -i "/<\/body>/i <script src=\"${{ env.COOKIE_JS }}\"></script>" $html_file
+            fi
+          done
+
+      # -------------------------
+      # 🔟 Inject Analytics (Plausible snippet example)
+      # -------------------------
+      - name: Inject Analytics
+        run: |
+          ANALYTICS='<script async defer data-domain="rinawarptech.com" src="https://plausible.io/js/plausible.js"></script>'
+          for html_file in $(find ${{ env.SITE_DIR }} -name "*.html"); do
+            sed -i "/<\/head>/i $ANALYTICS" $html_file
+          done
+
+      # -------------------------
+      # 1️⃣1️⃣ Deploy to Cloudflare Pages
+      # -------------------------
+      - name: Deploy to Cloudflare Pages
+        run: |
+          npm install -g wrangler
+          wrangler pages deploy ${{ env.SITE_DIR }} --project-name ${{ env.PROJECT_NAME }} --commit-dirty=true
+          DEPLOY_URL=$(wrangler pages list --project-name ${{ env.PROJECT_NAME }} | grep -o 'https://[^ ]*')
+          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
+
+      # -------------------------
+      # 1️⃣2️⃣ Smoke Tests
+      # -------------------------
+      - name: Verify Website HTTP 200
+        run: |
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" ${{ env.SITE_URL }})
+          echo "HTTP_STATUS=$HTTP_STATUS" >> $GITHUB_ENV
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "Website returned $HTTP_STATUS"
+            exit 1
+          fi
+    
+      - name: Setup Chrome for Puppeteer
+        uses: browser-actions/setup-chrome@v1
+    
+      - name: Run RinaWarp Smoke Tests
+        run: |
+          npm install puppeteer --no-save
+          node verify-rinawarp-smoke.js > smoke-test-log.txt 2>&1
+          SMOKE_RESULT=$?
+          echo "SMOKE_RESULT=$SMOKE_RESULT" >> $GITHUB_ENV
+          if [ $SMOKE_RESULT -ne 0 ]; then
+            echo "::error::Smoke tests failed"
+            exit 1
+          fi
+
+      # -------------------------
+      # 1️⃣2️⃣5️⃣ Analytics Verification
+      # -------------------------
+      - name: Verify Analytics Tracking
+        run: |
+          node verify-analytics-tracking.js
+          ANALYTICS_RESULT=$?
+          echo "ANALYTICS_RESULT=$ANALYTICS_RESULT" >> $GITHUB_ENV
+          if [ $ANALYTICS_RESULT -ne 0 ]; then
+            echo "::warning::Analytics verification completed with warnings"
+          fi
+    
+      # -------------------------
+      # 1️⃣3️⃣ Audit Logging
+      # -------------------------
+      - name: Log Deployment
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S")
+          GIT_COMMIT=$(git rev-parse --short HEAD)
+          SMOKE_RESULT="PASSED"
+          
+          # Check if smoke test failed
+          if [ "${{ env.SMOKE_RESULT }}" -ne 0 ]; then
+            SMOKE_RESULT="FAILED"
+          fi
+          
+          # Create log directory if it doesn't exist
+          mkdir -p logs
+          
+          # Log to CSV file
+          echo "$TIMESTAMP,${{ env.VSIX_FILE }},${{ env.DEPLOY_URL }},${{ env.HTTP_STATUS }},$SMOKE_RESULT,${{ env.ANALYTICS_RESULT }},$GIT_COMMIT" >> ${{ env.LOG_FILE }}
+          
+          # Also create a human-readable log entry
+          echo "" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "=== DEPLOYMENT LOG ===" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "Timestamp: $TIMESTAMP" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "VSIX File: ${{ env.VSIX_FILE }}" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "Website URL: ${{ env.DEPLOY_URL }}" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "HTTP Status: ${{ env.HTTP_STATUS }}" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "Smoke Test: $SMOKE_RESULT" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "Analytics: ${{ env.ANALYTICS_RESULT }}" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "Git Commit: $GIT_COMMIT" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "GitHub Run ID: ${{ github.run_id }}" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "GitHub Run URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> logs/deployment-${TIMESTAMP//:/-}.log
+          echo "" >> logs/deployment-${TIMESTAMP//:/-}.log
+          
+          # Show recent deployments
+          echo "=== RECENT DEPLOYMENTS ==="
+          tail -n 10 ${{ env.LOG_FILE }}
+    
+      # -------------------------
+      # 1️⃣4️⃣ Maintenance Checks (Optional)
+      # -------------------------
+      - name: Run Maintenance Checks
+        if: github.event_name == 'workflow_dispatch' || contains(github.ref, 'prod')
+        run: |
+          chmod +x maintenance-check.sh
+          ./maintenance-check.sh

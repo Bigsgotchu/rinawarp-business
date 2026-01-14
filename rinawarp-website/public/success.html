@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful - RinaWarp</title>
+  <link rel="stylesheet" href="/css/rinawarp-styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Payment successful</h1>
+    <p>Your license key:</p>
+    <pre id="license">Loading...</pre>
+    <p style="margin-top: 20px;">
+      <a href="/download.html" class="button">Download RinaWarp Pro</a>
+    </p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const license = params.get("license");
+    
+    if (license) {
+      document.getElementById("license").textContent = license;
+      
+      // Store license in localStorage for the extension to pick up
+      localStorage.setItem("rinawarp.license", license);
+    } else {
+      document.getElementById("license").textContent = "Check your email";
+    }
+  </script>
+</body>
+</html>

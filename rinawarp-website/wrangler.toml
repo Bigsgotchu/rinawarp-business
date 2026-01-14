@@ -1,0 +1,7 @@
+name = "rinawarptech-website"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rinawarp_prod"
+database_id = "25d1da28-403a-4ed0-a157-25432dcf13b2"

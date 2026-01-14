@@ -4,6 +4,16 @@
     <meta charset="utf-8" />
     <title>RinaWarp Pricing | Terminal Pro Plans</title>
     <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' https://js.stripe.com https://plausible.io;
+        style-src 'self' 'unsafe-inline';
+        connect-src 'self' https://api.stripe.com https://plausible.io;
+        frame-src https://js.stripe.com;
+      "
+    />
+    <meta
       name="description"
       content="Simple, transparent pricing for RinaWarp Terminal Pro. Choose from monthly, annual, or lifetime plans."
     />

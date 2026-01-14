@@ -1,0 +1,4 @@
+🌐 Navigating to https://rinawarptech.com
+🧾 Checking cookie banner...
+❌ Smoke test failed: Waiting for selector `#rinawarp-cookie-banner` failed
+📸 Screenshot saved: failure-screenshot.png
