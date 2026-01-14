@@ -1,0 +1,46 @@
+RINAWARP PROJECT TREE
+=====================
+
+Directory Structure:
+~/dev/rinawarp/
+├── build/
+│   (empty directory)
+│
+├── iOS_Backups/
+│   (empty directory)
+│
+├── .git/
+│   (git repository - 36 files total)
+│
+├── CANONICAL_PROJECT.md
+│   - Marks this as the ONE true RinaWarp project
+│
+├── INSTALLATION_SUCCESS.md
+│   - RinaWarp Terminal Pro installation documentation
+│   - Version: v20.18.0
+│   - Installation date: November 27, 2025
+│   - Features: Electron-based app, AI integration, health checks
+│
+├── fix-api-nginx.sh
+│   - Auto-fix script for NGINX API configuration
+│   - Domain: api.rinawarptech.com
+│   - Creates SSL certificates and proxy settings
+│
+├── rina-cert-fix.sh
+│   - Certificate and NGINX healer script
+│   - Consolidates renewal configs to ONE SAN cert
+│   - Backs up /etc/letsencrypt and /etc/nginx
+│
+└── rina-md-fix.sh
+    - Markdown auto-fix script
+    - Fixes formatting issues (MD022, MD031, MD032, MD047)
+
+File Count:
+- Total files: 36
+- Non-git files: 5
+- Directories: 4 (including root)
+
+Git Repository:
+- Branch: master
+- Tags: CANONICAL_START
+- Objects: 3 git objects tracked
