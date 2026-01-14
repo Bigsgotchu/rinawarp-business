@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RinaWarp Status Response",
+  "description": "Status information from RinaWarp service",
+  "type": "object",
+  "required": ["build", "license", "profile", "uptime"],
+  "properties": {
+    "build": {
+      "type": "string",
+      "enum": ["dev", "stable"],
+      "description": "Current build channel"
+    },
+    "license": {
+      "type": "string",
+      "enum": ["active", "expired"],
+      "description": "License status"
+    },
+    "profile": {
+      "type": "string",
+      "description": "Current user profile or tier"
+    },
+    "uptime": {
+      "type": "string",
+      "description": "Service uptime in human-readable format",
+      "examples": ["2h14m", "1d3h45m"]
+    }
+  }
+}

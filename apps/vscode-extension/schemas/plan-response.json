@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RinaWarp Plan Response",
+  "description": "Response from RinaWarp containing the planned approach to accomplish the user's intent",
+  "type": "object",
+  "required": ["planId", "summary", "risk", "steps", "requiresConfirmation"],
+  "properties": {
+    "planId": {
+      "type": "string",
+      "description": "Unique identifier for this plan, used for execution tracking"
+    },
+    "summary": {
+      "type": "string",
+      "description": "High-level summary of what this plan will accomplish"
+    },
+    "risk": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "Risk level assessment of executing this plan"
+    },
+    "steps": {
+      "type": "array",
+      "description": "Ordered list of steps to execute the plan",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this step"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description of what this step does"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["analysis", "edit", "command", "validation"],
+            "description": "Type of action this step performs"
+          }
+        }
+      }
+    },
+    "requiresConfirmation": {
+      "type": "boolean",
+      "description": "Whether this plan requires explicit user confirmation before execution"
+    }
+  }
+}
