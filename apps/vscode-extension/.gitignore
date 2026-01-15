@@ -1,4 +1,16 @@
+# Build output
 out
 node_modules
 .vscode-test/
 *.vsix
+*.map
+
+# Source files (not needed in published package)
+src/
+
+# VS Code configuration
+.vscode/
+.git/
+
+# Environment files
+.env

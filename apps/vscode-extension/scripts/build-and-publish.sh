@@ -10,6 +10,10 @@ EXT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 cd "$EXT_ROOT"
 
+echo "🔹 Cleaning old builds..."
+rm -rf out/
+mkdir -p out/
+
 echo "📦 Installing extension dependencies..."
 npm install
 
@@ -23,8 +27,12 @@ VSIX_FILE="$(ls -t *.vsix | head -n 1)"
 echo "✅ VSIX created: $VSIX_FILE"
 
 if [[ "${1-}" == "publish" ]]; then
-  echo "🚀 Publishing to Marketplace as 'rinawarp'..."
-  npx vsce publish
+  echo "🚀 Publishing to Marketplace as 'KarinaGilley'..."
+  # vsce will use the token stored via 'vsce login KarinaGilley'
+  npx vsce publish || {
+    echo "❌ Publishing failed. Check token and network connection."
+    exit 1
+  }
   echo "✅ Published successfully."
 else
   echo "ℹ️ Run with 'publish' to push to Marketplace:"

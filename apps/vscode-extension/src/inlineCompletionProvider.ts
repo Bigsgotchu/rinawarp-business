@@ -37,7 +37,7 @@ export class RinaWarpInlineCompletionProvider
     const completion = await this.client.getInlineCompletion(req);
     if (!completion) return null;
 
-    const item = new vscode.InlineCompletionItem(completion, position);
+    const item = new vscode.InlineCompletionItem(completion, new vscode.Range(position, position));
     return [item];
   }
 }

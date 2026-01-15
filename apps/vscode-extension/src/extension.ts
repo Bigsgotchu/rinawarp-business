@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { RinaWarpClient } from './rinawarpClient';
 import { RinaWarpInlineCompletionProvider } from './inlineCompletionProvider';
+import { activateLicenseCommand, isProActive } from './licenseManager';
+import { approvalFlowHandler, cryptographicVerificationHandler, cloudSyncHandler } from './proFeatures';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('RinaWarp Terminal Pro activated');
@@ -27,6 +29,19 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage('RinaWarp: Open Control Panel command triggered');
         }),
 
+        vscode.commands.registerCommand('rinawarp.activateLicense', activateLicenseCommand)
+    );
+
+    // Pro commands (only available with valid license)
+    if (isProActive()) {
+        context.subscriptions.push(
+            vscode.commands.registerCommand('rinawarp.approvalFlow', approvalFlowHandler),
+            vscode.commands.registerCommand('rinawarp.cryptographicVerification', cryptographicVerificationHandler),
+            vscode.commands.registerCommand('rinawarp.cloudSync', cloudSyncHandler)
+        );
+    }
+
+    context.subscriptions.push(
         vscode.commands.registerCommand('rinawarp.fixFile', async () => {
             const editor = vscode.window.activeTextEditor;
             if (!editor) {

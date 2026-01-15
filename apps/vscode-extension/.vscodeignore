@@ -1,0 +1,12 @@
+# Environment files
+.env
+
+# Development scripts
+build.sh
+deploy.sh
+login.sh
+publish-safe.sh
+scripts/
+
+# License server (development only)
+licenseServer.js

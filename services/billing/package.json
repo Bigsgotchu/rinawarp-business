@@ -1,0 +1,13 @@
+{
+  "name": "rinawarp-billing",
+  "version": "1.0.0",
+  "description": "RinaWarp Billing Service",
+  "main": "payment-handler.js",
+  "scripts": {
+    "start": "node payment-handler.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "stripe": "^14.23.0"
+  }
+}

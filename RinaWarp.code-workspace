@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {"path": "apps/vscode-extension"},
+    {"path": "apps/terminal-pro"},
+    {"path": "apps/ai-music-video"},
+    {"path": "services/api"},
+    {"path": "services/billing"},
+    {"path": "services/licensing"},
+    {"path": "infra/cloudflare"},
+    {"path": "infra/github"},
+    {"path": "infra/nginx"}
+  ],
+  "settings": {
+    "terminal.integrated.cwd": "${workspaceFolder}"
+  }
+}

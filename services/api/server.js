@@ -66,6 +66,11 @@ app.post("/run", async (req, res) => {
   res.send(`Pretending to run: ${command}`); // sandboxed for now
 });
 
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", port: PORT });
+});
+
 app.listen(PORT, () => {
   console.log(`🛰️ RinaWarp Bridge active → http://localhost:${PORT}`);
 });

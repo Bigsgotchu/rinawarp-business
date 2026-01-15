@@ -1,110 +1,40 @@
 {
-  "name": "rinawarp-terminal-pro",
-  "displayName": "RinaWarp Terminal Pro",
-  "description": "AI-powered terminal, code assistant, and deployment cockpit inside VS Code.",
-  "version": "0.1.0",
-  "publisher": "rinawarp",
-  "icon": "media/icon-128.png",
-  "engines": {
-    "vscode": "^1.90.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rinawarp/rinawarp-vscode-extension.git"
-  },
-  "categories": [
-    "Other",
-    "Programming Languages",
-    "Linters"
-  ],
+  "name": "rinawarp-brain-pro",
+  "displayName": "RinaWarp Brain Pro",
+  "description": "Pro features: Approval Flow, Cryptographic Verification, Cloud Sync.",
+  "version": "1.0.4",
+  "publisher": "KarinaGilley",
+  "main": "./out/extension",
   "activationEvents": [
     "onStartupFinished"
   ],
-  "contributes": {
-    "commands": [
-      {
-        "command": "rinawarp.login",
-        "title": "RinaWarp: Sign In"
-      },
-      {
-        "command": "rinawarp.openPanel",
-        "title": "RinaWarp: Open Control Panel"
-      },
-      {
-        "command": "rinawarp.fixFile",
-        "title": "RinaWarp: Fix Current File"
-      },
-      {
-        "command": "rinawarp.fixSelection",
-        "title": "RinaWarp: Fix Selected Code"
-      },
-      {
-        "command": "rinawarp.voiceCommand",
-        "title": "RinaWarp: Voice Command"
-      },
-      {
-        "command": "rinawarp.executeShell",
-        "title": "RinaWarp: Execute Shell Command"
-      },
-      {
-        "command": "rinawarp.deploy",
-        "title": "RinaWarp: Deploy Project"
-      },
-      {
-        "command": "rinawarp.deployStatus",
-        "title": "RinaWarp: Check Deploy Status"
-      }
-    ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "rinawarp-sidebar",
-          "title": "RinaWarp",
-          "icon": "media/icon-64.png"
-        }
-      ]
-    },
-    "views": {
-      "rinawarp-sidebar": [
-        {
-          "id": "rinawarp.control",
-          "name": "RinaWarp Control Center",
-          "icon": "media/icon-16.png",
-          "when": "true"
-        }
-      ]
-    },
-    "configuration": {
-      "type": "object",
-      "title": "RinaWarp Settings",
-      "properties": {
-        "rinawarp.apiBaseUrl": {
-          "type": "string",
-          "default": "https://api.rinawarptech.com",
-          "description": "Base URL for the RinaWarp API."
-        }
-      }
-    }
+  "engines": {
+    "vscode": "^1.108.0"
+  },
+  "repository": {
+    "url": "https://github.com/KarinaGilley/rinawarp"
   },
   "scripts": {
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./tsconfig.json",
+    "watch": "tsc -watch -p ./tsconfig.json",
     "package": "vsce package",
     "build": "npm run compile && npm run package"
   },
   "devDependencies": {
-    "@types/node": "^18.0.0",
+    "@types/node": "^25.0.8",
     "@types/vscode": "^1.108.1",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "@vscode/test-electron": "^2.3.0",
     "@vscode/vsce": "^2.19.0",
     "eslint": "^8.39.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.2.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.9.3",
+    "vscode": "^1.1.37"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "node-fetch": "^3.3.2"
   }
 }
