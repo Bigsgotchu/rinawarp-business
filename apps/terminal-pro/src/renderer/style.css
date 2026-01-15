@@ -1,0 +1,51 @@
+:root {
+  --mermaid-hot-pink: #FF69B4;
+  --coral: #FF7F50;
+  --teal: #008080;
+  --baby-blue: #89CFF0;
+  --black: #000000;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Fira Code', monospace;
+  background-color: var(--black);
+}
+
+#terminal-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+#terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  color: var(--baby-blue);
+  padding-bottom: 8px;
+}
+
+#terminal-input {
+  background-color: var(--black);
+  color: var(--mermaid-hot-pink);
+  border: 1px solid var(--coral);
+  padding: 8px;
+  font-family: 'Fira Code', monospace;
+}
+
+.ai-panel {
+  flex: 1;
+  background-color: var(--teal);
+  color: var(--black);
+  border-left: 4px solid var(--coral);
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.ai-panel h3 {
+  margin-top: 0;
+  color: var(--mermaid-hot-pink);
+}

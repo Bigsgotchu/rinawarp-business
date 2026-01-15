@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RinaWarp Terminal Pro</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="terminal-container">
+      <div id="terminal-output"></div>
+      <input id="terminal-input" placeholder="Type command..." autofocus>
+    </div>
+    <div id="ai-panel" class="ai-panel">
+      <h3>Rina AI Assistant</h3>
+      <div id="ai-suggestions">Press Ctrl+R for suggestions</div>
+    </div>
+  </div>
+
+  <script type="module" src="./terminal.tsx"></script>
+  <script type="module" src="./ai-panel.tsx"></script>
+</body>
+</html>
